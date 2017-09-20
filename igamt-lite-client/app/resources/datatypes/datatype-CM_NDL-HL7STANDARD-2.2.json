@@ -1,0 +1,98 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.2",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd23bd4c6ca828c2970f4" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab7d4c6e52cfd4480de",
+  "label" : "CM_NDL",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ {
+    "type" : "component",
+    "name" : "interpreter / technician",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd4480e1",
+      "name" : "CN_PERSON",
+      "ext" : null,
+      "label" : "CN_PERSON"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd448188"
+  }, {
+    "type" : "component",
+    "name" : "start date/time",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44810c",
+      "name" : "TS",
+      "ext" : null,
+      "label" : "TS"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd448189"
+  }, {
+    "type" : "component",
+    "name" : "end date/time",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44810c",
+      "name" : "TS",
+      "ext" : null,
+      "label" : "TS"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44818a"
+  }, {
+    "type" : "component",
+    "name" : "location",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd4480ea",
+      "name" : "CM_INTERNAL_LOCATION",
+      "ext" : null,
+      "label" : "CM_INTERNAL_LOCATION"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44818b"
+  } ],
+  "name" : "CM_NDL",
+  "description" : "observing practitioner",
+  "comment" : "",
+  "usageNote" : ""
+}

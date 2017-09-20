@@ -1,0 +1,47 @@
+<div class="pull-right" style="margin-right:20px">
+  <button type="button" class="btn btn-raised btn-primary btn-sm"
+          ng-click="save()"><i class="fa fa-plus"></i>
+    Save
+  </button>
+  <button type="button" class="btn btn-raised btn-primary btn-sm"
+          ng-click="openDataypeList(hl7Version)"><i class="fa fa-plus"></i>
+    Add data types.
+  </button>
+</div>
+<table st-table="datatypeDisplay" st-safe-src="datatypeLibStruct.children" st-sticky-header class="table table-striped table-bordered">
+<thead>
+  <tr class="row tbl-header">
+    <th st-ratio="25" st-sort="getDisplayLabel(dt)" st-sort-default="true">Label</th>
+    <th st-ratio="30">Description</th>
+    <th st-ratio="35">Actions</th>
+    <th st-ratio="2">Publish</th>
+  </tr>
+  <tr>
+    <th colspan="3"><input st-search="label" class="form-control" placeholder="Search Label..." type="search"/></th>
+  </tr>
+</thead>
+<tbody>
+	<tr class="row" ng-repeat="dt in datatypeDisplay" ng-class="{'new': dt.new}">
+    <td st-ratio="25">{{getDisplayLabel(dt)}}</td>
+    <td st-ratio="30" ng-bind="dt.description"></td>
+    <td st-ratio="35">
+      <button
+              title="Edit"
+              type="button" class="btn btn-raised btn-xs btn-primary"
+              ng-click="editDataType(dt)">
+        <span><i class="fa fa-pencil fa-fw"></i> Edit</span>
+      </button>
+      <button
+              title="Create Copy" type="button" class="btn btn-raised btn-xs btn-info"
+              ng-click="copyDataType(dt)">
+        <span><i class="fa fa-plus fa-fw"></i> Copy</span>
+      </button>
+      <button title="Delete" type="button" class="btn btn-raised btn-xs btn-danger"
+              ng-click="deleteDataType(dt)">
+        <span><i class="fa fa-trash-o fa-fw"></i> Delete</span>
+      </button>
+    </td>
+    <td st-ratio="2"><input type="checkbox" ng-bind="dt.publish" ng-model="bool" ng-change="trackSelections(bool, dt)"></input><span ng-bind="dt.selection" style="margin-left : 7px;"></span></td>
+  </tr>
+</tbody>
+</table>

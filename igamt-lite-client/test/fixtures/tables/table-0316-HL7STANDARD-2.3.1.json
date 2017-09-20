@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 251,
+  "id" : "565f3ab7d4c6e52cfd445eb1",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0316",
+  "name" : "Organ donor",
+  "description" : "Organ donor",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445eb2",
+    "value" : "F",
+    "label" : "Yes, patient is a donor, but card is not on file",
+    "codeSystem" : "HL70316",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445eb3",
+    "value" : "I",
+    "label" : "No, patient does not have a living will but information was provided",
+    "codeSystem" : "HL70316",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445eb4",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70316",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445eb5",
+    "value" : "Y",
+    "label" : "Yes, patient is a donor and card is on file",
+    "codeSystem" : "HL70316",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

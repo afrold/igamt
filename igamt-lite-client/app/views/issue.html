@@ -1,0 +1,29 @@
+<style id="antiClickjack">body {
+    display: none !important;
+}</style>
+<script type="text/javascript">
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
+</script>
+
+<div class="container2">
+    <div class="row">
+        <div class="col-md-12">
+        <!--<div class="panel panel-info">-->
+            <!--<div class="panel-heading"></div>-->
+            <!--<div class="panel-body">-->
+                <p>Please submit your issue at <a href="https://github.com/haffonist/igamt/issues" target="_blank">IGAMT GitHub</a>.
+                A GitHub account is required. You can register to GitHub by clicking <a href="https://github.com/join?source=header-home" target="_blank">here</a>
+                </p>
+                <p> We recommend adding any new issue/feature to the <i>"User Issues"</i> pipeline for us to easily locate your issue. Please use the labels <i> urgent, medium or low </i> to set the priority of the issue/feature. NIST reserves the right to change the priority of an issue/feature based on the current or next backlogs and other factors</p>
+                </p>
+            <!--</div>-->
+        </div>
+
+        <!--</div>-->
+    </div>
+</div>

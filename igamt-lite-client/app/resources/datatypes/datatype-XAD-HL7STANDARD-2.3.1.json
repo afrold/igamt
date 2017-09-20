@@ -1,0 +1,231 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.3.1",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd239d4c6ca828c295f90" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab7d4c6e52cfd44624b",
+  "label" : "XAD",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ {
+    "type" : "component",
+    "name" : "street address",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446231",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44646c"
+  }, {
+    "type" : "component",
+    "name" : "other designation",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446231",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44646d"
+  }, {
+    "type" : "component",
+    "name" : "city",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446231",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44646e"
+  }, {
+    "type" : "component",
+    "name" : "state or province",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446231",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44646f"
+  }, {
+    "type" : "component",
+    "name" : "zip or postal code",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446231",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446470"
+  }, {
+    "type" : "component",
+    "name" : "country",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446205",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446471"
+  }, {
+    "type" : "component",
+    "name" : "address type",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446205",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 7,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446472"
+  }, {
+    "type" : "component",
+    "name" : "other geographic designation",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446231",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 8,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446473"
+  }, {
+    "type" : "component",
+    "name" : "county/parish code",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 9,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446474"
+  }, {
+    "type" : "component",
+    "name" : "census tract",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 10,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446475"
+  }, {
+    "type" : "component",
+    "name" : "address representation code",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446205",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 11,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446476"
+  } ],
+  "name" : "XAD",
+  "description" : "extended address",
+  "comment" : "",
+  "usageNote" : ""
+}

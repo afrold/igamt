@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 28,
+  "id" : "565f3ab6d4c6e52cfd4431eb",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0008",
+  "name" : "Acknowledgment code",
+  "description" : "Acknowledgment code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431ec",
+    "value" : "AA",
+    "label" : "Original mode: Application Accept - Enhanced mode: Application acknowledgment: Accept",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431ed",
+    "value" : "AE",
+    "label" : "Original mode: Application Error - Enhanced mode: Application acknowledgment: Error",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431ee",
+    "value" : "AR",
+    "label" : "Original mode: Application Reject - Enhanced mode: Application acknowledgment: Reject",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431ef",
+    "value" : "CA",
+    "label" : "Enhanced mode: Accept acknowledgment: Commit Accept",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431f0",
+    "value" : "CE",
+    "label" : "Enhanced mode: Accept acknowledgment: Commit Error",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431f1",
+    "value" : "CR",
+    "label" : "Enhanced mode: Accept acknowledgment: Commit Reject",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

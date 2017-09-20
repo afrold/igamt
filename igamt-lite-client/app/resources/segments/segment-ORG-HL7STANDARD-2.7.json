@@ -1,0 +1,361 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.7",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd232d4c6ca828c28fc9c" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0dd4c623dc65509045",
+  "label" : "ORG",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Set ID - ORG",
+    "usage" : "R",
+    "minLength" : 1,
+    "maxLength" : "4",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550868f",
+      "name" : "SI",
+      "ext" : null,
+      "label" : "SI"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc65509046",
+    "itemNo" : "01459",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Organization Unit Code",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc65507d70",
+      "bindingIdentifier" : "0405",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc65509047",
+    "itemNo" : "01460",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Organization Unit Type Code",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc65508617",
+      "bindingIdentifier" : "0474",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc65509048",
+    "itemNo" : "01625",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Primary Org Unit Indicator",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc6550749e",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc65509049",
+    "itemNo" : "01462",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Practitioner Org Unit Identifier",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc655086a8",
+      "name" : "CX",
+      "ext" : null,
+      "label" : "CX"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc6550904a",
+    "itemNo" : "01463",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Health Care Provider Type Code",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc65508353",
+      "bindingIdentifier" : "0452",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc6550904b",
+    "itemNo" : "01464",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Health Care Provider Classification Code",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc65508337",
+      "bindingIdentifier" : "0453",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 7,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc6550904c",
+    "itemNo" : "01614",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Health Care Provider Area of Specialization Code",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc6550833d",
+      "bindingIdentifier" : "0454",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 8,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc6550904d",
+    "itemNo" : "01615",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Effective Date Range",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550865e",
+      "name" : "DR",
+      "ext" : null,
+      "label" : "DR"
+    },
+    "position" : 9,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc6550904e",
+    "itemNo" : "01465",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Employment Status Code",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc65507b36",
+      "bindingIdentifier" : "0066",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 10,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc6550904f",
+    "itemNo" : "01276",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Board Approval Indicator",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc6550749e",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 11,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc65509050",
+    "itemNo" : "01467",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Primary Care Physician Indicator",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc6550749e",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 12,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc65509051",
+    "itemNo" : "01468",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Cost Center Code",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc65507dd3",
+      "bindingIdentifier" : "0539",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 13,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc65509052",
+    "itemNo" : "01891",
+    "min" : 0,
+    "max" : "*"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd232d4c6ca828c28e8f4",
+    "mappings" : [ ]
+  },
+  "name" : "ORG",
+  "description" : "Practitioner Organization Unit s",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

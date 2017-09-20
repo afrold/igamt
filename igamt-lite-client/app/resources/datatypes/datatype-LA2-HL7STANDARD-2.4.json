@@ -1,0 +1,326 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.4",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd237d4c6ca828c294b3c" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab6d4c6e52cfd44400f",
+  "label" : "LA2",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ {
+    "type" : "component",
+    "name" : "point of care (IS)",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443ffd",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444448"
+  }, {
+    "type" : "component",
+    "name" : "room",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443ffd",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444449"
+  }, {
+    "type" : "component",
+    "name" : "bed",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443ffd",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd44444a"
+  }, {
+    "type" : "component",
+    "name" : "facility (HD)",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443fee",
+      "name" : "HD",
+      "ext" : null,
+      "label" : "HD"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd44444b"
+  }, {
+    "type" : "component",
+    "name" : "location status",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443ffd",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd44444c"
+  }, {
+    "type" : "component",
+    "name" : "person location type",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443ffd",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd44444d"
+  }, {
+    "type" : "component",
+    "name" : "building",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443ffd",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 7,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd44444e"
+  }, {
+    "type" : "component",
+    "name" : "floor",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443ffd",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 8,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd44444f"
+  }, {
+    "type" : "component",
+    "name" : "street address (ST)",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f87",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 9,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444450"
+  }, {
+    "type" : "component",
+    "name" : "other designation",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f87",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 10,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444451"
+  }, {
+    "type" : "component",
+    "name" : "city",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f87",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 11,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444452"
+  }, {
+    "type" : "component",
+    "name" : "state or province",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f87",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 12,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444453"
+  }, {
+    "type" : "component",
+    "name" : "zip or postal code",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f87",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 13,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444454"
+  }, {
+    "type" : "component",
+    "name" : "country",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443ffa",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 14,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444455"
+  }, {
+    "type" : "component",
+    "name" : "address type",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443ffa",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 15,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444456"
+  }, {
+    "type" : "component",
+    "name" : "other geographic designation",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f87",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 16,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444457"
+  } ],
+  "name" : "LA2",
+  "description" : "Location with address information (variant 2)",
+  "comment" : "",
+  "usageNote" : ""
+}

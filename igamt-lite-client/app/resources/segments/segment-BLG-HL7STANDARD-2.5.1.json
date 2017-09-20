@@ -1,0 +1,128 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.5.1",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd22cd4c6ca828c2899e9" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0fd4c623dc6550f086",
+  "label" : "BLG",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "When to Charge",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "40",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550ea6b",
+      "bindingIdentifier" : "0100",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecd4",
+      "name" : "CCD",
+      "ext" : null,
+      "label" : "CCD"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f087",
+    "itemNo" : "00234",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Charge Type",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "50",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550dc63",
+      "bindingIdentifier" : "0122",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec98",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f088",
+    "itemNo" : "00235",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Account ID",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "100",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecdf",
+      "name" : "CX",
+      "ext" : null,
+      "label" : "CX"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f089",
+    "itemNo" : "00236",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Charge Type Reason",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "60",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550ec1e",
+      "bindingIdentifier" : "0475",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecbe",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f08a",
+    "itemNo" : "01645",
+    "min" : 0,
+    "max" : "1"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd22cd4c6ca828c288a05",
+    "mappings" : [ ]
+  },
+  "name" : "BLG",
+  "description" : "Billing",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

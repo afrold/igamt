@@ -1,0 +1,341 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.5.1",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd22cd4c6ca828c2899e9" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0fd4c623dc6550eee5",
+  "label" : "CDM",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Primary Key Value - CDM",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550dd9b",
+      "bindingIdentifier" : "0132",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecd0",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550eee6",
+    "itemNo" : "01306",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Charge Code Alias",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecd0",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550eee7",
+    "itemNo" : "00983",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Charge Description Short",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550eccf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550eee8",
+    "itemNo" : "00984",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Charge Description Long",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550eccf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550eee9",
+    "itemNo" : "00985",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Description Override Indicator",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550df04",
+      "bindingIdentifier" : "0268",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec9e",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550eeea",
+    "itemNo" : "00986",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Exploding Charges",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecd0",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550eeeb",
+    "itemNo" : "00987",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Procedure Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e3e7",
+      "bindingIdentifier" : "0088",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecd0",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 7,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550eeec",
+    "itemNo" : "00393",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Active/Inactive Flag",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e1ef",
+      "bindingIdentifier" : "0183",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec98",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 8,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550eeed",
+    "itemNo" : "00675",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Inventory Number",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550ea73",
+      "bindingIdentifier" : "0463",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecd0",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 9,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550eeee",
+    "itemNo" : "00990",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Resource Load",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "12",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecb2",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 10,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550eeef",
+    "itemNo" : "00991",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Contract Number",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecdf",
+      "name" : "CX",
+      "ext" : null,
+      "label" : "CX"
+    },
+    "position" : 11,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550eef0",
+    "itemNo" : "00992",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Contract Organization",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550eca4",
+      "name" : "XON",
+      "ext" : null,
+      "label" : "XON"
+    },
+    "position" : 12,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550eef1",
+    "itemNo" : "00993",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Room Fee Indicator",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550dd16",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec98",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 13,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550eef2",
+    "itemNo" : "00994",
+    "min" : 0,
+    "max" : "1"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd22cd4c6ca828c288889",
+    "mappings" : [ ]
+  },
+  "name" : "CDM",
+  "description" : "Charge Description Master",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

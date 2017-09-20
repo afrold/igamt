@@ -1,0 +1,182 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.5.1",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd22cd4c6ca828c2899e9" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0fd4c623dc6550f539",
+  "label" : "RXR",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Route",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550dfc5",
+      "bindingIdentifier" : "0162",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecd0",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f53a",
+    "itemNo" : "00309",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Administration Site",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550df72",
+      "bindingIdentifier" : "0163",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecbe",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f53b",
+    "itemNo" : "00310",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Administration Device",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550dfb0",
+      "bindingIdentifier" : "0164",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecd0",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f53c",
+    "itemNo" : "00311",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Administration Method",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e1b4",
+      "bindingIdentifier" : "0165",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecbe",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f53d",
+    "itemNo" : "00312",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Routing Instruction",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecd0",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f53e",
+    "itemNo" : "01315",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Administration Site Modifier",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550dda5",
+      "bindingIdentifier" : "0495",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecbe",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f53f",
+    "itemNo" : "01670",
+    "min" : 0,
+    "max" : "1"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd22cd4c6ca828c288959",
+    "mappings" : [ ]
+  },
+  "name" : "RXR",
+  "description" : "Pharmacy/Treatment Route",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

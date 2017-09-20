@@ -1,0 +1,146 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.3.1",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd239d4c6ca828c295f90" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab7d4c6e52cfd446244",
+  "label" : "CP",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ {
+    "type" : "component",
+    "name" : "price",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446262",
+      "name" : "MO",
+      "ext" : null,
+      "label" : "MO"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446453"
+  }, {
+    "type" : "component",
+    "name" : "price type",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445ec9",
+      "bindingIdentifier" : "0205",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446205",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446454"
+  }, {
+    "type" : "component",
+    "name" : "from value",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446271",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446455"
+  }, {
+    "type" : "component",
+    "name" : "to value",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446271",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446456"
+  }, {
+    "type" : "component",
+    "name" : "range units",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446232",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446457"
+  }, {
+    "type" : "component",
+    "name" : "range type",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445d2c",
+      "bindingIdentifier" : "0298",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446205",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446458"
+  } ],
+  "name" : "CP",
+  "description" : "composite price",
+  "comment" : "",
+  "usageNote" : ""
+}

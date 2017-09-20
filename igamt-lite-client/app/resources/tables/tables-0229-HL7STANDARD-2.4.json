@@ -1,0 +1,48 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd443de3",
+  "hl7Version" : "2.4",
+  "libIds" : [ "573dd237d4c6ca828c294b3d" ],
+  "bindingIdentifier" : "0229",
+  "name" : "0229",
+  "description" : "DRG payor",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443de4",
+    "value" : "C",
+    "label" : "Champus",
+    "codeSystem" : "HL70229",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443de5",
+    "value" : "G",
+    "label" : "Managed Care Organization",
+    "codeSystem" : "HL70229",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443de6",
+    "value" : "M",
+    "label" : "Medicare",
+    "codeSystem" : "HL70229",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

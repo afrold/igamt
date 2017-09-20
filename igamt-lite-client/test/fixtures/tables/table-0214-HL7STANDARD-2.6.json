@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 212,
+  "id" : "569eac0ed4c623dc6550b7ff",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0214",
+  "name" : "Special Program Code",
+  "description" : "Special Program Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.214",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b800",
+    "value" : "CH",
+    "label" : "Child Health Assistance",
+    "codeSystem" : "HL70214",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b801",
+    "value" : "ES",
+    "label" : "Elective Surgery Program",
+    "codeSystem" : "HL70214",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b802",
+    "value" : "FP",
+    "label" : "Family Planning",
+    "codeSystem" : "HL70214",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b803",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70214",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b804",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70214",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

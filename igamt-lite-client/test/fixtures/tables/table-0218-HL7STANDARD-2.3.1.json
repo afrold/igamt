@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 258,
+  "id" : "565f3ab7d4c6e52cfd445f9a",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0218",
+  "name" : "Patient Charge Adjustment Code",
+  "description" : "Patient Charge Adjustment Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

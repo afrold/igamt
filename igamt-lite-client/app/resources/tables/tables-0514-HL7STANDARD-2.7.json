@@ -1,0 +1,192 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507cfc",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0514",
+  "name" : "0514",
+  "description" : "Transfusion Adverse Reaction",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cfd",
+    "value" : "ABOINC",
+    "label" : "ABO Incompatible Transfusion Reaction",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cfe",
+    "value" : "ACUTHEHTR",
+    "label" : "Acute Hemolytic Transfusion Reaction",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cff",
+    "value" : "ALLERGIC1",
+    "label" : "Allergic Reaction - First",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d00",
+    "value" : "ALLERGIC2",
+    "label" : "Allergic Reaction - Recurrent",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d01",
+    "value" : "ALLERGICR",
+    "label" : "Allergic Reaction - Repeating",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d02",
+    "value" : "ANAPHYLAC",
+    "label" : "Anaphylactic Reaction",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d03",
+    "value" : "BACTCONTAM",
+    "label" : "Reaction to Bacterial Contamination",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d04",
+    "value" : "DELAYEDHTR",
+    "label" : "Delayed Hemolytic Transfusion Reaction",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d05",
+    "value" : "DELAYEDSTR",
+    "label" : "Delayed Serological Transfusion Reaction",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d06",
+    "value" : "GVHD",
+    "label" : "Graft vs Host Disease - Transfusion - Associated",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d07",
+    "value" : "HYPOTENS",
+    "label" : "Non-hemolytic Hypotensive Reaction",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d08",
+    "value" : "NONHTR1",
+    "label" : "Non-Hemolytic Fever Chill Transfusion Reaction - First",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d09",
+    "value" : "NONHTR2",
+    "label" : "Non-Hemolytic Fever Chill Transfusion Reaction - Recurrent",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d0a",
+    "value" : "NONHTRREC",
+    "label" : "Non-Hemolytic Fever Chill Transfusion Reaction - Repeating",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d0b",
+    "value" : "NONIMMUNE",
+    "label" : "Non-Immune Hemolysis",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d0c",
+    "value" : "NONSPEC",
+    "label" : "Non-Specific, Non-Hemolytic Transfusion Reaction",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d0d",
+    "value" : "NORXN",
+    "label" : "No Evidence of Transfusion Reaction",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d0e",
+    "value" : "PTP",
+    "label" : "Posttransfusion Purpura",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d0f",
+    "value" : "VOLOVER",
+    "label" : "Symptoms most likely due to volume overload",
+    "codeSystem" : "HL70514",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

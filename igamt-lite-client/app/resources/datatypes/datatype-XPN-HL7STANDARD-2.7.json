@@ -1,0 +1,327 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.7",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd232d4c6ca828c28fc9d" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0dd4c623dc65508692",
+  "label" : "XPN",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ {
+    "type" : "component",
+    "name" : "Family Name",
+    "usage" : "RE",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508684",
+      "name" : "FN",
+      "ext" : null,
+      "label" : "FN"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087c4"
+  }, {
+    "type" : "component",
+    "name" : "Given Name",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "30",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550869a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087c5"
+  }, {
+    "type" : "component",
+    "name" : "Second and Further Given Names or Initials Thereof",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "30",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550869a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087c6"
+  }, {
+    "type" : "component",
+    "name" : "Suffix (e.g., JR or III)",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "20",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550869a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087c7"
+  }, {
+    "type" : "component",
+    "name" : "Prefix (e.g., DR)",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "20",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550869a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087c8"
+  }, {
+    "type" : "component",
+    "name" : "Degree (e.g., MD)",
+    "usage" : "X",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550866a",
+      "name" : "-",
+      "ext" : null,
+      "label" : "-"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087c9"
+  }, {
+    "type" : "component",
+    "name" : "Name Type Code",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "5",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc655081b4",
+      "bindingIdentifier" : "0200",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 7,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087ca"
+  }, {
+    "type" : "component",
+    "name" : "Name Representation Code",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc6550841e",
+      "bindingIdentifier" : "0465",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 8,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087cb"
+  }, {
+    "type" : "component",
+    "name" : "Name Context",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc65508294",
+      "bindingIdentifier" : "0448",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 9,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087cc"
+  }, {
+    "type" : "component",
+    "name" : "Name Validity Range",
+    "usage" : "X",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550866a",
+      "name" : "-",
+      "ext" : null,
+      "label" : "-"
+    },
+    "position" : 10,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087cd"
+  }, {
+    "type" : "component",
+    "name" : "Name Assembly Order",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc6550812b",
+      "bindingIdentifier" : "0444",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 11,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087ce"
+  }, {
+    "type" : "component",
+    "name" : "Effective Date",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508675",
+      "name" : "DTM",
+      "ext" : null,
+      "label" : "DTM"
+    },
+    "position" : 12,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087cf"
+  }, {
+    "type" : "component",
+    "name" : "Expiration Date",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508675",
+      "name" : "DTM",
+      "ext" : null,
+      "label" : "DTM"
+    },
+    "position" : 13,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087d0"
+  }, {
+    "type" : "component",
+    "name" : "Professional Suffix",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "199",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550869a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 14,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087d1"
+  }, {
+    "type" : "component",
+    "name" : "Called By",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "30",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550869a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 15,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087d2"
+  } ],
+  "name" : "XPN",
+  "description" : "Extended Person Name",
+  "comment" : "",
+  "usageNote" : ""
+}

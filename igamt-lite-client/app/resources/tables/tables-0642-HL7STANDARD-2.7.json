@@ -1,0 +1,48 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507d26",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0642",
+  "name" : "0642",
+  "description" : "Reorder Theory Codes",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d27",
+    "value" : "D",
+    "label" : "DOP/DOQ",
+    "codeSystem" : "HL70642",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d28",
+    "value" : "M",
+    "label" : "MIN/MAX",
+    "codeSystem" : "HL70642",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d29",
+    "value" : "O",
+    "label" : "Override",
+    "codeSystem" : "HL70642",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

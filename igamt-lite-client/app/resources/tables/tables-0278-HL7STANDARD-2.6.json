@@ -1,0 +1,120 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550ad43",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0278",
+  "name" : "0278",
+  "description" : "Filler status codes",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.278",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ad44",
+    "value" : "Blocked",
+    "label" : "The indicated time slot(s) is(are) blocked",
+    "codeSystem" : "HL70278",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ad45",
+    "value" : "Booked",
+    "label" : "The indicated appointment is booked",
+    "codeSystem" : "HL70278",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ad46",
+    "value" : "Cancelled",
+    "label" : "The indicated appointment was stopped from occurring (canceled prior to starting)",
+    "codeSystem" : "HL70278",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ad47",
+    "value" : "Complete",
+    "label" : "The indicated appointment has completed normally (was not discontinued, canceled, or deleted)",
+    "codeSystem" : "HL70278",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ad48",
+    "value" : "Dc",
+    "label" : "The indicated appointment was discontinued (DC'ed while in progress, discontinued parent appointment, or discontinued child appointment)",
+    "codeSystem" : "HL70278",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ad49",
+    "value" : "Deleted",
+    "label" : "The indicated appointment was deleted from the filler application",
+    "codeSystem" : "HL70278",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ad4a",
+    "value" : "Noshow",
+    "label" : "The patient did not show up for the appointment",
+    "codeSystem" : "HL70278",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ad4b",
+    "value" : "Overbook",
+    "label" : "The appointment has been confirmed; however it is confirmed in an overbooked state",
+    "codeSystem" : "HL70278",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ad4c",
+    "value" : "Pending",
+    "label" : "Appointment has not yet been confirmed",
+    "codeSystem" : "HL70278",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ad4d",
+    "value" : "Started",
+    "label" : "The indicated appointment has begun and is currently in progress",
+    "codeSystem" : "HL70278",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ad4e",
+    "value" : "Waitlist",
+    "label" : "Appointment has been placed on a waiting list for a particular slot, or set of slots",
+    "codeSystem" : "HL70278",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

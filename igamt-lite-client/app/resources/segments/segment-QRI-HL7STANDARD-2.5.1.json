@@ -1,0 +1,101 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.5.1",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd22cd4c6ca828c2899e9" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0fd4c623dc6550f13d",
+  "label" : "QRI",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Candidate Confidence",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "10",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecb2",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f13e",
+    "itemNo" : "01436",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Match Reason Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550ded5",
+      "bindingIdentifier" : "0392",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec9e",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f13f",
+    "itemNo" : "01437",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Algorithm Descriptor",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550dee0",
+      "bindingIdentifier" : "0393",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecd0",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f140",
+    "itemNo" : "01438",
+    "min" : 0,
+    "max" : "1"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd22cd4c6ca828c28870b",
+    "mappings" : [ ]
+  },
+  "name" : "QRI",
+  "description" : "Query Response Instance",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

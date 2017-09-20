@@ -1,0 +1,128 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.6",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd22fd4c6ca828c28ca5f" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0ed4c623dc6550c333",
+  "label" : "LCC",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Primary Key Value - LCC",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "200",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbc4",
+      "name" : "PL",
+      "ext" : null,
+      "label" : "PL"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c334",
+    "itemNo" : "00979",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Location Department",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550ac48",
+      "bindingIdentifier" : "0264",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c335",
+    "itemNo" : "00964",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Accommodation Type",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a91b",
+      "bindingIdentifier" : "0129",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c336",
+    "itemNo" : "00980",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Charge Code",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550aa2e",
+      "bindingIdentifier" : "0132",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c337",
+    "itemNo" : "00981",
+    "min" : 1,
+    "max" : "*"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd22fd4c6ca828c28b5eb",
+    "mappings" : [ ]
+  },
+  "name" : "LCC",
+  "description" : "Location Charge Code",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

@@ -1,0 +1,243 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.7",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd232d4c6ca828c28fc9c" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0dd4c623dc655089e1",
+  "label" : "LOC",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Primary Key Value - LOC",
+    "usage" : "R",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc655086ad",
+      "name" : "PL",
+      "ext" : null,
+      "label" : "PL"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655089e2",
+    "itemNo" : "01307",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Location Description",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "48",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550869a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655089e3",
+    "itemNo" : "00944",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Location Type - LOC",
+    "usage" : "R",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "1",
+    "table" : {
+      "id" : "569eac0dd4c623dc65507455",
+      "bindingIdentifier" : "0260",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655089e4",
+    "itemNo" : "00945",
+    "min" : 1,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Organization Name - LOC",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550866f",
+      "name" : "XON",
+      "ext" : null,
+      "label" : "XON"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655089e5",
+    "itemNo" : "00947",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Location Address",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc655086ab",
+      "name" : "XAD",
+      "ext" : null,
+      "label" : "XAD"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655089e6",
+    "itemNo" : "00948",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Location Phone",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550868c",
+      "name" : "XTN",
+      "ext" : null,
+      "label" : "XTN"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655089e7",
+    "itemNo" : "00949",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "License Number",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc655082a8",
+      "bindingIdentifier" : "0461",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 7,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655089e8",
+    "itemNo" : "00951",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Location Equipment",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "3",
+    "table" : {
+      "id" : "569eac0dd4c623dc6550746c",
+      "bindingIdentifier" : "0261",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 8,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655089e9",
+    "itemNo" : "00953",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Location Service Code",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "1",
+    "table" : {
+      "id" : "569eac0dd4c623dc655081cf",
+      "bindingIdentifier" : "0442",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 9,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655089ea",
+    "itemNo" : "01583",
+    "min" : 0,
+    "max" : "1"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd232d4c6ca828c28e36e",
+    "mappings" : [ ]
+  },
+  "name" : "LOC",
+  "description" : "Location Identification",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

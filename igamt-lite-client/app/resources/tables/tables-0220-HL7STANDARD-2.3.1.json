@@ -1,0 +1,75 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd446050",
+  "hl7Version" : "2.3.1",
+  "libIds" : [ "573dd239d4c6ca828c295f91" ],
+  "bindingIdentifier" : "0220",
+  "name" : "0220",
+  "description" : "Living arrangement",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446051",
+    "value" : "A",
+    "label" : "Alone",
+    "codeSystem" : "HL70220",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446052",
+    "value" : "F",
+    "label" : "Family",
+    "codeSystem" : "HL70220",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446053",
+    "value" : "I",
+    "label" : "Institution",
+    "codeSystem" : "HL70220",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446054",
+    "value" : "R",
+    "label" : "Relative",
+    "codeSystem" : "HL70220",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446055",
+    "value" : "S",
+    "label" : "Spouse Only",
+    "codeSystem" : "HL70220",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446056",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70220",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

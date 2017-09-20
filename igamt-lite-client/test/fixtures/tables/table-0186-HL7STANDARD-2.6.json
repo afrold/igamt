@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 521,
+  "id" : "569eac0ed4c623dc6550af14",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0186",
+  "name" : "Practitioner category",
+  "description" : "Practitioner category",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.186",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550af15",
+    "value" : "...",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70186",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

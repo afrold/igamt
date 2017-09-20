@@ -1,0 +1,160 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.7",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd232d4c6ca828c28fc9d" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0dd4c623dc65508664",
+  "label" : "RFR",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ {
+    "type" : "component",
+    "name" : "Numeric Range",
+    "usage" : "R",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508681",
+      "name" : "NR",
+      "ext" : null,
+      "label" : "NR"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655086c7"
+  }, {
+    "type" : "component",
+    "name" : "Administrative Sex",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc655073de",
+      "bindingIdentifier" : "0001",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655086c8"
+  }, {
+    "type" : "component",
+    "name" : "Age Range",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508681",
+      "name" : "NR",
+      "ext" : null,
+      "label" : "NR"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655086c9"
+  }, {
+    "type" : "component",
+    "name" : "Gestational Age Range",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508681",
+      "name" : "NR",
+      "ext" : null,
+      "label" : "NR"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655086ca"
+  }, {
+    "type" : "component",
+    "name" : "Species",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "20",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550869a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655086cb"
+  }, {
+    "type" : "component",
+    "name" : "Race/subspecies",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "20",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550869a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655086cc"
+  }, {
+    "type" : "component",
+    "name" : "Conditions",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508659",
+      "name" : "TX",
+      "ext" : null,
+      "label" : "TX"
+    },
+    "position" : 7,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655086cd"
+  } ],
+  "name" : "RFR",
+  "description" : "Reference Range",
+  "comment" : "",
+  "usageNote" : ""
+}

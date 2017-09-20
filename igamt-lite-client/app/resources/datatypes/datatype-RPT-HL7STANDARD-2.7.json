@@ -1,0 +1,251 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.7",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd232d4c6ca828c28fc9d" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0dd4c623dc65508691",
+  "label" : "RPT",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ {
+    "type" : "component",
+    "name" : "Repeat Pattern Code",
+    "usage" : "R",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc655082fd",
+      "bindingIdentifier" : "0335",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087b9"
+  }, {
+    "type" : "component",
+    "name" : "Calendar Alignment",
+    "usage" : "O",
+    "minLength" : 2,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc65507d50",
+      "bindingIdentifier" : "0527",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087ba"
+  }, {
+    "type" : "component",
+    "name" : "Phase Range Begin Value",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "10",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550867d",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087bb"
+  }, {
+    "type" : "component",
+    "name" : "Phase Range End Value",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "10",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550867d",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087bc"
+  }, {
+    "type" : "component",
+    "name" : "Period Quantity",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "10",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550867d",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087bd"
+  }, {
+    "type" : "component",
+    "name" : "Period Units",
+    "usage" : "C",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087be"
+  }, {
+    "type" : "component",
+    "name" : "Institution Specified Time",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc6550749e",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 7,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087bf"
+  }, {
+    "type" : "component",
+    "name" : "Event",
+    "usage" : "O",
+    "minLength" : 2,
+    "maxLength" : "3",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc65507d59",
+      "bindingIdentifier" : "0528",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 8,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087c0"
+  }, {
+    "type" : "component",
+    "name" : "Event Offset Quantity",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "10",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550867d",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 9,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087c1"
+  }, {
+    "type" : "component",
+    "name" : "Event Offset Units",
+    "usage" : "C",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 10,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087c2"
+  }, {
+    "type" : "component",
+    "name" : "General Timing Specification",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550865b",
+      "name" : "GTS",
+      "ext" : null,
+      "label" : "GTS"
+    },
+    "position" : 11,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087c3"
+  } ],
+  "name" : "RPT",
+  "description" : "Repeat Pattern",
+  "comment" : "",
+  "usageNote" : ""
+}

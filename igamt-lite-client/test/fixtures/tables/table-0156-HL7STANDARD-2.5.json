@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 186,
+  "id" : "565f3ab6d4c6e52cfd4409ca",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0156",
+  "name" : "Which date/time qualifier",
+  "description" : "Which date/time qualifier",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.156",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409cb",
+    "value" : "ANY",
+    "label" : "Any date/time within a range",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409cc",
+    "value" : "COL",
+    "label" : "Collection date/time, equivalent to film or sample collection date/time",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409cd",
+    "value" : "ORD",
+    "label" : "Order date/time",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409ce",
+    "value" : "RCT",
+    "label" : "Specimen receipt date/time, receipt of specimen in filling ancillary (Lab)",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409cf",
+    "value" : "REP",
+    "label" : "Report date/time, report date/time at filing ancillary (i.e., Lab)",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409d0",
+    "value" : "SCHED",
+    "label" : "Schedule date/time",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

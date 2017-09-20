@@ -1,0 +1,128 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.7",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd232d4c6ca828c28fc9c" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0dd4c623dc655089dc",
+  "label" : "ODS",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Type",
+    "usage" : "R",
+    "minLength" : 1,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc6550780c",
+      "bindingIdentifier" : "0159",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655089dd",
+    "itemNo" : "00269",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Service Period",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc65507bfb",
+      "bindingIdentifier" : "9999",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655089de",
+    "itemNo" : "00270",
+    "min" : 0,
+    "max" : "10"
+  }, {
+    "type" : "field",
+    "name" : "Diet, Supplement, or Preference Code",
+    "usage" : "R",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc65507bfb",
+      "bindingIdentifier" : "9999",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655089df",
+    "itemNo" : "00271",
+    "min" : 1,
+    "max" : "20"
+  }, {
+    "type" : "field",
+    "name" : "Text Instruction",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "80",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550869a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655089e0",
+    "itemNo" : "00272",
+    "min" : 0,
+    "max" : "2"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd232d4c6ca828c28e274",
+    "mappings" : [ ]
+  },
+  "name" : "ODS",
+  "description" : "Dietary Orders, Supplements, and Preferences",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

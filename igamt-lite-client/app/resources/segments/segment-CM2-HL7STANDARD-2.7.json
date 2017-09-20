@@ -1,0 +1,113 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.7",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd232d4c6ca828c28fc9c" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0dd4c623dc655088d9",
+  "label" : "CM2",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Set ID- CM2",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "4",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550868f",
+      "name" : "SI",
+      "ext" : null,
+      "label" : "SI"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655088da",
+    "itemNo" : "01024",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Scheduled Time Point",
+    "usage" : "R",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655088db",
+    "itemNo" : "01025",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Description of Time Point",
+    "usage" : "O",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "300",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550869a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655088dc",
+    "itemNo" : "01026",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Events Scheduled This Time Point",
+    "usage" : "R",
+    "minLength" : 1,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655088dd",
+    "itemNo" : "01027",
+    "min" : 1,
+    "max" : "200"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd232d4c6ca828c28e5fc",
+    "mappings" : [ ]
+  },
+  "name" : "CM2",
+  "description" : "Clinical Study Schedule Master",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

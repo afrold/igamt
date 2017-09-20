@@ -1,0 +1,108 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.5.1",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd22cd4c6ca828c2899ea" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0fd4c623dc6550ecb0",
+  "label" : "RP",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ {
+    "type" : "component",
+    "name" : "Pointer",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "15",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550eccf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed59"
+  }, {
+    "type" : "component",
+    "name" : "Application ID",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "227",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ece4",
+      "name" : "HD",
+      "ext" : null,
+      "label" : "HD"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed5a"
+  }, {
+    "type" : "component",
+    "name" : "Type of Data",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "9",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e380",
+      "bindingIdentifier" : "0191",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec98",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed5b"
+  }, {
+    "type" : "component",
+    "name" : "Subtype",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "19",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e0e9",
+      "bindingIdentifier" : "0291",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec98",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed5c"
+  } ],
+  "name" : "RP",
+  "description" : "Reference Pointer",
+  "comment" : "",
+  "usageNote" : ""
+}

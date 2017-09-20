@@ -1,0 +1,504 @@
+{
+  "type" : "table",
+  "sectionPosition" : 50,
+  "id" : "565f3ab7d4c6e52cfd447c2b",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0003",
+  "name" : "EVENT TYPE CODE",
+  "description" : "EVENT TYPE CODE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c2c",
+    "value" : "A01",
+    "label" : "Admit a patient",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c2d",
+    "value" : "A02",
+    "label" : "Transfer a patient",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c2e",
+    "value" : "A03",
+    "label" : "Discharge a patient",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c2f",
+    "value" : "A04",
+    "label" : "Register a patient",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c30",
+    "value" : "A05",
+    "label" : "Pre-admit a Patient",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c31",
+    "value" : "A06",
+    "label" : "Transfer an outpatient to inpatient",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c32",
+    "value" : "A07",
+    "label" : "Transfer an inpatient to outpatient",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c33",
+    "value" : "A08",
+    "label" : "Update patient information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c34",
+    "value" : "A09",
+    "label" : "Patient departing",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c35",
+    "value" : "A10",
+    "label" : "Patient arriving",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c36",
+    "value" : "A11",
+    "label" : "Cancel admit",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c37",
+    "value" : "A12",
+    "label" : "Cancel transfer",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c38",
+    "value" : "A13",
+    "label" : "Cancel discharge",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c39",
+    "value" : "A14",
+    "label" : "Pending admit",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c3a",
+    "value" : "A15",
+    "label" : "Pending transfer",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c3b",
+    "value" : "A16",
+    "label" : "Pending discharge",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c3c",
+    "value" : "A17",
+    "label" : "Swap patients",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c3d",
+    "value" : "A18",
+    "label" : "Merge patient information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c3e",
+    "value" : "A19",
+    "label" : "Patient query",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c3f",
+    "value" : "A20",
+    "label" : "Bed Status Update",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c40",
+    "value" : "A21",
+    "label" : "Leave of absence - out (leaving)",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c41",
+    "value" : "A22",
+    "label" : "Leave of absence - in (returning)",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c42",
+    "value" : "A23",
+    "label" : "Delete a patient record",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c43",
+    "value" : "A24",
+    "label" : "Link patient information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c44",
+    "value" : "A25",
+    "label" : "Cancel pending discharge",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c45",
+    "value" : "A26",
+    "label" : "Cancel pending transfer",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c46",
+    "value" : "A27",
+    "label" : "Cancel pending admit",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c47",
+    "value" : "A28",
+    "label" : "Add person information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c48",
+    "value" : "A29",
+    "label" : "Delete person information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c49",
+    "value" : "A30",
+    "label" : "Merge Patient information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c4a",
+    "value" : "A31",
+    "label" : "Update person information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c4b",
+    "value" : "A32",
+    "label" : "Cancel patient arriving",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c4c",
+    "value" : "A33",
+    "label" : "Cancel patient departing",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c4d",
+    "value" : "A34",
+    "label" : "Merge patient information - patient ID only",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c4e",
+    "value" : "A35",
+    "label" : "Merge patient information - account number only",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c4f",
+    "value" : "A36",
+    "label" : "Merge patient information - patient ID and account number",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c50",
+    "value" : "A37",
+    "label" : "Unlink patient information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c51",
+    "value" : "M01",
+    "label" : "Master file not otherwise specified (for backwards compatibility only)",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c52",
+    "value" : "M02",
+    "label" : "Master file - Staff Practioner",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c53",
+    "value" : "M03",
+    "label" : "Master file - test / observation",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c54",
+    "value" : "O01",
+    "label" : "Order message",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c55",
+    "value" : "O02",
+    "label" : "Order response",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c56",
+    "value" : "P01",
+    "label" : "Add and Update Patient Accounts",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c57",
+    "value" : "P02",
+    "label" : "Purge Patient Accounts",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c58",
+    "value" : "P03",
+    "label" : "Post detail financial transaction",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c59",
+    "value" : "P04",
+    "label" : "Generate bill and accounts receivable statements",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c5a",
+    "value" : "Q01",
+    "label" : "Immediate access",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c5b",
+    "value" : "Q02",
+    "label" : "Deferred access",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c5c",
+    "value" : "Q03",
+    "label" : "Deferred response to query",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c5d",
+    "value" : "Q05",
+    "label" : "Unsolicited display update",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c5e",
+    "value" : "R01",
+    "label" : "Unsolicited transmission of requested observation",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c5f",
+    "value" : "R02",
+    "label" : "Query for results of observation",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c60",
+    "value" : "R03",
+    "label" : "Display-oriented results (query / unsolicited update)",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c61",
+    "value" : "R04",
+    "label" : "Response to query / transmission of requested observation",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

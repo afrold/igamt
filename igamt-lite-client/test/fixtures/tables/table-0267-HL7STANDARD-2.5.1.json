@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 343,
+  "id" : "569eac0fd4c623dc6550df2e",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0267",
+  "name" : "Days of the week",
+  "description" : "Days of the week",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.267",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df2f",
+    "value" : "FRI",
+    "label" : "Friday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df30",
+    "value" : "MON",
+    "label" : "Monday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df31",
+    "value" : "SAT",
+    "label" : "Saturday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df32",
+    "value" : "SUN",
+    "label" : "Sunday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df33",
+    "value" : "THU",
+    "label" : "Thursday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df34",
+    "value" : "TUE",
+    "label" : "Tuesday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df35",
+    "value" : "WED",
+    "label" : "Wednesday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

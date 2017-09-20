@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 199,
+  "id" : "565f3ab7d4c6e52cfd446036",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0223",
+  "name" : "Living dependency",
+  "description" : "Living dependency",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446037",
+    "value" : "CB",
+    "label" : "Common Bath",
+    "codeSystem" : "HL70223",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446038",
+    "value" : "D",
+    "label" : "Spouse dependent",
+    "codeSystem" : "HL70223",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446039",
+    "value" : "M",
+    "label" : "Medical Supervision Required",
+    "codeSystem" : "HL70223",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44603a",
+    "value" : "S",
+    "label" : "Small children",
+    "codeSystem" : "HL70223",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44603b",
+    "value" : "WU",
+    "label" : "Walk up",
+    "codeSystem" : "HL70223",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

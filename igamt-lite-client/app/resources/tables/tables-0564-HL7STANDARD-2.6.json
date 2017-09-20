@@ -1,0 +1,57 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b704",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0564",
+  "name" : "0564",
+  "description" : "Adjustment Category Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.564",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b705",
+    "value" : "EA",
+    "label" : "Edit/Adjudication Response",
+    "codeSystem" : "HL70564",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b706",
+    "value" : "IN",
+    "label" : "Information",
+    "codeSystem" : "HL70564",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b707",
+    "value" : "PA",
+    "label" : "Provider Adjustment",
+    "codeSystem" : "HL70564",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b708",
+    "value" : "PR",
+    "label" : "Processing Result",
+    "codeSystem" : "HL70564",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

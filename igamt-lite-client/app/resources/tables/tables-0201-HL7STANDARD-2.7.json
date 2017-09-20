@@ -1,0 +1,102 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc655081d4",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0201",
+  "name" : "0201",
+  "description" : "Telecommunication Use Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081d5",
+    "value" : "ASN",
+    "label" : "Answering Service Number",
+    "codeSystem" : "HL70201",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081d6",
+    "value" : "BPN",
+    "label" : "Beeper Number",
+    "codeSystem" : "HL70201",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081d7",
+    "value" : "EMR",
+    "label" : "Emergency Number",
+    "codeSystem" : "HL70201",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081d8",
+    "value" : "NET",
+    "label" : "Network (email) Address",
+    "codeSystem" : "HL70201",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081d9",
+    "value" : "ORN",
+    "label" : "Other Residence Number",
+    "codeSystem" : "HL70201",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081da",
+    "value" : "PRN",
+    "label" : "Primary Residence Number",
+    "codeSystem" : "HL70201",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081db",
+    "value" : "PRS",
+    "label" : "Personal",
+    "codeSystem" : "HL70201",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081dc",
+    "value" : "VHN",
+    "label" : "Vacation Home Number",
+    "codeSystem" : "HL70201",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081dd",
+    "value" : "WPN",
+    "label" : "Work Number",
+    "codeSystem" : "HL70201",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

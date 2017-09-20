@@ -1,0 +1,150 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.4",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd237d4c6ca828c294b3b" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab6d4c6e52cfd4449ba",
+  "label" : "LCH",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Primary Key Value - LCH",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "200",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd444045",
+      "name" : "PL",
+      "ext" : null,
+      "label" : "PL"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4449bb",
+    "itemNo" : "01305",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Segment Action Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "3",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd443c10",
+      "bindingIdentifier" : "0206",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443ffa",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4449bc",
+    "itemNo" : "00763",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Segment Unique Key",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "80",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443fb8",
+      "name" : "EI",
+      "ext" : null,
+      "label" : "EI"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4449bd",
+    "itemNo" : "00764",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Location Characteristic ID",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd443b7e",
+      "bindingIdentifier" : "0324",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f5d",
+      "name" : "CE_0324",
+      "ext" : null,
+      "label" : "CE_0324"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4449be",
+    "itemNo" : "01295",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Location Characteristic Value-LCH",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd443281",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443fc3",
+      "name" : "CE_0136",
+      "ext" : null,
+      "label" : "CE_0136"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4449bf",
+    "itemNo" : "01294",
+    "min" : 1,
+    "max" : "1"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd237d4c6ca828c293e23",
+    "mappings" : [ ]
+  },
+  "name" : "LCH",
+  "description" : "Location Characteristic",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

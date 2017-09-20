@@ -1,0 +1,266 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.5.1",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd22cd4c6ca828c2899ea" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0fd4c623dc6550ecc4",
+  "label" : "NDL",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ {
+    "type" : "component",
+    "name" : "Name",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "406",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecb3",
+      "name" : "CNN",
+      "ext" : null,
+      "label" : "CNN"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550edcb"
+  }, {
+    "type" : "component",
+    "name" : "Start Date/time",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "26",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ece7",
+      "name" : "TS",
+      "ext" : null,
+      "label" : "TS"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550edcc"
+  }, {
+    "type" : "component",
+    "name" : "End Date/time",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "26",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ece7",
+      "name" : "TS",
+      "ext" : null,
+      "label" : "TS"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550edcd"
+  }, {
+    "type" : "component",
+    "name" : "Point of Care",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e522",
+      "bindingIdentifier" : "0302",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec9e",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550edce"
+  }, {
+    "type" : "component",
+    "name" : "Room",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e4fd",
+      "bindingIdentifier" : "0303",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec9e",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550edcf"
+  }, {
+    "type" : "component",
+    "name" : "Bed",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e505",
+      "bindingIdentifier" : "0304",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec9e",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550edd0"
+  }, {
+    "type" : "component",
+    "name" : "Facility",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "227",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ece4",
+      "name" : "HD",
+      "ext" : null,
+      "label" : "HD"
+    },
+    "position" : 7,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550edd1"
+  }, {
+    "type" : "component",
+    "name" : "Location Status",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e56d",
+      "bindingIdentifier" : "0306",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec9e",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 8,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550edd2"
+  }, {
+    "type" : "component",
+    "name" : "Patient Location Type",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e551",
+      "bindingIdentifier" : "0305",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec9e",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 9,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550edd3"
+  }, {
+    "type" : "component",
+    "name" : "Building",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e53a",
+      "bindingIdentifier" : "0307",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec9e",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 10,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550edd4"
+  }, {
+    "type" : "component",
+    "name" : "Floor",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e542",
+      "bindingIdentifier" : "0308",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec9e",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 11,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550edd5"
+  } ],
+  "name" : "NDL",
+  "description" : "Name with Date and Location",
+  "comment" : "",
+  "usageNote" : ""
+}

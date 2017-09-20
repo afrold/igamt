@@ -1,0 +1,1324 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.3.1",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd239d4c6ca828c295f8f" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab7d4c6e52cfd44696e",
+  "label" : "PV1",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Set ID - PV1",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "4",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446228",
+      "name" : "SI",
+      "ext" : null,
+      "label" : "SI"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44696f",
+    "itemNo" : "00131",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Patient Class",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd44579c",
+      "bindingIdentifier" : "0004",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446970",
+    "itemNo" : "00132",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Assigned Patient Location",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "80",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446299",
+      "name" : "PL",
+      "ext" : null,
+      "label" : "PL"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446971",
+    "itemNo" : "00133",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Admission Type",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445792",
+      "bindingIdentifier" : "0007",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446972",
+    "itemNo" : "00134",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Preadmit Number",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446247",
+      "name" : "CX",
+      "ext" : null,
+      "label" : "CX"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446973",
+    "itemNo" : "00135",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Prior Patient Location",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "80",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446299",
+      "name" : "PL",
+      "ext" : null,
+      "label" : "PL"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446974",
+    "itemNo" : "00136",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Attending Doctor",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "60",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445773",
+      "bindingIdentifier" : "0010",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446272",
+      "name" : "XCN",
+      "ext" : null,
+      "label" : "XCN"
+    },
+    "position" : 7,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446975",
+    "itemNo" : "00137",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Referring Doctor",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "60",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445773",
+      "bindingIdentifier" : "0010",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446272",
+      "name" : "XCN",
+      "ext" : null,
+      "label" : "XCN"
+    },
+    "position" : 8,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446976",
+    "itemNo" : "00138",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Consulting Doctor",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "60",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445773",
+      "bindingIdentifier" : "0010",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446272",
+      "name" : "XCN",
+      "ext" : null,
+      "label" : "XCN"
+    },
+    "position" : 9,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446977",
+    "itemNo" : "00139",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Hospital Service",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "3",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445e4b",
+      "bindingIdentifier" : "0069",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 10,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446978",
+    "itemNo" : "00140",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Temporary Location",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "80",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446299",
+      "name" : "PL",
+      "ext" : null,
+      "label" : "PL"
+    },
+    "position" : 11,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446979",
+    "itemNo" : "00141",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Preadmit Test Indicator",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445e52",
+      "bindingIdentifier" : "0087",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 12,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44697a",
+    "itemNo" : "00142",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Re-admission Indicator",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445e88",
+      "bindingIdentifier" : "0092",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 13,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44697b",
+    "itemNo" : "00143",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Admit Source",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "3",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445aaf",
+      "bindingIdentifier" : "0023",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 14,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44697c",
+    "itemNo" : "00144",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Ambulatory Status",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd4458e0",
+      "bindingIdentifier" : "0009",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 15,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44697d",
+    "itemNo" : "00145",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "VIP Indicator",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445e8b",
+      "bindingIdentifier" : "0099",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 16,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44697e",
+    "itemNo" : "00146",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Admitting Doctor",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "60",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445773",
+      "bindingIdentifier" : "0010",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446272",
+      "name" : "XCN",
+      "ext" : null,
+      "label" : "XCN"
+    },
+    "position" : 17,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44697f",
+    "itemNo" : "00147",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Patient Type",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445944",
+      "bindingIdentifier" : "0018",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 18,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446980",
+    "itemNo" : "00148",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Visit Number",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446247",
+      "name" : "CX",
+      "ext" : null,
+      "label" : "CX"
+    },
+    "position" : 19,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446981",
+    "itemNo" : "00149",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Financial Class",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "50",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445ce8",
+      "bindingIdentifier" : "0064",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44626f",
+      "name" : "FC",
+      "ext" : null,
+      "label" : "FC"
+    },
+    "position" : 20,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446982",
+    "itemNo" : "00150",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Charge Price Indicator",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445a23",
+      "bindingIdentifier" : "0032",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 21,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446983",
+    "itemNo" : "00151",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Courtesy Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445cdc",
+      "bindingIdentifier" : "0045",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 22,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446984",
+    "itemNo" : "00152",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Credit Rating",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445caf",
+      "bindingIdentifier" : "0046",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 23,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446985",
+    "itemNo" : "00153",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Contract Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445cc6",
+      "bindingIdentifier" : "0044",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 24,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446986",
+    "itemNo" : "00154",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Contract Effective Date",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "8",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446257",
+      "name" : "DT",
+      "ext" : null,
+      "label" : "DT"
+    },
+    "position" : 25,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446987",
+    "itemNo" : "00155",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Contract Amount",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "12",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446271",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 26,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446988",
+    "itemNo" : "00156",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Contract Period",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "3",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446271",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 27,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446989",
+    "itemNo" : "00157",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Interest Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445d81",
+      "bindingIdentifier" : "0073",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 28,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44698a",
+    "itemNo" : "00158",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Transfer to Bad Debt Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd4461b0",
+      "bindingIdentifier" : "0110",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 29,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44698b",
+    "itemNo" : "00159",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Transfer to Bad Debt Date",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "8",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446257",
+      "name" : "DT",
+      "ext" : null,
+      "label" : "DT"
+    },
+    "position" : 30,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44698c",
+    "itemNo" : "00160",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Bad Debt Agency Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "10",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd4458fc",
+      "bindingIdentifier" : "0021",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 31,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44698d",
+    "itemNo" : "00161",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Bad Debt Transfer Amount",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "12",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446271",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 32,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44698e",
+    "itemNo" : "00162",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Bad Debt Recovery Amount",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "12",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446271",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 33,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44698f",
+    "itemNo" : "00163",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Delete Account Indicator",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd4461b5",
+      "bindingIdentifier" : "0111",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 34,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446990",
+    "itemNo" : "00164",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Delete Account Date",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "8",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446257",
+      "name" : "DT",
+      "ext" : null,
+      "label" : "DT"
+    },
+    "position" : 35,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446991",
+    "itemNo" : "00165",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Discharge Disposition",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "3",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd4460f6",
+      "bindingIdentifier" : "0112",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 36,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446992",
+    "itemNo" : "00166",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Discharged to Location",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "25",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd4461a1",
+      "bindingIdentifier" : "0113",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44626e",
+      "name" : "DLD",
+      "ext" : null,
+      "label" : "DLD"
+    },
+    "position" : 37,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446993",
+    "itemNo" : "00167",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Diet Type",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "80",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd4460d3",
+      "bindingIdentifier" : "0114",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446291",
+      "name" : "CE_0114",
+      "ext" : null,
+      "label" : "CE_0114"
+    },
+    "position" : 38,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446994",
+    "itemNo" : "00168",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Servicing Facility",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd4460e2",
+      "bindingIdentifier" : "0115",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 39,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446995",
+    "itemNo" : "00169",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Bed Status",
+    "usage" : "X",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd4460b9",
+      "bindingIdentifier" : "0116",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 40,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446996",
+    "itemNo" : "00170",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Account Status",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd4460ca",
+      "bindingIdentifier" : "0117",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 41,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446997",
+    "itemNo" : "00171",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Pending Location",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "80",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446299",
+      "name" : "PL",
+      "ext" : null,
+      "label" : "PL"
+    },
+    "position" : 42,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446998",
+    "itemNo" : "00172",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Prior Temporary Location",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "80",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446299",
+      "name" : "PL",
+      "ext" : null,
+      "label" : "PL"
+    },
+    "position" : 43,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446999",
+    "itemNo" : "00173",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Admit Date/Time",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "26",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44624e",
+      "name" : "TS",
+      "ext" : null,
+      "label" : "TS"
+    },
+    "position" : 44,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44699a",
+    "itemNo" : "00174",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Discharge Date/Time",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "26",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44624e",
+      "name" : "TS",
+      "ext" : null,
+      "label" : "TS"
+    },
+    "position" : 45,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44699b",
+    "itemNo" : "00175",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Current Patient Balance",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "12",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446271",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 46,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44699c",
+    "itemNo" : "00176",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Total Charges",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "12",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446271",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 47,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44699d",
+    "itemNo" : "00177",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Total Adjustments",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "12",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446271",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 48,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44699e",
+    "itemNo" : "00178",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Total Payments",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "12",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446271",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 49,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44699f",
+    "itemNo" : "00179",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Alternate Visit ID",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445ee0",
+      "bindingIdentifier" : "0203",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446247",
+      "name" : "CX",
+      "ext" : null,
+      "label" : "CX"
+    },
+    "position" : 50,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd4469a0",
+    "itemNo" : "00180",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Visit Indicator",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445ed1",
+      "bindingIdentifier" : "0326",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446209",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 51,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd4469a1",
+    "itemNo" : "01226",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Other Healthcare Provider",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "60",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445773",
+      "bindingIdentifier" : "0010",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446272",
+      "name" : "XCN",
+      "ext" : null,
+      "label" : "XCN"
+    },
+    "position" : 52,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd4469a2",
+    "itemNo" : "01274",
+    "min" : 0,
+    "max" : "*"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd239d4c6ca828c2958d5",
+    "mappings" : [ ]
+  },
+  "name" : "PV1",
+  "description" : "PV1 - patient visit segment-",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

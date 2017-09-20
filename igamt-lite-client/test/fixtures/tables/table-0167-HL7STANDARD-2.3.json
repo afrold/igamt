@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 113,
+  "id" : "565f3ab7d4c6e52cfd4471ae",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0167",
+  "name" : "Substitution Status",
+  "description" : "Substitution Status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4471af",
+    "value" : "G",
+    "label" : "A generic substitution was dispensed",
+    "codeSystem" : "HL70167",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4471b0",
+    "value" : "N",
+    "label" : "No substitute was dispensed.  This is equivalent to the default (null) value.",
+    "codeSystem" : "HL70167",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4471b1",
+    "value" : "T",
+    "label" : "A therapeutic substitution was dispensed",
+    "codeSystem" : "HL70167",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

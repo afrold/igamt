@@ -1,0 +1,30 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b2aa",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0525",
+  "name" : "0525",
+  "description" : "Privilege",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.525",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2ab",
+    "value" : "...",
+    "label" : "No suggested values",
+    "codeSystem" : "HL70525",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

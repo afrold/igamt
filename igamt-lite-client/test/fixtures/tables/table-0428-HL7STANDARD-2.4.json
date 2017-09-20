@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 83,
+  "id" : "565f3ab6d4c6e52cfd443a92",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0428",
+  "name" : "Incident type code",
+  "description" : "Incident type code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a93",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70428",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a94",
+    "value" : "P",
+    "label" : "Preventable",
+    "codeSystem" : "HL70428",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a95",
+    "value" : "U",
+    "label" : "User Error",
+    "codeSystem" : "HL70428",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

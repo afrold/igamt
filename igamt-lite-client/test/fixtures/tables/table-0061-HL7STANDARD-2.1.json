@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 49,
+  "id" : "565f3ab7d4c6e52cfd448352",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0061",
+  "name" : "CHECK DIGIT SCHEME",
+  "description" : "CHECK DIGIT SCHEME",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448353",
+    "value" : "M11",
+    "label" : "Mod 11 check digit scheme",
+    "codeSystem" : "HL70061",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

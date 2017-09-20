@@ -1,0 +1,212 @@
+<style id="antiClickjack">
+    body {
+        display: none !important;
+    }
+</style>
+<script type="text/javascript">
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
+</script>
+<style>
+
+    
+    
+    .angular-ui-tree-handle {
+    margin-left:0px;
+    cursor: move;
+    text-decoration: none;
+        text-decoration-color: -moz-use-text-color;
+        text-decoration-line: none;
+        text-decoration-style: solid;
+    font-weight: 700;
+  
+
+}
+.angular-ui-tree-nodes .angular-ui-tree-nodes {
+    padding-left: 0px;
+}
+
+
+</style>
+<div ng-controller="IGDocumentListCtrl" class="uitree">
+<div ng-controller="HL7VersionsDlgCtrl">
+    <div ng-controller="TreeCtrl">
+        <div ui-tree="treeOptions" style="margin-left:8px; margin-bottom :20px;" data-nodrag>
+            <ol ui-tree-nodes="" ng-model="TreeIgs">
+           
+                <li ng-repeat="ig in TreeIgs" ui-tree-node>
+                    <div ui-tree-handle class="treeRoot">
+                        <span data-nodrag ng-click="editIg(ig)" >{{::igdocument.metaData.title}} <span  class="badge"> V{{::igdocument.profile.metaData.hl7Version}}  </span>
+                        </span>
+
+                    </div>
+
+
+                    <script type="text/ng-template" id="nodes_renderer.html">
+
+                        <div ui-tree-handle style="font-size:{{18-1*this.depth()}}px;margin-left:{{(this.depth()-2)*30}}px;">
+                           <i ng-show="section.childSections.length>0" data-nodrag
+                                ng-click="toggle(this);" class="fa fa-caret-down"
+                                ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i>
+ 								<span data-nodrag data-nodrag
+                                      ng-class="{selected : section.id===activeModel}"
+                                      
+                                      ng-click="editSection(section);">
+ 								{{::getLabel(this)}}.{{::section.sectionTitle}} </span>
+                        </div>
+
+                        <ol ui-tree-nodes="" ng-model="section.childSections" data-type="sections" ng-if="section.childSections&&!this.NodeScope.collapsed" >
+                            <li ng-repeat="section in section.childSections" ui-tree-node ng-include="'nodes_renderer.html'" data-type="sections"  ng-if="section.childSections&&!collapsed">
+                            </li>
+                        </ol>
+                     </script>
+
+                    
+                    <ol  ui-tree-nodes="" ng-model="ig.childSections" data-type="sections"  style="margin-left:0px;">
+                        <li ng-repeat="section in ig.childSections" ui-tree-node ng-include="'nodes_renderer.html'" data-type="sections" ng-init="x=section.sectionPosition" ng-if="!this.$parentNodeScope.collapsed" style="margin-left:0px;"></li>
+
+                    </ol>
+                    
+                    <div >
+                        <i data-nodrag ng-click="switcherprofile()" class="fa fa-caret-down"
+                           ng-class="{'fa-caret-down': !profilecollapsed, 'fa-caret-right': profilecollapsed}"></i>
+         
+
+						<span style="font-size:18px;" data-nodrag ng-click="editProfile();"  ng-class="{selected :activeModel ==='Message Infrastructure'}">
+
+						{{::ig.childSections.length+1}}.Message Infrastructure</span>
+                    </div>
+                    <ol ui-tree-nodes="" ng-model="ig.profile.messages.children"
+                        ng-show="!profilecollapsed" data-type="messages">
+                        <div  ui-tree-handle  style="margin-left:15px;">
+
+                            <i data-nodrag ng-click="switchermsg()" class="fa fa-caret-down"
+                               ng-class="{'fa-caret-down': !collapsemessage, 'fa-caret-right': collapsemessage}"></i>
+
+							 <span  style="font-size:14px;" ng-class="{selected :activeModel ==='Conformance Profiles'}"
+                                   ng-click="editRoutSection('Conformance Profiles');"  data-nodrag >
+									{{::ig.childSections.length+1}}.1.Conformance Profiles </span>
+                        </div>
+
+                        <li ng-repeat="msg in ig.profile.messages.children" ui-tree-node
+
+                            ng-if="!collapsemessage" data-type="message">
+                            <div ui-tree-handle 
+                             style ="margin-left:30px;">
+
+                                 <span data-nodrag style ="font-weight: normal;"
+                                                                                    
+                                                                                     ng-class="{selected : msg.id===activeModel}"
+                                                                                     ng-click="editMessage(msg);">
+									{{updateMessagePositions(ig.profile.messages.children)}}
+									[{{::msg.position}}]	{{::msg.name}}-{{::msg.description}}
+									</span>
+
+                            </div>
+                        </li>
+                    </ol>
+<script type="text/ng-template" id="segmentPopover">
+  <span>
+    {{::segment.scope}}
+  </span>
+</script>
+
+                    <ol ui-tree-nodes="" ng-model="segments"
+                        ng-show="!profilecollapsed" data-type="segments">
+                        <div ui-tree-handle class="messageContent" style="margin-left:15px;">
+                            <i data-nodrag ng-click="switcherseg()" class="fa fa-caret-down"
+                               ng-class="{'fa-caret-down': !collapsesegment, 'fa-caret-right': collapsesegment}"></i>
+
+							<span data-nodrag  ng-class="{selected :activeModel ==='Segments and field descriptions'}"
+                                 
+                                  ng-click="editRoutSection('Segments and field descriptions')">
+								{{::ig.childSections.length+1}}.2.Segments and field descriptions</span>
+                        </div>
+
+                        <li ng-repeat="segment in segments | orderBy :'label'"
+                            ui-tree-node ng-if="!collapsesegment" data-type="segment">
+                            <div ui-tree-handle  data-nodrag 
+                             style ="margin-left:30px;"
+                              >
+								<span data-nodrag style ="font-weight: normal;"
+                                      ng-class="{selected : segment.id===activeModel}"
+                                      
+                                      ng-click="editSeg(segment);">
+
+                                       <span class="badge" ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
+                                   'label-USE': !showUnused(segment)&&getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS','label-PRL':getScopeLabel(segment)==='PRL' ,'unused' : showUnused(segment)}">  {{::getScopeLabel(segment)}}	</span>
+                                        {{::getSegmentLabel(segment)}}-{{::segment.description}} {{::isUnused(segment)}}</span>
+                            </div>
+                        </li>
+                    </ol>
+
+                    <ol ui-tree-nodes="" ng-model="datatypes" ng-show="!profilecollapsed" data-type="datatypes" >
+                        <div ui-tree-handle  style="margin-left:15px;">
+                            <i data-nodrag ng-click="switcherdata()"
+                               class="fa fa-caret-down" 
+                               ng-class="{'fa-caret-down': !collapsedata, 'fa-caret-right': collapsedata}"></i>
+
+							<span ng-class="{selected :activeModel ==='Datatypes'}"
+                                    data-nodrag ng-click="editRoutSection('Datatypes')" >{{::ig.childSections.length+1}}.3.Datatypes</span>
+                        </div>
+
+                        <li ng-repeat="data in datatypes | orderBy :'label'" ui-tree-node
+                            ng-if="!collapsedata" data-type="datatype">
+                            <div ui-tree-handle  data-nodrag  
+                                 
+                                   style ="margin-left:30px;">
+								<span data-nodrag style ="font-weight: normal;"
+                                      ng-class="{selected : data.id===activeModel}"
+
+                                      ng-click="editDataType(data);">
+                                     <span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
+                                   'label-USE':  !showUnused(data)&&getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','label-PRL':getScopeLabel(data)==='PRL','unused' : showUnused(data)}" >  {{::getScopeLabel(data)}}</span>
+                                      
+                                       {{::getDatatypeLabel(data)}}-{{::data.description}}</span>
+
+                            </div>
+                        </li>
+
+
+                    </ol>
+
+                    <ol ui-tree-nodes="" ng-model="tables" ng-show="!profilecollapsed" data-type="tables">
+                        <div ui-tree-handle  style="margin-left:15px;">
+                            <i data-nodrag ng-click="switchervalueSet()"
+                               class="fa fa-caret-down" 
+                               ng-class="{'fa-caret-down': !collapsevalueSet, 'fa-caret-right': collapsevalueSet}"></i>
+
+							<span ng-class="{selected :activeModel ==='Value Sets'}" 
+                                    data-nodrag ng-click="editRoutSection('Value Sets')">{{::ig.childSections.length+1}}.4.Value Sets</span>
+                        </div>
+
+
+                        <li ng-repeat="table in tables|  orderBy :'name'" ui-tree-node
+                            ng-if="!collapsevalueSet" data-type="table">
+                            <div ui-tree-handle  data-nodrag 
+                                 
+                                   style ="margin-left:30px;">
+
+								<span data-nodrag style ="font-weight:normal;"
+                                      ng-class="{selected : table.id===activeModel}"
+                                      
+                                      ng-click="editTable(table);">
+                                     <span class="badge" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
+                                   'label-USE':  !showUnused(table)&&getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS','label-PRL':getScopeLabel(table)==='PRL','unused': showUnused(table)}" >  {{::getScopeLabel(table)}}</span>
+                                      
+                                      {{::table.bindingIdentifier}}-{{::table.description}}</span>
+
+                            </div>
+                        </li>
+                    </ol>
+                </li>
+            </ol>
+        </div>
+    </div>
+ </div>
+</div>
+

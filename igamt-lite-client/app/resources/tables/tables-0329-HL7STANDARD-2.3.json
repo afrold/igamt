@@ -1,0 +1,39 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd4473fa",
+  "hl7Version" : "2.3",
+  "libIds" : [ "573dd23ad4c6ca828c296b7e" ],
+  "bindingIdentifier" : "0329",
+  "name" : "0329",
+  "description" : "Quantity Method",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473fb",
+    "value" : "A",
+    "label" : "Acutal Count",
+    "codeSystem" : "HL70329",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473fc",
+    "value" : "E",
+    "label" : "Estimated (see comment)",
+    "codeSystem" : "HL70329",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

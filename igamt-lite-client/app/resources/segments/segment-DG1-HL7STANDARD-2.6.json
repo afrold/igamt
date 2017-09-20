@@ -1,0 +1,672 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.6",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd22fd4c6ca828c28ca5f" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0ed4c623dc6550bdf3",
+  "label" : "DG1",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Set ID - DG1",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "4",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bba3",
+      "name" : "SI",
+      "ext" : null,
+      "label" : "SI"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bdf4",
+    "itemNo" : "00375",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Diagnosis Coding Method",
+    "usage" : "X",
+    "minLength" : 0,
+    "maxLength" : "0",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7f",
+      "name" : "-",
+      "ext" : null,
+      "label" : "-"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bdf5",
+    "itemNo" : "00376",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Diagnosis Code - DG1",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550adfb",
+      "bindingIdentifier" : "0051",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bdf6",
+    "itemNo" : "00377",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Diagnosis Description",
+    "usage" : "X",
+    "minLength" : 0,
+    "maxLength" : "0",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7f",
+      "name" : "-",
+      "ext" : null,
+      "label" : "-"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bdf7",
+    "itemNo" : "00378",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Diagnosis Date/Time",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "24",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb8a",
+      "name" : "DTM",
+      "ext" : null,
+      "label" : "DTM"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bdf8",
+    "itemNo" : "00379",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Diagnosis Type",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550ae01",
+      "bindingIdentifier" : "0052",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bdf9",
+    "itemNo" : "00380",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Major Diagnostic Category",
+    "usage" : "X",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550bb30",
+      "bindingIdentifier" : "0118",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb89",
+      "name" : "CNE",
+      "ext" : null,
+      "label" : "CNE"
+    },
+    "position" : 7,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bdfa",
+    "itemNo" : "00381",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Diagnostic Related Group",
+    "usage" : "X",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550af61",
+      "bindingIdentifier" : "0055",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb89",
+      "name" : "CNE",
+      "ext" : null,
+      "label" : "CNE"
+    },
+    "position" : 8,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bdfb",
+    "itemNo" : "00382",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "DRG Approval Indicator",
+    "usage" : "X",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a9a9",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 9,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bdfc",
+    "itemNo" : "00383",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "DRG Grouper Review Code",
+    "usage" : "X",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550af65",
+      "bindingIdentifier" : "0056",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 10,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bdfd",
+    "itemNo" : "00384",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Outlier Type",
+    "usage" : "X",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b0f4",
+      "bindingIdentifier" : "0083",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 11,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bdfe",
+    "itemNo" : "00385",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Outlier Days",
+    "usage" : "X",
+    "minLength" : 0,
+    "maxLength" : "3",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb92",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 12,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bdff",
+    "itemNo" : "00386",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Outlier Cost",
+    "usage" : "X",
+    "minLength" : 0,
+    "maxLength" : "12",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbb7",
+      "name" : "CP",
+      "ext" : null,
+      "label" : "CP"
+    },
+    "position" : 13,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550be00",
+    "itemNo" : "00387",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Grouper Version And Type",
+    "usage" : "X",
+    "minLength" : 0,
+    "maxLength" : "0",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7f",
+      "name" : "-",
+      "ext" : null,
+      "label" : "-"
+    },
+    "position" : 14,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550be01",
+    "itemNo" : "00388",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Diagnosis Priority",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b9dc",
+      "bindingIdentifier" : "0359",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 15,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550be02",
+    "itemNo" : "00389",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Diagnosing Clinician",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb94",
+      "name" : "XCN",
+      "ext" : null,
+      "label" : "XCN"
+    },
+    "position" : 16,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550be03",
+    "itemNo" : "00390",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Diagnosis Classification",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "3",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b94b",
+      "bindingIdentifier" : "0228",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 17,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550be04",
+    "itemNo" : "00766",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Confidential Indicator",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a9a9",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 18,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550be05",
+    "itemNo" : "00767",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Attestation Date/Time",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "24",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb8a",
+      "name" : "DTM",
+      "ext" : null,
+      "label" : "DTM"
+    },
+    "position" : 19,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550be06",
+    "itemNo" : "00768",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Diagnosis Identifier",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "427",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7c",
+      "name" : "EI",
+      "ext" : null,
+      "label" : "EI"
+    },
+    "position" : 20,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550be07",
+    "itemNo" : "01850",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Diagnosis Action Code",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b795",
+      "bindingIdentifier" : "0206",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 21,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550be08",
+    "itemNo" : "01894",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Parent Diagnosis",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "427",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7c",
+      "name" : "EI",
+      "ext" : null,
+      "label" : "EI"
+    },
+    "position" : 22,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550be09",
+    "itemNo" : "02152",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "DRG CCL Value Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "705",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b175",
+      "bindingIdentifier" : "0728",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 23,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550be0a",
+    "itemNo" : "02153",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "DRG Grouping Usage",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a9a9",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 24,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550be0b",
+    "itemNo" : "02154",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "DRG Diagnosis Determination Status",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b187",
+      "bindingIdentifier" : "0731",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 25,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550be0c",
+    "itemNo" : "02155",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Present On Admission (POA) Indicator",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b2d6",
+      "bindingIdentifier" : "0895",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 26,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550be0d",
+    "itemNo" : "02288",
+    "min" : 0,
+    "max" : "1"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd22fd4c6ca828c28b90c",
+    "mappings" : [ ]
+  },
+  "name" : "DG1",
+  "description" : "Diagnosis",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

@@ -1,0 +1,611 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.6",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd22fd4c6ca828c28ca5f" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0ed4c623dc6550c428",
+  "label" : "PCR",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Implicated Product",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "705",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b131",
+      "bindingIdentifier" : "9999",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c429",
+    "itemNo" : "01098",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Generic Product",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a5c2",
+      "bindingIdentifier" : "0249",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c42a",
+    "itemNo" : "01099",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Product Class",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "705",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b131",
+      "bindingIdentifier" : "9999",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c42b",
+    "itemNo" : "01100",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Total Duration Of Therapy",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "500",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbb9",
+      "name" : "CQ",
+      "ext" : null,
+      "label" : "CQ"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c42c",
+    "itemNo" : "01101",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Product Manufacture Date",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "24",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb8a",
+      "name" : "DTM",
+      "ext" : null,
+      "label" : "DTM"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c42d",
+    "itemNo" : "01102",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Product Expiration Date",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "24",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb8a",
+      "name" : "DTM",
+      "ext" : null,
+      "label" : "DTM"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c42e",
+    "itemNo" : "01103",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Product Implantation Date",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "24",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb8a",
+      "name" : "DTM",
+      "ext" : null,
+      "label" : "DTM"
+    },
+    "position" : 7,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c42f",
+    "itemNo" : "01104",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Product Explantation Date",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "24",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb8a",
+      "name" : "DTM",
+      "ext" : null,
+      "label" : "DTM"
+    },
+    "position" : 8,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c430",
+    "itemNo" : "01105",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Single Use Device",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "8",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a673",
+      "bindingIdentifier" : "0244",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 9,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c431",
+    "itemNo" : "01106",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Indication For Product Use",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "705",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b131",
+      "bindingIdentifier" : "9999",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 10,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c432",
+    "itemNo" : "01107",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Product Problem",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "8",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a7ba",
+      "bindingIdentifier" : "0245",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 11,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c433",
+    "itemNo" : "01108",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Product Serial/Lot Number",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "199",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbaf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 12,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c434",
+    "itemNo" : "01109",
+    "min" : 0,
+    "max" : "3"
+  }, {
+    "type" : "field",
+    "name" : "Product Available For Inspection",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a5e8",
+      "bindingIdentifier" : "0246",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 13,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c435",
+    "itemNo" : "01110",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Product Evaluation Performed",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "705",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b131",
+      "bindingIdentifier" : "9999",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 14,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c436",
+    "itemNo" : "01111",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Product Evaluation Status",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "705",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a629",
+      "bindingIdentifier" : "0247",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 15,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c437",
+    "itemNo" : "01112",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Product Evaluation Results",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "705",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b131",
+      "bindingIdentifier" : "9999",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 16,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c438",
+    "itemNo" : "01113",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Evaluated Product Source",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "8",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a5a4",
+      "bindingIdentifier" : "0248",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 17,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c439",
+    "itemNo" : "01114",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Date Product Returned To Manufacturer",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "24",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb8a",
+      "name" : "DTM",
+      "ext" : null,
+      "label" : "DTM"
+    },
+    "position" : 18,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c43a",
+    "itemNo" : "01115",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Device Operator Qualifications",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a8d5",
+      "bindingIdentifier" : "0242",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 19,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c43b",
+    "itemNo" : "01116",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Relatedness Assessment",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a4f1",
+      "bindingIdentifier" : "0250",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 20,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c43c",
+    "itemNo" : "01117",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Action Taken In Response To The Event",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a4a5",
+      "bindingIdentifier" : "0251",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 21,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c43d",
+    "itemNo" : "01118",
+    "min" : 0,
+    "max" : "6"
+  }, {
+    "type" : "field",
+    "name" : "Event Causality Observations",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a4ca",
+      "bindingIdentifier" : "0252",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 22,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c43e",
+    "itemNo" : "01119",
+    "min" : 0,
+    "max" : "6"
+  }, {
+    "type" : "field",
+    "name" : "Indirect Exposure Mechanism",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550aa30",
+      "bindingIdentifier" : "0253",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 23,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c43f",
+    "itemNo" : "01120",
+    "min" : 0,
+    "max" : "3"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd22fd4c6ca828c28b3af",
+    "mappings" : [ ]
+  },
+  "name" : "PCR",
+  "description" : "Possible Causal Relationship",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

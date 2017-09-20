@@ -1,0 +1,216 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.5.1",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd22cd4c6ca828c2899e9" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0fd4c623dc6550f3c5",
+  "label" : "TCD",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Universal Service Identifier",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecd0",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f3c6",
+    "itemNo" : "00238",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Auto-Dilution Factor",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecc7",
+      "name" : "SN",
+      "ext" : null,
+      "label" : "SN"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f3c7",
+    "itemNo" : "01420",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Rerun Dilution Factor",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecc7",
+      "name" : "SN",
+      "ext" : null,
+      "label" : "SN"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f3c8",
+    "itemNo" : "01421",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Pre-Dilution Factor",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecc7",
+      "name" : "SN",
+      "ext" : null,
+      "label" : "SN"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f3c9",
+    "itemNo" : "01422",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Endogenous Content of Pre-Dilution Diluent",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecc7",
+      "name" : "SN",
+      "ext" : null,
+      "label" : "SN"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f3ca",
+    "itemNo" : "01413",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Automatic Repeat Allowed",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550dd16",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec98",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f3cb",
+    "itemNo" : "01416",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Reflex Allowed",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550dd16",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec98",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 7,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f3cc",
+    "itemNo" : "01424",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Analyte Repeat Status",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550df08",
+      "bindingIdentifier" : "0389",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecd0",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 8,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550f3cd",
+    "itemNo" : "01425",
+    "min" : 0,
+    "max" : "1"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd22cd4c6ca828c2883e3",
+    "mappings" : [ ]
+  },
+  "name" : "TCD",
+  "description" : "Test Code Detail",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

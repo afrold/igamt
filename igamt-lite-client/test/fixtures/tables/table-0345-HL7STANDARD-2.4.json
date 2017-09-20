@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 222,
+  "id" : "565f3ab6d4c6e52cfd443d77",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0345",
+  "name" : "Appeal reason",
+  "description" : "Appeal reason",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,123 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.4",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd237d4c6ca828c294b3b" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab6d4c6e52cfd4445aa",
+  "label" : "CM2",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Set ID- CM2",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "4",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f80",
+      "name" : "SI",
+      "ext" : null,
+      "label" : "SI"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4445ab",
+    "itemNo" : "01024",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Scheduled Time Point",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd443a07",
+      "bindingIdentifier" : "9999",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f88",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4445ac",
+    "itemNo" : "01025",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Description of Time Point",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "300",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f87",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4445ad",
+    "itemNo" : "01026",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Events Scheduled This Time Point",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd443a07",
+      "bindingIdentifier" : "9999",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f88",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4445ae",
+    "itemNo" : "01027",
+    "min" : 1,
+    "max" : "200"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd237d4c6ca828c293b58",
+    "mappings" : [ ]
+  },
+  "name" : "CM2",
+  "description" : "Clinical Study Schedule Master",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

@@ -1,0 +1,90 @@
+{
+  "type" : "table",
+  "sectionPosition" : 367,
+  "id" : "569eac0dd4c623dc65506f72",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0372",
+  "name" : "Specimen Component",
+  "description" : "Specimen Component",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506f73",
+    "value" : "BLD",
+    "label" : "Whole blood, homogeneous",
+    "codeSystem" : "HL70372",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506f74",
+    "value" : "BSEP",
+    "label" : "Whole blood, separated",
+    "codeSystem" : "HL70372",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506f75",
+    "value" : "PLAS",
+    "label" : "Plasma, NOS (not otherwise specified)",
+    "codeSystem" : "HL70372",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506f76",
+    "value" : "PPP",
+    "label" : "Platelet poor plasma",
+    "codeSystem" : "HL70372",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506f77",
+    "value" : "PRP",
+    "label" : "Platelet rich plasma",
+    "codeSystem" : "HL70372",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506f78",
+    "value" : "SED",
+    "label" : "Sediment",
+    "codeSystem" : "HL70372",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506f79",
+    "value" : "SER",
+    "label" : "Serum, NOS (not otherwise specified)",
+    "codeSystem" : "HL70372",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506f7a",
+    "value" : "SUP",
+    "label" : "Supernatant",
+    "codeSystem" : "HL70372",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

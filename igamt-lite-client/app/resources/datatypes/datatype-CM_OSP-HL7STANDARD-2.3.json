@@ -1,0 +1,79 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.3",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd23ad4c6ca828c296b7d" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab7d4c6e52cfd44754a",
+  "label" : "CM_OSP",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ {
+    "type" : "component",
+    "name" : "occurrence span code",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44756b",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447623"
+  }, {
+    "type" : "component",
+    "name" : "occurrence span start date",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44758f",
+      "name" : "DT",
+      "ext" : null,
+      "label" : "DT"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447624"
+  }, {
+    "type" : "component",
+    "name" : "occurrence span stop date",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44758f",
+      "name" : "DT",
+      "ext" : null,
+      "label" : "DT"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447625"
+  } ],
+  "name" : "CM_OSP",
+  "description" : "occurence span",
+  "comment" : "",
+  "usageNote" : ""
+}

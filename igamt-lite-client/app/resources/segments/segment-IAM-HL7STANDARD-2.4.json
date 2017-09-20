@@ -1,0 +1,500 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.4",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd237d4c6ca828c294b3b" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab6d4c6e52cfd4446f6",
+  "label" : "IAM",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Set ID - IAM",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "4",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f80",
+      "name" : "SI",
+      "ext" : null,
+      "label" : "SI"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4446f7",
+    "itemNo" : "01612",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Allergen Type Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd442fff",
+      "bindingIdentifier" : "0127",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443fae",
+      "name" : "CE_0127",
+      "ext" : null,
+      "label" : "CE_0127"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4446f8",
+    "itemNo" : "00204",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Allergen Code/Mnemonic/Description",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f88",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4446f9",
+    "itemNo" : "00205",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Allergy Severity Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd44301b",
+      "bindingIdentifier" : "0128",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443fb5",
+      "name" : "CE_0128",
+      "ext" : null,
+      "label" : "CE_0128"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4446fa",
+    "itemNo" : "00206",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Allergy Reaction Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "15",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f87",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4446fb",
+    "itemNo" : "00207",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Allergy Action Code",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd443b48",
+      "bindingIdentifier" : "0323",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd444004",
+      "name" : "CNE",
+      "ext" : null,
+      "label" : "CNE"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4446fc",
+    "itemNo" : "01551",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Allergy Unique Identifier",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "80",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443fb8",
+      "name" : "EI",
+      "ext" : null,
+      "label" : "EI"
+    },
+    "position" : 7,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4446fd",
+    "itemNo" : "01552",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Action Reason",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "60",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f87",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 8,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4446fe",
+    "itemNo" : "01553",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Sensitivity to Causative Agent Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd443ad4",
+      "bindingIdentifier" : "0436",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f94",
+      "name" : "CE_0436",
+      "ext" : null,
+      "label" : "CE_0436"
+    },
+    "position" : 9,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4446ff",
+    "itemNo" : "01554",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Allergen Group Code/Mnemonic/Description",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f88",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 10,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444700",
+    "itemNo" : "01555",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Onset Date",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "8",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443fab",
+      "name" : "DT",
+      "ext" : null,
+      "label" : "DT"
+    },
+    "position" : 11,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444701",
+    "itemNo" : "01556",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Onset Date Text",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "60",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f87",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 12,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444702",
+    "itemNo" : "01557",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Reported Date/Time",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "8",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f9c",
+      "name" : "TS",
+      "ext" : null,
+      "label" : "TS"
+    },
+    "position" : 13,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444703",
+    "itemNo" : "01558",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Reported By",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f82",
+      "name" : "XPN",
+      "ext" : null,
+      "label" : "XPN"
+    },
+    "position" : 14,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444704",
+    "itemNo" : "01559",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Relationship to Patient Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd44381a",
+      "bindingIdentifier" : "0063",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443ffe",
+      "name" : "CE_0063",
+      "ext" : null,
+      "label" : "CE_0063"
+    },
+    "position" : 15,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444705",
+    "itemNo" : "01560",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Alert Device Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd443b11",
+      "bindingIdentifier" : "0437",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f93",
+      "name" : "CE_0437",
+      "ext" : null,
+      "label" : "CE_0437"
+    },
+    "position" : 16,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444706",
+    "itemNo" : "01561",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Allergy Clinical Status Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd443b1b",
+      "bindingIdentifier" : "0438",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f96",
+      "name" : "CE_0438",
+      "ext" : null,
+      "label" : "CE_0438"
+    },
+    "position" : 17,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444707",
+    "itemNo" : "01562",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Statused by Person",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443fd0",
+      "name" : "XCN",
+      "ext" : null,
+      "label" : "XCN"
+    },
+    "position" : 18,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444708",
+    "itemNo" : "01563",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Statused by Organization",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f70",
+      "name" : "XON",
+      "ext" : null,
+      "label" : "XON"
+    },
+    "position" : 19,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444709",
+    "itemNo" : "01564",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Statused at Date/Time",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "8",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f9c",
+      "name" : "TS",
+      "ext" : null,
+      "label" : "TS"
+    },
+    "position" : 20,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd44470a",
+    "itemNo" : "01565",
+    "min" : 0,
+    "max" : "1"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd237d4c6ca828c293aa9",
+    "mappings" : [ ]
+  },
+  "name" : "IAM",
+  "description" : "Patient adverse reaction information - unique iden",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

@@ -1,0 +1,417 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc655074ec",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0256",
+  "name" : "0256",
+  "description" : "Time Delay Post Challenge",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074ed",
+    "value" : "10D",
+    "label" : "10 days",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074ee",
+    "value" : "10M",
+    "label" : "10 minutes post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074ef",
+    "value" : "12H",
+    "label" : "12 hours post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074f0",
+    "value" : "15M",
+    "label" : "15 minutes post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074f1",
+    "value" : "1H",
+    "label" : "1 hour post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074f2",
+    "value" : "1L",
+    "label" : "1 month (30 days) post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074f3",
+    "value" : "1M",
+    "label" : "1 minute post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074f4",
+    "value" : "1W",
+    "label" : "1 week",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074f5",
+    "value" : "2.5H",
+    "label" : "2 ½ hours post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074f6",
+    "value" : "20M",
+    "label" : "20 minutes post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074f7",
+    "value" : "24H",
+    "label" : "24 hours post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074f8",
+    "value" : "25M",
+    "label" : "25 minutes post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074f9",
+    "value" : "2D",
+    "label" : "2 days",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074fa",
+    "value" : "2H",
+    "label" : "2 hours post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074fb",
+    "value" : "2L",
+    "label" : "2 months (60 days) post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074fc",
+    "value" : "2M",
+    "label" : "2 minutes post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074fd",
+    "value" : "2W",
+    "label" : "2 weeks",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074fe",
+    "value" : "30M",
+    "label" : "30 minutes post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074ff",
+    "value" : "3D",
+    "label" : "3 days",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507500",
+    "value" : "3H",
+    "label" : "3 hours post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507501",
+    "value" : "3L",
+    "label" : "3 months (90 days) post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507502",
+    "value" : "3M",
+    "label" : "3 minutes post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507503",
+    "value" : "3W",
+    "label" : "3 weeks",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507504",
+    "value" : "4D",
+    "label" : "4 days",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507505",
+    "value" : "4H",
+    "label" : "4 hours post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507506",
+    "value" : "4M",
+    "label" : "4 minutes post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507507",
+    "value" : "4W",
+    "label" : "4 weeks",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507508",
+    "value" : "5D",
+    "label" : "5 days",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507509",
+    "value" : "5H",
+    "label" : "5  hours post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550750a",
+    "value" : "5M",
+    "label" : "5 minutes post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550750b",
+    "value" : "6D",
+    "label" : "6 days",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550750c",
+    "value" : "6H",
+    "label" : "6 hours post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550750d",
+    "value" : "6M",
+    "label" : "6 minutes post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550750e",
+    "value" : "7D",
+    "label" : "7 days",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550750f",
+    "value" : "7H",
+    "label" : "7 hours post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507510",
+    "value" : "7M",
+    "label" : "7 minutes post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507511",
+    "value" : "8H",
+    "label" : "8 hours post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507512",
+    "value" : "8H SHIFT",
+    "label" : "8 hours aligned on nursing shifts",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507513",
+    "value" : "8M",
+    "label" : "8 minutes post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507514",
+    "value" : "9M",
+    "label" : "9 minutes post challenge",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507515",
+    "value" : "BS",
+    "label" : "Baseline (time just before the challenge)",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507516",
+    "value" : "PEAK",
+    "label" : "The time post drug dose at which the highest drug level is reached (differs by drug)",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507517",
+    "value" : "RANDOM",
+    "label" : "Time from the challenge, or dose not specified. (random)",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507518",
+    "value" : "TROUGH",
+    "label" : "The time post drug dose at which the lowest drug level is reached (varies with drug)",
+    "codeSystem" : "HL70256",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

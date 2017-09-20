@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 352,
+  "id" : "569eac0dd4c623dc655079ba",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0289",
+  "name" : "County/Parish",
+  "description" : "County/Parish",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655079bb",
+    "value" : "�",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70289",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

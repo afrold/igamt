@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 329,
+  "id" : "569eac0fd4c623dc6550e9dd",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0106",
+  "name" : "Query/response format code",
+  "description" : "Query/response format code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.106",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e9de",
+    "value" : "D",
+    "label" : "Response is in display format",
+    "codeSystem" : "HL70106",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e9df",
+    "value" : "R",
+    "label" : "Response is in record-oriented format",
+    "codeSystem" : "HL70106",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e9e0",
+    "value" : "T",
+    "label" : "Response is in tabular format",
+    "codeSystem" : "HL70106",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

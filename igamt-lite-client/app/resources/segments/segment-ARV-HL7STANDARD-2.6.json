@@ -1,0 +1,172 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.6",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd22fd4c6ca828c28ca5f" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0ed4c623dc6550c028",
+  "label" : "ARV",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Set ID",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "4",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bba3",
+      "name" : "SI",
+      "ext" : null,
+      "label" : "SI"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c029",
+    "itemNo" : "02143",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Access Restriction Action Code",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "705",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b795",
+      "bindingIdentifier" : "0206",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb89",
+      "name" : "CNE",
+      "ext" : null,
+      "label" : "CNE"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c02a",
+    "itemNo" : "02144",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Access Restriction Value",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "705",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b15b",
+      "bindingIdentifier" : "0717",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c02b",
+    "itemNo" : "02145",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Access Restriction Reason",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "705",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b153",
+      "bindingIdentifier" : "0719",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c02c",
+    "itemNo" : "02146",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Special Access Restriction Instructions",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbaf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c02d",
+    "itemNo" : "02147",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Access Restriction Date Range",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "49",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb72",
+      "name" : "DR",
+      "ext" : null,
+      "label" : "DR"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c02e",
+    "itemNo" : "02148",
+    "min" : 0,
+    "max" : "1"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd22fd4c6ca828c28b905",
+    "mappings" : [ ]
+  },
+  "name" : "ARV",
+  "description" : "Access Restriction",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

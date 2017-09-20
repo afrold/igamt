@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 410,
+  "id" : "569eac0fd4c623dc6550d976",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0367",
+  "name" : "Alert level",
+  "description" : "Alert level",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.367",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d977",
+    "value" : "C",
+    "label" : "Critical",
+    "codeSystem" : "HL70367",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d978",
+    "value" : "N",
+    "label" : "Normal",
+    "codeSystem" : "HL70367",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d979",
+    "value" : "S",
+    "label" : "Serious",
+    "codeSystem" : "HL70367",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d97a",
+    "value" : "W",
+    "label" : "Warning",
+    "codeSystem" : "HL70367",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

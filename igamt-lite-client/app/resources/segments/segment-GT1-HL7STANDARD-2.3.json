@@ -1,0 +1,1355 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.3",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd23ad4c6ca828c296b7c" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab7d4c6e52cfd44790f",
+  "label" : "GT1",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Set ID - Guarantor",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "4",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447565",
+      "name" : "SI",
+      "ext" : null,
+      "label" : "SI"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447910",
+    "itemNo" : "00405",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Number",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "59",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447582",
+      "name" : "CX",
+      "ext" : null,
+      "label" : "CX"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447911",
+    "itemNo" : "00406",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Name",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "48",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447566",
+      "name" : "XPN",
+      "ext" : null,
+      "label" : "XPN"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447912",
+    "itemNo" : "00407",
+    "min" : 1,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Spouse Name",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "48",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447566",
+      "name" : "XPN",
+      "ext" : null,
+      "label" : "XPN"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447913",
+    "itemNo" : "00408",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Address",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "106",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447585",
+      "name" : "XAD",
+      "ext" : null,
+      "label" : "XAD"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447914",
+    "itemNo" : "00409",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Ph Num- Home",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "40",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd4475b1",
+      "name" : "XTN",
+      "ext" : null,
+      "label" : "XTN"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447915",
+    "itemNo" : "00410",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Ph Num-Business",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "40",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd4475b1",
+      "name" : "XTN",
+      "ext" : null,
+      "label" : "XTN"
+    },
+    "position" : 7,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447916",
+    "itemNo" : "00411",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Date/Time of Birth",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "26",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447587",
+      "name" : "TS",
+      "ext" : null,
+      "label" : "TS"
+    },
+    "position" : 8,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447917",
+    "itemNo" : "00412",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Sex",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd446f39",
+      "bindingIdentifier" : "0001",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44754c",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 9,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447918",
+    "itemNo" : "00413",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Type",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd44732f",
+      "bindingIdentifier" : "0068",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44754c",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 10,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447919",
+    "itemNo" : "00414",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Relationship",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd4471f7",
+      "bindingIdentifier" : "0063",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44754c",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 11,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44791a",
+    "itemNo" : "00415",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor SSN",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "11",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44756a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 12,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44791b",
+    "itemNo" : "00416",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Date - Begin",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "8",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44758f",
+      "name" : "DT",
+      "ext" : null,
+      "label" : "DT"
+    },
+    "position" : 13,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44791c",
+    "itemNo" : "00417",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Date - End",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "8",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44758f",
+      "name" : "DT",
+      "ext" : null,
+      "label" : "DT"
+    },
+    "position" : 14,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44791d",
+    "itemNo" : "00418",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Priority",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd4475a6",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 15,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44791e",
+    "itemNo" : "00419",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Employer Name",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "130",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447566",
+      "name" : "XPN",
+      "ext" : null,
+      "label" : "XPN"
+    },
+    "position" : 16,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44791f",
+    "itemNo" : "00420",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Employer Address",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "106",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447585",
+      "name" : "XAD",
+      "ext" : null,
+      "label" : "XAD"
+    },
+    "position" : 17,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447920",
+    "itemNo" : "00421",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Employ Phone Number",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "40",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd4475b1",
+      "name" : "XTN",
+      "ext" : null,
+      "label" : "XTN"
+    },
+    "position" : 18,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447921",
+    "itemNo" : "00422",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Employee ID Number",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447582",
+      "name" : "CX",
+      "ext" : null,
+      "label" : "CX"
+    },
+    "position" : 19,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447922",
+    "itemNo" : "00423",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Employment Status",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd447332",
+      "bindingIdentifier" : "0066",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44754c",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 20,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447923",
+    "itemNo" : "00424",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Organization",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "130",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44755b",
+      "name" : "XON",
+      "ext" : null,
+      "label" : "XON"
+    },
+    "position" : 21,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447924",
+    "itemNo" : "00425",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Billing Hold Flag",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd446fbc",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447545",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 22,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447925",
+    "itemNo" : "00773",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Credit Rating Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "80",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44756b",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 23,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447926",
+    "itemNo" : "00774",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Death Date And Time",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "26",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447587",
+      "name" : "TS",
+      "ext" : null,
+      "label" : "TS"
+    },
+    "position" : 24,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447927",
+    "itemNo" : "00775",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Death Flag",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd446fbc",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447545",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 25,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447928",
+    "itemNo" : "00776",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Charge Adjustment Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "80",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd447441",
+      "bindingIdentifier" : "0218",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44755c",
+      "name" : "CE_0218",
+      "ext" : null,
+      "label" : "CE_0218"
+    },
+    "position" : 26,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447929",
+    "itemNo" : "00777",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Household Annual Income",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "10",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44757d",
+      "name" : "CP",
+      "ext" : null,
+      "label" : "CP"
+    },
+    "position" : 27,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44792a",
+    "itemNo" : "00778",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Household Size",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "3",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd4475a6",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 28,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44792b",
+    "itemNo" : "00779",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Employer ID Number",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447582",
+      "name" : "CX",
+      "ext" : null,
+      "label" : "CX"
+    },
+    "position" : 29,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44792c",
+    "itemNo" : "00780",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Marital Status Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44754c",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 30,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44792d",
+    "itemNo" : "00781",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Hire Effective Date",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "8",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44758f",
+      "name" : "DT",
+      "ext" : null,
+      "label" : "DT"
+    },
+    "position" : 31,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44792e",
+    "itemNo" : "00782",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Employment Stop Date",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "8",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44758f",
+      "name" : "DT",
+      "ext" : null,
+      "label" : "DT"
+    },
+    "position" : 32,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44792f",
+    "itemNo" : "00783",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Living Dependency",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd447484",
+      "bindingIdentifier" : "0223",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44754c",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 33,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447930",
+    "itemNo" : "00755",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Ambulatory Status",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd446f53",
+      "bindingIdentifier" : "0009",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44754c",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 34,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447931",
+    "itemNo" : "00145",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Citizenship",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "4",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd447189",
+      "bindingIdentifier" : "0171",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44754c",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 35,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447932",
+    "itemNo" : "00129",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Primary Language",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "60",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd447164",
+      "bindingIdentifier" : "0296",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44753f",
+      "name" : "CE_0296",
+      "ext" : null,
+      "label" : "CE_0296"
+    },
+    "position" : 36,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447933",
+    "itemNo" : "00118",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Living Arrangement",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd44748a",
+      "bindingIdentifier" : "0220",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44754c",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 37,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447934",
+    "itemNo" : "00742",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Publicity Indicator",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd447411",
+      "bindingIdentifier" : "0215",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447555",
+      "name" : "CE_0215",
+      "ext" : null,
+      "label" : "CE_0215"
+    },
+    "position" : 38,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447935",
+    "itemNo" : "00743",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Protection Indicator",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd446fbc",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447545",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 39,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447936",
+    "itemNo" : "00744",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Student Indicator",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd4474f8",
+      "bindingIdentifier" : "0231",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44754c",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 40,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447937",
+    "itemNo" : "00745",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Religion",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "3",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd446e0b",
+      "bindingIdentifier" : "0006",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44754c",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 41,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447938",
+    "itemNo" : "00120",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Mother’s Maiden Name",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "48",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447566",
+      "name" : "XPN",
+      "ext" : null,
+      "label" : "XPN"
+    },
+    "position" : 42,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447939",
+    "itemNo" : "00746",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Nationality Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "80",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd44742d",
+      "bindingIdentifier" : "0212",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447554",
+      "name" : "CE_0212",
+      "ext" : null,
+      "label" : "CE_0212"
+    },
+    "position" : 43,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44793a",
+    "itemNo" : "00739",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Ethnic Group",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd447330",
+      "bindingIdentifier" : "0189",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44754c",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 44,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44793b",
+    "itemNo" : "00125",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Contact Person's Name",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "48",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447566",
+      "name" : "XPN",
+      "ext" : null,
+      "label" : "XPN"
+    },
+    "position" : 45,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44793c",
+    "itemNo" : "00748",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Contact Person’s Telephone Number",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "40",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd4475b1",
+      "name" : "XTN",
+      "ext" : null,
+      "label" : "XTN"
+    },
+    "position" : 46,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44793d",
+    "itemNo" : "00749",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Contact Reason",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd447480",
+      "bindingIdentifier" : "0222",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447552",
+      "name" : "CE_0222",
+      "ext" : null,
+      "label" : "CE_0222"
+    },
+    "position" : 47,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44793e",
+    "itemNo" : "00747",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Contact Relationship Code",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd4471f7",
+      "bindingIdentifier" : "0063",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44754c",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 48,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44793f",
+    "itemNo" : "00784",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Job Title",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44756a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 49,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447940",
+    "itemNo" : "00785",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Job Code/Class",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44754f",
+      "name" : "JCC",
+      "ext" : null,
+      "label" : "JCC"
+    },
+    "position" : 50,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447941",
+    "itemNo" : "00786",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Employer's Organization Name",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "130",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44755b",
+      "name" : "XON",
+      "ext" : null,
+      "label" : "XON"
+    },
+    "position" : 51,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447942",
+    "itemNo" : "01299",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Handicap",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd447385",
+      "bindingIdentifier" : "0310",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44754c",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 52,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447943",
+    "itemNo" : "00753",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Job Status",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "2",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd447386",
+      "bindingIdentifier" : "0311",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44754c",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 53,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447944",
+    "itemNo" : "00752",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Financial Class",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "50",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd4471de",
+      "bindingIdentifier" : "0064",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd4475a4",
+      "name" : "FC",
+      "ext" : null,
+      "label" : "FC"
+    },
+    "position" : 54,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447945",
+    "itemNo" : "01231",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Guarantor Race",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd446e46",
+      "bindingIdentifier" : "0005",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44754c",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 55,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd447946",
+    "itemNo" : "01291",
+    "min" : 0,
+    "max" : "1"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd23ad4c6ca828c2969e8",
+    "mappings" : [ ]
+  },
+  "name" : "GT1",
+  "description" : "Guarantor",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

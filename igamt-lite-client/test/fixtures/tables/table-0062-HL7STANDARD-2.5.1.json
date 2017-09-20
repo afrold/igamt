@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 24,
+  "id" : "569eac0fd4c623dc6550e1e9",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0062",
+  "name" : "Event reason",
+  "description" : "Event reason",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.62",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e1ea",
+    "value" : "01",
+    "label" : "Patient request",
+    "codeSystem" : "HL70062",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e1eb",
+    "value" : "02",
+    "label" : "Physician/health practitioner order",
+    "codeSystem" : "HL70062",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e1ec",
+    "value" : "03",
+    "label" : "Census management",
+    "codeSystem" : "HL70062",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e1ed",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70062",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e1ee",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70062",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

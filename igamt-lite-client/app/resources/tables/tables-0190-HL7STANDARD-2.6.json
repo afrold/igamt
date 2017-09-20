@@ -1,0 +1,174 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b027",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0190",
+  "name" : "0190",
+  "description" : "Address type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.190",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b028",
+    "value" : "B",
+    "label" : "Firm/Business",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b029",
+    "value" : "BA",
+    "label" : "Bad address",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b02a",
+    "value" : "BDL",
+    "label" : "Birth delivery location  (address where birth occurred)",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b02b",
+    "value" : "BI",
+    "label" : "Billing Address",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b02c",
+    "value" : "BR",
+    "label" : "Residence at birth (home address at time of birth)",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b02d",
+    "value" : "C",
+    "label" : "Current Or Temporary",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b02e",
+    "value" : "F",
+    "label" : "Country Of Origin",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b02f",
+    "value" : "H",
+    "label" : "Home",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b030",
+    "value" : "L",
+    "label" : "Legal Address",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b031",
+    "value" : "M",
+    "label" : "Mailing",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b032",
+    "value" : "N",
+    "label" : "Birth (nee)  (birth address, not otherwise specified)",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b033",
+    "value" : "O",
+    "label" : "Office/Business",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b034",
+    "value" : "P",
+    "label" : "Permanent",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b035",
+    "value" : "RH",
+    "label" : "Registry home. Refers to the information system, typically managed by a public health agency, that stores patient information such as immunization histories or cancer data, regardless of where the patient obtains services.",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b036",
+    "value" : "S",
+    "label" : "Service Location",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b037",
+    "value" : "SH",
+    "label" : "Shipping Address",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b038",
+    "value" : "V",
+    "label" : "Vacation",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

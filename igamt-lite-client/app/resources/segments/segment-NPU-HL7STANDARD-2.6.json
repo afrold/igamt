@@ -1,0 +1,74 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.6",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd22fd4c6ca828c28ca5f" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0ed4c623dc6550c59d",
+  "label" : "NPU",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Bed Location",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "80",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbc4",
+      "name" : "PL",
+      "ext" : null,
+      "label" : "PL"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c59e",
+    "itemNo" : "00209",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Bed Status",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "0",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b9c2",
+      "bindingIdentifier" : "0116",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550c59f",
+    "itemNo" : "00170",
+    "min" : 0,
+    "max" : "1"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd22fd4c6ca828c28b36c",
+    "mappings" : [ ]
+  },
+  "name" : "NPU",
+  "description" : "Bed Status Update",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

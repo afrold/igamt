@@ -1,0 +1,136 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.3",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd23ad4c6ca828c296b7d" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab7d4c6e52cfd447569",
+  "label" : "CD",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ {
+    "type" : "component",
+    "name" : "channel identifier",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447561",
+      "name" : "CM_WVI",
+      "ext" : null,
+      "label" : "CM_WVI"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd4476ab"
+  }, {
+    "type" : "component",
+    "name" : "electrode names",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447580",
+      "name" : "CM_CD_ELECTRODE",
+      "ext" : null,
+      "label" : "CM_CD_ELECTRODE"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd4476ac"
+  }, {
+    "type" : "component",
+    "name" : "channel sensitivity/units",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447551",
+      "name" : "CM_CSU",
+      "ext" : null,
+      "label" : "CM_CSU"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd4476ad"
+  }, {
+    "type" : "component",
+    "name" : "calibration parameters",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447549",
+      "name" : "CM_CCP",
+      "ext" : null,
+      "label" : "CM_CCP"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd4476ae"
+  }, {
+    "type" : "component",
+    "name" : "sampling frequency",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd4475a6",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd4476af"
+  }, {
+    "type" : "component",
+    "name" : "minimum/maximum data values",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "-1",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd4475ba",
+      "name" : "CM_MDV",
+      "ext" : null,
+      "label" : "CM_MDV"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd4476b0"
+  } ],
+  "name" : "CD",
+  "description" : "Channel Definition (2.8.2)",
+  "comment" : "",
+  "usageNote" : ""
+}

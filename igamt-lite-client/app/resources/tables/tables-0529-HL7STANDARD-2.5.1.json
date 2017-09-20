@@ -1,0 +1,75 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550e474",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0529",
+  "name" : "0529",
+  "description" : "Precision",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.529",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e475",
+    "value" : "D",
+    "label" : "day",
+    "codeSystem" : "HL70529",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e476",
+    "value" : "H",
+    "label" : "hour",
+    "codeSystem" : "HL70529",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e477",
+    "value" : "L",
+    "label" : "month",
+    "codeSystem" : "HL70529",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e478",
+    "value" : "M",
+    "label" : "minute",
+    "codeSystem" : "HL70529",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e479",
+    "value" : "S",
+    "label" : "second",
+    "codeSystem" : "HL70529",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e47a",
+    "value" : "Y",
+    "label" : "year",
+    "codeSystem" : "HL70529",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

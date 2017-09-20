@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 308,
+  "id" : "569eac0ed4c623dc6550b153",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0719",
+  "name" : "Access Restriction Reason Code",
+  "description" : "Access Restriction Reason Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.719",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b154",
+    "value" : "DIA",
+    "label" : "Diagnosis-related",
+    "codeSystem" : "HL70719",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b155",
+    "value" : "EMP",
+    "label" : "Employee of this organization",
+    "codeSystem" : "HL70719",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b156",
+    "value" : "ORG",
+    "label" : "Organizational policy or requirement",
+    "codeSystem" : "HL70719",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b157",
+    "value" : "PAT",
+    "label" : "Patient Request",
+    "codeSystem" : "HL70719",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b158",
+    "value" : "PHY",
+    "label" : "Physician Request",
+    "codeSystem" : "HL70719",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b159",
+    "value" : "REG",
+    "label" : "Regulatory requirement",
+    "codeSystem" : "HL70719",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b15a",
+    "value" : "VIP",
+    "label" : "Very important person or celebrity",
+    "codeSystem" : "HL70719",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

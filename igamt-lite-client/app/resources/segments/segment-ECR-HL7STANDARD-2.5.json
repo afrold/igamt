@@ -1,0 +1,96 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.5",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd234d4c6ca828c292647" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab6d4c6e52cfd441c4c",
+  "label" : "ECR",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Command Response",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd4408d1",
+      "bindingIdentifier" : "0387",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416f2",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd441c4d",
+    "itemNo" : "01395",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Date/Time Completed",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "26",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd441708",
+      "name" : "TS",
+      "ext" : null,
+      "label" : "TS"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd441c4e",
+    "itemNo" : "01396",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Command Response Parameters",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416b0",
+      "name" : "TX",
+      "ext" : null,
+      "label" : "TX"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd441c4f",
+    "itemNo" : "01397",
+    "min" : 0,
+    "max" : "*"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd234d4c6ca828c291831",
+    "mappings" : [ ]
+  },
+  "name" : "ECR",
+  "description" : "Equipment Command Response",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

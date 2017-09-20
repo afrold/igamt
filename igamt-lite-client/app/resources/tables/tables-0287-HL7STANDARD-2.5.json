@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd440b70",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0287",
+  "name" : "0287",
+  "description" : "Problem/goal action code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.287",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b71",
+    "value" : "AD",
+    "label" : "ADD",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b72",
+    "value" : "CO",
+    "label" : "CORRECT",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b73",
+    "value" : "DE",
+    "label" : "DELETE",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b74",
+    "value" : "LI",
+    "label" : "LINK",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b75",
+    "value" : "UC",
+    "label" : "UNCHANGED *",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b76",
+    "value" : "UN",
+    "label" : "UNLINK",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b77",
+    "value" : "UP",
+    "label" : "UPDATE",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

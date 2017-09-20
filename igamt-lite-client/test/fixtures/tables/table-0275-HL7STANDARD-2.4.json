@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 123,
+  "id" : "565f3ab6d4c6e52cfd443643",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0275",
+  "name" : "Document storage status",
+  "description" : "Document storage status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443644",
+    "value" : "AA",
+    "label" : "Active and archived",
+    "codeSystem" : "HL70275",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443645",
+    "value" : "AC",
+    "label" : "Active",
+    "codeSystem" : "HL70275",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443646",
+    "value" : "AR",
+    "label" : "Archived (not active)",
+    "codeSystem" : "HL70275",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443647",
+    "value" : "PU",
+    "label" : "Purged",
+    "codeSystem" : "HL70275",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

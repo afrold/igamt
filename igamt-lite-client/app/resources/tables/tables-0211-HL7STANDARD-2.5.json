@@ -1,0 +1,210 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd4413aa",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0211",
+  "name" : "0211",
+  "description" : "Alternate character sets",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.211",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413ab",
+    "value" : "8859/1",
+    "label" : "The printable characters from the ISO 8859/1 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413ac",
+    "value" : "8859/2",
+    "label" : "The printable characters from the ISO 8859/2 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413ad",
+    "value" : "8859/3",
+    "label" : "The printable characters from the ISO 8859/3 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413ae",
+    "value" : "8859/4",
+    "label" : "The printable characters from the ISO 8859/4 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413af",
+    "value" : "8859/5",
+    "label" : "The printable characters from the ISO 8859/5 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413b0",
+    "value" : "8859/6",
+    "label" : "The printable characters from the ISO 8859/6 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413b1",
+    "value" : "8859/7",
+    "label" : "The printable characters from the ISO 8859/7 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413b2",
+    "value" : "8859/8",
+    "label" : "The printable characters from the ISO 8859/8 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413b3",
+    "value" : "8859/9",
+    "label" : "The printable characters from the ISO 8859/9 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413b4",
+    "value" : "ASCII",
+    "label" : "The printable 7-bit ASCII character set.",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413b5",
+    "value" : "BIG-5",
+    "label" : "Code for Taiwanese Character Set (BIG-5)",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413b6",
+    "value" : "CNS 11643-1992",
+    "label" : "Code for Taiwanese Character Set (CNS 11643-1992)",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413b7",
+    "value" : "GB 18030-2000",
+    "label" : "Code for Chinese Character Set (GB 18030-2000)",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413b8",
+    "value" : "ISO IR14",
+    "label" : "Code for Information Exchange (one byte)(JIS X 0201-1976).",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413b9",
+    "value" : "ISO IR159",
+    "label" : "Code of the supplementary Japanese Graphic Character set for information interchange (JIS X 0212-1990).",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413ba",
+    "value" : "ISO IR87",
+    "label" : "Code for the Japanese Graphic Character set for information interchange (JIS X 0208-1990),",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413bb",
+    "value" : "KS X 1001",
+    "label" : "Code for Korean Character Set (KS X 1001)",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413bc",
+    "value" : "UNICODE",
+    "label" : "The world wide character standard from ISO/IEC 10646-1-1993",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413bd",
+    "value" : "UNICODE UTF-16",
+    "label" : "UCS Transformation Format, 16-bit form",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413be",
+    "value" : "UNICODE UTF-32",
+    "label" : "UCS Transformation Format, 32-bit form",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413bf",
+    "value" : "UNICODE UTF-8",
+    "label" : "UCS Transformation Format, 8-bit form",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

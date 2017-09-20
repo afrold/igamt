@@ -1,0 +1,156 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd447eea",
+  "hl7Version" : "2.2",
+  "libIds" : [ "573dd23bd4c6ca828c2970f5" ],
+  "bindingIdentifier" : "0165",
+  "name" : "0165",
+  "description" : "ADMINISTRATION METHOD",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eeb",
+    "value" : "CH",
+    "label" : "Kauen",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eec",
+    "value" : "DI",
+    "label" : "Auflösen",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eed",
+    "value" : "DU",
+    "label" : "Zerstäuben",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eee",
+    "value" : "IF",
+    "label" : "Infiltrieren",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eef",
+    "value" : "IR",
+    "label" : "Spülen",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ef0",
+    "value" : "IS",
+    "label" : "Einfügen / einsetzen",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ef1",
+    "value" : "IVP",
+    "label" : "Intravenöse Spritze",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ef2",
+    "value" : "IVPB",
+    "label" : "IV-Kurzinfusion",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ef3",
+    "value" : "NB",
+    "label" : "Vernebeln",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ef4",
+    "value" : "PF",
+    "label" : "Perfundieren",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ef5",
+    "value" : "PT",
+    "label" : "Schmerz",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ef6",
+    "value" : "SH",
+    "label" : "Shampoo",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ef7",
+    "value" : "SO",
+    "label" : "Aufweichen",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ef8",
+    "value" : "WA",
+    "label" : "Waschen",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ef9",
+    "value" : "WI",
+    "label" : "Wischen",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

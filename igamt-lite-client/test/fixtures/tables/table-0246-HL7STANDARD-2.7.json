@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 427,
+  "id" : "569eac0dd4c623dc655070b4",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0246",
+  "name" : "Product Available for Inspection",
+  "description" : "Product Available for Inspection",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655070b5",
+    "value" : "�",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70246",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,74 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.4",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd237d4c6ca828c294b3b" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab6d4c6e52cfd4447c1",
+  "label" : "RDF",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Number of Columns per Row",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "3",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd444035",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4447c2",
+    "itemNo" : "00701",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Column Description",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "40",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd443bbe",
+      "bindingIdentifier" : "0440",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f6f",
+      "name" : "RCD",
+      "ext" : null,
+      "label" : "RCD"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd4447c3",
+    "itemNo" : "00702",
+    "min" : 1,
+    "max" : "*"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd237d4c6ca828c293dbf",
+    "mappings" : [ ]
+  },
+  "name" : "RDF",
+  "description" : "Table Row Definition",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

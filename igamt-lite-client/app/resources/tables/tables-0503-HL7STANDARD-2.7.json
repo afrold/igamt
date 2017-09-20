@@ -1,0 +1,48 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507caf",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0503",
+  "name" : "0503",
+  "description" : "Sequence/Results Flag",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cb0",
+    "value" : "C",
+    "label" : "Cyclical",
+    "codeSystem" : "HL70503",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cb1",
+    "value" : "R",
+    "label" : "Reserved for future use",
+    "codeSystem" : "HL70503",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cb2",
+    "value" : "S",
+    "label" : "Sequential",
+    "codeSystem" : "HL70503",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

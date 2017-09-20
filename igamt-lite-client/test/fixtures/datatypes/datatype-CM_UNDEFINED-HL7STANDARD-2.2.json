@@ -1,0 +1,22 @@
+{
+  "type" : "datatype",
+  "sectionPosition" : 34,
+  "hl7Version" : "2.2",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "participants" : [ ],
+  "libIds" : [ "5723765eda0805ce1eabdf8d" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab7d4c6e52cfd4480f0",
+  "label" : "CM_UNDEFINED",
+  "ext" : null,
+  "components" : [ ],
+  "name" : "CM_UNDEFINED",
+  "description" : "undefined CM data type",
+  "comment" : "",
+  "usageNote" : "",
+  "status" : "PUBLISHED"
+}

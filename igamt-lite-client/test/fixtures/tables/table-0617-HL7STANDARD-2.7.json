@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 455,
+  "id" : "569eac0dd4c623dc65507c55",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0617",
+  "name" : "Address Usage",
+  "description" : "Address Usage",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c56",
+    "value" : "C",
+    "label" : "Classification",
+    "codeSystem" : "HL70617",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c57",
+    "value" : "M",
+    "label" : "Mailing",
+    "codeSystem" : "HL70617",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c58",
+    "value" : "V",
+    "label" : "Visit",
+    "codeSystem" : "HL70617",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

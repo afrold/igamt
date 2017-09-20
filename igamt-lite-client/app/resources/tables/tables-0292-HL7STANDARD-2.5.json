@@ -1,0 +1,1020 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd440aa5",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0292",
+  "name" : "0292",
+  "description" : "Vaccines administered (code = CVX)(parenteral, unless oral is noted)",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.292",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aa6",
+    "value" : "01",
+    "label" : "DTP",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aa7",
+    "value" : "02",
+    "label" : "OPV",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aa8",
+    "value" : "03",
+    "label" : "MMR",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aa9",
+    "value" : "04",
+    "label" : "M/R",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aaa",
+    "value" : "05",
+    "label" : "measles",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aab",
+    "value" : "06",
+    "label" : "rubella",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aac",
+    "value" : "07",
+    "label" : "mumps",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aad",
+    "value" : "08",
+    "label" : "Hep B, adolescent or pediatric",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aae",
+    "value" : "09",
+    "label" : "Td (adult)",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aaf",
+    "value" : "10",
+    "label" : "IPV",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ab0",
+    "value" : "100",
+    "label" : "pneumococcal conjugate",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ab1",
+    "value" : "101",
+    "label" : "typhoid, ViCPs",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ab2",
+    "value" : "102",
+    "label" : "DTP-Hib-Hep B",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ab3",
+    "value" : "103",
+    "label" : "meningococcal C conjugate",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ab4",
+    "value" : "104",
+    "label" : "Hep A-Hep B",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ab5",
+    "value" : "105",
+    "label" : "smallpox, diluted",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ab6",
+    "value" : "106",
+    "label" : "DTaP, 5 pertussis antigens",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ab7",
+    "value" : "107",
+    "label" : "DTaP, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ab8",
+    "value" : "108",
+    "label" : "meningococcal, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ab9",
+    "value" : "109",
+    "label" : "pneumococcal, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aba",
+    "value" : "11",
+    "label" : "pertussis",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440abb",
+    "value" : "12",
+    "label" : "diphtheria antitoxin",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440abc",
+    "value" : "13",
+    "label" : "TIG",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440abd",
+    "value" : "14",
+    "label" : "IG, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440abe",
+    "value" : "15",
+    "label" : "influenza, split (incl. purified surface antigen)",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440abf",
+    "value" : "16",
+    "label" : "influenza, whole",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ac0",
+    "value" : "17",
+    "label" : "Hib, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ac1",
+    "value" : "18",
+    "label" : "rabies, intramuscular injection",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ac2",
+    "value" : "19",
+    "label" : "BCG",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ac3",
+    "value" : "20",
+    "label" : "DTaP",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ac4",
+    "value" : "21",
+    "label" : "Varicella",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ac5",
+    "value" : "22",
+    "label" : "DTP-Hib",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ac6",
+    "value" : "23",
+    "label" : "plague",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ac7",
+    "value" : "24",
+    "label" : "anthrax",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ac8",
+    "value" : "25",
+    "label" : "typhoid, oral",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ac9",
+    "value" : "26",
+    "label" : "cholera",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aca",
+    "value" : "27",
+    "label" : "botulinum antitoxin",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440acb",
+    "value" : "28",
+    "label" : "DT (pediatric)",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440acc",
+    "value" : "29",
+    "label" : "CMVIG",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440acd",
+    "value" : "30",
+    "label" : "HBIG",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ace",
+    "value" : "31",
+    "label" : "Hep A, pediatric, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440acf",
+    "value" : "32",
+    "label" : "meningococcal",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ad0",
+    "value" : "33",
+    "label" : "pneumococcal",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ad1",
+    "value" : "34",
+    "label" : "RIG",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ad2",
+    "value" : "35",
+    "label" : "tetanus toxoid",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ad3",
+    "value" : "36",
+    "label" : "VZIG",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ad4",
+    "value" : "37",
+    "label" : "yellow fever",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ad5",
+    "value" : "38",
+    "label" : "rubella/mumps",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ad6",
+    "value" : "39",
+    "label" : "Japanese encephalitis",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ad7",
+    "value" : "40",
+    "label" : "rabies, intradermal injection",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ad8",
+    "value" : "41",
+    "label" : "typhoid, parenteral",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ad9",
+    "value" : "42",
+    "label" : "Hep B, adolescent/high risk infant2",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ada",
+    "value" : "43",
+    "label" : "Hep B, adult4",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440adb",
+    "value" : "44",
+    "label" : "Hep B, dialysis",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440adc",
+    "value" : "45",
+    "label" : "Hep B, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440add",
+    "value" : "46",
+    "label" : "Hib (PRP-D)",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ade",
+    "value" : "47",
+    "label" : "Hib (HbOC)",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440adf",
+    "value" : "48",
+    "label" : "Hib (PRP-T)",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ae0",
+    "value" : "49",
+    "label" : "Hib (PRP-OMP)",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ae1",
+    "value" : "50",
+    "label" : "DTaP-Hib ",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ae2",
+    "value" : "51",
+    "label" : "Hib-Hep B",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ae3",
+    "value" : "52",
+    "label" : "Hep A, adult",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ae4",
+    "value" : "53",
+    "label" : "typhoid, parenteral, AKD (U.S. military)",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ae5",
+    "value" : "54",
+    "label" : "adenovirus, type 4",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ae6",
+    "value" : "55",
+    "label" : "adenovirus, type 7",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ae7",
+    "value" : "56",
+    "label" : "dengue fever",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ae8",
+    "value" : "57",
+    "label" : "hantavirus",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ae9",
+    "value" : "58",
+    "label" : "Hep C",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aea",
+    "value" : "59",
+    "label" : "Hep E",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aeb",
+    "value" : "60",
+    "label" : "herpes simplex 2",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aec",
+    "value" : "61",
+    "label" : "HIV",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aed",
+    "value" : "62",
+    "label" : "HPV",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aee",
+    "value" : "63",
+    "label" : "Junin virus",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aef",
+    "value" : "64",
+    "label" : "leishmaniasis",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440af0",
+    "value" : "65",
+    "label" : "leprosy",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440af1",
+    "value" : "66",
+    "label" : "Lyme disease",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440af2",
+    "value" : "67",
+    "label" : "malaria",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440af3",
+    "value" : "68",
+    "label" : "melanoma",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440af4",
+    "value" : "69",
+    "label" : "parainfluenza-3",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440af5",
+    "value" : "70",
+    "label" : "Q fever",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440af6",
+    "value" : "71",
+    "label" : "RSV-IGIV ",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440af7",
+    "value" : "72",
+    "label" : "rheumatic fever",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440af8",
+    "value" : "73",
+    "label" : "Rift Valley fever",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440af9",
+    "value" : "74",
+    "label" : "rotavirus",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440afa",
+    "value" : "75",
+    "label" : "smallpox",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440afb",
+    "value" : "76",
+    "label" : "Staphylococcus bacterio lysate",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440afc",
+    "value" : "77",
+    "label" : "tick-borne encephalitis",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440afd",
+    "value" : "78",
+    "label" : "tularemia vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440afe",
+    "value" : "79",
+    "label" : "vaccinia immune globulin",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440aff",
+    "value" : "80",
+    "label" : "VEE, live",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b00",
+    "value" : "81",
+    "label" : "VEE, inactivated",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b01",
+    "value" : "82",
+    "label" : "adenovirus, NOS1",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b02",
+    "value" : "83",
+    "label" : "Hep A, ped/adol, 2 dose",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b03",
+    "value" : "84",
+    "label" : "Hep A, ped/adol, 3 dose",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b04",
+    "value" : "85",
+    "label" : "Hep A, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b05",
+    "value" : "86",
+    "label" : "IG",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b06",
+    "value" : "87",
+    "label" : "IGIV",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b07",
+    "value" : "88",
+    "label" : "influenza, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b08",
+    "value" : "89",
+    "label" : "polio, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b09",
+    "value" : "90",
+    "label" : "rabies, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b0a",
+    "value" : "91",
+    "label" : "typhoid, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b0b",
+    "value" : "92",
+    "label" : "VEE, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b0c",
+    "value" : "93",
+    "label" : "RSV-MAb",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b0d",
+    "value" : "94",
+    "label" : "MMRV",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b0e",
+    "value" : "95",
+    "label" : "TST-OT tine test",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b0f",
+    "value" : "96",
+    "label" : "TST-PPD intradermal",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b10",
+    "value" : "97",
+    "label" : "TST-PPD tine test",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b11",
+    "value" : "98",
+    "label" : "TST, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b12",
+    "value" : "99",
+    "label" : "RESERVED - do not use",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b13",
+    "value" : "998",
+    "label" : "no vaccine administered",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b14",
+    "value" : "999",
+    "label" : "Unknown",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

@@ -1,0 +1,39 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd440890",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0393",
+  "name" : "0393",
+  "description" : "Match algorithms",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.393",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440891",
+    "value" : "LINKSOFT_2.01",
+    "label" : "Proprietary algorithm for LinkSoft v2.01",
+    "codeSystem" : "HL70393",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440892",
+    "value" : "MATCHWARE_1.2",
+    "label" : "Proprietary algorithm for MatchWare v1.2",
+    "codeSystem" : "HL70393",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

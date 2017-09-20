@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 420,
+  "id" : "569eac0dd4c623dc655078e0",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0397",
+  "name" : "Sequencing",
+  "description" : "Sequencing",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655078e1",
+    "value" : "A",
+    "label" : "Ascending",
+    "codeSystem" : "HL70397",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655078e2",
+    "value" : "AN",
+    "label" : "Ascending, case insensitive",
+    "codeSystem" : "HL70397",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655078e3",
+    "value" : "D",
+    "label" : "Descending",
+    "codeSystem" : "HL70397",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655078e4",
+    "value" : "DN",
+    "label" : "Descending, case insensitive",
+    "codeSystem" : "HL70397",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655078e5",
+    "value" : "N",
+    "label" : "None",
+    "codeSystem" : "HL70397",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

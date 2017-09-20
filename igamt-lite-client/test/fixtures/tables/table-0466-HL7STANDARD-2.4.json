@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 104,
+  "id" : "565f3ab6d4c6e52cfd443d78",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0466",
+  "name" : "Ambulatory payment classification code",
+  "description" : "Ambulatory payment classification code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d79",
+    "value" : "...",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70466",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d7a",
+    "value" : "031",
+    "label" : "Dental procedures",
+    "codeSystem" : "HL70466",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d7b",
+    "value" : "163",
+    "label" : "Excision/biopsy",
+    "codeSystem" : "HL70466",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d7c",
+    "value" : "181",
+    "label" : "Level 1 skin repair.",
+    "codeSystem" : "HL70466",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

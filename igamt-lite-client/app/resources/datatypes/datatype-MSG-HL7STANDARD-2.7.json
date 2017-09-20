@@ -1,0 +1,94 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.7",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd232d4c6ca828c28fc9d" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0dd4c623dc65508697",
+  "label" : "MSG",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ {
+    "type" : "component",
+    "name" : "Message Code",
+    "usage" : "R",
+    "minLength" : 3,
+    "maxLength" : "3",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc65507a52",
+      "bindingIdentifier" : "0076",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087f2"
+  }, {
+    "type" : "component",
+    "name" : "Trigger Event",
+    "usage" : "R",
+    "minLength" : 3,
+    "maxLength" : "3",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc6550714b",
+      "bindingIdentifier" : "0003",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087f3"
+  }, {
+    "type" : "component",
+    "name" : "Message Structure",
+    "usage" : "R",
+    "minLength" : 3,
+    "maxLength" : "7",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0dd4c623dc655084ff",
+      "bindingIdentifier" : "0354",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0dd4c623dc655087f4"
+  } ],
+  "name" : "MSG",
+  "description" : "Message Type",
+  "comment" : "",
+  "usageNote" : ""
+}

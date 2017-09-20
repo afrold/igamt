@@ -1,0 +1,129 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd445f07",
+  "hl7Version" : "2.3.1",
+  "libIds" : [ "573dd239d4c6ca828c295f91" ],
+  "bindingIdentifier" : "0324",
+  "name" : "0324",
+  "description" : "Location characteristic ID",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f08",
+    "value" : "GEN",
+    "label" : "Gender of patient(s)",
+    "codeSystem" : "HL70324",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f09",
+    "value" : "IMP",
+    "label" : "Implant: can be used for radiation implant patients",
+    "codeSystem" : "HL70324",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f0a",
+    "value" : "INF",
+    "label" : "Infectious disease: this location can be used for isolation",
+    "codeSystem" : "HL70324",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f0b",
+    "value" : "LCR",
+    "label" : "Level of care",
+    "codeSystem" : "HL70324",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f0c",
+    "value" : "LIC",
+    "label" : "Licensed",
+    "codeSystem" : "HL70324",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f0d",
+    "value" : "OVR",
+    "label" : "Overflow",
+    "codeSystem" : "HL70324",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f0e",
+    "value" : "PRL",
+    "label" : "Privacy level: indicating the level of private versus non-private room",
+    "codeSystem" : "HL70324",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f0f",
+    "value" : "SET",
+    "label" : "Bed is set up",
+    "codeSystem" : "HL70324",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f10",
+    "value" : "SHA",
+    "label" : "Shadow: a temporary holding location that does not physically exist",
+    "codeSystem" : "HL70324",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f11",
+    "value" : "SMK",
+    "label" : "Smoking",
+    "codeSystem" : "HL70324",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f12",
+    "value" : "STF",
+    "label" : "Bed is staffed",
+    "codeSystem" : "HL70324",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f13",
+    "value" : "TEA",
+    "label" : "Teaching location",
+    "codeSystem" : "HL70324",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

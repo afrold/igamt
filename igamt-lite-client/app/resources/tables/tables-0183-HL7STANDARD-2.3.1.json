@@ -1,0 +1,39 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd445cfd",
+  "hl7Version" : "2.3.1",
+  "libIds" : [ "573dd239d4c6ca828c295f91" ],
+  "bindingIdentifier" : "0183",
+  "name" : "0183",
+  "description" : "Active/inactive",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cfe",
+    "value" : "A",
+    "label" : "Active Staff",
+    "codeSystem" : "HL70183",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cff",
+    "value" : "I",
+    "label" : "Inactive Staff",
+    "codeSystem" : "HL70183",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

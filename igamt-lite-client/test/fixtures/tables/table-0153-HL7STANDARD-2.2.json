@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 138,
+  "id" : "565f3ab7d4c6e52cfd447ce6",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0153",
+  "name" : "VALUE CODE",
+  "description" : "VALUE CODE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

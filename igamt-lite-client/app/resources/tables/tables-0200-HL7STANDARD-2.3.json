@@ -1,0 +1,75 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd4473dd",
+  "hl7Version" : "2.3",
+  "libIds" : [ "573dd23ad4c6ca828c296b7e" ],
+  "bindingIdentifier" : "0200",
+  "name" : "0200",
+  "description" : "Name Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473de",
+    "value" : "A",
+    "label" : "Alias Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473df",
+    "value" : "C",
+    "label" : "Adopted Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473e0",
+    "value" : "D",
+    "label" : "Display Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473e1",
+    "value" : "L",
+    "label" : "Legal Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473e2",
+    "value" : "M",
+    "label" : "Maiden Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473e3",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

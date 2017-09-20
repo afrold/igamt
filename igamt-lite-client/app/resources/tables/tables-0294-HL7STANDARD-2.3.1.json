@@ -1,0 +1,102 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd445c0b",
+  "hl7Version" : "2.3.1",
+  "libIds" : [ "573dd239d4c6ca828c295f91" ],
+  "bindingIdentifier" : "0294",
+  "name" : "0294",
+  "description" : "Time selection criteria parameter class codes",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c0c",
+    "value" : "FRI",
+    "label" : "An indicator that Friday is or is not preferred for the day on which the appointment will occur.  OK =  Preferred appointment day NO = Day is not preferred",
+    "codeSystem" : "HL70294",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c0d",
+    "value" : "MON",
+    "label" : "An indicator that Monday is or is not preferred for the day on which the appointment will occur.  OK = Preferred appointment day NO = Day is not preferred",
+    "codeSystem" : "HL70294",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c0e",
+    "value" : "PREFEND",
+    "label" : "The preferred end time for the appointment request, service or resource.  Any legal time specification in the format HHMM, using 24-hour clock notation",
+    "codeSystem" : "HL70294",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c0f",
+    "value" : "PREFSTART",
+    "label" : "The preferred start time for the appointment request, service or resource.   Any legal time specification in the format HHMM, using 24-hour clock notation",
+    "codeSystem" : "HL70294",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c10",
+    "value" : "SAT",
+    "label" : "An indicator that Saturday is or is not preferred for the day on which the appointment will occur.  OK =  Preferred appointment day NO = Day is not preferred",
+    "codeSystem" : "HL70294",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c11",
+    "value" : "SUN",
+    "label" : "An indicator that Sunday is or is not preferred for the day on which the appointment will occur.  OK = Preferred appointment day NO = Day is not preferred",
+    "codeSystem" : "HL70294",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c12",
+    "value" : "THU",
+    "label" : "An indicator that Thursday is or is not preferred for the day on which the appointment will occur.  OK = Preferred appointment day NO = Day is not preferred",
+    "codeSystem" : "HL70294",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c13",
+    "value" : "TUE",
+    "label" : "An indicator that Tuesday is or is not preferred for the day on which the appointment will occur.  OK = Preferred appointment day NO = Day is not preferred",
+    "codeSystem" : "HL70294",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c14",
+    "value" : "WED",
+    "label" : "An indicator that Wednesday is or is not preferred for the day on which the appointment will occur. OK = Preferred appointment day NO = Day is not preferred",
+    "codeSystem" : "HL70294",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

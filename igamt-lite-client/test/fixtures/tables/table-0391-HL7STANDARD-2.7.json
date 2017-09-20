@@ -1,0 +1,1197 @@
+{
+  "type" : "table",
+  "sectionPosition" : 32,
+  "id" : "569eac0dd4c623dc65507670",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0391",
+  "name" : "Segment Group",
+  "description" : "Segment Group",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507671",
+    "value" : "ADMINISTRATION",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507672",
+    "value" : "ALLERGY",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507673",
+    "value" : "APP_STATS",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507674",
+    "value" : "APP_STATUS",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507675",
+    "value" : "ASSOCIATED_PERSON",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507676",
+    "value" : "ASSOCIATED_RX_ADMIN",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507677",
+    "value" : "ASSOCIATED_RX_ORDER",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507678",
+    "value" : "AUTHORIZATION",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507679",
+    "value" : "AUTHORIZATION_CONTACT",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550767a",
+    "value" : "CERTIFICATE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550767b",
+    "value" : "CLOCK",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550767c",
+    "value" : "CLOCK_AND_STATISTICS",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550767d",
+    "value" : "CLOCK_AND_STATS_WITH_NOTE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550767e",
+    "value" : "COMMAND",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550767f",
+    "value" : "COMMAND_RESPONSE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507680",
+    "value" : "COMMON_ORDER",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507681",
+    "value" : "COMPONENT",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507682",
+    "value" : "COMPONENTS",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507683",
+    "value" : "CONTAINER",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507684",
+    "value" : "DEFINITION",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507685",
+    "value" : "DIET",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507686",
+    "value" : "DISPENSE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507687",
+    "value" : "ENCODED_ORDER",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507688",
+    "value" : "ENCODING",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507689",
+    "value" : "EXPERIENCE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550768a",
+    "value" : "FINANCIAL",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550768b",
+    "value" : "FINANCIAL_COMMON_ORDER",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550768c",
+    "value" : "FINANCIAL_INSURANCE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550768d",
+    "value" : "FINANCIAL_OBSERVATION",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550768e",
+    "value" : "FINANCIAL_ORDER",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550768f",
+    "value" : "FINANCIAL_PROCEDURE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507690",
+    "value" : "FINANCIAL_TIMING_QUANTITY",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507691",
+    "value" : "GENERAL_RESOURCE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507692",
+    "value" : "GIVE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507693",
+    "value" : "GOAL",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507694",
+    "value" : "GOAL_OBSERVATION",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507695",
+    "value" : "GOAL_PATHWAY",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507696",
+    "value" : "GOAL_ROLE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507697",
+    "value" : "GUARANTOR_INSURANCE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507698",
+    "value" : "INSURANCE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507699",
+    "value" : "LOCATION_RESOURCE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550769a",
+    "value" : "MERGE_INFO",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550769b",
+    "value" : "MF",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550769c",
+    "value" : "MF_CDM",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550769d",
+    "value" : "MF_CLIN_STUDY",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550769e",
+    "value" : "MF_CLIN_STUDY_SCHED",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550769f",
+    "value" : "MF_INV_ITEM",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076a0",
+    "value" : "MF_LOC_DEPT",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076a1",
+    "value" : "MF_LOCATION",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076a2",
+    "value" : "MF_OBS_ATTRIBUTES",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076a3",
+    "value" : "MF_PHASE_SCHED_DETAIL",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076a4",
+    "value" : "MF_QUERY",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076a5",
+    "value" : "MF_SITE_DEFINED",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076a6",
+    "value" : "MF_STAFF",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076a7",
+    "value" : "MF_TEST",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076a8",
+    "value" : "MF_TEST_BATT_DETAIL",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076a9",
+    "value" : "MF_TEST_BATTERIES",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076aa",
+    "value" : "MF_TEST_CALC_DETAIL",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076ab",
+    "value" : "MF_TEST_CALCULATED",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076ac",
+    "value" : "MF_TEST_CAT_DETAIL",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076ad",
+    "value" : "MF_TEST_CATEGORICAL",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076ae",
+    "value" : "MF_TEST_NUMERIC",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076af",
+    "value" : "NK1_TIMING_QTY",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076b0",
+    "value" : "NOTIFICATION",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076b1",
+    "value" : "OBSERVATION",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076b2",
+    "value" : "OBSERVATION_PRIOR",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076b3",
+    "value" : "OBSERVATION_REQUEST",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076b4",
+    "value" : "OMSERVATION",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076b5",
+    "value" : "ORDER",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076b6",
+    "value" : "ORDER_CHOICE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076b7",
+    "value" : "ORDER_DETAIL",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076b8",
+    "value" : "ORDER_DETAIL_SUPPLEMENT",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076b9",
+    "value" : "ORDER_DIET",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076ba",
+    "value" : "ORDER_ENCODED",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076bb",
+    "value" : "ORDER_OBSERVATION",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076bc",
+    "value" : "ORDER_PRIOR",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076bd",
+    "value" : "ORDER_TRAY",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076be",
+    "value" : "PATHWAY",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076bf",
+    "value" : "PATHWAY_ROLE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076c0",
+    "value" : "PATIENT",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076c1",
+    "value" : "PATIENT_PRIOR",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076c2",
+    "value" : "PATIENT_RESULT",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076c3",
+    "value" : "PATIENT_VISIT",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076c4",
+    "value" : "PATIENT_VISIT_PRIOR",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076c5",
+    "value" : "PERSONNEL_RESOURCE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076c6",
+    "value" : "PEX_CAUSE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076c7",
+    "value" : "PEX_OBSERVATION",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076c8",
+    "value" : "PRIOR_RESULT",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076c9",
+    "value" : "PROBLEM",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076ca",
+    "value" : "PROBLEM_OBSERVATION",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076cb",
+    "value" : "PROBLEM_PATHWAY",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076cc",
+    "value" : "PROBLEM_ROLE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076cd",
+    "value" : "PROCEDURE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076ce",
+    "value" : "PRODUCT",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076cf",
+    "value" : "PRODUCT_STATUS",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076d0",
+    "value" : "PROVIDER",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076d1",
+    "value" : "PROVIDER_CONTACT",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076d2",
+    "value" : "QBP",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076d3",
+    "value" : "QRY_WITH_DETAIL",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076d4",
+    "value" : "QUERY_RESPONSE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076d5",
+    "value" : "QUERY_RESULT_CLUSTER",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076d6",
+    "value" : "REQUEST",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076d7",
+    "value" : "RESOURCE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076d8",
+    "value" : "RESOURCES",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076d9",
+    "value" : "RESPONSE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076da",
+    "value" : "RESULT",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076db",
+    "value" : "RESULTS",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076dc",
+    "value" : "RESULTS_NOTES",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076dd",
+    "value" : "ROW_DEFINITION",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076de",
+    "value" : "RX_ADMINISTRATION",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076df",
+    "value" : "RX_ORDER",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076e0",
+    "value" : "SCHEDULE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076e1",
+    "value" : "SERVICE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076e2",
+    "value" : "SPECIMEN",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076e3",
+    "value" : "SPECIMEN_CONTAINER",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076e4",
+    "value" : "STAFF",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076e5",
+    "value" : "STUDY",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076e6",
+    "value" : "STUDY_OBSERVATION",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076e7",
+    "value" : "STUDY_PHASE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076e8",
+    "value" : "STUDY_SCHEDULE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076e9",
+    "value" : "TEST_CONFIGURATION",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076ea",
+    "value" : "TIMING",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076eb",
+    "value" : "TIMING_DIET",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076ec",
+    "value" : "TIMING_ENCODED",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076ed",
+    "value" : "TIMING_GIVE",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076ee",
+    "value" : "TIMING_PRIOR",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076ef",
+    "value" : "TIMING_QTY",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076f0",
+    "value" : "TIMING_QUANTITY",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076f1",
+    "value" : "TIMING_TRAY",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076f2",
+    "value" : "TREATMENT",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655076f3",
+    "value" : "VISIT",
+    "label" : "",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

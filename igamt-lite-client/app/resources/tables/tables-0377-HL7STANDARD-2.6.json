@@ -1,0 +1,39 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550aa24",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0377",
+  "name" : "0377",
+  "description" : "Other environmental factors",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.377",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa25",
+    "value" : "A60",
+    "label" : "Opened container, indoor atmosphere, 60 minutes duration",
+    "codeSystem" : "HL70377",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa26",
+    "value" : "ATM",
+    "label" : "Opened container, atmosphere and duration unspecified",
+    "codeSystem" : "HL70377",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

@@ -1,0 +1,40 @@
+{
+  "type" : "datatypes",
+  "sectionPosition" : 2,
+  "sectionTitle" : "Datatypes",
+  "sectionDescription" : "Section Description",
+  "sectionContents" : "Section Contents",
+  "id" : "5722452ba7c81f853cca88af",
+  "accountId" : null,
+  "date" : "01/01/2010",
+  "metaData" : {
+    "name" : "mets name",
+    "orgName" : "NIST",
+    "version" : null,
+    "hl7Version" : "2.5.1",
+    "date" : "April 27, 2016",
+    "ext" : null
+  },
+  "scope" : "MASTER",
+  "children" : [ {
+    "id" : "569eac0fd4c623dc6550ecc6",
+    "label" : "XPN",
+    "ext" : null
+  }, {
+    "id" : "569eac0fd4c623dc6550ecc5",
+    "label" : "RPT",
+    "ext" : null
+  }, {
+    "id" : "569eac0fd4c623dc6550ecc4",
+    "label" : "NDL",
+    "ext" : null
+  }, {
+    "id" : "569eac0fd4c623dc6550ecc3",
+    "label" : "SI",
+    "ext" : null
+  }, {
+    "id" : "569eac0fd4c623dc6550ecc9",
+    "label" : "LA1",
+    "ext" : null
+  } ]
+}

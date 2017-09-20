@@ -1,0 +1,48 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507810",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0277",
+  "name" : "0277",
+  "description" : "Appointment Type Codes",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507811",
+    "value" : "Complete",
+    "label" : "A request to add a completed appointment, used to maintain records of completed appointments that did not appear in the schedule (e.g., STAT, walk-in, etc.)",
+    "codeSystem" : "HL70277",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507812",
+    "value" : "Normal",
+    "label" : "Routine schedule request type - default if not valued",
+    "codeSystem" : "HL70277",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507813",
+    "value" : "Tentative",
+    "label" : "A request for a tentative (e.g., \"penciled in\") appointment",
+    "codeSystem" : "HL70277",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

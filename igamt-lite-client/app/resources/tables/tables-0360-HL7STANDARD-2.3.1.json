@@ -1,0 +1,372 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd446091",
+  "hl7Version" : "2.3.1",
+  "libIds" : [ "573dd239d4c6ca828c295f91" ],
+  "bindingIdentifier" : "0360",
+  "name" : "0360",
+  "description" : "Degree",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446092",
+    "value" : "AA",
+    "label" : "Associate of Arts",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446093",
+    "value" : "AAS",
+    "label" : "Associate of Applied Science",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446094",
+    "value" : "ABA",
+    "label" : "Associate of Business Administration",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446095",
+    "value" : "AE",
+    "label" : "Associate of Engineering",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446096",
+    "value" : "AS",
+    "label" : "Associate of Science",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446097",
+    "value" : "BA",
+    "label" : "Bachelor of Arts",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446098",
+    "value" : "BBA",
+    "label" : "Bachelor of Business Administration",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446099",
+    "value" : "BE",
+    "label" : "Bachelor or Engineering",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44609a",
+    "value" : "BFA",
+    "label" : "Bachelor of Fine Arts",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44609b",
+    "value" : "BN",
+    "label" : "Bachelor of Nursing",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44609c",
+    "value" : "BS",
+    "label" : "Bachelor of Science",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44609d",
+    "value" : "BSL",
+    "label" : "Bachelor of Science – Law",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44609e",
+    "value" : "BT",
+    "label" : "Bachelor of Theology",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44609f",
+    "value" : "CER",
+    "label" : "Certificate",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460a0",
+    "value" : "DBA",
+    "label" : "Doctor of Business Administration",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460a1",
+    "value" : "DED",
+    "label" : "Doctor of Education",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460a2",
+    "value" : "DIP",
+    "label" : "Diploma",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460a3",
+    "value" : "DO",
+    "label" : "Doctor of Osteopathy",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460a4",
+    "value" : "HS",
+    "label" : "High School Graduate",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460a5",
+    "value" : "JD",
+    "label" : "Juris Doctor",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460a6",
+    "value" : "MA",
+    "label" : "Master of Arts",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460a7",
+    "value" : "MBA",
+    "label" : "Master of Business Administration",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460a8",
+    "value" : "MCE",
+    "label" : "Master of Civil Engineering",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460a9",
+    "value" : "MD",
+    "label" : "Doctor of Medicine",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460aa",
+    "value" : "MDI",
+    "label" : "Master of Divinity",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460ab",
+    "value" : "ME",
+    "label" : "Master of Engineering",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460ac",
+    "value" : "MED",
+    "label" : "Master of Education",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460ad",
+    "value" : "MEE",
+    "label" : "Master of Electrical Engineering",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460ae",
+    "value" : "MFA",
+    "label" : "Master of Fine Arts",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460af",
+    "value" : "MME",
+    "label" : "Master of Mechanical Engineering",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460b0",
+    "value" : "MS",
+    "label" : "Master of Science",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460b1",
+    "value" : "MSL",
+    "label" : "Master of Science – Law",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460b2",
+    "value" : "MT",
+    "label" : "Master of Theology",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460b3",
+    "value" : "NG",
+    "label" : "Non-Graduate",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460b4",
+    "value" : "PHD",
+    "label" : "Doctor of Philosophy",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460b5",
+    "value" : "PHE",
+    "label" : "Doctor of Engineering",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460b6",
+    "value" : "PHS",
+    "label" : "Doctor of Science",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460b7",
+    "value" : "SEC",
+    "label" : "Secretarial Certificate",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460b8",
+    "value" : "TS",
+    "label" : "Trade School Graduate",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

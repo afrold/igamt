@@ -1,0 +1,372 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd447272",
+  "hl7Version" : "2.3",
+  "libIds" : [ "573dd23ad4c6ca828c296b7e" ],
+  "bindingIdentifier" : "0074",
+  "name" : "0074",
+  "description" : "Diagnostic Service Section ID",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447273",
+    "value" : "AU",
+    "label" : "Audiology",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447274",
+    "value" : "BG",
+    "label" : "Blood gases",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447275",
+    "value" : "BLB",
+    "label" : "Blood bank",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447276",
+    "value" : "CH",
+    "label" : "Chemistry",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447277",
+    "value" : "CP",
+    "label" : "Cytopathology",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447278",
+    "value" : "CT",
+    "label" : "CAT scan",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447279",
+    "value" : "CTH",
+    "label" : "Cardiac catheterization",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44727a",
+    "value" : "CUS",
+    "label" : "Cardiac Ultrasound",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44727b",
+    "value" : "EC",
+    "label" : "Electrocardiac (e.g., EKG,  EEC, Holter)",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44727c",
+    "value" : "EN",
+    "label" : "Electroneuro (EEG, EMG,EP,PSG)",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44727d",
+    "value" : "HM",
+    "label" : "Hematology",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44727e",
+    "value" : "ICU",
+    "label" : "Bedside ICU Monitoring",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44727f",
+    "value" : "IMM",
+    "label" : "Immunology",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447280",
+    "value" : "LAB",
+    "label" : "Laboratory",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447281",
+    "value" : "MB",
+    "label" : "Microbiology",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447282",
+    "value" : "MCB",
+    "label" : "Mycobacteriology",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447283",
+    "value" : "MYC",
+    "label" : "Mycology",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447284",
+    "value" : "NMR",
+    "label" : "Nuclear magnetic resonance",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447285",
+    "value" : "NMS",
+    "label" : "Nuclear medicine scan",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447286",
+    "value" : "NRS",
+    "label" : "Nursing service measures",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447287",
+    "value" : "OSL",
+    "label" : "Outside Lab",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447288",
+    "value" : "OT",
+    "label" : "Occupational Therapy",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447289",
+    "value" : "OTH",
+    "label" : "Other",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44728a",
+    "value" : "OUS",
+    "label" : "OB Ultrasound",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44728b",
+    "value" : "PF",
+    "label" : "Pulmonary function",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44728c",
+    "value" : "PHR",
+    "label" : "Pharmacy",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44728d",
+    "value" : "PHY",
+    "label" : "Physician (Hx. Dx, admission note, etc.l)",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44728e",
+    "value" : "PT",
+    "label" : "Physical Therapy",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44728f",
+    "value" : "RAD",
+    "label" : "Radiology",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447290",
+    "value" : "RC",
+    "label" : "Respiratory Care (therapy)",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447291",
+    "value" : "RT",
+    "label" : "Radiation therapy",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447292",
+    "value" : "RUS",
+    "label" : "Radiology ultrasound",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447293",
+    "value" : "RX",
+    "label" : "Radiograph",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447294",
+    "value" : "SP",
+    "label" : "Surgidal Pathology",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447295",
+    "value" : "SR",
+    "label" : "Serology",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447296",
+    "value" : "TX",
+    "label" : "Toxicology",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447297",
+    "value" : "VR",
+    "label" : "Virology",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447298",
+    "value" : "VUS",
+    "label" : "Vascular Ultrasound",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447299",
+    "value" : "XRC",
+    "label" : "Cineradiograph",
+    "codeSystem" : "HL70074",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

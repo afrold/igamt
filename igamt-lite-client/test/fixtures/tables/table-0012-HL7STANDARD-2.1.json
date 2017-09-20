@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 17,
+  "id" : "565f3ab7d4c6e52cfd4482d4",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0012",
+  "name" : "STOCK LOCATION",
+  "description" : "STOCK LOCATION",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482d5",
+    "value" : "FL",
+    "label" : "Filled from floor stock",
+    "codeSystem" : "HL70012",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

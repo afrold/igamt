@@ -1,0 +1,25 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.3.1",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd239d4c6ca828c295f8f" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab7d4c6e52cfd446878",
+  "label" : "Zxx",
+  "fields" : [ ],
+  "dynamicMapping" : {
+    "id" : "573dd239d4c6ca828c295a54",
+    "mappings" : [ ]
+  },
+  "name" : "Zxx",
+  "description" : "any Z segment",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

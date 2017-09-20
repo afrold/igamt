@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 50,
+  "id" : "565f3ab7d4c6e52cfd4482a5",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0008",
+  "name" : "ACKNOWLEDGMENT CODE",
+  "description" : "ACKNOWLEDGMENT CODE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482a6",
+    "value" : "AA",
+    "label" : "Application Accept",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482a7",
+    "value" : "AR",
+    "label" : "Application Reject",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,22 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.3",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd23ad4c6ca828c296b7d" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab7d4c6e52cfd447545",
+  "label" : "ID",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ ],
+  "name" : "ID",
+  "description" : "Coded Value for HL7 tables (2.8.19)",
+  "comment" : "",
+  "usageNote" : ""
+}

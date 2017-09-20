@@ -1,0 +1,30 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550e586",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0435",
+  "name" : "0435",
+  "description" : "Advance Directive Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.435",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e587",
+    "value" : "DNR",
+    "label" : "Do not resuscitate",
+    "codeSystem" : "HL70435",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

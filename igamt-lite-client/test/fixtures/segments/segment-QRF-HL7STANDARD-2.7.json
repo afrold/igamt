@@ -1,0 +1,25 @@
+{
+  "type" : "segment",
+  "sectionPosition" : 51,
+  "hl7Version" : "2.7",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "participants" : [ ],
+  "libIds" : [ "57212935d4c64f1ebfd499c0" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0dd4c623dc65508b21",
+  "label" : "QRF",
+  "fields" : [ ],
+  "dynamicMapping" : {
+    "id" : "5721024c1208a2adb7dc5664",
+    "mappings" : [ ]
+  },
+  "name" : "QRF",
+  "description" : "withdrawn",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

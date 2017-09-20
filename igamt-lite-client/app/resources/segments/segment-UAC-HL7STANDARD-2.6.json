@@ -1,0 +1,74 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.6",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd22fd4c6ca828c28ca5f" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0ed4c623dc6550bf92",
+  "label" : "UAC",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "User Authentication Credential Type Code",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "705",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b199",
+      "bindingIdentifier" : "0615",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bf93",
+    "itemNo" : "02267",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "User Authentication Credential",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb78",
+      "name" : "ED",
+      "ext" : null,
+      "label" : "ED"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bf94",
+    "itemNo" : "02268",
+    "min" : 1,
+    "max" : "1"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd22fd4c6ca828c28b38c",
+    "mappings" : [ ]
+  },
+  "name" : "UAC",
+  "description" : "User Authentication Credential Segment",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

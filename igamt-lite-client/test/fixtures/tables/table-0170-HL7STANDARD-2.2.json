@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 63,
+  "id" : "565f3ab7d4c6e52cfd447deb",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0170",
+  "name" : "DERIVED SPECIMEN",
+  "description" : "DERIVED SPECIMEN",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dec",
+    "value" : "C",
+    "label" : "Child observation",
+    "codeSystem" : "HL70170",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ded",
+    "value" : "N",
+    "label" : "Not applicable",
+    "codeSystem" : "HL70170",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dee",
+    "value" : "P",
+    "label" : "Parent observation",
+    "codeSystem" : "HL70170",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,22 @@
+{
+  "type" : "datatype",
+  "sectionPosition" : 60,
+  "hl7Version" : "2.5",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "participants" : [ ],
+  "libIds" : [ "57237659da0805ce1eab94f9" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab6d4c6e52cfd4416de",
+  "label" : "FT",
+  "ext" : null,
+  "components" : [ ],
+  "name" : "FT",
+  "description" : "Formatted Text Data",
+  "comment" : "",
+  "usageNote" : "",
+  "status" : "PUBLISHED"
+}

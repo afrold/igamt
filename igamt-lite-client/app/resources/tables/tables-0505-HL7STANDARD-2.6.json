@@ -1,0 +1,39 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b1d8",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0505",
+  "name" : "0505",
+  "description" : "Cyclic Entry/Exit Indicator",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.505",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1d9",
+    "value" : "#",
+    "label" : "The last service request in a cyclic group.",
+    "codeSystem" : "HL70505",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1da",
+    "value" : "*",
+    "label" : "The first service request in a cyclic group",
+    "codeSystem" : "HL70505",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

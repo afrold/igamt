@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 82,
+  "id" : "565f3ab7d4c6e52cfd447059",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0144",
+  "name" : "Eligibility Source",
+  "description" : "Eligibility Source",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44705a",
+    "value" : "1",
+    "label" : "Insurance company",
+    "codeSystem" : "HL70144",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44705b",
+    "value" : "2",
+    "label" : "Employer",
+    "codeSystem" : "HL70144",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44705c",
+    "value" : "3",
+    "label" : "Insured presented policy",
+    "codeSystem" : "HL70144",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44705d",
+    "value" : "4",
+    "label" : "Insured presented card",
+    "codeSystem" : "HL70144",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44705e",
+    "value" : "5",
+    "label" : "Signed statement on file",
+    "codeSystem" : "HL70144",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44705f",
+    "value" : "6",
+    "label" : "Verbal Information",
+    "codeSystem" : "HL70144",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447060",
+    "value" : "7",
+    "label" : "None",
+    "codeSystem" : "HL70144",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

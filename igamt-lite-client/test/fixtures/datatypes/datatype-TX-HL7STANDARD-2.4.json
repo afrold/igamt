@@ -1,0 +1,22 @@
+{
+  "type" : "datatype",
+  "sectionPosition" : 172,
+  "hl7Version" : "2.4",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "participants" : [ ],
+  "libIds" : [ "5723765bda0805ce1eabb9e7" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab6d4c6e52cfd443f9d",
+  "label" : "TX",
+  "ext" : null,
+  "components" : [ ],
+  "name" : "TX",
+  "description" : "text data",
+  "comment" : "",
+  "usageNote" : "",
+  "status" : "PUBLISHED"
+}

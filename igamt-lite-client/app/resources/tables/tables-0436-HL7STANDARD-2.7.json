@@ -1,0 +1,66 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507eac",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0436",
+  "name" : "0436",
+  "description" : "Sensitivity to Causative Agent Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ead",
+    "value" : "AD",
+    "label" : "Adverse Reaction (Not otherwise classified)",
+    "codeSystem" : "HL70436",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507eae",
+    "value" : "AL",
+    "label" : "Allergy",
+    "codeSystem" : "HL70436",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507eaf",
+    "value" : "CT",
+    "label" : "Contraindication",
+    "codeSystem" : "HL70436",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507eb0",
+    "value" : "IN",
+    "label" : "Intolerance",
+    "codeSystem" : "HL70436",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507eb1",
+    "value" : "SE",
+    "label" : "Side Effect",
+    "codeSystem" : "HL70436",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

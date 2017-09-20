@@ -1,0 +1,120 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b17b",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0725",
+  "name" : "0725",
+  "description" : "Mood Codes",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.725",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b17c",
+    "value" : "APT",
+    "label" : "Appointment",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b17d",
+    "value" : "ARQ",
+    "label" : "Appointment Request",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b17e",
+    "value" : "Criterion applying to Eve",
+    "label" : "",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b17f",
+    "value" : "Eg Use in Care Plans,",
+    "label" : "",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b180",
+    "value" : "EVN",
+    "label" : "Event",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b181",
+    "value" : "EVN.CRT",
+    "label" : "Event Criterion",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b182",
+    "value" : "EXP",
+    "label" : "Expectation",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b183",
+    "value" : "INT",
+    "label" : "Intent",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b184",
+    "value" : "PRMS",
+    "label" : "Promise",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b185",
+    "value" : "PRP",
+    "label" : "Proposal",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b186",
+    "value" : "RQO",
+    "label" : "Request-Order",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

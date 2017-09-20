@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 105,
+  "id" : "565f3ab7d4c6e52cfd447386",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0311",
+  "name" : "Job Status",
+  "description" : "Job Status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

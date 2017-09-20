@@ -1,0 +1,48 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd4483d7",
+  "hl7Version" : "2.1",
+  "libIds" : [ "573dd23bd4c6ca828c297296" ],
+  "bindingIdentifier" : "0116",
+  "name" : "0116",
+  "description" : "BED STATUS",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4483d8",
+    "value" : "C",
+    "label" : "Closed",
+    "codeSystem" : "HL70116",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4483d9",
+    "value" : "H",
+    "label" : "Housekeeping",
+    "codeSystem" : "HL70116",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4483da",
+    "value" : "O",
+    "label" : "Occupied",
+    "codeSystem" : "HL70116",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

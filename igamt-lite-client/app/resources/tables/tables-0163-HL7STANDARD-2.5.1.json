@@ -1,0 +1,507 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550df72",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0163",
+  "name" : "0163",
+  "description" : "Body site",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.163",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df73",
+    "value" : "BE",
+    "label" : "Bilateral Ears",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df74",
+    "value" : "BN",
+    "label" : "Bilateral Nares",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df75",
+    "value" : "BU",
+    "label" : "Buttock",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df76",
+    "value" : "CT",
+    "label" : "Chest Tube",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df77",
+    "value" : "LA",
+    "label" : "Left Arm",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df78",
+    "value" : "LAC",
+    "label" : "Left Anterior Chest",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df79",
+    "value" : "LACF",
+    "label" : "Left Antecubital Fossa",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df7a",
+    "value" : "LD",
+    "label" : "Left Deltoid",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df7b",
+    "value" : "LE",
+    "label" : "Left Ear",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df7c",
+    "value" : "LEJ",
+    "label" : "Left External Jugular",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df7d",
+    "value" : "LF",
+    "label" : "Left Foot",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df7e",
+    "value" : "LG",
+    "label" : "Left Gluteus Medius",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df7f",
+    "value" : "LH",
+    "label" : "Left Hand",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df80",
+    "value" : "LIJ",
+    "label" : "Left Internal Jugular",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df81",
+    "value" : "LLAQ",
+    "label" : "Left Lower Abd Quadrant",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df82",
+    "value" : "LLFA",
+    "label" : "Left Lower Forearm",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df83",
+    "value" : "LMFA",
+    "label" : "Left Mid Forearm",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df84",
+    "value" : "LN",
+    "label" : "Left Naris",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df85",
+    "value" : "LPC",
+    "label" : "Left Posterior Chest",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df86",
+    "value" : "LSC",
+    "label" : "Left Subclavian",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df87",
+    "value" : "LT",
+    "label" : "Left Thigh",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df88",
+    "value" : "LUA",
+    "label" : "Left Upper Arm",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df89",
+    "value" : "LUAQ",
+    "label" : "Left Upper Abd Quadrant",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df8a",
+    "value" : "LUFA",
+    "label" : "Left Upper Forearm",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df8b",
+    "value" : "LVG",
+    "label" : "Left Ventragluteal",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df8c",
+    "value" : "LVL",
+    "label" : "Left Vastus Lateralis",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df8d",
+    "value" : "NB",
+    "label" : "Nebulized",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df8e",
+    "value" : "OD",
+    "label" : "Right Eye",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df8f",
+    "value" : "OS",
+    "label" : "Left Eye",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df90",
+    "value" : "OU",
+    "label" : "Bilateral Eyes",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df91",
+    "value" : "PA",
+    "label" : "Perianal",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df92",
+    "value" : "PERIN",
+    "label" : "Perineal",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df93",
+    "value" : "RA",
+    "label" : "Right Arm",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df94",
+    "value" : "RAC",
+    "label" : "Right Anterior Chest",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df95",
+    "value" : "RACF",
+    "label" : "Right Antecubital Fossa",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df96",
+    "value" : "RD",
+    "label" : "Right Deltoid",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df97",
+    "value" : "RE",
+    "label" : "Right Ear",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df98",
+    "value" : "REJ",
+    "label" : "Right External Jugular",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df99",
+    "value" : "RF",
+    "label" : "Right Foot",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df9a",
+    "value" : "RG",
+    "label" : "Right Gluteus Medius",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df9b",
+    "value" : "RH",
+    "label" : "Right Hand",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df9c",
+    "value" : "RIJ",
+    "label" : "Right Internal Jugular",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df9d",
+    "value" : "RLAQ",
+    "label" : "Rt Lower Abd Quadrant",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df9e",
+    "value" : "RLFA",
+    "label" : "Right Lower Forearm",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df9f",
+    "value" : "RMFA",
+    "label" : "Right Mid Forearm",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dfa0",
+    "value" : "RN",
+    "label" : "Right Naris",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dfa1",
+    "value" : "RPC",
+    "label" : "Right Posterior Chest",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dfa2",
+    "value" : "RSC",
+    "label" : "Right Subclavian",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dfa3",
+    "value" : "RT",
+    "label" : "Right Thigh",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dfa4",
+    "value" : "RUA",
+    "label" : "Right Upper Arm",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dfa5",
+    "value" : "RUAQ",
+    "label" : "Right Upper Abd Quadrant",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dfa6",
+    "value" : "RUFA",
+    "label" : "Right Upper Forearm",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dfa7",
+    "value" : "RVG",
+    "label" : "Right Ventragluteal",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dfa8",
+    "value" : "RVL",
+    "label" : "Right Vastus Lateralis",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

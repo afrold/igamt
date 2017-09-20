@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 425,
+  "id" : "569eac0dd4c623dc65507c33",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0838",
+  "name" : "Problem Perspective",
+  "description" : "Problem Perspective",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c34",
+    "value" : "No Values Defined",
+    "label" : "",
+    "codeSystem" : "HL70838",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}
