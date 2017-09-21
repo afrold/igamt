@@ -23,6 +23,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 public interface ExportConfigRepository
     extends ExportConfigOperations, MongoRepository<ExportConfig, String> {
 
-    @Query("select e from ExportConfig e where e.accountId = ?2 and e.type = ?1 and e.defaultType = FALSE")
-    ExportConfig findOneByTypeAndAccountId(String type, Long accountId);
+    @Query("select e from ExportConfig e where e.accountId = ?1 and e.defaultType = FALSE")
+    ExportConfig findOneByAccountId(Long accountId);
 }

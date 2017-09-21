@@ -54,7 +54,7 @@ public class IGDocumentExportTest {
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
             //File htmlFile = new File("tmp/dtLib_"+new Date().toString()+".html");
-            ExportConfig exportConfig = ExportConfig.getBasicExportConfig("IG Style");
+            ExportConfig exportConfig = ExportConfig.getBasicExportConfig(true);
             File htmlFile = new File(EXPORT_BASE_PATH+"_compact.html");
             if(htmlFile.exists()){
                 htmlFile.delete();
@@ -71,7 +71,7 @@ public class IGDocumentExportTest {
     public void testHtmlVerboseExport(){
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
-            ExportConfig exportConfig = ExportConfig.getBasicExportConfig("Profile Style");
+            ExportConfig exportConfig = ExportConfig.getBasicExportConfig(true);
             //File htmlFile = new File("tmp/dtLib_"+new Date().toString()+".html");
             File htmlFile = new File(EXPORT_BASE_PATH+"_verbose.html");
             if(htmlFile.exists()){
@@ -90,7 +90,7 @@ public class IGDocumentExportTest {
     public void testHtmlTablesExport(){
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
-            ExportConfig exportConfig = ExportConfig.getBasicExportConfig("Table Style");
+            ExportConfig exportConfig = ExportConfig.getBasicExportConfig(true);
             //File htmlFile = new File("tmp/dtLib_"+new Date().toString()+".html");
             File htmlFile = new File(EXPORT_BASE_PATH+"_table.html");
             if(htmlFile.exists()){
@@ -109,7 +109,7 @@ public class IGDocumentExportTest {
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
             File wordFile = new File(EXPORT_BASE_PATH+"_compact.docx");
-            ExportConfig exportConfig = ExportConfig.getBasicExportConfig("IG Style");
+            ExportConfig exportConfig = ExportConfig.getBasicExportConfig(true);
             if(wordFile.exists()){
                 wordFile.delete();
             }
@@ -126,7 +126,7 @@ public class IGDocumentExportTest {
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
             File wordFile = new File(EXPORT_BASE_PATH+"_verbose.docx");
-            ExportConfig exportConfig = ExportConfig.getBasicExportConfig("Profile Style");
+            ExportConfig exportConfig = ExportConfig.getBasicExportConfig(true);
             if(wordFile.exists()){
                 wordFile.delete();
             }
@@ -143,7 +143,7 @@ public class IGDocumentExportTest {
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
             File wordFile = new File(EXPORT_BASE_PATH+"_table.docx");
-            ExportConfig exportConfig = ExportConfig.getBasicExportConfig("Table Style");
+            ExportConfig exportConfig = ExportConfig.getBasicExportConfig(true);
             if(wordFile.exists()){
                 wordFile.delete();
             }

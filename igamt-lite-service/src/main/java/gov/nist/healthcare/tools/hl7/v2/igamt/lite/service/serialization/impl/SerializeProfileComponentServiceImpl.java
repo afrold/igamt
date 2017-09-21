@@ -1,18 +1,15 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponent;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentAttributes;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableElement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
@@ -42,15 +39,15 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
     @Autowired TableService tableService;
 
     @Override public SerializableSection serializeProfileComponent(
-        ProfileComponentLink profileComponentLink, Integer position) {
+        ProfileComponentLink profileComponentLink, Integer position, UsageConfig profileComponentItemsExport) {
         if(profileComponentLink!=null){
             ProfileComponent profileComponent = profileComponentService.findById(profileComponentLink.getId());
-            return serializeProfileComponent(profileComponent,position,String.valueOf(3), false, null);
+            return serializeProfileComponent(profileComponent,position,String.valueOf(3), false, null, profileComponentItemsExport);
         }
         return null;
     }
 
-	private SerializableSection serializeProfileComponent(ProfileComponent profileComponent, Integer position, String sectionHeaderLevel, Boolean showInnerLinks, String host) {
+	private SerializableSection serializeProfileComponent(ProfileComponent profileComponent, Integer position, String sectionHeaderLevel, Boolean showInnerLinks, String host, UsageConfig profileComponentItemsExport) {
 		if(profileComponent!=null){
             String id = profileComponent.getId();
             String segmentPosition = String.valueOf(position);
@@ -58,21 +55,43 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
             SerializableSection serializableSection = new SerializableSection(id,profileComponent.getName(),segmentPosition,sectionHeaderLevel,title);
             Map<SubProfileComponentAttributes,String> definitionTexts = new HashMap<>();
             Map<String,Table> tableidTableMap = new HashMap<>();
+            List<SubProfileComponent> subComponentsToBeExported = new ArrayList<>();
             for(SubProfileComponent subProfileComponent : profileComponent.getChildren()){
-              if(subProfileComponent.getAttributes()!=null && subProfileComponent.getAttributes().getText()!=null && !subProfileComponent.getAttributes().getText().isEmpty()){
-                  String definitionText = serializationUtil.cleanRichtext(subProfileComponent.getAttributes().getText());
-                  if(definitionText != null && !definitionText.isEmpty()){
-                      definitionTexts.put(subProfileComponent.getAttributes(),definitionText);
-                  }
-              }
-              if(!subProfileComponent.getValueSetBindings().isEmpty()){
-                for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : subProfileComponent.getValueSetBindings()){
-                  Table table = tableService.findById(valueSetOrSingleCodeBinding.getTableId());
-                  if(table!=null){
-                    tableidTableMap.put(valueSetOrSingleCodeBinding.getTableId(), table);
-                  }
-                }
-              }
+				boolean exportItem = false;
+				if(subProfileComponent.getFrom().equals("message")){
+				    if(subProfileComponent.getAttributes().getUsage()!=null){
+				  	  if(ExportUtil.diplayUsage(subProfileComponent.getAttributes().getUsage(),profileComponentItemsExport)){
+				  		  exportItem = true;
+				  	  }
+				    } else {
+				  	  if(ExportUtil.diplayUsage(subProfileComponent.getAttributes().getOldUsage(),profileComponentItemsExport)){
+				  		  exportItem = true;
+				  	  }
+				    }
+				} else {
+					exportItem = true;
+				}
+				if(exportItem){
+					subComponentsToBeExported.add(subProfileComponent);
+				    if (subProfileComponent.getAttributes() != null
+				        && subProfileComponent.getAttributes().getText() != null
+				        && !subProfileComponent.getAttributes().getText().isEmpty()) {
+				        String definitionText = serializationUtil
+				            .cleanRichtext(subProfileComponent.getAttributes().getText());
+				        if (definitionText != null && !definitionText.isEmpty()) {
+				            definitionTexts.put(subProfileComponent.getAttributes(), definitionText);
+				        }
+				    }
+				    if (!subProfileComponent.getValueSetBindings().isEmpty()) {
+				        for (ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : subProfileComponent
+				            .getValueSetBindings()) {
+				            Table table = tableService.findById(valueSetOrSingleCodeBinding.getTableId());
+				            if (table != null) {
+				                tableidTableMap.put(valueSetOrSingleCodeBinding.getTableId(), table);
+				            }
+				        }
+				    }
+				}
             }
             String defPreText, defPostText;
             defPreText = defPostText = null;
@@ -82,7 +101,7 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
             if(profileComponent.getDefPostText()!=null&&!profileComponent.getDefPostText().isEmpty()){
                 defPostText = serializationUtil.cleanRichtext(profileComponent.getDefPostText());
             }
-            SerializableProfileComponent serializableProfileComponent = new SerializableProfileComponent(id, profileComponent.getName(),segmentPosition,sectionHeaderLevel,title,profileComponent,definitionTexts, defPreText,defPostText,tableidTableMap, showInnerLinks, host);
+            SerializableProfileComponent serializableProfileComponent = new SerializableProfileComponent(id, profileComponent.getName(),segmentPosition,sectionHeaderLevel,title,profileComponent,definitionTexts, defPreText,defPostText,tableidTableMap, showInnerLinks, host,subComponentsToBeExported);
             if(serializableProfileComponent != null) {
                 serializableSection.addSection(serializableProfileComponent);
                 return serializableSection;
@@ -93,6 +112,6 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
 
 	@Override
 	public SerializableElement serializeProfileComponent(ProfileComponent profileComponent, String host) {
-		return serializeProfileComponent(profileComponent,0,String.valueOf(1), true, host);
+		return serializeProfileComponent(profileComponent,0,String.valueOf(1), true, host, ExportConfig.getBasicExportConfig(true).getProfileComponentItemsExport());
 	}
 }

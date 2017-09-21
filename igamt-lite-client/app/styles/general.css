@@ -3157,3 +3157,11 @@ md-select[disabled] .md-select-value {
 .normal-input{
     text-align: left !important;
 }
+
+.menuItem {
+    font-weight: bold;
+}
+
+.selectedMenuItem {
+    background-color: #ffcc00;
+}

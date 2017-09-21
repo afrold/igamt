@@ -28,7 +28,6 @@ public class ExportConfig {
   boolean defaultType = false;
   private String name;
   private Long accountId;
-  private String type;
   private boolean unboundHL7 = false;
   private boolean unboundCustom = false;
   private boolean includeVaries = false;
@@ -65,11 +64,10 @@ public class ExportConfig {
 
 
 
-  public static ExportConfig getBasicExportConfig(String type, boolean setAllTrue) {
+  public static ExportConfig getBasicExportConfig(boolean setAllTrue) {
     ExportConfig defaultConfiguration = new ExportConfig();
     defaultConfiguration.setDefaultType(true);
     defaultConfiguration.setAccountId(null);
-    defaultConfiguration.setType(type);
     defaultConfiguration.setIncludeMessageTable(true);
     defaultConfiguration.setIncludeSegmentTable(true);
     defaultConfiguration.setIncludeDatatypeTable(true);
@@ -207,14 +205,6 @@ public class ExportConfig {
 
   public void setAccountId(Long accountId) {
     this.accountId = accountId;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
   }
 
   public boolean isUnboundHL7() {

@@ -10,15 +10,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
@@ -111,7 +106,7 @@ public class SerializationUtil {
             bytes = IOUtils.toByteArray(url);
           }
           if (bytes != null && bytes.length > 0) {
-            String imgEnc = Base64.encodeBase64String(bytes);
+            String imgEnc = Base64.getEncoder().encodeToString(bytes);
             String texEncImg = "data:image/" + ext + ";base64," + imgEnc;
             elementImg.attr("src", texEncImg);
           }

@@ -39,7 +39,6 @@ import org.springframework.stereotype.Service;
 import org.w3c.tidy.Tidy;
 
 import com.mongodb.gridfs.GridFSDBFile;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.AppInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
@@ -200,7 +199,7 @@ public class ExportUtil {
 					bytes = IOUtils.toByteArray(imgis);
 				}
 				if (bytes != null && bytes.length > 0) {
-					String coverImage = "data:image/" + ext + ";base64," + Base64.encode(bytes);
+					String coverImage = "data:image/" + ext + ";base64," + Base64.getEncoder().encodeToString(bytes);
 					exportParameters.setImageLogo(coverImage);
 				}
 			}
@@ -307,4 +306,5 @@ public class ExportUtil {
 		}
 		return false;
 	}
+
 }
