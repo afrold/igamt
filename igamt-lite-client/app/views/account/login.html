@@ -28,9 +28,9 @@
 
         <md-dialog-content>
             <div class="md-dialog-content" style="min-width: 800px !important">
-                <div ng-class="'alert alert-'+loginMessage().type" ng-show="loginMessage().show" id="ehrloginalert">
-                    <button type="button" class="close" ng-click="loginMessage().show=false">×</button>
-                    {{loginMessage().text}}>
+                <div class="alert alert-danger" ng-show="errorLogin" id="ehrloginalert">
+                   <span>{{errorLogin}}</span>
+                    <button type="button" class="close" ng-click="errorLogin=null">×</button>
                 </div>
 
                 <div ng-class="{'has-success has-feedback': loginForm.username.$valid, 'igl-has-error has-feedback': !loginForm.username.$valid}">
@@ -54,18 +54,14 @@
                 <i class="fa fa-sign-in"></i> <span msg key="login.button.login"></span>
             </md-button>
         </md-dialog-actions>
-        <md-dialog-actions layout="row">
-            <p>
-            <a href="#/forgotten" ng-click="cancel()" style="text-align:center">
-                <span msg key="login.forgotPwd"></span>
-            </a>
-            </p>
-            <p>
-             <a href="#/registration" ng-click="cancel()" style="text-align:center">
+        <md-dialog-actions layout="column" layout-align="end end">
+
+             <a href="#/registration" ng-click="cancel()" style="text-align:center; float: left;">
                 <span msg key="login.newAccount"></span>
             </a>
-            </p>
-
+                <a href="#/forgotten" ng-click="cancel()" style="text-align:center; float: left;">
+                    <span msg key="login.forgotPwd"></span>
+                </a>
         </md-dialog-actions>
     </form>
 </md-dialog>

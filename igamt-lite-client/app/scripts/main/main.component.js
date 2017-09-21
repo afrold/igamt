@@ -351,7 +351,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
   };
 
   $scope.logout = function() {
-    if ($rootScope.igdocument && $rootScope.igdocument != null && $rootScope.nges()) {
+    if ($rootScope.hasChanges()) {
       var modalInstance = $mdDialog.show({
         templateUrl: 'ConfirmLogout.html',
         controller: 'ConfirmLogoutCtrl',
@@ -443,28 +443,17 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
   };
 
   $rootScope.showLoginDialog = function(username, password) {
+    if(!$rootScope.loginOpen){
+        $mdDialog.show({
+            controller: 'LoginCtrl',
+            parent: angular.element(document).find('body'),
+            templateUrl: 'views/account/login.html',
+            locals: {
+                user: { username: $scope.username, password: $scope.password }
+            }
 
-    if ($rootScope.loginDialog && $rootScope.loginDialog != null && $rootScope.loginDialog.opened) {
-      $rootScope.loginDialog.hide();
-    }
-    console.log("fff");
-    $rootScope.loginDialog = $mdDialog.show({
-      controller: 'LoginCtrl',
-      parent: angular.element(document).find('body'),
-      templateUrl: 'views/account/login.html',
-      locals: {
-        user: { username: $scope.username, password: $scope.password },
-      }
-
-    }).then(function(result) {
-      if (result) {
-        $scope.username = result.username;
-        $scope.password = result.password;
-        $scope.login();
-      } else {
-        $scope.cancel();
-      }
-    });;
+        });
+    };
 
 
   };
