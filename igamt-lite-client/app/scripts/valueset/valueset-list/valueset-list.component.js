@@ -26,6 +26,8 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     active: 0
   };
   $scope.init = function() {
+
+
     $scope.tabStatus = {
       active: 1
     };
@@ -279,9 +281,12 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
       type: 'value',
       value: '',
       label: '',
-      codeSystem: null,
+      codeSystem: '',
       codeUsage: 'R'
     };
+    $rootScope.searchObject={
+      };
+
 
     $rootScope.table.smallCodes.unshift(newValue);
     $rootScope.table.codes.unshift(newValue);
@@ -380,6 +385,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     $rootScope.table.codes = _.difference($rootScope.table.codes, $scope.selectedCodes);
     $rootScope.table.smallCodes = _.difference($rootScope.table.smallCodes, $scope.selectedCodes);
     $scope.selectedCodes = [];
+    $rootScope.recordChanged();
   };
   $scope.checkAllValues = function() {
     $scope.selectedCodes = [];
