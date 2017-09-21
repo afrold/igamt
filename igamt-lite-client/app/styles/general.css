@@ -2883,7 +2883,7 @@ md-contact-chips {
     color:black;
 }
 md-input-container > label.input-left {
-    color: black;
+    /*color: black;*/
 }
 .scroll-definition{
 
@@ -2900,7 +2900,7 @@ md-input-container > label.input-left {
 }
 
 md-input-container.md-default-theme .md-placeholder, md-input-container .md-placeholder, md-input-container.md-default-theme label, md-input-container label {
-    color: black;
+    /*color: black;*/
 }
 .panel.panel-default>.panel-heading, .panel>.panel-heading {
     background-color: #eee;
@@ -3027,6 +3027,8 @@ md-dialog .md-dialog-content {
     font-size: 15px;
 }
 
+
+
 .igamt-input-block{
     margin-top:0px;
 }
@@ -3112,6 +3114,7 @@ md-select[disabled] .md-select-value {
 .deprecated{
     text-decoration: line-through;
     background-color: yellow;
+    color:black;
 
 }
 .md-panelContent{
@@ -3138,4 +3141,19 @@ md-select[disabled] .md-select-value {
     color: rgba(0, 0, 0, 0.61) !important;
 
 
+}
+.filter-toolBar{
+    background-color: rgb(240, 240, 240)  !important;
+    /*min-height: 30px !important;*/
+    /*padding:5px;*/
+    color: black !important;
+    font-weight: bold;
+}
+.filter-panel-body{
+    border: 2px solid;
+    border-color: #f0f0f0;
+    margin-bottom: 4px;
+}
+.normal-input{
+    text-align: left !important;
 }

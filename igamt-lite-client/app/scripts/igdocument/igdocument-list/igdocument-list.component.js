@@ -2031,6 +2031,8 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
     blockUI.start();
     try {
       TableService.getOne(table.id).then(function (tbl) {
+          $rootScope.searchObject={
+          };
 
         $rootScope.table = tbl;
         $rootScope.$emit("event:initTable");
