@@ -92,15 +92,17 @@ public abstract class SerializeMessageOrCompositeProfile {
     }
       
     protected SerializableSegmentRefOrGroup serializeSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup, UsageConfig segmentUsageConfig, UsageConfig fieldUsageConfig, Map<String,Segment> compositeProfileSegments, Boolean showInnerLinks, String host){
-        if(segmentRefOrGroup instanceof SegmentRef){
-          SegmentRef segmentRef = (SegmentRef) segmentRefOrGroup;
-          if(ExportUtil.diplayUsage(segmentRef.getUsage(), segmentUsageConfig)) {
-              return serializeSegmentRef(segmentRef, fieldUsageConfig,compositeProfileSegments, showInnerLinks, host);
-          }
-      } else if (segmentRefOrGroup instanceof Group){
-          return serializeGroup((Group) segmentRefOrGroup,segmentUsageConfig,fieldUsageConfig,compositeProfileSegments, showInnerLinks, host);
-      }
-      return null;
+		if (ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(), segmentUsageConfig)) {
+			if (segmentRefOrGroup instanceof SegmentRef) {
+				SegmentRef segmentRef = (SegmentRef) segmentRefOrGroup;
+				return serializeSegmentRef(segmentRef, fieldUsageConfig, compositeProfileSegments, showInnerLinks,
+						host);
+			} else if (segmentRefOrGroup instanceof Group) {
+				return serializeGroup((Group) segmentRefOrGroup, segmentUsageConfig, fieldUsageConfig,
+						compositeProfileSegments, showInnerLinks, host);
+			}
+		}
+		return null;
     }
 
     private SerializableSegmentRefOrGroup serializeSegmentRef(SegmentRef segmentRef, UsageConfig usageConfig,Map<String,Segment> compositeProfileSegments, Boolean showInnerLinks, String host){

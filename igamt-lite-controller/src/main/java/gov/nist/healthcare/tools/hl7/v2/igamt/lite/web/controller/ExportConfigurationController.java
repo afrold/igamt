@@ -37,8 +37,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontService;
  *
  */
 @RestController
-@RequestMapping("/ExportConfiguration")
-public class ExportConfigController {
+@RequestMapping("/exportConfiguration")
+public class ExportConfigurationController {
 
 
   @Autowired
@@ -57,17 +57,17 @@ public class ExportConfigController {
   ExportFontConfigService exportFontConfigService;
 
   @Autowired
-  static final private Logger logger = LoggerFactory.getLogger(ExportConfigController.class);
+  static final private Logger logger = LoggerFactory.getLogger(ExportConfigurationController.class);
 
-  @RequestMapping(value = "/override", method = RequestMethod.POST, produces = "application/json")
-  public ExportConfig override(@RequestBody ExportConfig exportConfig) {
+  @RequestMapping(value = "/saveExportConfig", method = RequestMethod.POST, produces = "application/json")
+  public ExportConfig saveExportConfig(@RequestBody ExportConfig exportConfig) {
     ExportConfig currentConfig;
     User u = userService.getCurrentUser();
     try {
       Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
       if (null != account) {
         currentConfig =
-            exportConfigService.findOneByTypeAndAccountId(exportConfig.getType(), account.getId());
+            exportConfigService.findOneByAccountId(account.getId());
         if (null != currentConfig) {
           exportConfigService.delete(currentConfig);
         }
@@ -80,16 +80,16 @@ public class ExportConfigController {
     return exportConfig;
   }
 
-  @RequestMapping(value = "/restoreDefault", method = RequestMethod.POST,
+  @RequestMapping(value = "/restoreDefaultExportConfig", method = RequestMethod.POST,
       produces = "application/json")
-  public ExportConfig restoreDefault(@RequestBody ExportConfig exportConfig) {
+  public ExportConfig restoreDefaultExportConfig(@RequestBody ExportConfig exportConfig) {
     ExportConfig currentConfig;
     User u = userService.getCurrentUser();
     try {
       Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
       if (null != account) {
         currentConfig =
-            exportConfigService.findOneByTypeAndAccountId(exportConfig.getType(), account.getId());
+            exportConfigService.findOneByAccountId(account.getId());
         if (null != currentConfig) {
           exportConfigService.delete(currentConfig);
         }
@@ -97,38 +97,38 @@ public class ExportConfigController {
     } catch (Exception e) {
       logger.warn("Unable to restore the default config: " + e.getMessage());
     }
-    currentConfig = ExportConfig.getBasicExportConfig(exportConfig.getType(), false);
+    currentConfig = ExportConfig.getBasicExportConfig(false);
     return currentConfig;
 
   }
 
-  @RequestMapping(value = "/findCurrent", method = RequestMethod.POST,
+  @RequestMapping(value = "/getUserExportConfig", method = RequestMethod.GET,
       produces = "application/json")
-  public ExportConfig findCurrent(@RequestBody String type) {
+  public ExportConfig getUserExportConfig() {
     ExportConfig currentConfig = null;
     User u = userService.getCurrentUser();
     try {
       Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
       if (null != account) {
-        currentConfig = exportConfigService.findOneByTypeAndAccountId(type, account.getId());
+        currentConfig = exportConfigService.findOneByAccountId(account.getId());
       }
     } catch (Exception e) {
       logger.warn("Unable to find the current config: " + e.getMessage());
     }
     if (null == currentConfig) {
-      currentConfig = ExportConfig.getBasicExportConfig(type,false);
+      currentConfig = exportConfigService.findDefault(false);
     }
     return currentConfig;
   }
 
 
-  @RequestMapping(value = "/findFonts", method = RequestMethod.POST, produces = "application/json")
+  @RequestMapping(value = "/findFonts", method = RequestMethod.GET, produces = "application/json")
   public List<ExportFont> findFonts() {
     List<ExportFont> exportFonts = exportFontService.findAll();
     return exportFonts;
   }
 
-  @RequestMapping(value = "/getUserExportFontConfig", method = RequestMethod.POST,
+  @RequestMapping(value = "/getUserExportFontConfig", method = RequestMethod.GET,
       produces = "application/json")
   public ExportFontConfig getUserExportFontConfig() throws Exception {
     ExportFontConfig exportFontConfig = null;

@@ -43,7 +43,7 @@ public class SerializationServiceTest {
     public void testSerializeCompactIGDocument(){
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         assertTrue(igDocument!=null);
-        Document document = serializationService.serializeIGDocument(igDocument, SerializationLayout.IGDOCUMENT, ExportConfig.getBasicExportConfig("IG Style"));
+        Document document = serializationService.serializeIGDocument(igDocument, SerializationLayout.IGDOCUMENT, ExportConfig.getBasicExportConfig(true));
         String xmlDocument = document.toXML();
         System.out.println(xmlDocument);
     }
@@ -51,7 +51,7 @@ public class SerializationServiceTest {
     public void testSerializeVerboseIGDocument(){
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         assertTrue(igDocument!=null);
-        Document document = serializationService.serializeIGDocument(igDocument, SerializationLayout.PROFILE, ExportConfig.getBasicExportConfig("IG Style"));
+        Document document = serializationService.serializeIGDocument(igDocument, SerializationLayout.PROFILE, ExportConfig.getBasicExportConfig(true));
         String xmlDocument = document.toXML();
         System.out.println(xmlDocument);
     }
