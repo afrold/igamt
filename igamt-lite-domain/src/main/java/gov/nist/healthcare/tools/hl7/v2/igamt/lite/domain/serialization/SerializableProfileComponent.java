@@ -31,9 +31,10 @@ public class SerializableProfileComponent extends SerializableSection {
     private Map<String,Table> tableidTableMap;
     private Boolean showInnerLinks;
     private String host;
+    private List<SubProfileComponent> subComponentsToBeExported;
 
     public SerializableProfileComponent(String id, String prefix, String position,
-        String headerLevel, String title, ProfileComponent profileComponent, Map<SubProfileComponentAttributes,String> definitionTexts, String defPreText, String defPostText, Map<String,Table> tableidTableMap, Boolean showInnerLinks, String host) {
+        String headerLevel, String title, ProfileComponent profileComponent, Map<SubProfileComponentAttributes,String> definitionTexts, String defPreText, String defPostText, Map<String,Table> tableidTableMap, Boolean showInnerLinks, String host, List<SubProfileComponent> subComponentsToBeExported) {
         super(id, prefix, position, headerLevel, title);
         this.profileComponent = profileComponent;
         this.definitionTexts = definitionTexts;
@@ -41,6 +42,7 @@ public class SerializableProfileComponent extends SerializableSection {
         this.defPostText = defPostText;
         this.tableidTableMap = tableidTableMap;
         this.showInnerLinks = showInnerLinks;
+        this.subComponentsToBeExported = subComponentsToBeExported;
         this.host = host;
     }
 
@@ -69,7 +71,7 @@ public class SerializableProfileComponent extends SerializableSection {
         if (this.profileComponent.getComment() != null && !this.profileComponent.getComment().isEmpty()) {
             profileComponentElement.addAttribute(new Attribute("Comment", this.profileComponent.getComment()));
         }
-        for(SubProfileComponent subProfileComponent : profileComponent.getChildren()){
+        for(SubProfileComponent subProfileComponent : subComponentsToBeExported){
             if(subProfileComponent!=null && subProfileComponent.getAttributes() != null) {
                 SubProfileComponentAttributes subProfileComponentAttributes =
                     subProfileComponent.getAttributes();

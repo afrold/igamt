@@ -386,7 +386,7 @@ public class SerializationServiceImpl implements SerializationService {
       int currentPosition = 1;
       for (ProfileComponentLink profileComponentLink : profileComponentLibrary.getChildren()) {
         SerializableSection serializableProfileComponentSection = serializeProfileComponentService
-            .serializeProfileComponent(profileComponentLink, currentPosition);
+            .serializeProfileComponent(profileComponentLink, currentPosition, exportConfig.getProfileComponentItemsExport());
         if (serializableProfileComponentSection != null) {
           profileComponentSection.addSection(serializableProfileComponentSection);
           currentPosition++;

@@ -60,7 +60,7 @@ public class DataTypeLibraryExportTest  {
                 htmlFile.delete();
             }
             if(htmlFile.createNewFile()) {
-                ExportConfig exportConfig = ExportConfig.getBasicExportConfig("Datatype Library");
+                ExportConfig exportConfig = ExportConfig.getBasicExportConfig(true);
                 FileUtils.copyInputStreamToFile(exportService.exportDatatypeLibraryDocumentAsHtml(datatypeLibraryDocument, exportConfig, exportFontConfig), htmlFile);
             }
         } catch (IOException e) {
@@ -76,7 +76,7 @@ public class DataTypeLibraryExportTest  {
                 wordFile.delete();
             }
             if(wordFile.createNewFile()) {
-                ExportConfig exportConfig = ExportConfig.getBasicExportConfig("Datatype Library");
+                ExportConfig exportConfig = ExportConfig.getBasicExportConfig(true);
                 FileUtils.copyInputStreamToFile(exportService.exportDatatypeLibraryDocumentAsDocx(datatypeLibraryDocument, exportConfig, exportFontConfig), wordFile);
             }
         } catch (IOException e) {

@@ -221,7 +221,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
 
 	@Override
 	public SerializableSection serializeSegment(Segment segment, String host) {
-		ExportConfig defaultConfig = ExportConfig.getBasicExportConfig("table", true);
+		ExportConfig defaultConfig = ExportConfig.getBasicExportConfig(true);
 		return serializeSegment(segment, String.valueOf(0), 1, 1, defaultConfig.getFieldsExport(), null, null, true, false, host);
 	}
 

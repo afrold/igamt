@@ -1,0 +1,118 @@
+<md-card-content>
+    <h2><md-checkbox class="md-primary" ng-model="config.includeSegmentTable" ng-change="setChanged()" /> Segment Table Options</h2>
+    <hr/>
+    <div layout="row" layout-align="center start" style="width: 100%">
+        <!-- Usages and Co-Constraints cards -->
+        <div layout="column" style="min-width:60%">
+            <!-- Usages card -->
+            <div flex>
+                <md-content>
+                    <md-card>
+                        <md-card-content>
+                            <h4>Usages</h4>
+                            <div layout="column">
+                                <div flex>
+                                    <hr/>
+                                    <p>Segments to Export:</p>
+                                    <div layout="row" layout-align="center start" style="width: 100%">
+                                        <div flex>
+                                            <md-checkbox class="md-primary"
+                                                         ng-model="config.segmentsExport.r"
+                                                         ng-change="setChanged()" disabled><label style="color: black">R</label></md-checkbox>
+                                        </div>
+                                        <div flex>
+                                            <md-checkbox class="md-primary"
+                                                         ng-model="config.segmentsExport.re"
+                                                         ng-change="setChanged()" disabled><label style="color: black">RE</label></md-checkbox>
+                                        </div>
+                                        <div flex>
+                                            <md-checkbox class="md-primary"
+                                                         ng-model="config.segmentsExport.c"
+                                                         ng-change="setChanged()" disabled><label style="color: black">C</label></md-checkbox>
+                                        </div>
+                                        <div flex>
+                                            <md-checkbox class="md-primary"
+                                                         ng-model="config.segmentsExport.o"
+                                                         ng-change="setChanged()"><label style="color: black">O</label></md-checkbox>
+                                        </div>
+                                        <div flex>
+                                            <md-checkbox class="md-primary"
+                                                         ng-model="config.segmentsExport.x"
+                                                         ng-change="setChanged()"><label style="color: black">X</label></md-checkbox>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div flex>
+                                    <hr/>
+                                    <p>Fields to Export:</p>
+                                    <div layout="row" layout-align="center start" style="width: 100%">
+                                        <div flex>
+                                            <md-checkbox class="md-primary"
+                                                         ng-model="config.fieldsExport.r"
+                                                         ng-change="setChanged()" disabled><label style="color: black">R</label></md-checkbox>
+                                        </div>
+                                        <div flex>
+                                            <md-checkbox class="md-primary"
+                                                         ng-model="config.fieldsExport.re"
+                                                         ng-change="setChanged()" disabled><label style="color: black">RE</label></md-checkbox>
+                                        </div>
+                                        <div flex>
+                                            <md-checkbox class="md-primary"
+                                                         ng-model="config.fieldsExport.c"
+                                                         ng-change="setChanged()" disabled><label style="color: black">C</label></md-checkbox>
+                                        </div>
+                                        <div flex>
+                                            <md-checkbox class="md-primary"
+                                                         ng-model="config.fieldsExport.o"
+                                                         ng-change="setChanged()"><label style="color: black">O</label></md-checkbox>
+                                        </div>
+                                        <div flex>
+                                            <md-checkbox class="md-primary"
+                                                         ng-model="config.fieldsExport.x"
+                                                         ng-change="setChanged()"><label style="color: black">X</label></md-checkbox>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </md-card-content>
+                    </md-card>
+                </md-content>
+            </div>
+            <!-- Co-constraints card -->
+            <div flex>
+                <md-content>
+                    <md-card>
+                        <md-card-content>
+                            <h4>Co-Constraints</h4>
+                            <hr/>
+                            <div flex>
+                                <md-checkbox class="md-primary"
+                                             ng-model="IGStyleExportConfig.duplicateOBXDataTypeWhenFlavorNull"
+                                             ng-change="setChanged()"> <label
+                                        style="color: black">Duplicate OBX datatype value when no flavor has been selected</label></md-checkbox>
+                            </div>
+                        </md-card-content>
+                    </md-card>
+                </md-content>
+            </div>
+        </div>
+        <!-- Columns card-->
+        <div flex style="min-width:40%">
+            <md-content>
+                <md-card>
+                    <md-card-content>
+                        <h4>Columns</h4>
+                        <hr/>
+                        <div layout="column" layout-align="center start" style="width: 100%">
+                            <div flex ng-repeat="column in config.segmentColumn.columns">
+                                <md-checkbox class="md-primary" ng-model="column.present" ng-disabled="column.disabled" ng-change="setChanged()">
+                                    <label style="color: black">{{column.name}} </label>
+                                </md-checkbox>
+                            </div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </md-content>
+        </div>
+    </div>
+</md-card-content>

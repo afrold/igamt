@@ -1,0 +1,63 @@
+<md-card-content>
+    <h2><md-checkbox class="md-primary" ng-model="config.includeCompositeProfileTable" ng-change="setChanged()" /> Composite Profile Table Options</h2>
+    <hr/>
+    <div layout="row" layout-align="center start" style="width: 100%">
+        <!-- Usages card -->
+        <div flex style="min-width:60%">
+            <md-content>
+                <md-card>
+                    <md-card-content>
+                        <h4>Usages</h4>
+                        <hr/>
+                        <p>Segments/Groups to Export:</p>
+                        <div layout="row" layout-align="center start" style="width: 100%">
+                            <div flex>
+                                <md-checkbox class="md-primary"
+                                             ng-model="config.segmentORGroupsCompositeProfileExport.r"
+                                             ng-change="setChanged()" disabled><label style="color: black">R</label></md-checkbox>
+                            </div>
+                            <div flex>
+                                <md-checkbox class="md-primary"
+                                             ng-model="config.segmentORGroupsCompositeProfileExport.re"
+                                             ng-change="setChanged()" disabled><label style="color: black">RE</label></md-checkbox>
+                            </div>
+                            <div flex>
+                                <md-checkbox class="md-primary"
+                                             ng-model="config.segmentORGroupsCompositeProfileExport.c"
+                                             ng-change="setChanged()" disabled><label style="color: black">C</label></md-checkbox>
+                            </div>
+                            <div flex>
+                                <md-checkbox class="md-primary"
+                                             ng-model="config.segmentORGroupsCompositeProfileExport.o"
+                                             ng-change="setChanged()"><label style="color: black">O</label></md-checkbox>
+                            </div>
+                            <div flex>
+                                <md-checkbox class="md-primary"
+                                             ng-model="config.segmentORGroupsCompositeProfileExport.x"
+                                             ng-change="setChanged()"><label style="color: black">X</label></md-checkbox>
+                            </div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </md-content>
+        </div>
+        <!-- Columns card-->
+        <div flex>
+            <md-content>
+                <md-card>
+                    <md-card-content>
+                        <h4>Columns</h4>
+                        <hr/>
+                        <div layout="column" layout-align="center start" style="width: 100%">
+                            <div flex ng-repeat="column in config.compositeProfileColumn.columns">
+                                <md-checkbox class="md-primary" ng-model="column.present" ng-disabled="column.disabled" ng-change="setChanged()">
+                                    <label style="color: black">{{column.name}} </label>
+                                </md-checkbox>
+                            </div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </md-content>
+        </div>
+    </div>
+</md-card-content>
