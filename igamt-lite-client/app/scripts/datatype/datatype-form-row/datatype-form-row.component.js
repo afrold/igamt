@@ -8,3 +8,4 @@ angular.module('igl').controller('FormRowCtrl', function($scope, $filter) {
 
   $scope.formName = "form_" + new Date().getTime();
 });
+
