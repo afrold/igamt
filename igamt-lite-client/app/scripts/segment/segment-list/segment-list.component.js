@@ -1612,7 +1612,12 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     sev.value = '';
     sev.profilePath = $rootScope.getSegmentLabel($rootScope.segment) + "-" + node.path;
     sev.name = node.name;
-    $rootScope.segment.singleElementValues.push(sev);
+
+      var diff= _.filter($rootScope.segment.singleElementValues, function (r) {
+          return sev.profilePath!==r.profilePath;
+      });
+      diff.push(sev);
+      $rootScope.segment.singleElementValues=diff;
     node.sev = sev;
     node.sev.from = 'segment';
     $scope.setDirty();

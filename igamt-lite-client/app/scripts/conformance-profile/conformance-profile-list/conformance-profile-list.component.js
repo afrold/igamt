@@ -1036,8 +1036,11 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
     sev.value = '';
     sev.profilePath = $rootScope.refinePath(node.locationPath);
     sev.name = node.obj.name;
-    console.log(sev);
-    $rootScope.message.singleElementValues.push(sev);
+      var diff= _.filter($rootScope.message.singleElementValues, function (r) {
+          return sev.profilePath!==r.profilePath;
+      });
+      diff.push(sev);
+      $rootScope.message.singleElementValues=diff;
     node.sev = sev;
     node.sev.from = 'message';
     $scope.setDirty();

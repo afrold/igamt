@@ -1351,7 +1351,6 @@ angular.module('igl')
       modalInstance.then(function(value) {
         $scope.addSev(node);
         node.sev.value = value;
-        $scope.setDirty();
         $rootScope.recordChanged();
       });
     };
@@ -1467,12 +1466,16 @@ angular.module('igl')
       sev.value = '';
       sev.profilePath = $rootScope.getDatatypeLabel($rootScope.datatype) + "." + node.path;
       sev.name = node.name;
-      console.log(sev);
-      $rootScope.datatype.singleElementValues.push(sev);
-      node.sev = sev;
-      node.sev.isMain = true;
-      $scope.setDirty();
-      $rootScope.recordChanged();
+        var diff= _.filter($rootScope.datatype.singleElementValues, function (r) {
+            return sev.profilePath!==r.profilePath;
+        });
+        diff.push(sev);
+        $rootScope.datatype.singleElementValues=diff;
+
+        node.sev = sev;
+
+        node.sev.isMain = true;
+        $rootScope.recordChanged();
     };
 
     $scope.deleteSev = function (node, parent){

@@ -1224,7 +1224,7 @@
         <td ng-class="{'emptyCol':!isAvailableConstantValue(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')&&igdocument"
             style="text-align:center">
             <div ng-show="isAvailableConstantValue(node)">
-                <span ng-show="node.sev" class="badge label-white">
+                <span ng-show="node.sev" class="badge label-white" ng-controller="FormRowCtrl" ng-init="init(node)">
                     <span ng-class="{'label-component-icon' : node.sev.isMain, 'label-sub-component-icon' : !node.sev.isMain}"><i
                             class="fa fa-circle fa-fw"/></span>
                     <span>{{node.sev.value}}</span>
