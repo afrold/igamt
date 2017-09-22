@@ -14,7 +14,12 @@ angular.module('igl')
     downgradeComponent({ component: FooterComponent
     }) as angular.IDirectiveFactory
   );
-
+angular.module('igl')
+    .directive(
+        'igamtToc',
+        downgradeComponent({ component: TreeComponent
+        }) as angular.IDirectiveFactory
+    );
 
 
 platformBrowserDynamic().bootstrapModule(AppModule).then(platformRef => {

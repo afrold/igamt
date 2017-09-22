@@ -6,7 +6,8 @@ var router_1 = require("@angular/router");
 var footer_component_1 = require("./app/scripts/footer/footer.component");
 var static_2 = require("@angular/upgrade/static");
 angular.module('igl')
-    .directive('igamtFooter', static_2.downgradeComponent({ component: footer_component_1.FooterComponent }));
+    .directive('igamtFooter', static_2.downgradeComponent({ component: footer_component_1.FooterComponent
+}));
 platform_browser_dynamic_1.platformBrowserDynamic().bootstrapModule(app_module_1.AppModule).then(function (platformRef) {
     var upgrade = platformRef.injector.get(static_1.UpgradeModule);
     upgrade.bootstrap(document.documentElement, ['igl']);
