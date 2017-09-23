@@ -1,0 +1,64 @@
+<div *ngIf="segmentData && config">
+    <p-treeTable [value]="segmentData.structure" resizableColumns="true" (onNodeExpand)="loadNode($event)">
+        <p-column header="Name">
+            <ng-template let-col let-node="rowData" pTemplate="body">
+                <span class="label label-icon" [ngClass]="node.data.typeStyle">{{node.data.type}}</span>
+                <span>{{node.data.position}}. {{node.data.name}}</span>
+            </ng-template>
+        </p-column>
+        <p-column header="Usage" [style]="{'overflow': 'visible'}">
+            <ng-template let-col let-node="rowData" pTemplate="body">
+                <p-dropdown [options]="config.usages" [(ngModel)]="node.data.usage" [style]="{'width':'100%'}"></p-dropdown>
+            </ng-template>
+        </p-column>
+        <p-column header="Cardinality">
+            <ng-template let-col let-node="rowData" pTemplate="body">
+                <input [(ngModel)]="node.data.min" type="text" style="width:50%;border-width:0px 0px 1px 0px" />
+                <input [(ngModel)]="node.data.max" type="text" style="width:50%;border-width:0px 0px 1px 0px" />
+            </ng-template>
+        </p-column>
+        <p-column header="Length">
+            <ng-template let-col let-node="rowData" pTemplate="body">
+                <input [(ngModel)]="node.data.minLength" type="text" style="width:50%;border-width:0px 0px 1px 0px" />
+                <input [(ngModel)]="node.data.maxLength" type="text" style="width:50%;border-width:0px 0px 1px 0px" />
+            </ng-template>
+        </p-column>
+        <p-column header="Conf. Length">
+            <ng-template let-col let-node="rowData" pTemplate="body">
+                <input [(ngModel)]="node.data.confLength" type="text" style="width:100%;border-width:0px 0px 1px 0px" />
+            </ng-template>
+        </p-column>
+        <p-column header="Data Type">
+            <ng-template let-col let-node="rowData" pTemplate="body">
+                <span class="badge" [ngClass]="node.data.datatype.badgeStyle">{{node.data.datatype.badge}}</span>
+                <span>{{node.data.datatype.label}}</span>
+            </ng-template>
+        </p-column>
+        <p-column header="Value Set/Single Code">
+            <ng-template let-col let-node="rowData" pTemplate="body">
+                <div *ngFor="let binding of node.data.tables">
+                    <span class="badge label-white">
+                        <span class="fa fa-circle fa-fw" [ngClass]="binding.levelStyle">
+                            {{binding.bindingIdentifier}}
+                        </span>
+                    </span>
+                </div>
+            </ng-template>
+        </p-column>
+        <p-column header="Constant Value">
+            <ng-template let-col let-node="rowData" pTemplate="body">
+                <input *ngIf="node.data.constantValue" [(ngModel)]="node.data.constantValue" type="text" style="width:100%;border-width:0px 0px 1px 0px" />
+            </ng-template>
+        </p-column>
+        <p-column header="Predicate">
+            <ng-template let-col let-node="rowData" pTemplate="body">
+                <input *ngIf="node.data.predicate" [(ngModel)]="node.data.predicate" type="text" style="width:100%;border-width:0px 0px 1px 0px" />
+            </ng-template>
+        </p-column>
+        <p-column header="Comment">
+            <ng-template let-col let-node="rowData" pTemplate="body">
+                <input *ngIf="node.data.comment" [(ngModel)]="node.data.comment" type="text" style="width:100%;border-width:0px 0px 1px 0px" />
+            </ng-template>
+        </p-column>
+    </p-treeTable>
+</div>

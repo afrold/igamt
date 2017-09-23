@@ -162,15 +162,10 @@
                                                             Component
                                                         </div>
                                                         <div flex class="pull-right">
-
-                                                                <button ng-click="addFieldModal(segment)" class="btn btn-sm btn-raised menu-table menu-table-add pull-right" ng-if="segment.scope=='USER'">
-                                                                    <i class="fa fa-plus fa-fw"></i> ADD
-                                                                </button>
-                                                            <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
-
-
-                                                            <button ng-if="segment.scope!=='HL7STANDARD'" class="pull-right btn btn-sm btn-raised menu-table menu-table-verify" title="Validate Segment" type="button"
-                                                                    ng-click="validateSegment()">
+                                                            <button ng-click="addFieldModal(segment)" class="btn btn-sm btn-raised menu-table menu-table-add pull-right" ng-if="segment.scope=='USER'">
+                                                                <i class="fa fa-plus fa-fw"></i> ADD
+                                                            </button>
+                                                            <button ng-if="segment.scope!=='HL7STANDARD'" class="pull-right btn btn-sm btn-raised menu-table menu-table-verify" title="Validate Segment" type="button" ng-click="validateSegment()">
                                                                 <i class="fa fa-check fa-fw"></i> Verify
                                                             </button>
                                                             <md-select class="pull-right"  ng-model="viewSettings.visibleColumns"  md-selected-text="viewSettings.getPlaceHolder()" multiple ng-model-options="{trackBy: '$value.id'}" no-dirty-check>
@@ -178,23 +173,24 @@
                                                                     <md-option ng-repeat="opt in  viewSettings.columnOptions track by $index" ng-value="opt">{{opt.label}}</md-option>
                                                                 </md-optgroup>
                                                             </md-select>
-                                                            <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
                                                         </div>
                                                     </div>
                                                 </div>
-                                                    <div class="" style="margin:5px 5px 5px 5px">
-                                                      <div class="row" ng-show="showErrorCount(segment.id)  && showSegErrorNotification" style="margin-right: 15px;margin-left: 5px;">
+                                                <div class="" style="margin:5px 5px 5px 5px">
+                                                    <div class="row" ng-show="showErrorCount(segment.id)  && showSegErrorNotification" style="margin-right: 15px;margin-left: 5px;">
                                                         <div class="alert has-error" ng-show="errorCount(segment.id)>0" >
-                                                        <button type="button" ng-click="setErrorNotification();" class="close" aria-label="Close"><span>&times;</span></button>{{errorCount(segment.id)}} Errors
-
+                                                            <button type="button" ng-click="setErrorNotification();" class="close" aria-label="Close"><span>&times;</span></button>{{errorCount(segment.id)}} Errors
                                                         </div>
-                                                       <div class="alert alert-success" ng-show="errorCount(segment.id)===0">
-                                                        <button type="button" ng-click="setErrorNotification();" class="close" aria-label="Close"><span>&times;</span></button>{{errorCount(segment.id)}} Errors
-
-                                                         </div>
+                                                        <div class="alert alert-success" ng-show="errorCount(segment.id)===0">
+                                                            <button type="button" ng-click="setErrorNotification();" class="close" aria-label="Close"><span>&times;</span></button>{{errorCount(segment.id)}} Errors
+                                                        </div>
                                                     </div>
+                                                </div>
+                                                <div class="igl-def-table-container panel-primary" style="overflow-x: scroll">
+                                                    <igamt--segment-treetable/>
+                                                </div>
 
-                                                     </div>
+                                                <!--
                                                 <div class="igl-def-table-container panel-primary" style="overflow-x: scroll">
                                                     <table id="treeTable" tt-table tt-params="segmentsParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                                         <thead>
@@ -227,6 +223,7 @@
                                                         <tbody></tbody>
                                                     </table>
                                                 </div>
+                                                -->
                                             </md-tab-body>
                                         </md-tab>
 

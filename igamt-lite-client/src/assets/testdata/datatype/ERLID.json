@@ -1,0 +1,84 @@
+{
+  "metadata": {},
+  "structure":
+  [
+    {
+      "data":{
+        "id": "1111",
+        "type": "C",
+        "typeStyle": "label-component",
+        "position": 1,
+        "name": "Segment ID",
+        "usage": "R",
+        "minLength": "3",
+        "maxLength": "3",
+        "datatype": {
+          "id": "STID",
+          "name": "ST",
+          "ext": "IZ01",
+          "label": "ST_IZ01",
+          "badgeStyle": "label-USE",
+          "badge": "USR 2.8.2"
+        },
+        "tables": [
+        ],
+        "constantValue" : null,
+        "comment": null,
+        "predicate": null
+      },
+      "leaf": true
+    },
+    {
+      "data":{
+        "id": "2222",
+        "type": "C",
+        "typeStyle": "label-component",
+        "position": 2,
+        "name": "Segment Sequence",
+        "usage": "R",
+        "minLength": "1",
+        "maxLength": "2",
+        "datatype": {
+          "id": "NMID",
+          "name": "NM",
+          "ext": "IZ01",
+          "label": "NM_IZ01",
+          "badgeStyle": "label-USE",
+          "badge": "USR 2.8.2"
+        },
+        "tables": [
+        ],
+        "constantValue" : null,
+        "comment": null,
+        "predicate": null
+      },
+      "leaf": true
+    },
+    {
+      "data":{
+        "id": "3333",
+        "type": "C",
+        "typeStyle": "label-component",
+        "position": 3,
+        "name": "Field Position",
+        "usage": "C",
+        "minLength": "0",
+        "maxLength": "0",
+        "datatype": {
+          "id": "CWESCID",
+          "name": "CWE",
+          "ext": "IZ01",
+          "label": "CWE_IZ01",
+          "badgeStyle": "label-USE",
+          "badge": "USR 2.8.2"
+        },
+        "tables": [
+        ],
+        "constantValue" : null,
+        "comment": null,
+        "predicate": null
+      },
+      "leaf": false
+    }
+  ]
+}

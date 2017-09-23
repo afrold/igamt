@@ -3,15 +3,12 @@ import { UpgradeModule } from '@angular/upgrade/static';
 import { AppModule } from './app/app.module';
 import { Router } from '@angular/router';
 import { FooterComponent } from './app/scripts/footer/footer.component';
-import { JooterComponent } from './app/scripts/segment/treetable/jooter.component';
-import { TreetableComponent } from './app/scripts/segment/treetable/treetable.component';
+import { SegttComponent } from './app/scripts/segment/segment-structure/segtt.component';
 import { downgradeComponent } from '@angular/upgrade/static';
 
-
-
 declare var angular: any;
-angular.module('igl').directive('igamtJooter',downgradeComponent({ component: JooterComponent }));
-angular.module('igl').directive('igamtTreetable',downgradeComponent({ component: TreetableComponent }));
+angular.module('igl').directive('igamtFooter',downgradeComponent({ component: FooterComponent }));
+angular.module('igl').directive('igamtSegmentTreetable',downgradeComponent({ component: SegttComponent }));
 
 platformBrowserDynamic().bootstrapModule(AppModule).then(platformRef => {
   const upgrade = platformRef.injector.get(UpgradeModule) as UpgradeModule;

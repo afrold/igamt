@@ -1,19 +1,18 @@
 declare var angular: angular.IAngularStatic;
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { UpgradeModule } from '@angular/upgrade/static';
 import { RouterModule} from '@angular/router';
 
-import { TreeTableModule, SharedModule } from 'primeng/primeng';
-
+import { TreeTableModule, SharedModule , DropdownModule} from 'primeng/primeng';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './scripts/footer/footer.component';
-import { JooterComponent } from './scripts/segment/treetable/jooter.component';
-import { TreetableComponent } from './scripts/segment/treetable/treetable.component';
-import { NodeService } from './scripts/segment/treetable/nodeservice'
+import { SegttComponent } from './scripts/segment/segment-structure/segtt.component';
+import { NodeService } from './scripts/segment/segment-structure/nodeservice'
 
 
 import {HttpModule} from '@angular/http';
@@ -28,14 +27,16 @@ import {HttpModule} from '@angular/http';
     RouterModule.forRoot([], { initialNavigation: false }),
     TreeTableModule,
     SharedModule,
-    HttpModule
+    HttpModule,
+    FormsModule,
+    DropdownModule
    ],
   providers: [
     NodeService
    ],
-  declarations: [ AppComponent, FooterComponent, TreetableComponent, JooterComponent],
+  declarations: [ AppComponent, FooterComponent, SegttComponent],
   bootstrap: [ AppComponent ],
-  entryComponents: [AppComponent, FooterComponent, TreetableComponent, JooterComponent]
+  entryComponents: [AppComponent, FooterComponent, SegttComponent]
 
 })
 

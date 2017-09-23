@@ -1,0 +1,102 @@
+{
+  "metadata": {},
+  "structure":
+  [
+    {
+      "data":{
+        "id": "58b5f797986da41a5de9e111",
+        "type": "F",
+        "typeStyle": "label-field",
+        "position": 1,
+        "name": "Error Code and Location",
+        "usage": "X",
+        "min": 0,
+        "max": "1",
+        "minLength": "0",
+        "maxLength": "0",
+        "confLength": "NA",
+        "datatype": {
+          "id": "NULLID",
+          "name": "-",
+          "ext": "",
+          "label": "-",
+          "badgeStyle": "label-HL7",
+          "badge": "HL7 2.5.1"
+        },
+        "tables": [
+        ],
+        "constantValue" : null,
+        "comment": null,
+        "predicate": null
+      },
+      "leaf": true
+    },
+    {
+      "data":{
+        "id": "58b5f797986da41a5de9e222",
+        "type": "F",
+        "typeStyle": "label-field",
+        "position": 2,
+        "name": "Error Location",
+        "usage": "RE",
+        "min": 0,
+        "max": "1",
+        "minLength": null,
+        "maxLength": null,
+        "confLength": null,
+        "datatype": {
+          "id": "ERLID",
+          "name": "ERL",
+          "ext": "IZ01",
+          "label": "ERL_IZ01",
+          "badgeStyle": "label-USE",
+          "badge": "USR 2.8.2"
+        },
+        "tables": [
+        ],
+        "constantValue" : null,
+        "comment": null,
+        "predicate": null
+      },
+      "leaf": false
+    },
+    {
+      "data":{
+        "id": "58b5f797986da41a5de9e333",
+        "type": "F",
+        "typeStyle": "label-field",
+        "position": 3,
+        "name": "HL7 Error Code",
+        "usage": "R",
+        "min": 1,
+        "max": "1",
+        "minLength": null,
+        "maxLength": null,
+        "confLength": null,
+        "datatype": {
+          "id": "CWEID",
+          "name": "CWE",
+          "ext": "IZ01",
+          "label": "CWE_IZ01",
+          "badgeStyle": "label-USE",
+          "badge": "USR 2.8.2"
+        },
+        "tables": [
+          {
+            "id": "0357_01_ID",
+            "bindingIdentifier": "0357_01",
+            "bindingStrength": null,
+            "bindingLocation": null,
+            "level" : "segment",
+            "levelStyle" : "label-field-icon",
+            "type": "valueset"
+          }
+        ],
+        "constantValue" : null,
+        "comment": null,
+        "predicate": null
+      },
+      "leaf": false
+    }
+  ]
+}

@@ -143,7 +143,7 @@ angular.module('ngTreetable', [])
 
 
         /**
-         * Build options for the internal treetable library.
+         * Build options for the internal segment-structure library.
          */
         $scope.getOptions = function() {
             var opts = angular.extend({
