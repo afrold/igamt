@@ -1,25 +1,22 @@
-
-import { Component, EventEmitter, Input, Output,OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, Output,OnInit} from '@angular/core';
 import {NodeService} from './nodeservice';
-import {TreeNode} from './treenode';
 import {Config} from './config';
 
 @Component({
-    selector: 'igamt--segment-treetable',
+    selector: 'igamt-segment-structure',
     templateUrl: './segtt.component.html'
 })
 
 export class SegttComponent implements OnInit {
 
-    segmentData: TreeNode[];
-
-    config: Config;
+    @Input() segmentdata: any;
+    @Input() config: Config;
 
     constructor(private nodeService: NodeService) {}
 
     ngOnInit() : void {
-        this.nodeService.getSegmentTreeNodes("segment001").then(segmentData => {
-                this.segmentData = segmentData;
+        this.nodeService.getSegmentTreeNodes("segment001").then(segmentdata => {
+            this.segmentdata = segmentdata;
         });
 
         this.nodeService.getConfig().then(config => {

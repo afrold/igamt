@@ -7,16 +7,15 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { UpgradeModule } from '@angular/upgrade/static';
 import { RouterModule} from '@angular/router';
 
-import { TreeTableModule, SharedModule , DropdownModule} from 'primeng/primeng';
+import { TreeTableModule, SharedModule , DropdownModule, EditorModule} from 'primeng/primeng';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './scripts/footer/footer.component';
 import { SegttComponent } from './scripts/segment/segment-structure/segtt.component';
+import { SegmetaComponent } from './scripts/segment/segment-metadata/segmeta.component';
 import { NodeService } from './scripts/segment/segment-structure/nodeservice'
 
-
 import {HttpModule} from '@angular/http';
-
 
 @NgModule({
   imports: [
@@ -29,20 +28,19 @@ import {HttpModule} from '@angular/http';
     SharedModule,
     HttpModule,
     FormsModule,
-    DropdownModule
+    DropdownModule,
+    EditorModule
    ],
   providers: [
     NodeService
    ],
-  declarations: [ AppComponent, FooterComponent, SegttComponent],
+  declarations: [ AppComponent, FooterComponent, SegttComponent, SegmetaComponent],
   bootstrap: [ AppComponent ],
-  entryComponents: [AppComponent, FooterComponent, SegttComponent]
+  entryComponents: [AppComponent, FooterComponent, SegttComponent, SegmetaComponent]
 
 })
 
 export class AppModule {
-
   constructor(private upgrade: UpgradeModule) { }
-  ngDoBootstrap() {}
 }
 

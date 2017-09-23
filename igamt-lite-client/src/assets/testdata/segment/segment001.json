@@ -1,5 +1,11 @@
 {
-  "metadata": {},
+  "metadata": {
+    "name" : "ERR",
+    "description": "Error Segment",
+    "ext": "IZ",
+    "authorNotes": "note",
+    "type" : "USER"
+  },
   "structure":
   [
     {

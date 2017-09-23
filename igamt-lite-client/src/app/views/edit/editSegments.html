@@ -59,6 +59,12 @@
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>MetaData
                                 </md-tab-label>
                                 <md-tab-body>
+
+                                    <div style="margin-top: 20px; margin-left: 20px;">
+                                        <igamt-segment-metadata></igamt-segment-metadata>
+                                    </div>
+
+                                        <!--
                                     <div style="margin-top: 20px" ng-cloak class="md-inline-form metadata-scroll" layout="column">
                                         <md-content layout-padding>
                                             <label class="input-left igamt-label">Name*</label>
@@ -115,7 +121,9 @@
                                                 >
                                             </md-input-container>
                                         </md-content>
+
                                     </div>
+                                  -->
                                  </md-tab-body>
                             </md-tab>
                             <md-tab md-on-select="setDeltaToF()">
@@ -187,7 +195,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="igl-def-table-container panel-primary" style="overflow-x: scroll">
-                                                    <igamt--segment-treetable/>
+                                                    <igamt-segment-structure [segmentdata]="segmentdata" [config]="config" ]></igamt-segment-structure>
                                                 </div>
 
                                                 <!--

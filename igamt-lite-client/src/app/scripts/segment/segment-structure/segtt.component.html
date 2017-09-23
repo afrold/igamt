@@ -1,5 +1,5 @@
-<div *ngIf="segmentData && config">
-    <p-treeTable [value]="segmentData.structure" resizableColumns="true" (onNodeExpand)="loadNode($event)">
+<div *ngIf="segmentdata && config">
+    <p-treeTable [value]="segmentdata.structure" resizableColumns="true" (onNodeExpand)="loadNode($event)">
         <p-column header="Name">
             <ng-template let-col let-node="rowData" pTemplate="body">
                 <span class="label label-icon" [ngClass]="node.data.typeStyle">{{node.data.type}}</span>

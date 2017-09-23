@@ -43,8 +43,6 @@ import '../assets/css/dialog.css';
 import './lib/angular-treetable/style/jquery.treetable.css'
 import './lib/angular-treetable/style/jquery.treetable.theme.default.css'
 
-
-
 @Component({
   selector: 'igamt-root',
   templateUrl: './app.component.html'
