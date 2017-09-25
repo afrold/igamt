@@ -6745,9 +6745,9 @@
                         <md-option ng-repeat="opt in sourceTypes" ng-value="opt.value">{{opt.label}}</md-option>
                     </md-select>
 
-                    <label class="input-left igamt-label" ng-if="newTable.sourceType=='EXTERNAL'"> Reference URL* </label>
+                    <label class="input-left igamt-label" ng-if="newTable.sourceType=='EXTERNAL'"> External Value Set Reference URL* </label>
                     <md-input-container class="md-block igamt-input-block" flex-gt-sm ng-if="newTable.sourceType=='EXTERNAL'">
-                        <input type="url" name="url" ng-required="newTable.sourceType=='EXTERNAL'" ng-model="newTable.sourceUrl" id="url">
+                        <input type="url" name="url" ng-required="newTable.sourceType=='EXTERNAL'" ng-model="newTable.referenceUrl" id="url">
                         <span ng-if="newTableForm.url.$invalid" style="color :red;">
                             <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Please Enter a Valid URL
                         </span>
@@ -6784,7 +6784,7 @@
 
             <md-dialog-content>
                 <div class="md-dialog-content">
-                    <label class="input-left igamt-label"> Reference URL </label>
+                    <label class="input-left igamt-label"> External Value Set Reference URL </label>
                     <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                         <input  type="url" name="url" required ng-model="url" id="url">
                         <span ng-if="externalform.url.$invalid" style="color :red;">

@@ -14,8 +14,7 @@ angular.module('igl').controller('CreateValueSet', ['$rootScope', '$scope', '$md
   $scope.newTable.codes = [];
   $scope.newTable.newTable = true;
   $scope.newTable.authorNotes="";
-
-
+  $scope.newTable.referenceUrl="";
   $scope.cancel = function () {
     $mdDialog.hide('cancel');
   };
