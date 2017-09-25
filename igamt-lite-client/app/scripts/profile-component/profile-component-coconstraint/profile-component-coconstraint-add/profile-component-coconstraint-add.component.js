@@ -3,6 +3,16 @@
  */
 
 angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $mdDialog, node, context, $rootScope, TableService) {
+
+    $scope.Cchanged=false;
+    $scope.coconstrsaintChanged=function () {
+     $scope.Cchanged=true;
+    };
+    $scope.isCocontraintChanged=function () {
+        return Cchanged;
+    };
+  
+
   $scope.backToCoConTable = function(){
     $scope.coConTable = true;
     $scope.ifAddCoCon = false;
@@ -13,6 +23,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
   };
   $scope.initCoConstraintsTable = function() {
     $scope.coConTable = true;
+      $scope.Cchanged=false;
     $scope.ifAddCoCon = false;
     $scope.thenAddCoCon = false;
     $scope.thenData = false;
@@ -223,7 +234,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
 
       $scope.coConstraintsTable.ifColumnDefinition = ifColumnDefinition;
     }
-    $rootScope.recordChanged ();
+  $scope.coconstrsaintChanged();
     $scope.coConTable = true;
     $scope.ifAddCoCon = false;
     $scope.thenAddCoCon = false;
@@ -971,10 +982,14 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
     $rootScope.recordChanged ();
   };
   $scope.cancel = function() {
-    $mdDialog.hide();
+      $scope.Cchanged=false;
+
+      $mdDialog.hide();
   }
   $scope.saveclose = function() {
-    $mdDialog.hide($scope.coConstraintsTable);
+      $scope.Cchanged=false;
+
+      $mdDialog.hide($scope.coConstraintsTable);
 
   }
   $scope.deleteVS = function (item, array){

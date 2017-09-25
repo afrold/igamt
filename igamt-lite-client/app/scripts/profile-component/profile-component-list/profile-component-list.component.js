@@ -402,7 +402,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
       if (coCon) {
         console.log(coCon);
         node.attributes.coConstraintsTable = coCon;
-        $rootScope.recordChanged ();
+        $rootScope.recordChanged();
         $scope.editForm.$pristine=false;
       }
     });
