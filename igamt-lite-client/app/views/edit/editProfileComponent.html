@@ -880,8 +880,8 @@
                                 {{applyTo.name}}
                             </td>
                             <td class="col-md-2"><span>
-                                        
-                                        
+
+
                                     <span>{{applyTo.position}}</span>
 
                                     </span>
@@ -1042,7 +1042,7 @@
                                                           ng-if="pc.type==='component'">C</span> {{pc.path}}
                                                 </td>
                                                 <td class="col-md-2"><span>
-                                        
+
                                         <span ng-if="pc.type==='segmentRef'">{{pc.attributes.oldRef.name}}</span>
                                                         <span ng-if="pc.type!=='segmentRef'">{{pc.name}}</span>
 
@@ -1091,12 +1091,12 @@
                                                             <span class="label label-component label-icon" ng-if="pc.type==='component'">C</span> {{pc.path}}
                                                         </td>
                                                         <td class="col-md-2"><span>
-                                                            
+
                                                             <span ng-if="pc.type==='segmentRef'">{{pc.attributes.oldRef.name}}</span>
                                                             <span ng-if="pc.type!=='segmentRef'">{{pc.name}}</span>
 
                                                             </span>
-                                                        
+
                                                         </td>
 
 
@@ -1270,19 +1270,19 @@
                                     <div layout="row" layout-align="start center">
                                         <md-input-container flex="100" ng-show="coConstraintsTable.ifColumnDefinition.primitive" style="margin:17px;font-weight: bold;">
                                             <input ng-model="coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value"
-                                                   ng-change="recordChanged();"
+                                                   ng-change="coconstrsaintChanged();"
                                                    style="font-weight: bold;"
                                                    ng-disabled="viewSettings.tableReadonly">
                                         </md-input-container>
 
                                         <md-input-container flex="70" ng-show="!coConstraintsTable.ifColumnDefinition.primitive" style="margin:17px;font-weight: bold;">
                                             <input ng-model="coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value"
-                                                   ng-change="recordChanged();"
+                                                   ng-change="coconstrsaintChanged();"
                                                    style="font-weight: bold;"
                                                    ng-disabled="viewSettings.tableReadonly">
                                         </md-input-container>
                                         <md-input-container flex="30" ng-show="!coConstraintsTable.ifColumnDefinition.primitive" style="margin-top: -5px;">
-                                            <md-select placeholder="Select BindingLocation" ng-model='coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.bindingLocation' ng-change="recordChanged()" ng-disabled="viewSettings.tableReadonly">
+                                            <md-select placeholder="Select BindingLocation" ng-model='coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.bindingLocation' ng-change="coconstrsaintChanged()" ng-disabled="viewSettings.tableReadonly">
                                                 <md-option ng-repeat="option in findOptions(coConstraintsTable.ifColumnDefinition.dtId)" ng-value="option">
                                                     {{option}}
                                                 </md-option>
@@ -1306,16 +1306,16 @@
                                         <div layout="row" layout-align="start center" ng-if="coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData && coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value">
                                             <md-input-container flex="100" ng-show="columnDefinition.primitive" style="margin:17px;">
                                                 <input ng-model="coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value"
-                                                       ng-change="recordChanged();"
+                                                       ng-change="coconstrsaintChanged();"
                                                        ng-disabled="viewSettings.tableReadonly">
                                             </md-input-container>
                                             <md-input-container flex="70" ng-show="!columnDefinition.primitive" style="margin:17px;">
                                                 <input ng-model="coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value"
-                                                       ng-change="recordChanged();"
+                                                       ng-change="coconstrsaintChanged();"
                                                        ng-disabled="viewSettings.tableReadonly">
                                             </md-input-container>
                                             <md-input-container flex="30" ng-show="!columnDefinition.primitive" style="margin-top: -5px;">
-                                                <md-select placeholder="Select BindingLocation" ng-model='coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.bindingLocation' ng-change="recordChanged()" ng-disabled="viewSettings.tableReadonly">
+                                                <md-select placeholder="Select BindingLocation" ng-model='coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.bindingLocation' ng-change="coconstrsaintChanged()" ng-disabled="viewSettings.tableReadonly">
                                                     <md-option ng-repeat="option in findOptions(columnDefinition.dtId)" ng-value="option">
                                                         {{option}}
                                                     </md-option>
@@ -1340,16 +1340,16 @@
                                         <div layout="row" layout-align="start center">
                                             <md-input-container flex="100" ng-show="columnDefinition.primitive" style="margin:17px;">
                                                 <input ng-model="coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value"
-                                                       ng-change="recordChanged();"
+                                                       ng-change="coconstrsaintChanged();"
                                                        ng-disabled="viewSettings.tableReadonly">
                                             </md-input-container>
                                             <md-input-container flex="70" ng-show="!columnDefinition.primitive" style="margin:17px;">
                                                 <input ng-model="coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value"
-                                                       ng-change="recordChanged();"
+                                                       ng-change="coconstrsaintChanged();"
                                                        ng-disabled="viewSettings.tableReadonly">
                                             </md-input-container>
                                             <md-input-container flex="30" ng-show="!columnDefinition.primitive" style="margin-top: -5px;">
-                                                <md-select placeholder="Select BindingLocation" ng-model='coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.bindingLocation' ng-change="recordChanged()" ng-disabled="viewSettings.tableReadonly">
+                                                <md-select placeholder="Select BindingLocation" ng-model='coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.bindingLocation' ng-change="coconstrsaintChanged()" ng-disabled="viewSettings.tableReadonly">
                                                     <md-option ng-repeat="option in findOptions(columnDefinition.dtId)" ng-value="option">
                                                         {{option}}
                                                     </md-option>
@@ -1379,7 +1379,7 @@
                                             <md-input-container flex="100">
                                                 <md-select placeholder="Select DT BaseName"
                                                            ng-model='coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value'
-                                                           ng-change="recordChanged()"
+                                                           ng-change="coconstrsaintChanged()"
                                                            ng-disabled="viewSettings.tableReadonly">
                                                     <md-option ng-repeat="c in dynamicMappingTable.codes | orderBy:'value'" ng-value="c.value">
                                                         {{c.value}}
@@ -1393,7 +1393,7 @@
                                             <md-input-container flex="100">
                                                 <md-select placeholder="Select DT Flavor"
                                                            ng-model="coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].datatypeId"
-                                                           ng-change="recordChanged()"
+                                                           ng-change="coconstrsaintChanged()"
                                                            ng-disabled="viewSettings.tableReadonly">
                                                     <md-option ng-repeat="link in $root.igdocument.profile.datatypeLibrary.children | filter: {name: coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value}  : true" ng-value="link.id">
                                                         {{$root.getDatatypeLabel($root.datatypesMap[link.id])}}
@@ -1538,7 +1538,7 @@
                                 <form class="form-horizontal" novalidate>
                                     <md-input-container layout="row" style="margin-top:15px;margin-left:15px;">
                                         <label flex="30" class="input-left">Title</label>
-                                        <input flex="70" type="text" ng-change="recordChanged()" name="title" ng-model="title" required>
+                                        <input flex="70" type="text" ng-change="coconstrsaintChanged()" name="title" ng-model="title" required>
                                     </md-input-container>
                                 </form>
                             </div>
@@ -1661,7 +1661,7 @@
                     <md-button ng-disabled="!selectedFieldPosition" class="md-raised md-primary" ng-show="ifAddCoCon" ng-click="saveIF()">SAVE</md-button>
                     <md-button ng-disabled="!selectedFieldPosition" class="md-raised md-primary" ng-show="thenAddCoCon" ng-click="saveTHEN()">SAVE</md-button>
                     <md-button ng-disabled="!title"                 class="md-raised md-primary" ng-show="userAddCoCon" ng-click="saveUSER()">SAVE</md-button>
-                    <md-button class="md-primary md-raised" md-autofocus ng-disabled="!changed" ng-show="coConTable" ng-click="saveclose()">Save</md-button>
+                    <md-button class="md-primary md-raised" md-autofocus ng-disabled="!Cchanged" ng-show="coConTable" ng-click="saveclose()">Save</md-button>
                 </md-dialog-actions>
             </md-dialog-content>
         </form>
