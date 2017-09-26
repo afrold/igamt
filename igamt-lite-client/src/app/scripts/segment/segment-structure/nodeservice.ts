@@ -8,19 +8,19 @@ export class NodeService {
     constructor(private http: Http) {}
 
     getSegmentTreeNodes(id) {
-        return this.http.get('src/assets/testdata/segment/' + id + '.json')
+        return this.http.get('mocks/api/display/segment/' + id + '.json')
             .toPromise()
             .then(res => <any> res.json());
     }
 
     getDatatypeTreeNodes(id) {
-        return this.http.get('src/assets/testdata/datatype/' + id + '.json')
+        return this.http.get('mocks/api/display/datatype/' + id + '.json')
             .toPromise()
             .then(res => <any> res.json().structure);
     }
 
     getConfig() {
-        return this.http.get('src/assets/testdata/config.json')
+        return this.http.get('mocks/api/display/config.json')
             .toPromise()
             .then(res => <Config> res.json());
     }

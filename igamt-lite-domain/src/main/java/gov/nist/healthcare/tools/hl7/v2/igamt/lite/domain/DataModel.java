@@ -44,7 +44,7 @@ public abstract class DataModel {
   protected String authorNotes = "";
   protected SourceType sourceType = SourceType.INTERNAL;
   protected String sourceUrl;
-
+  protected String type;
 
   /**
    * @return the sourceUrl
@@ -91,8 +91,6 @@ public abstract class DataModel {
   public DataModel() {
     this.dateUpdated = new Date();
   }
-
-  protected String type;
 
   public String dt() {
     return type;
