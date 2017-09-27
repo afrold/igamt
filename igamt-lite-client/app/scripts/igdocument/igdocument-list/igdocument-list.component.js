@@ -564,6 +564,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
   };
 
   $scope.openIGDocument = function (igdocument) {
+      $rootScope.validationResult=null;
     if (igdocument != null) {
       // Set rootscope accountId for sharing
       $rootScope.accountId = igdocument.accountId;
