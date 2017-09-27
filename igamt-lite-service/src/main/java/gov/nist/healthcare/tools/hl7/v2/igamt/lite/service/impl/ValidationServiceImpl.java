@@ -221,21 +221,20 @@ public class ValidationServiceImpl implements ValidationService {
       return false;
     }
     for (int i = 0; i < toBeVal.size(); i++) {
-      if (toBeVal.get(i).getType() != ref.get(i).getType()) {
+      if (!toBeVal.get(i).getType().equals(ref.get(i).getType())) {
         return false;
       } else {
-        if (toBeVal.get(i).getType() == Constant.SEGMENTREF) {
+        if (toBeVal.get(i).getType().equals(Constant.SEGMENTREF)) {
           SegmentRef segRef1 = (SegmentRef) toBeVal.get(i);
           SegmentRef segRef2 = (SegmentRef) ref.get(i);
-          if (segRef1.getRef().getName() != segRef2.getRef().getName()) {
+          if (!segRef1.getRef().getName().equals(segRef2.getRef().getName()))
             return false;
-          }
 
         }
-        if (toBeVal.get(i).getType() == Constant.GROUP) {
+        if (toBeVal.get(i).getType().equals(Constant.GROUP)) {
           Group grp1 = (Group) toBeVal.get(i);
           Group grp2 = (Group) ref.get(i);
-          verifyMsgStruct(grp2.getChildren(), grp1.getChildren());
+          return verifyMsgStruct(grp2.getChildren(), grp1.getChildren());
         }
       }
 

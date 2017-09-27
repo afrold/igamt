@@ -17,15 +17,15 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $root
 
 
   $scope.successUpload = function ($file, $message, $data) {
-    console.log("====called successI")
-    $scope.editForm.$dirty = true;
+
+      $rootScope.recordChanged();
     var link = JSON.parse($message);
     $rootScope.metaData.coverPicture = link.link;
   };
 
   $scope.removeCover = function () {
-    $scope.editForm.$dirty = true;
-    $rootScope.metaData.coverPicture = null;
+      $rootScope.recordChanged();
+      $rootScope.metaData.coverPicture = null;
   };
 
   $scope.save = function () {
