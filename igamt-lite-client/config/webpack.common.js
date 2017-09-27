@@ -57,7 +57,6 @@ module.exports = {
       // /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
       helpers.root('./src'), // location of your src
       {} // a map of your routes
-
     ),
 
     new webpack.optimize.CommonsChunkPlugin({
@@ -66,13 +65,7 @@ module.exports = {
 
     new HtmlWebpackPlugin({
       template: 'src/index.html'
-    }),
-      new webpack.ProvidePlugin({
-          underscore: 'underscore',
-      }),
-      new webpack.ProvidePlugin({
-          obje: 'object-diff',
-      })
+    })
   ]
 };
 
