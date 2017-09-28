@@ -512,9 +512,13 @@ public class IGDocumentController extends CommonController {
             t.setId(null);
             t.setLibIds(new HashSet<String>());
             t.setStatus(STATUS.UNPUBLISHED);
+            
+            tableService.save(t);
           }
-          t.getLibIds().add(clonedTableLibrary.getId());
-          tableService.save(t);
+
+          //Deleted LibId
+          
+          
           tl.setId(t.getId());
           clonedTableLibrary.addTable(tl);
           if (oldTableId != null) {
@@ -722,7 +726,7 @@ public class IGDocumentController extends CommonController {
               s.getCoConstraintsTable().getThenMapData().get(key);
 
           for (CoConstraintTHENColumnData data : dataList) {
-            if (data.getValueSets() != null) {
+            if (data != null && data.getValueSets() != null) {
               for (ValueSetData vsd : data.getValueSets()) {
                 if (vsd.getTableId() != null && tableIdChangeMap.containsKey(vsd.getTableId())) {
                   vsd.setTableId(tableIdChangeMap.get(vsd.getTableId()));
