@@ -3165,3 +3165,12 @@ md-select[disabled] .md-select-value {
 .selectedMenuItem {
     background-color: #ffcc00;
 }
+
+.config-checkbox{
+  margin-right:20px;
+}
+
+.config-toolbar {
+  background-color: #dcdcdc !important;
+  color: #3f3f3f;
+}

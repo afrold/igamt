@@ -1,6 +1,17 @@
 <md-card-content>
-    <h2><md-checkbox class="md-primary" ng-model="config.includeProfileComponentTable" ng-change="setChanged()" /> Profile Component Table Options</h2>
-    <hr/>
+
+
+  <md-toolbar>
+    <div class="md-toolbar-tools config-toolbar">
+      <h2 class="md-flex">
+
+        <md-checkbox class="md-primary" ng-model="config.includeProfileComponentTable" ng-change="setChanged()" /> Profile Component Table Options
+
+      </h2>
+    </div>
+  </md-toolbar>
+
+
     <div layout="row" layout-align="center start" style="width: 100%">
         <!-- Usages card -->
         <div flex style="min-width:60%">
@@ -10,28 +21,28 @@
                         <h4>Usages</h4>
                         <hr/>
                         <p>Items to Export:</p>
-                        <div layout="row" layout-align="center start" style="width: 100%">
-                            <div flex>
+                        <div layout="row"  style="width: 100%">
+                            <div class="config-checkbox">
                                 <md-checkbox class="md-primary"
                                              ng-model="config.profileComponentItemsExport.r"
                                              ng-change="setChanged()" disabled><label style="color: black">R</label></md-checkbox>
                             </div>
-                            <div flex>
+                            <div class="config-checkbox">
                                 <md-checkbox class="md-primary"
                                              ng-model="config.profileComponentItemsExport.re"
                                              ng-change="setChanged()" disabled><label style="color: black">RE</label></md-checkbox>
                             </div>
-                            <div flex>
+                            <div class="config-checkbox">
                                 <md-checkbox class="md-primary"
                                              ng-model="config.profileComponentItemsExport.c"
                                              ng-change="setChanged()" disabled><label style="color: black">C</label></md-checkbox>
                             </div>
-                            <div flex>
+                            <div class="config-checkbox">
                                 <md-checkbox class="md-primary"
                                              ng-model="config.profileComponentItemsExport.o"
                                              ng-change="setChanged()"><label style="color: black">O</label></md-checkbox>
                             </div>
-                            <div flex>
+                            <div class="config-checkbox">
                                 <md-checkbox class="md-primary"
                                              ng-model="config.profileComponentItemsExport.x"
                                              ng-change="setChanged()"><label style="color: black">X</label></md-checkbox>
@@ -48,8 +59,8 @@
                     <md-card-content>
                         <h4>Columns</h4>
                         <hr/>
-                        <div layout="column" layout-align="center start" style="width: 100%">
-                            <div flex ng-repeat="column in config.profileComponentColumn.columns">
+                        <div layout="column" style="width: 100%">
+                            <div class="config-checkbox" ng-repeat="column in config.profileComponentColumn.columns">
                                 <md-checkbox class="md-primary" ng-model="column.present" ng-disabled="column.disabled" ng-change="setChanged()">
                                     <label style="color: black">{{column.name}} </label>
                                 </md-checkbox>

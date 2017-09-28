@@ -698,23 +698,28 @@
     </md-dialog>
 </script>
 <script type="text/ng-template" id="EditUserData.html">
-    <div class="modal-header">
-        <h3>{{definition.title}}</h3>
-    </div>
-    <div class="modal-body">
-        <form class="form-horizontal" novalidate>
-            <div class="row">
-                <div class="col-md-12">
+    <md-dialog aria-label="editUserData">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> {{::definition.title}}</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
                     <textarea rows="10" type="text" ng-disabled="disabled" style="width:100%;" autofocus name="inputEditor" class="form-control" ng-model="textData"></textarea>
                 </div>
-            </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button  class="md-primary md-raised" md-autofocus ng-disabled="disabled" ng-click="close()">Save</md-button>
+            </md-dialog-actions>
         </form>
-    </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span></button>
-        <button class="btn btn-raised btn-primary btn-sm" ng-show="!disabled" ng-click="close()"><span><i class="fa fa-floppy-o fa-fw">&nbsp; </i>Save</span></button>
-    </div>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="EditCommentMd.html">
 

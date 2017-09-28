@@ -1405,31 +1405,24 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
   };
 
   $scope.editUserData = function (definition, obj, disabled) {
-    var modalInstance = $modal.open({
-      templateUrl: 'EditUserData.html',
-      controller: 'EditUserDataCtrl',
-      backdrop: true,
-      keyboard: true,
-      windowClass: 'input-text-modal-window',
-      backdropClick: false,
-      resolve: {
-        definition: function() {
-          return definition;
-        },
-        text: function() {
-          return obj.text;
-        },
-        disabled: function() {
-          return disabled;
-        }
-      }
-    });
-
-    modalInstance.result.then(function(textData) {
-      obj.text = textData;
-      $scope.setDirty();
-    });
+      var modalInstance = $mdDialog.show({
+          templateUrl: 'EditUserData.html',
+          controller: 'EditUserDataCtrl',
+          scope: $scope,        // use parent scope in template
+          preserveScope: true,
+          locals: {
+              definition:  definition,
+              text:  obj.text,
+              disabled:  disabled
+          }
+      });
+      modalInstance.then(function(textData) {
+          obj.text = textData;
+          $scope.setDirty();
+      });
   };
+
+
 
   $scope.confirmDatatypeSingleElementDuplicated = function (node) {
     var modalInstance = $modal.open({
