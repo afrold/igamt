@@ -1,3 +1,4 @@
+import {MessageNodeService} from "./scripts/message/message-structure/messageNodeService";
 declare var angular: angular.IAngularStatic;
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -16,6 +17,7 @@ import { SegmetaComponent } from './scripts/segment/segment-metadata/segmeta.com
 import { NodeService } from './scripts/segment/segment-structure/nodeservice'
 
 import {HttpModule} from '@angular/http';
+import {MessageTree} from './scripts/message/message-structure/message.component';
 
 @NgModule({
   imports: [
@@ -32,15 +34,15 @@ import {HttpModule} from '@angular/http';
     EditorModule
    ],
   providers: [
-    NodeService
+    NodeService,MessageNodeService
    ],
-  declarations: [ AppComponent, FooterComponent, SegttComponent, SegmetaComponent],
+  declarations: [ AppComponent, FooterComponent, SegttComponent, SegmetaComponent,MessageTree],
   bootstrap: [ AppComponent ],
-  entryComponents: [AppComponent, FooterComponent, SegttComponent, SegmetaComponent]
+  entryComponents: [AppComponent, FooterComponent, SegttComponent, SegmetaComponent,MessageTree]
 
 })
 
 export class AppModule {
-  constructor(private upgrade: UpgradeModule) { }
+  constructor(private upgrade: UpgradeModule) {}
 }
 
