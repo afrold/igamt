@@ -346,7 +346,7 @@ angular.module('igl').run(function ($rootScope, $location, Restangular, $modal, 
   // load app info
   AppInfo.get().then(function (appInfo) {
     $rootScope.appInfo = appInfo;
-    var buttons = ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'inlineStyle', 'message', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'caption', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', '-', 'undo', 'redo', 'clearFormatting', 'selectAll', 'insertTable', 'insertLink', 'insertImage', 'html'];
+    var buttons = ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'caption', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', '-', 'undo', 'redo', 'clearFormatting', 'selectAll', 'insertTable', 'insertLink', 'insertImage', 'html'];
     $rootScope.froalaEditorOptions = {
       placeholderText: '',
       toolbarButtons: buttons,
