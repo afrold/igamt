@@ -1061,7 +1061,7 @@ public class ValidationServiceImpl implements ValidationService {
       String message = "";
       if (toBeMin < 1) {
         message =
-            message + "Cardinality Min can not be less than 1 when Usage is: " + toBeUsage + ". ";
+            message + "Cardinality Min cannot be less than 1 when Usage is: " + toBeUsage + ". ";
 
       }
       if (!(toBeMax >= toBeMin || toBeMax < 1)) {
@@ -1120,7 +1120,7 @@ public class ValidationServiceImpl implements ValidationService {
         Pattern pattern = Pattern.compile("\\d*[#=]{0,1}");
         Matcher m = pattern.matcher(confLength);
         if (!m.matches()) {
-          return "Conf. Length don't match regular expression " + pattern;
+          return "Conf. Length is invalid. Expected format is " + pattern;
         }
       }
 
