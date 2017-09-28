@@ -28,7 +28,7 @@
                             <xsl:text>standalone</xsl:text>
                         </xsl:with-param>
                         <xsl:with-param name="type">
-                            <xsl:text>cs</xsl:text>
+                            <xsl:value-of select="$constraintType"/>
                         </xsl:with-param>
                         <xsl:with-param name="headerLevel">
                             <xsl:text>h5</xsl:text>
@@ -57,7 +57,7 @@
                         <xsl:text>standalone</xsl:text>
                     </xsl:with-param>
                     <xsl:with-param name="type">
-                        <xsl:text>cs</xsl:text>
+                        <xsl:value-of select="$constraintType"/>
                     </xsl:with-param>
                     <xsl:with-param name="headerLevel">
                         <xsl:text>h5</xsl:text>
