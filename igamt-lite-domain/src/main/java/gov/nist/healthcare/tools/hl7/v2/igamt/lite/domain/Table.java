@@ -41,11 +41,11 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   @Deprecated
   private String description;
   private String version;
-  private String oid;
-  private Stability stability;
-  private Extensibility extensibility;
+  private String oid = "";
+  private Stability stability = Stability.Undefined;
+  private Extensibility extensibility = Extensibility.Undefined;
 
-  private ContentDefinition contentDefinition;
+  private ContentDefinition contentDefinition = ContentDefinition.Undefined;
   private String group;
   private int order;
 
