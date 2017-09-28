@@ -565,7 +565,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build', [
-    'e2e-nowatch',
+    //'e2e-nowatch',
     'clean:dist',
     'wiredep',
     'useminPrepare',
