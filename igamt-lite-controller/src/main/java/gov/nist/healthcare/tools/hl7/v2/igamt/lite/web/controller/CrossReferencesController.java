@@ -425,8 +425,10 @@ public class CrossReferencesController {
       for (SubProfileComponent spc : pc.getChildren()) {
         if (spc.getSource() != null
             && (spc.getSource().getFieldDt() != null || spc.getSource().getComponentDt() != null)) {
-          if (spc.getSource().getFieldDt().equals(wrapper.getDatatypeId())
-              || spc.getSource().getComponentDt().equals(wrapper.getDatatypeId())) {
+          if (spc.getSource().getFieldDt() != null
+              && spc.getSource().getFieldDt().equals(wrapper.getDatatypeId())
+              || spc.getSource().getComponentDt() != null
+                  && spc.getSource().getComponentDt().equals(wrapper.getDatatypeId())) {
             ProfileComponentFound pcf = new ProfileComponentFound();
             pcf.setDescription(pc.getDescription());
             pcf.setId(pc.getId());

@@ -4390,15 +4390,17 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
 
   $rootScope.openConfirmLeaveDlg = function() {
-    if ($rootScope.modalInstance != undefined && $rootScope.modalInstance != null && $rootScope.modalInstance.opened) {
-      $rootScope.modalInstance.close();
-    }
-    $rootScope.modalInstance = $mdDialog.show({
-      templateUrl: 'ConfirmLeaveDlg.html',
-      controller: 'ConfirmLeaveDlgCtrl'
-    });
-    return $rootScope.modalInstance;
-  };
+      // if ($rootScope.modalInstance != undefined && $rootScope.modalInstance != null && $rootScope.modalInstance.opened) {
+      //   $rootScope.modalInstance.close();
+      // }
+      $rootScope.modalInstance = $mdDialog.show({
+          templateUrl: 'ConfirmLeaveDlg.html',
+          controller: 'ConfirmLeaveDlgCtrl'
+      });
+      // return $rootScope.modalInstance;
+      // };
+  }
+
 
   $rootScope.displayNullView = function() {
     //console.log("before");
