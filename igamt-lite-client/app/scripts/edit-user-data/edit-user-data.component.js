@@ -3,17 +3,17 @@
  */
 
 
-angular.module('igl').controller('EditUserDataCtrl', function($scope, $rootScope, $modalInstance, userInfoService, definition, text, disabled) {
+angular.module('igl').controller('EditUserDataCtrl', function($scope, $rootScope, $mdDialog, userInfoService, definition, text, disabled) {
   $scope.definition = definition;
   $scope.textData = text;
   $scope.disabled = disabled;
 
   $scope.cancel = function() {
-    $modalInstance.dismiss('cancel');
+      $mdDialog.hide();
   };
 
   $scope.close = function() {
-    $modalInstance.close($scope.textData);
+      $mdDialog.hide($scope.textData);
   };
 
 });
