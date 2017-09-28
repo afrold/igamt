@@ -1,5 +1,16 @@
 <md-card-content>
-    <h2><md-checkbox class="md-primary" ng-model="config.includeDatatypeTable" ng-change="setChanged()" /> Data Type Table Options</h2>
+
+  <md-toolbar>
+    <div class="md-toolbar-tools config-toolbar">
+      <h2 class="md-flex">
+
+        <md-checkbox class="md-primary" ng-model="config.includeDatatypeTable" ng-change="setChanged()" /> Data Type Table Options
+
+      </h2>
+    </div>
+  </md-toolbar>
+
+
     <hr/>
     <div layout="row" layout-align="center start" style="width: 100%">
         <!-- Usages card -->
@@ -10,28 +21,28 @@
                         <h4>Usages</h4>
                         <hr/>
                         <p>Datatypes to Export:</p>
-                        <div layout="row" layout-align="center start" style="width: 100%">
-                            <div flex>
+                        <div layout="row" style="width: 100%">
+                            <div class="config-checkbox">
                                 <md-checkbox class="md-primary"
                                              ng-model="config.datatypesExport.r"
                                              ng-change="setChanged()" disabled><label style="color: black">R</label></md-checkbox>
                             </div>
-                            <div flex>
+                            <div class="config-checkbox">
                                 <md-checkbox class="md-primary"
                                              ng-model="config.datatypesExport.re"
                                              ng-change="setChanged()" disabled><label style="color: black">RE</label></md-checkbox>
                             </div>
-                            <div flex>
+                            <div class="config-checkbox">
                                 <md-checkbox class="md-primary"
                                              ng-model="config.datatypesExport.c"
                                              ng-change="setChanged()" disabled><label style="color: black">C</label></md-checkbox>
                             </div>
-                            <div flex>
+                            <div class="config-checkbox">
                                 <md-checkbox class="md-primary"
                                              ng-model="config.datatypesExport.o"
                                              ng-change="setChanged()"><label style="color: black">O</label></md-checkbox>
                             </div>
-                            <div flex>
+                            <div class="config-checkbox">
                                 <md-checkbox class="md-primary"
                                              ng-model="config.datatypesExport.x"
                                              ng-change="setChanged()"><label style="color: black">X</label></md-checkbox>
@@ -42,28 +53,28 @@
                                      ng-change="setChanged()"><label style="color: black">Include varies</label></md-checkbox>
                         <hr/>
                         <p>Components to export</p>
-                        <div layout="row" layout-align="center start" style="width: 100%">
-                            <div flex>
+                        <div layout="row" style="width: 100%">
+                            <div class="config-checkbox">
                                 <md-checkbox class="md-primary"
                                              ng-model="config.componentExport.r"
                                              ng-change="setChanged()" disabled><label style="color: black">R</label></md-checkbox>
                             </div>
-                            <div flex>
+                            <div class="config-checkbox">
                                 <md-checkbox class="md-primary"
                                              ng-model="config.componentExport.re"
                                              ng-change="setChanged()" disabled><label style="color: black">RE</label></md-checkbox>
                             </div>
-                            <div flex>
+                            <div class="config-checkbox">
                                 <md-checkbox class="md-primary"
                                              ng-model="config.componentExport.c"
                                              ng-change="setChanged()" disabled><label style="color: black">C</label></md-checkbox>
                             </div>
-                            <div flex>
+                            <div class="config-checkbox">
                                 <md-checkbox class="md-primary"
                                              ng-model="config.componentExport.o"
                                              ng-change="setChanged()"><label style="color: black">O</label></md-checkbox>
                             </div>
-                            <div flex>
+                            <div class="config-checkbox">
                                 <md-checkbox class="md-primary"
                                              ng-model="config.componentExport.x"
                                              ng-change="setChanged()"><label style="color: black">X</label></md-checkbox>
@@ -80,8 +91,8 @@
                     <md-card-content>
                         <h4>Columns</h4>
                         <hr/>
-                        <div layout="column" layout-align="center start" style="width: 100%">
-                            <div flex ng-repeat="column in config.datatypeColumn.columns">
+                        <div layout="column"  style="width: 100%">
+                            <div class="config-checkbox" ng-repeat="column in config.datatypeColumn.columns">
                                 <md-checkbox class="md-primary" ng-model="column.present" ng-disabled="column.disabled" ng-change="setChanged()">
                                     <label style="color: black">{{column.name}} </label>
                                 </md-checkbox>

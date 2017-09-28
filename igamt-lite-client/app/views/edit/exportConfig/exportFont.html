@@ -31,7 +31,7 @@
                         <hr/>
                         <div layout="column">
                             <md-radio-group ng-model="userExportFontConfig.exportFont" ng-change="setChanged()">
-                                <div flex ng-repeat="font in fonts track by font.name">
+                                <div  ng-repeat="font in fonts track by font.name">
                                     <md-radio-button  ng-value="font" class="md-primary" >{{font.name}}</md-radio-button>
                                 </div>
                             </md-radio-group>
