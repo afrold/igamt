@@ -4081,7 +4081,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
   };
 
   $rootScope.getConstraintAsTruncatedString = function(constraint, num) {
-    if (constraint) return constraint.description.substring(0, num) + "...";
+    if (constraint && constraint.description) return constraint.description.substring(0, num) + "...";
     return null;
   };
 
