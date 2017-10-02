@@ -1088,21 +1088,20 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
   };
 
   $scope.deletePredicateByPosition = function(position, segment) {
-    var modalInstance = $modal.open({
-      templateUrl: 'DeleteSegmentPredicate.html',
+    var modalInstance = $mdDialog.show({
+      templateUrl: 'DeletePredicate.html',
       controller: 'DeleteSegmentPredicateCtrl',
       size: 'md',
-      resolve: {
-        position: function() {
-          return position;
-        },
-        segment: function() {
-          return segment;
-        }
+      locals: {
+        position: position,
+        segment: segment
+
       }
     });
-    modalInstance.result.then(function() {
-      $scope.setDirty();
+    modalInstance.then(function(result){
+      if(result&&result!=='cancel'){
+          $rootScope.recordChanged();
+      }
     });
   };
 

@@ -1101,7 +1101,7 @@
                     <span class="badge label-white">
                         <span>C({{p.trueUsage}}/{{p.falseUsage}})</span>
                         <span ng-click="managePredicate(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
-                        <span ng-click="deletePredicate(node.position, datatype)"><i
+                        <span ng-click="deleteDatatypePredicate(node.position, datatype)"><i
                                     class="fa fa-times fa-fw edit-icon"></i></span>
 
                     </span>
@@ -1258,7 +1258,7 @@
                             <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span>
                             <span ng-click="managePredicate(node)">{{getConstraintAsTruncatedString(p, 15)}}</span>
                             <span ng-click="managePredicate(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
-                            <span ng-click="deletePredicate(node.position, datatype)"><i
+                            <span ng-click="deleteDatatypePredicate(node.position, datatype)"><i
                                     class="fa fa-times fa-fw edit-icon"></i></span>
                         </span>
                     </p>
@@ -1899,23 +1899,7 @@
         </button>
     </div>
 </script>
-<script type="text/ng-template" id="DeleteDatatypePredicate.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Delete Confirmation</h3>
-    </div>
-    <div class="modal-body">
-        <p>Are you sure you want to delete the predicate? </p>
-    </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i
-                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i
-                class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-        </button>
-    </div>
-</script>
+
 <script type="text/ng-template" id="AddBindingForDatatype.html">
     <div class="modal-header">
         <h3 class="modal-title">Add Binding for Datatype : {{::getDatatypeLabel(datatype)}} </h3>

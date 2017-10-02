@@ -220,23 +220,22 @@ angular.module('igl')
       console.log($rootScope.references);
     };
 
-    $scope.deletePredicate = function(position, datatype) {
-      var modalInstance = $modal.open({
-        templateUrl: 'DeleteDatatypePredicate.html',
+    $scope.deleteDatatypePredicate= function(position, datatype) {
+      console.log("Deleting Predicate");
+      var modalInstance = $mdDialog.show({
+        templateUrl: 'DeletePredicate.html',
         controller: 'DeleteDatatypePredicateCtrl',
         size: 'md',
-        resolve: {
-          position: function() {
-            return position;
-          },
-          datatype: function() {
-            return datatype;
-          }
+        locals: {
+          position:position,
+          datatype: datatype
+
         }
       });
-      modalInstance.result.then(function() {
-        $scope.setDirty();
-        $rootScope.recordChanged();
+      modalInstance.then(function(result) {
+        if(result&&result!=='cancel'){
+            $rootScope.recordChanged();
+        }
       });
     };
 

@@ -6815,3 +6815,32 @@
     </md-dialog>
 
 </script>
+<script type="text/ng-template" id="DeletePredicate.html">
+    <md-dialog aria-label="table Mapping">
+        <form ng-cloak role="form">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Delete Confirmation </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <p>Are you sure you want to delete the predicate? </p>
+
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+
+                <md-button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i
+                        class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+                </md-button>
+            </md-dialog-actions>
+
+        </form>
+    </md-dialog>
+</script>
