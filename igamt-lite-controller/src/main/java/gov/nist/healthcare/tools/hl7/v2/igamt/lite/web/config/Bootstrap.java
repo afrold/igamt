@@ -304,7 +304,7 @@ public class Bootstrap implements InitializingBean {
     // addInternal();
     // fixCoConstraintsDTVS();
 
-    clearUserExportConfigurations();
+    // clearUserExportConfigurations();
 
   }
 
@@ -1166,8 +1166,7 @@ public class Bootstrap implements InitializingBean {
     List<ExportConfig> exportConfigs = exportConfig.findAll();
     for (ExportConfig exportConfig : exportConfigs) {
       if (exportConfig != null) {
-        ExportConfig defaultConfig =
-            ExportConfig.getBasicExportConfig(false);
+        ExportConfig defaultConfig = ExportConfig.getBasicExportConfig(false);
         if (exportConfig.getCodesExport() == null) {
           exportConfig.setCodesExport(defaultConfig.getCodesExport());
         }
