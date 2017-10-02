@@ -302,8 +302,9 @@ public class Bootstrap implements InitializingBean {
     // initializeAttributes();
     // changeCommentToAuthorNotes();
     // addInternal();
-    // fixCoConstraintsDTVS();
 
+    // 2.0.0-beta6
+    // fixCoConstraintsDTVS();
     // clearUserExportConfigurations();
 
   }
