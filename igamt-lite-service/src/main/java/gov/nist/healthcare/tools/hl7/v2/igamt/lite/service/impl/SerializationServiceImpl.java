@@ -140,6 +140,8 @@ public class SerializationServiceImpl implements SerializationService {
 
   private List<String> bindedDatatypesId;
 
+  private boolean doFilterValueSets = true;
+
 
   @Override
   public Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument,
@@ -202,7 +204,14 @@ public class SerializationServiceImpl implements SerializationService {
     igDocumentMessages = igDocument.getProfile().getMessages();
     this.bindedDatatypes = new ArrayList<>();
     this.bindedDatatypesId = new ArrayList<>();
-    this.bindedTables = new ArrayList<>();
+    if(igDocument.getExportConfig().getValueSetsToExport()!=null && igDocument.getExportConfig().getValueSetsToExport().size()>0){
+      this.bindedTables = new ArrayList<>(igDocument.getExportConfig().getValueSetsToExport());
+      this.doFilterValueSets = false;
+    } else {
+      bindedTables = new ArrayList<>();
+    }
+
+
     this.bindedSegments = new ArrayList<>();
     this.unbindedTables = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
     this.compositeProfiles = new ArrayList<>();
@@ -741,7 +750,7 @@ public class SerializationServiceImpl implements SerializationService {
   }
 
   private void doBindTable(String tableId) {
-	  if(!bindedTables.contains(tableId)){
+	  if(this.doFilterValueSets && !bindedTables.contains(tableId)){
 		  bindedTables.add(tableId);
 	  }
   }
