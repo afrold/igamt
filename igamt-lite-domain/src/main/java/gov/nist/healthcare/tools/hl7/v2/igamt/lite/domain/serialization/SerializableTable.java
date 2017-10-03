@@ -8,6 +8,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetMetadataConfig
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import java.util.List;
+
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
  * the Federal Government in the course of their official duties. Pursuant to title 17 Section 105
@@ -27,9 +29,10 @@ public class SerializableTable extends SerializableSection {
     private String bindingIdentifier, defPreText, defPostText;
     private ValueSetMetadataConfig valueSetMetadataConfig;
     private String referenceUrl;
+    private int maxCodeNumber;
 
     public SerializableTable(String id, String prefix, String position, String headerLevel, String title, Table table,
-        String bindingIdentifier, String defPreText, String defPostText, ValueSetMetadataConfig valueSetMetadataConfig, String referenceUrl) {
+        String bindingIdentifier, String defPreText, String defPostText, ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber, String referenceUrl) {
         super(id, prefix, position, headerLevel, title);
         this.table = table;
         this.bindingIdentifier = bindingIdentifier;
@@ -37,6 +40,7 @@ public class SerializableTable extends SerializableSection {
         this.defPostText = defPostText;
         this.valueSetMetadataConfig = valueSetMetadataConfig;
         this.referenceUrl = referenceUrl;
+        this.maxCodeNumber = maxCodeNumber;
     }
 
     @Override public Element serializeElement() {
@@ -89,19 +93,26 @@ public class SerializableTable extends SerializableSection {
             valueSetDefinitionElement.addAttribute(new Attribute("id", this.table.getId()));
 
             if (this.table.getCodes() != null) {
-                for (Code c : this.table.getCodes()) {
-                    Element valueElement = new Element("ValueElement");
-                    valueElement.addAttribute(
-                        new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
-                    valueElement.addAttribute(
-                        new Attribute("Label", (c.getLabel() == null) ? "" : c.getLabel()));
-                    valueElement.addAttribute(new Attribute("CodeSystem",
-                        (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
-                    valueElement.addAttribute(
-                        new Attribute("Usage", (c.getCodeUsage() == null) || c.getValue() ==null || "".equals(c.getValue()) || "...".equals(c.getValue()) ? "" : c.getCodeUsage()));
-                    valueElement.addAttribute(
-                        new Attribute("Comment", (c.getComments() == null) ? "" : c.getComments()));
-                    valueSetDefinitionElement.appendChild(valueElement);
+                List<Code> codes;
+                if(maxCodeNumber >= 0 && this.table.getCodes().size()>maxCodeNumber){
+                    codes = this.table.getCodes().subList(0,maxCodeNumber);
+                } else {
+                    codes = this.table.getCodes();
+                }
+                if(codes != null && !codes.isEmpty()) {
+                    for (Code c : codes) {
+                        Element valueElement = new Element("ValueElement");
+                        valueElement.addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
+                        valueElement.addAttribute(new Attribute("Label", (c.getLabel() == null) ? "" : c.getLabel()));
+                        valueElement.addAttribute(new Attribute("CodeSystem",
+                            (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
+                        valueElement.addAttribute(new Attribute("Usage",
+                            (c.getCodeUsage() == null) || c.getValue() == null || ""
+                                .equals(c.getValue()) || "...".equals(c.getValue()) ? "" : c.getCodeUsage()));
+                        valueElement.addAttribute(new Attribute("Comment",
+                            (c.getComments() == null) ? "" : c.getComments()));
+                        valueSetDefinitionElement.appendChild(valueElement);
+                    }
                 }
             }
             if (this.defPreText != null && !this.defPreText.isEmpty()) {
