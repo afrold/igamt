@@ -60,10 +60,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
 
     @Autowired SerializeConstraintService serializeConstraintService;
 
-    @Autowired SerializeDatatypeService serializeDatatypeService;
-
-    @Autowired SerializeTableService serializeTableService;
-
     @Override
     public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull) {
         Segment segment = segmentService.findById(segmentLink.getId());

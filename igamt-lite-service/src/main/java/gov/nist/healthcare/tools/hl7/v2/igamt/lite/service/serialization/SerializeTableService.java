@@ -22,10 +22,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
 public interface SerializeTableService {
 
     public SerializableTable serializeTable(TableLink tableLink, String prefix, Integer position,
-        CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig);
+        CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber);
     
     public SerializableTable serializeTable(TableLink tableLink, Table table, String prefix, Integer position,
-        CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig);
+        CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber);
 
 	public SerializableTable serializeTable(Table dataModel);
 }

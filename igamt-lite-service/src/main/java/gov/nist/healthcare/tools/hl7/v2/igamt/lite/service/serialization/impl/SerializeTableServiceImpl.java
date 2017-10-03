@@ -45,10 +45,10 @@ public class SerializeTableServiceImpl implements SerializeTableService {
     private AppInfo appInfo;
 
     @Override public SerializableTable serializeTable(TableLink tableLink, String prefix,
-        Integer position, CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig) {
+        Integer position, CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber) {
         if(tableLink!=null && tableLink.getId()!=null) {
           Table table = tableService.findById(tableLink.getId());
-          return this.serializeTable(tableLink, table, prefix, position, valueSetCodesUsageConfig, valueSetMetadataConfig);
+          return this.serializeTable(tableLink, table, prefix, position, valueSetCodesUsageConfig, valueSetMetadataConfig,maxCodeNumber);
         }
         return null;
     }
@@ -56,19 +56,19 @@ public class SerializeTableServiceImpl implements SerializeTableService {
     @Override
     public SerializableTable serializeTable(TableLink tableLink, Table table, String prefix,
         Integer position, CodeUsageConfig valueSetCodesUsageConfig,
-        ValueSetMetadataConfig valueSetMetadataConfig) {
-      return serializeTable(table, String.valueOf(3),prefix, position, valueSetCodesUsageConfig, valueSetMetadataConfig);
+        ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber) {
+      return serializeTable(table, String.valueOf(3),prefix, position, valueSetCodesUsageConfig, valueSetMetadataConfig,maxCodeNumber);
     }
 
 	@Override
 	public SerializableTable serializeTable(Table table) {
 		ExportConfig defaultConfig = ExportConfig.getBasicExportConfig(true);
-		return serializeTable(table,String.valueOf(0),String.valueOf(1),1,defaultConfig.getCodesExport(),defaultConfig.getValueSetsMetadata());
+		return serializeTable(table,String.valueOf(0),String.valueOf(1),1,defaultConfig.getCodesExport(),defaultConfig.getValueSetsMetadata(),defaultConfig.getMaxCodeNumber());
 	}
 	
 	private SerializableTable serializeTable(Table table, String headerLevel, String prefix,
 	        Integer position, CodeUsageConfig valueSetCodesUsageConfig,
-	        ValueSetMetadataConfig valueSetMetadataConfig){
+	        ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber){
 		if (table != null) {
 			String id = table.getId();
 			String title = "ID not found: " + table.getId();
@@ -106,7 +106,7 @@ public class SerializeTableServiceImpl implements SerializeTableService {
 					}
 				}
 				serializedTable = new SerializableTable(id, prefix, String.valueOf(position), headerLevel, title, table,
-						table.getBindingIdentifier(), defPreText, defPostText, valueSetMetadataConfig,referenceUrl);
+						table.getBindingIdentifier(), defPreText, defPostText, valueSetMetadataConfig,maxCodeNumber,referenceUrl);
 			}
 			return serializedTable;
 		}

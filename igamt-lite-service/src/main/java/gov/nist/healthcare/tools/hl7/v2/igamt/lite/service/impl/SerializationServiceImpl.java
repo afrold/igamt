@@ -494,7 +494,7 @@ public class SerializationServiceImpl implements SerializationService {
           SerializableTable serializableTable = serializeTableService.serializeTable(tableLink,
               prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
               tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig,
-              exportConfig.getValueSetsMetadata());
+              exportConfig.getValueSetsMetadata(),exportConfig.getMaxCodeNumber());
           valueSetsSection.addSection(serializableTable);
         }
       }
@@ -507,7 +507,7 @@ public class SerializationServiceImpl implements SerializationService {
             SerializableTable serializableTable = serializeTableService.serializeTable(tableLink,
                 prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
                 tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig,
-                exportConfig.getValueSetsMetadata());
+                exportConfig.getValueSetsMetadata(),exportConfig.getMaxCodeNumber());
             valueSetsSection.addSection(serializableTable);
           }
         }
