@@ -1,10 +1,12 @@
 <!-- Information panel>
 <div flex ng-include="'views/edit/exportConfig/exportConfigurationInformation.html'"></div-->
 <!-- Buttons bar -->
+
+<form ng-cloak name="exportStyleForm" novalidate id="exportStyleForm">
 <md-content flex layout="row" layout-margin layout-align="end center">
     <md-content>
         <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                ng-disabled="!changed"
+                ng-disabled="!changed || exportStyleForm.$invalid"
                 ng-click="saveExportConfig(); ">
             <span><i class="fa fa-check fa-fw"></i>Apply</span>
         </button>
@@ -37,4 +39,5 @@
         <md-card flex ng-include="'views/edit/exportConfig/profileComponentConfiguration.html'"></md-card>
     </div>
 </md-content>
+</form>
 

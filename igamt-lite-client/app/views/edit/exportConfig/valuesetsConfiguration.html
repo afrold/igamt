@@ -57,6 +57,7 @@
                                         style="color: black">All Custom Unbound </label></md-checkbox>
                             </div>
 
+                      <div style="margin-top:10px">
                           <p>Codes to Export:</p>
                       <div layout="row" style="width: 100%">
                         <div class="config-checkbox">
@@ -75,6 +76,20 @@
                                              ng-change="setChanged()"><label style="color: black">E</label></md-checkbox>
                             </div>
                         </div>
+                      </div>
+                      <div style="margin-top:20px">
+                       <span>Max Number of Codes to Export</span>
+                      <div style="width: 100%">
+                        <md-slider-container style="width:100%">
+                          <md-slider  min="0" max="500" ng-model="config.maxCodeNumber"  ng-change="setChanged()" class="md-primary">
+                          </md-slider>
+                          <md-input-container>
+                            <input type="number" disabled="true" name=maxCodeNumber" ng-model="config.maxCodeNumber" >
+                          </md-input-container>
+                        </md-slider-container>
+                      </div>
+                      </div>
+
                     </md-card-content>
           </md-card>
         </md-content>

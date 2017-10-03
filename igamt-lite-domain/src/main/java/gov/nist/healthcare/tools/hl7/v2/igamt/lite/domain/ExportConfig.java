@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
+ * 
  */
 @Document(collection = "exportConfig")
 public class ExportConfig {
@@ -61,6 +62,8 @@ public class ExportConfig {
   private ColumnsConfig datatypeColumn;
   private ColumnsConfig valueSetColumn;
   private ValueSetMetadataConfig valueSetsMetadata;
+  private final static int MAX_CODE = 500;
+  private int maxCodeNumber = MAX_CODE;
 
 
 
@@ -108,7 +111,8 @@ public class ExportConfig {
 
     defaultConfiguration.setValueSetsExport(displaySelectives);
 
-    ValueSetMetadataConfig valueSetMetadataConfig = new ValueSetMetadataConfig(true, true, true,true,true);
+    ValueSetMetadataConfig valueSetMetadataConfig =
+        new ValueSetMetadataConfig(true, true, true, true, true);
     defaultConfiguration.setValueSetsMetadata(valueSetMetadataConfig);
 
     // Default column
@@ -172,6 +176,7 @@ public class ExportConfig {
     valueSetsDefaultList.add(new NameAndPositionAndPresence("Comment", 5, setAllTrue, setAllTrue));
 
     defaultConfiguration.setValueSetColumn(new ColumnsConfig(valueSetsDefaultList));
+    defaultConfiguration.setMaxCodeNumber(MAX_CODE);
     return defaultConfiguration;
   }
 
@@ -421,5 +426,15 @@ public class ExportConfig {
   public void setIncludeVaries(boolean includeVaries) {
     this.includeVaries = includeVaries;
   }
+
+  public int getMaxCodeNumber() {
+    return maxCodeNumber;
+  }
+
+  public void setMaxCodeNumber(int maxCodeNumber) {
+    this.maxCodeNumber = maxCodeNumber;
+  }
+
+
 
 }
