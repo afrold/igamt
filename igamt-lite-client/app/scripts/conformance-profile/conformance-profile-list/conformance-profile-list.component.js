@@ -788,22 +788,22 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
 
 
   $scope.deletePredicateByPath = function(position, message) {
-    var modalInstance = $modal.open({
-      templateUrl: 'DeleteMessagePredicate.html',
+    var modalInstance = $mdDialog.show({
+      templateUrl: 'DeletePredicate.html',
       controller: 'DeleteMessagePredicateCtrl',
       size: 'md',
-      resolve: {
-        position: function() {
-          return position;
-        },
-        message: function() {
-          return message;
-        }
+      locals: {
+        position: position,
+        message:  message
+
       }
     });
-    modalInstance.result.then(function() {
-      $scope.setDirty();
-      $scope.findAllGlobalConstraints();
+    modalInstance.then(function(result) {
+      if(result&&result!=='cancel'){
+          $scope.setDirty();
+          $scope.findAllGlobalConstraints();
+      }
+
     });
   };
 

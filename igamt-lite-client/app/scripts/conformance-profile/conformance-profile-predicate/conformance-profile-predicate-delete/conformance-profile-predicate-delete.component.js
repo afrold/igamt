@@ -1,13 +1,13 @@
 /**
  * Created by haffo on 9/11/17.
  */
-angular.module('igl').controller('DeleteMessagePredicateCtrl', function($scope, $modalInstance, position, message, $rootScope) {
+angular.module('igl').controller('DeleteMessagePredicateCtrl', function($scope, $mdDialog, position, message, $rootScope) {
   $scope.selectedMessage = message;
   $scope.position = position;
   $scope.delete = function() {
     $scope.deleteExistingPredicate($scope.selectedMessage);
 
-    $modalInstance.close();
+    $mdDialog.hide('ok');
   };
 
   $scope.deleteExistingPredicate = function(current) {
@@ -34,6 +34,6 @@ angular.module('igl').controller('DeleteMessagePredicateCtrl', function($scope, 
   };
 
   $scope.cancel = function() {
-    $modalInstance.dismiss('cancel');
+    $mdDialog.hide('cancel');
   };
 });

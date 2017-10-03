@@ -61,7 +61,7 @@
   				<xsl:value-of select="@InfoForExternal"/>
   			</xsl:element>
   		</xsl:if>
-        <xsl:if test="@SourceType!='EXTERNAL'">
+        <xsl:if test="@SourceType!='EXTERNAL' and count(ValueElement) &gt; 0">
      		<xsl:element name="br"/>
 	       	<xsl:element name="span">
 	       	<xsl:attribute name="class">
