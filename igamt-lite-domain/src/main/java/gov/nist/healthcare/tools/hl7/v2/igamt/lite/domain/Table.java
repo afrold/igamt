@@ -69,6 +69,8 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
 
   protected String defPostText = "";
 
+  protected int numberOfCodes;
+
   private Set<ShareParticipantPermission> shareParticipantIds =
       new HashSet<ShareParticipantPermission>();
 
@@ -291,6 +293,7 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
     clonedTable.setAuthorNotes(super.getAuthorNotes());
     clonedTable.setCodeSystems(codeSystems);
     clonedTable.setSourceType(sourceType);
+    clonedTable.setNumberOfCodes(numberOfCodes);
 
     return clonedTable;
   }
@@ -438,6 +441,15 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   public void setIntensionalComment(String intensionalComment) {
     this.intensionalComment = intensionalComment;
   }
+
+  public int getNumberOfCodes() {
+    return numberOfCodes;
+  }
+
+  public void setNumberOfCodes(int numberOfCodes) {
+    this.numberOfCodes = numberOfCodes;
+  }
+
 
 
 }
