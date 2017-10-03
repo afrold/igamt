@@ -49,6 +49,9 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
   private ShareParticipant owner;
 
 
+  private IGDocumentExportConfig exportConfig;
+
+
   /**
    * @return the owner
    */
@@ -162,6 +165,7 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
     p.getTableLibrary().setSectionTitle("Value Sets");
     p.getTableLibrary().setType("tables");
     p.getTableLibrary().setSectionContents("xsx");
+
     this.setProfile(p);
   }
 
@@ -406,6 +410,14 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
    */
   public void setRealUsers(List<ShareParticipant> realUsers) {
     this.realUsers = realUsers;
+  }
+
+  public IGDocumentExportConfig getExportConfig() {
+    return exportConfig;
+  }
+
+  public void setExportConfig(IGDocumentExportConfig exportConfig) {
+    this.exportConfig = exportConfig;
   }
 
 
