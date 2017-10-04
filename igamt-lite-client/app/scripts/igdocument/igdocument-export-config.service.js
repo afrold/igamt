@@ -8,15 +8,14 @@ angular.module('igl').factory('IGDocumentExportConfigService',  function($rootSc
     save: function(igdocumentId, exportConfig) {
       var delay = $q.defer();
       $http.post('api/igdocuments/'+ igdocumentId + '/exportConfig', exportConfig).then(function(response) {
-        console.log(table);
-        var saved = angular.fromJson(response.data);
+         var saved = angular.fromJson(response.data);
         delay.resolve(saved);
         return saved;
       }, function(error) {
         delay.reject(error);
       });
       return delay.promise;
-    };
+    }
   };
   return IGDocumentExportConfigService;
 });

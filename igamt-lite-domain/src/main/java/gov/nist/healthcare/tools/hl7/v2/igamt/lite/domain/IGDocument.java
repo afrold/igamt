@@ -49,7 +49,7 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
   private ShareParticipant owner;
 
 
-  private IGDocumentExportConfig exportConfig;
+  private IGDocumentExportConfig exportConfig = new IGDocumentExportConfig();
 
 
   /**

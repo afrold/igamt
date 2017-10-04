@@ -2618,10 +2618,8 @@ md-input-container.normal{
 .ig-menu-bar{
     background-color:#2d9de7 !important;
     color:white;
-
-
-
 }
+
 .white-color{
     color:white;
     font-weight: bold;
@@ -3173,4 +3171,20 @@ md-select[disabled] .md-select-value {
 .config-toolbar {
   background-color: #dcdcdc !important;
   color: #3f3f3f;
+}
+
+
+.valueset-picklist {
+  height: 500px;
+  max-height: 500px;
+  overflow-y: scroll;
+}
+
+.picklist-header {
+  color:black;
+}
+
+.picklist-header-bar{
+  background:#F0F0F0; color:#B21A1C; align:center;
+  height:40px;
 }

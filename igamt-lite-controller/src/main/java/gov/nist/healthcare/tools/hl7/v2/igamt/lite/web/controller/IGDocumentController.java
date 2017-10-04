@@ -2054,7 +2054,6 @@ public class IGDocumentController extends CommonController {
     document.setExportConfig(exportConfig);
     igDocumentService.save(document);
     return true;
-
   }
 
 

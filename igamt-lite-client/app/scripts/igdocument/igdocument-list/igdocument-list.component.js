@@ -2118,10 +2118,10 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
         try {
           $rootScope.section = angular.copy(section);
           $rootScope.currentData = $rootScope.section;
-          $rootScope.igExportConfig = angular.copy($rootScope.igdocument.exportConfig);
           $rootScope.originalSection = section;
           $scope.loadingSelection = false;
           $rootScope.$emit("event:initEditArea");
+          $rootScope.$emit("event:initValueSetExportConfig");
           blockUI.stop();
         } catch (e) {
           $scope.loadingSelection = false;
