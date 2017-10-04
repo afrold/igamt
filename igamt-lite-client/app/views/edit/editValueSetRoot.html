@@ -87,7 +87,7 @@
             <div ng-if="viewSettings.tableReadonly">
               <md-toolbar md-scroll-shrink layout="row" class="md-default">
                 <div class="md-toolbar-tools">
-                  <span>Export Value Sets:# {{allTables.length}}</span>
+                  <span>Export ValueSets:# {{selectedTables.length}}</span>
                 </div>
               </md-toolbar>
               <md-content>
@@ -124,7 +124,7 @@
             <div class="col-md-4">
               <md-toolbar md-scroll-shrink layout="row" class="md-default">
                 <div class="md-toolbar-tools">
-                  <span>Value Sets: {{allTables.length}}</span>
+                  <span>Total ValueSets # {{allTables.length}}</span>
                   <!--<md-button class="pull-right md-secondary md-mini md-default" ng-click="addAllValueSet()"><i-->
                     <!--class="fa fa-plus fa-w"></i>-->
                   <!--</md-button>-->
@@ -150,7 +150,7 @@
               </md-content>
             </div>
 
-             <div class="col-md-2">
+             <div class="col-md-2" style="align:center; margin:auto">
                <md-button class="md-raised md-primary" ng-click="addSelectedValueSets()" style="width:100%"><i
                class="fa fa-angle-right fa-w"></i>
                </md-button>
@@ -168,7 +168,7 @@
             <div class="col-md-4">
               <md-toolbar md-scroll-shrink layout="row" class="picklist-header">
                 <div class="md-toolbar-tools">
-                  <span>Selected Value Sets: {{selectedTables.length}}</span>
+                  <span>Selected ValueSets # {{selectedTables.length}}</span>
                   <!--<md-button class="pull-right md-secondary md-mini md-primary" ng-click="removeAllValueSet()"><i-->
                     <!--class="fa fa-plus fa-w"></i>-->
                   <!--</md-button>-->

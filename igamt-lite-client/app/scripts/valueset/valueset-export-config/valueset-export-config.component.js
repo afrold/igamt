@@ -78,12 +78,16 @@ angular.module('igl').controller('ValueSetExportConfigCtrl', function ($scope, $
   $scope.addValueSet = function (table) {
     var index = $rootScope.selectedTables.indexOf(table);
     if (index < 0) {
-      $rootScope.selectedTables.unshift(table);
+      $rootScope.selectedTables.push(table);
+    }else {
+      console.log("table found: " + table.bindingIdentifier);
     }
 
     index = $rootScope.allTables.indexOf(table);
     if (index >= 0) {
       $rootScope.allTables.splice(index, 1);
+    }else {
+      console.log("table not found: " + table.bindingIdentifier);
     }
   };
 
@@ -120,7 +124,7 @@ angular.module('igl').controller('ValueSetExportConfigCtrl', function ($scope, $
     //
     index = $rootScope.allTables.indexOf(table);
     if (index < 0) {
-      $rootScope.allTables.unshift(table);
+      $rootScope.allTables.push(table);
     } else {
       $rootScope.allTables.splice(0, 0, $rootScope.allTables.splice(index, 1)[0]);
     }
