@@ -4,6 +4,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import nu.xom.Attribute;
 import nu.xom.Element;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.InetAddress;
@@ -128,7 +130,8 @@ public class SerializableSection extends SerializableElement {
                         commentElement.addAttribute(new Attribute("Date",simpleDateFormat.format(comment.getLastUpdatedDate())));
                     }
                     if(comment.getDescription()!=null){
-                        commentElement.addAttribute(new Attribute("Description",comment.getDescription()));
+                    	String escapedComment = StringEscapeUtils.escapeHtml4(comment.getDescription());
+                        commentElement.addAttribute(new Attribute("Description",escapedComment));
                     }
                     commentListElement.appendChild(commentElement);
                 }
