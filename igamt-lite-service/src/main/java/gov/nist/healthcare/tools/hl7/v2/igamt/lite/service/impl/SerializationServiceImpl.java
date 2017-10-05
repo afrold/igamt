@@ -2,8 +2,10 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -38,6 +40,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
@@ -668,20 +671,25 @@ public class SerializationServiceImpl implements SerializationService {
         segment = segmentService.findById(((SegmentRef) segmentRefOrGroup).getRef().getId());
       }
       if (segment != null) {
+    	Map<String,Usage> fieldLocationUsageMap = new HashMap<>();
         for (Field field : segment.getFields()) {
+        	fieldLocationUsageMap.put(String.valueOf(field.getPosition()), field.getUsage());
           if (!bindedDatatypes.contains(field.getDatatype())
               && ExportUtil.diplayUsage(field.getUsage(), this.exportConfig.getDatatypesExport())) {
             doBindDatatype(field.getDatatype(),null);
           }
-          for (ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : segment
-              .getValueSetBindings()) {
-            if (valueSetOrSingleCodeBinding instanceof ValueSetBinding) {
-              if (ExportUtil.diplayUsage(valueSetOrSingleCodeBinding.getUsage(),
-                      this.exportConfig.getValueSetsExport())) {
-                doBindTable(valueSetOrSingleCodeBinding.getTableId());
-              }
-              removeFromUnbindedTables(valueSetOrSingleCodeBinding.getTableId());
-            }
+        }
+        for (ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : segment
+            .getValueSetBindings()) {
+          if (valueSetOrSingleCodeBinding instanceof ValueSetBinding) {
+        	if(fieldLocationUsageMap.containsKey(valueSetOrSingleCodeBinding.getLocation())){
+        		if (ExportUtil.diplayUsage(fieldLocationUsageMap.get(valueSetOrSingleCodeBinding.getLocation()),
+                        this.exportConfig.getValueSetsExport())) {
+                  doBindTable(valueSetOrSingleCodeBinding.getTableId());
+                }
+        	}
+            
+            removeFromUnbindedTables(valueSetOrSingleCodeBinding.getTableId());
           }
         }
         if (segment.getDynamicMappingDefinition() != null
@@ -729,11 +737,13 @@ public class SerializationServiceImpl implements SerializationService {
     }
   }
 
-  private void bindTablesFromValueSetBindings(List<ValueSetOrSingleCodeBinding> valueSetBindings) {
+  private void bindTablesFromValueSetBindings(List<ValueSetOrSingleCodeBinding> valueSetBindings, Map<String,Usage> componentLocationUsageMap) {
 	  for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : valueSetBindings){
 		  if(valueSetOrSingleCodeBinding instanceof ValueSetBinding){
-			  if(ExportUtil.diplayUsage(valueSetOrSingleCodeBinding.getUsage(), this.exportConfig.getValueSetsExport())){
-				  doBindTable(valueSetOrSingleCodeBinding.getTableId());
+			  if(componentLocationUsageMap.containsKey(valueSetOrSingleCodeBinding.getLocation())){
+				  if(ExportUtil.diplayUsage(componentLocationUsageMap.get(valueSetOrSingleCodeBinding.getLocation()), this.exportConfig.getValueSetsExport())){
+					  doBindTable(valueSetOrSingleCodeBinding.getTableId());
+				  }
 			  }
 			  removeFromUnbindedTables(valueSetOrSingleCodeBinding.getTableId());
 		  }
@@ -747,14 +757,16 @@ public class SerializationServiceImpl implements SerializationService {
   }
 
   private void identifyBindedItemsFromDatatype(Datatype datatype) {
-	  bindTablesFromValueSetBindings(datatype.getValueSetBindings());
+	  Map<String,Usage> componentLocationUsageMap = new HashMap<>();
 	  for(Component component : datatype.getComponents()){
 		  if(component != null && component.getDatatype()!=null){
+			  componentLocationUsageMap.put(String.valueOf(component.getPosition()), component.getUsage());
 			  if(ExportUtil.diplayUsage(component.getUsage(), exportConfig.getDatatypesExport())){
 				  doBindDatatype(component.getDatatype(), null);
 			  }
 		  }
 	  }
+	  bindTablesFromValueSetBindings(datatype.getValueSetBindings(),componentLocationUsageMap);
   }
 
   private void doBindDatatype(DatatypeLink datatypeLink, Datatype datatype) {
