@@ -108,10 +108,14 @@ angular.module('igl').controller('ValueSetExportConfigCtrl', function ($scope, $
   $scope.saveConfig = function () {
     if ($rootScope.igdocument != null) {
       var exportConfig = angular.copy($rootScope.igdocument.exportConfig);
-      exportConfig.valueSetsToExport = [];
-      for (var i = 0; i < $scope.selectedTables.length; i++) {
-        exportConfig.valueSetsToExport.push($scope.selectedTables[i]);
+      exportConfig.valueSetsToExport = null;
+      if($scope.selectedTables.length > 0) {
+        exportConfig.valueSetsToExport = [];
+        for (var i = 0; i < $scope.selectedTables.length; i++) {
+          exportConfig.valueSetsToExport.push($scope.selectedTables[i]);
+        }
       }
+      
       IGDocumentExportConfigService.save($rootScope.igdocument.id, exportConfig).then(function (result) {
         $scope.saving = false;
         $scope.saved = true;
