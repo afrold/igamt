@@ -14649,7 +14649,7 @@
       "email": "haffo@nist.gov"
     },
     "exportConfig": {
-      "valueSetsToExport": []
+      "valueSetsToExport": ["579655655455fa35176cd1e0", "579655655455fa35176ccc93", "579655655455fa35176cd36d","579655655455fa35176cca55", "579655655455fa35176ccb77"]
     }
   }
 ]
