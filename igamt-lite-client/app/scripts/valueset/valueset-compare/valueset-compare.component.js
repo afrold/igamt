@@ -222,7 +222,7 @@ angular.module('igl').controller('cmpTableCtrl', function($scope, $modal, Object
     $scope.vsChanged = false;
     $scope.vsTemplate = false;
     TableService.getOne(table2.id).then(function(vs2) {
-      $scope.dataList = CompareService.cmpValueSet(JSON.stringify(table1), JSON.stringify(vs2));
+      $scope.dataList = CompareService.cmpValueSet(table1, vs2);
 
       $scope.loadingSelection = false;
       if ($scope.dynamicVs_params) {
