@@ -1,10 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -128,7 +124,7 @@ public class SerializationServiceImpl implements SerializationService {
 
   private List<DatatypeLink> bindedDatatypes;
 
-  private List<String> bindedTables;
+  private Set<String> bindedTables;
 
   private List<CompositeProfile> compositeProfiles;
 
@@ -160,7 +156,7 @@ public class SerializationServiceImpl implements SerializationService {
     SerializableSections serializableSections = new SerializableSections();
     this.bindedDatatypes =
         new ArrayList<>(datatypeLibraryDocument.getDatatypeLibrary().getChildren());
-    this.bindedTables = new ArrayList<>();
+    this.bindedTables = new HashSet<>();
     for (TableLink tableLink : datatypeLibraryDocument.getTableLibrary().getChildren()) {
     	doBindTable(tableLink.getId());
     }
@@ -204,11 +200,11 @@ public class SerializationServiceImpl implements SerializationService {
     igDocumentMessages = igDocument.getProfile().getMessages();
     this.bindedDatatypes = new ArrayList<>();
     this.bindedDatatypesId = new ArrayList<>();
-    if(igDocument.getExportConfig().getValueSetsToExport()!=null && igDocument.getExportConfig().getValueSetsToExport().size()>0){
-      this.bindedTables = new ArrayList<>(igDocument.getExportConfig().getValueSetsToExport());
+    if(igDocument.getExportConfig().getValueSetsToExport()!=null){
+      this.bindedTables = igDocument.getExportConfig().getValueSetsToExport();
       this.doFilterValueSets = false;
     } else {
-      bindedTables = new ArrayList<>();
+      bindedTables = new HashSet<>();
     }
 
 
@@ -740,8 +736,8 @@ public class SerializationServiceImpl implements SerializationService {
 
   private void bindTablesFromValueSetBindings(List<ValueSetOrSingleCodeBinding> valueSetBindings) {
 	  for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : valueSetBindings){
-		  if(valueSetOrSingleCodeBinding instanceof ValueSetBinding){
-			  if(ExportUtil.diplayUsage(valueSetOrSingleCodeBinding.getUsage(), this.exportConfig.getValueSetsExport())){
+		  if(valueSetOrSingleCodeBinding instanceof ValueSetBinding) {
+        if (ExportUtil.diplayUsage(valueSetOrSingleCodeBinding.getUsage(), this.exportConfig.getValueSetsExport())){
 				  doBindTable(valueSetOrSingleCodeBinding.getTableId());
 			  }
 			  removeFromUnbindedTables(valueSetOrSingleCodeBinding.getTableId());
