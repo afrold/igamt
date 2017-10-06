@@ -37,6 +37,9 @@
 
 
            <md-content layout-padding>
+               <div ng-hide="isFixedSectionTitle(section)">
+
+
                <label class="input-left igamt-label">Title*</label>
                <md-input-container class="md-block igamt-input-block" flex-gt-sm ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
                    <input type="text"
@@ -44,7 +47,7 @@
                           name="title" id="title"
                           ng-model="section.sectionTitle"
                           required
-                          ng-disabled="viewSettings.tableReadonly || isFixedSectionTitle(section)"
+                          ng-disabled="viewSettings.tableReadonly"
                           />
 
                    <div ng-messages="editForm.title.$invalid">
@@ -52,6 +55,7 @@
                    </div>
                </md-input-container>
 
+               </div>
                <label class="input-left igamt-label">Content</label>
                <md-input-container class="md-block igamt-input-block" flex-gt-sm style="margin-top:20px">
                    <div ng-if="!viewSettings.tableReadonly">
@@ -67,6 +71,5 @@
                    </div>
                </md-input-container>
             </div>
-
     </div>
 </script>

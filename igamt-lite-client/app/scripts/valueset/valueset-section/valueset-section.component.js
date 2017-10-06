@@ -136,7 +136,7 @@ angular.module('igl').controller('ValueSetSectionCtrl', function ($scope, $rootS
 
   $scope.saveConfig = function () {
     if ($rootScope.igdocument != null) {
-      var tableLibrary = angular.copy($rootScope.igdocument.profile.tableLibrary);
+      var tableLibrary = $rootScope.section;
       var exportConfig = tableLibrary.exportConfig;
       exportConfig.include = null;
       if($scope.selectedTables.length > 0) {
@@ -175,7 +175,10 @@ angular.module('igl').controller('ValueSetSectionCtrl', function ($scope, $rootS
   };
 
   $scope.resetSection = function () {
-    $scope.initSection();
+      $rootScope.section['sectionTitle']=$rootScope.igdocument.profile.tableLibrary['sectionTitle'];
+      $rootScope.section['sectionContents']=$rootScope.igdocument.profile.tableLibrary['sectionContents'];
+      $rootScope.section['sectionDescription']=  $rootScope.igdocument.profile.tableLibrary['sectionDescription'];
+      $scope.initSection();
     $scope.editForm.$setPristine();
     $scope.editForm.$dirty = false;
     $rootScope.clearChanges();

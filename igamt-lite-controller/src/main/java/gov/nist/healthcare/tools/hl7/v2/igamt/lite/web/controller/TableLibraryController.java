@@ -165,9 +165,9 @@ public class TableLibraryController extends CommonController {
     User u = userService.getCurrentUser();
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
     TableLibrary found = tableLibraryService.findById(id);
-    if (library.getAccountId() != account.getId()) {
-      throw new IllegalArgumentException();
-    }
+    // if (library.getAccountId().equals(account.getId())) {
+    // throw new IllegalArgumentException();
+    // }
     found.setExportConfig(library.getExportConfig());
     found.setSectionContents(library.getSectionContents());
     found.setSectionTitle(library.getSectionTitle());
