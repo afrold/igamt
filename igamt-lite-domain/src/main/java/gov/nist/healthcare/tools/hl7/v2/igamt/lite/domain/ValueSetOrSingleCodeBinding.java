@@ -15,6 +15,7 @@ public abstract class ValueSetOrSingleCodeBinding {
 
 	protected String location;
 	protected String tableId;
+	@Deprecated
 	protected Usage usage;
 	protected String type;
 	
@@ -38,10 +39,12 @@ public abstract class ValueSetOrSingleCodeBinding {
 		this.tableId = tableId;
 	}
 
+	@Deprecated
 	public Usage getUsage() {
 		return usage;
 	}
 
+	@Deprecated
 	public void setUsage(Usage usage) {
 		this.usage = usage;
 	}
