@@ -232,6 +232,10 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
       $scope.selectSection(section, referencer); // Should we open in a dialog ??
     });
 
+    $scope.$on('event:openValueSetRoot', function (event, section, referencer) {
+      $scope.selectValueSetRoot(section); // Should we open in a dialog ??
+    });
+
     $scope.$on('event:openDocumentMetadata', function (event, metaData) {
       $scope.selectDocumentMetaData(metaData); // Should we open in a dialog ??
     });
@@ -2075,7 +2079,6 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
   $scope.selectSection = function (section) {
     if (section.sectionContents === null || section.sectionContents === undefined) {
       section.sectionContents = "";
-      console.log(section);
     }
     $rootScope.subview = "EditSections.html";
     $scope.loadingSelection = true;
@@ -2089,6 +2092,36 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
           $rootScope.originalSection = section;
           $scope.loadingSelection = false;
           $rootScope.$emit("event:initEditArea");
+          blockUI.stop();
+        } catch (e) {
+          $scope.loadingSelection = false;
+          $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
+          $rootScope.msg().type = "danger";
+          $rootScope.msg().show = true;
+          blockUI.stop();
+        }
+      }, 100);
+  };
+
+
+  $scope.selectValueSetRoot = function (section) {
+    if (section.sectionContents === null || section.sectionContents === undefined) {
+      section.sectionContents = "";
+      console.log(section);
+    }
+    $rootScope.subview = "EditValueSetRoot.html";
+    $scope.loadingSelection = true;
+    blockUI.start();
+
+    $timeout(
+      function () {
+        try {
+          $rootScope.section = angular.copy(section);
+          $rootScope.currentData = $rootScope.section;
+          $rootScope.originalSection = section;
+          $scope.loadingSelection = false;
+          $rootScope.$emit("event:initEditArea");
+          $rootScope.$emit("event:initTableLibrarySection");
           blockUI.stop();
         } catch (e) {
           $scope.loadingSelection = false;

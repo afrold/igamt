@@ -1533,7 +1533,11 @@ angular
           if ($rootScope.section.sectionContents === null) {
             $rootScope.section.sectionContents = "";
           }
-          $scope.$emit('event:openSection', $rootScope.section);
+          if(param.toLowerCase() !== 'value sets') {
+            $scope.$emit('event:openSection', $rootScope.section);
+          }else{
+            $scope.$emit('event:openValueSetRoot', $rootScope.section);
+          }
         };
 
         $scope.editRoutSection = function(param) {

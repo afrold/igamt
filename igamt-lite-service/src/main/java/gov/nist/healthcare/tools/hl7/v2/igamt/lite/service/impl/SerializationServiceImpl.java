@@ -3,9 +3,11 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -131,7 +133,7 @@ public class SerializationServiceImpl implements SerializationService {
 
   private List<DatatypeLink> bindedDatatypes;
 
-  private List<String> bindedTables;
+  private Set<String> bindedTables;
 
   private List<CompositeProfile> compositeProfiles;
 
@@ -142,6 +144,8 @@ public class SerializationServiceImpl implements SerializationService {
   static final Logger logger = LoggerFactory.getLogger(SerializationService.class);
 
   private List<String> bindedDatatypesId;
+
+  private boolean doFilterValueSets = true;
 
 
   @Override
@@ -161,9 +165,9 @@ public class SerializationServiceImpl implements SerializationService {
     SerializableSections serializableSections = new SerializableSections();
     this.bindedDatatypes =
         new ArrayList<>(datatypeLibraryDocument.getDatatypeLibrary().getChildren());
-    this.bindedTables = new ArrayList<>();
+    this.bindedTables = new HashSet<>();
     for (TableLink tableLink : datatypeLibraryDocument.getTableLibrary().getChildren()) {
-    	doBindTable(tableLink.getId());
+      doBindTable(tableLink.getId());
     }
 
     int datatypeSectionPosition = 1;
@@ -205,7 +209,15 @@ public class SerializationServiceImpl implements SerializationService {
     igDocumentMessages = igDocument.getProfile().getMessages();
     this.bindedDatatypes = new ArrayList<>();
     this.bindedDatatypesId = new ArrayList<>();
-    this.bindedTables = new ArrayList<>();
+    if (igDocument.getProfile().getTableLibrary().getExportConfig() != null
+        && igDocument.getProfile().getTableLibrary().getExportConfig().getInclude() != null) {
+      this.bindedTables = igDocument.getProfile().getTableLibrary().getExportConfig().getInclude();
+      this.doFilterValueSets = false;
+    } else {
+      bindedTables = new HashSet<>();
+    }
+
+
     this.bindedSegments = new ArrayList<>();
     this.unbindedTables = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
     this.compositeProfiles = new ArrayList<>();
@@ -226,7 +238,7 @@ public class SerializationServiceImpl implements SerializationService {
           for (SegmentRefOrGroup segmentRefOrGroup : compositeProfile.getChildren()) {
             if (ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),
                 this.exportConfig.getSegmentORGroupsCompositeProfileExport())) {
-            	identifyBindedItemsFromSegmentOrGroup(segmentRefOrGroup, compositeProfile);
+              identifyBindedItemsFromSegmentOrGroup(segmentRefOrGroup, compositeProfile);
             } else {
               identifyUnbindedValueSetsFromSegmentOrGroup(segmentRefOrGroup, compositeProfile);
             }
@@ -238,9 +250,9 @@ public class SerializationServiceImpl implements SerializationService {
       for (SegmentRefOrGroup segmentRefOrGroup : message.getChildren()) {
         if (ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),
             this.exportConfig.getSegmentORGroupsMessageExport())) {
-        	identifyBindedItemsFromSegmentOrGroup(segmentRefOrGroup);
+          identifyBindedItemsFromSegmentOrGroup(segmentRefOrGroup);
         } else {
-        	identifyUnbindedValueSetsFromSegmentOrGroup(segmentRefOrGroup, null);
+          identifyUnbindedValueSetsFromSegmentOrGroup(segmentRefOrGroup, null);
         }
       }
     }
@@ -388,8 +400,9 @@ public class SerializationServiceImpl implements SerializationService {
       }
       int currentPosition = 1;
       for (ProfileComponentLink profileComponentLink : profileComponentLibrary.getChildren()) {
-        SerializableSection serializableProfileComponentSection = serializeProfileComponentService
-            .serializeProfileComponent(profileComponentLink, currentPosition, exportConfig.getProfileComponentItemsExport());
+        SerializableSection serializableProfileComponentSection =
+            serializeProfileComponentService.serializeProfileComponent(profileComponentLink,
+                currentPosition, exportConfig.getProfileComponentItemsExport());
         if (serializableProfileComponentSection != null) {
           profileComponentSection.addSection(serializableProfileComponentSection);
           currentPosition++;
@@ -497,7 +510,7 @@ public class SerializationServiceImpl implements SerializationService {
           SerializableTable serializableTable = serializeTableService.serializeTable(tableLink,
               prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
               tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig,
-              exportConfig.getValueSetsMetadata(),exportConfig.getMaxCodeNumber());
+              exportConfig.getValueSetsMetadata(), exportConfig.getMaxCodeNumber());
           valueSetsSection.addSection(serializableTable);
         }
       }
@@ -510,7 +523,7 @@ public class SerializationServiceImpl implements SerializationService {
             SerializableTable serializableTable = serializeTableService.serializeTable(tableLink,
                 prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
                 tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig,
-                exportConfig.getValueSetsMetadata(),exportConfig.getMaxCodeNumber());
+                exportConfig.getValueSetsMetadata(), exportConfig.getMaxCodeNumber());
             valueSetsSection.addSection(serializableTable);
           }
         }
@@ -652,9 +665,9 @@ public class SerializationServiceImpl implements SerializationService {
   }
 
   private void identifyBindedItemsFromSegmentOrGroup(SegmentRefOrGroup segmentRefOrGroup) {
-	  identifyBindedItemsFromSegmentOrGroup(segmentRefOrGroup, null);
+    identifyBindedItemsFromSegmentOrGroup(segmentRefOrGroup, null);
   }
-  
+
   private void identifyBindedItemsFromSegmentOrGroup(SegmentRefOrGroup segmentRefOrGroup,
       CompositeProfile compositeProfile) {
     if (segmentRefOrGroup instanceof SegmentRef) {
@@ -671,24 +684,25 @@ public class SerializationServiceImpl implements SerializationService {
         segment = segmentService.findById(((SegmentRef) segmentRefOrGroup).getRef().getId());
       }
       if (segment != null) {
-    	Map<String,Usage> fieldLocationUsageMap = new HashMap<>();
+        Map<String, Usage> fieldLocationUsageMap = new HashMap<>();
         for (Field field : segment.getFields()) {
-        	fieldLocationUsageMap.put(String.valueOf(field.getPosition()), field.getUsage());
+          fieldLocationUsageMap.put(String.valueOf(field.getPosition()), field.getUsage());
           if (!bindedDatatypes.contains(field.getDatatype())
               && ExportUtil.diplayUsage(field.getUsage(), this.exportConfig.getDatatypesExport())) {
-            doBindDatatype(field.getDatatype(),null);
+            doBindDatatype(field.getDatatype(), null);
           }
         }
         for (ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : segment
             .getValueSetBindings()) {
           if (valueSetOrSingleCodeBinding instanceof ValueSetBinding) {
-        	if(fieldLocationUsageMap.containsKey(valueSetOrSingleCodeBinding.getLocation())){
-        		if (ExportUtil.diplayUsage(fieldLocationUsageMap.get(valueSetOrSingleCodeBinding.getLocation()),
-                        this.exportConfig.getValueSetsExport())) {
-                  doBindTable(valueSetOrSingleCodeBinding.getTableId());
-                }
-        	}
-            
+            if (fieldLocationUsageMap.containsKey(valueSetOrSingleCodeBinding.getLocation())) {
+              if (ExportUtil.diplayUsage(
+                  fieldLocationUsageMap.get(valueSetOrSingleCodeBinding.getLocation()),
+                  this.exportConfig.getValueSetsExport())) {
+                doBindTable(valueSetOrSingleCodeBinding.getTableId());
+              }
+            }
+
             removeFromUnbindedTables(valueSetOrSingleCodeBinding.getTableId());
           }
         }
@@ -705,20 +719,20 @@ public class SerializationServiceImpl implements SerializationService {
         if (segment.getCoConstraintsTable() != null
             && segment.getCoConstraintsTable().getThenMapData() != null) {
           for (String key : segment.getCoConstraintsTable().getThenMapData().keySet()) {
-            if(segment.getCoConstraintsTable().getThenMapData().get(key) != null){
-        	  for (CoConstraintTHENColumnData coConstraintTHENColumnData : segment
-                .getCoConstraintsTable().getThenMapData().get(key)) {
-              if(coConstraintTHENColumnData!=null){
-            	if (coConstraintTHENColumnData.getDatatypeId() != null) {
-            		doBindDatatype(coConstraintTHENColumnData.getDatatypeId());
-	              } else if (coConstraintTHENColumnData.getValueSets() != null
-	                  && !coConstraintTHENColumnData.getValueSets().isEmpty()) {
-	                for (ValueSetData valueSetData : coConstraintTHENColumnData.getValueSets()) {
-	                  doBindTable(valueSetData.getTableId());
-	                }
-	              }
+            if (segment.getCoConstraintsTable().getThenMapData().get(key) != null) {
+              for (CoConstraintTHENColumnData coConstraintTHENColumnData : segment
+                  .getCoConstraintsTable().getThenMapData().get(key)) {
+                if (coConstraintTHENColumnData != null) {
+                  if (coConstraintTHENColumnData.getDatatypeId() != null) {
+                    doBindDatatype(coConstraintTHENColumnData.getDatatypeId());
+                  } else if (coConstraintTHENColumnData.getValueSets() != null
+                      && !coConstraintTHENColumnData.getValueSets().isEmpty()) {
+                    for (ValueSetData valueSetData : coConstraintTHENColumnData.getValueSets()) {
+                      doBindTable(valueSetData.getTableId());
+                    }
+                  }
+                }
               }
-            }
             }
           }
         }
@@ -729,7 +743,7 @@ public class SerializationServiceImpl implements SerializationService {
             this.exportConfig.getSegmentORGroupsMessageExport()))
             || (compositeProfile == null && ExportUtil.diplayUsage(children.getUsage(),
                 this.exportConfig.getSegmentORGroupsCompositeProfileExport()))) {
-        	identifyBindedItemsFromSegmentOrGroup(children, compositeProfile);
+          identifyBindedItemsFromSegmentOrGroup(children, compositeProfile);
         } else {
           identifyUnbindedValueSetsFromSegmentOrGroup(children, compositeProfile);
         }
@@ -737,48 +751,52 @@ public class SerializationServiceImpl implements SerializationService {
     }
   }
 
-  private void bindTablesFromValueSetBindings(List<ValueSetOrSingleCodeBinding> valueSetBindings, Map<String,Usage> componentLocationUsageMap) {
-	  for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : valueSetBindings){
-		  if(valueSetOrSingleCodeBinding instanceof ValueSetBinding){
-			  if(componentLocationUsageMap.containsKey(valueSetOrSingleCodeBinding.getLocation())){
-				  if(ExportUtil.diplayUsage(componentLocationUsageMap.get(valueSetOrSingleCodeBinding.getLocation()), this.exportConfig.getValueSetsExport())){
-					  doBindTable(valueSetOrSingleCodeBinding.getTableId());
-				  }
-			  }
-			  removeFromUnbindedTables(valueSetOrSingleCodeBinding.getTableId());
-		  }
-	  }
+  private void bindTablesFromValueSetBindings(List<ValueSetOrSingleCodeBinding> valueSetBindings,
+      Map<String, Usage> componentLocationUsageMap) {
+    for (ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : valueSetBindings) {
+      if (valueSetOrSingleCodeBinding instanceof ValueSetBinding) {
+        if (componentLocationUsageMap.containsKey(valueSetOrSingleCodeBinding.getLocation())) {
+          if (ExportUtil.diplayUsage(
+              componentLocationUsageMap.get(valueSetOrSingleCodeBinding.getLocation()),
+              this.exportConfig.getValueSetsExport())) {
+            doBindTable(valueSetOrSingleCodeBinding.getTableId());
+          }
+        }
+        removeFromUnbindedTables(valueSetOrSingleCodeBinding.getTableId());
+      }
+    }
   }
 
   private void doBindTable(String tableId) {
-	  if(!bindedTables.contains(tableId)){
-		  bindedTables.add(tableId);
-	  }
+    if (this.doFilterValueSets && !bindedTables.contains(tableId)) {
+      bindedTables.add(tableId);
+    }
   }
 
   private void identifyBindedItemsFromDatatype(Datatype datatype) {
-	  Map<String,Usage> componentLocationUsageMap = new HashMap<>();
-	  for(Component component : datatype.getComponents()){
-		  if(component != null && component.getDatatype()!=null){
-			  componentLocationUsageMap.put(String.valueOf(component.getPosition()), component.getUsage());
-			  if(ExportUtil.diplayUsage(component.getUsage(), exportConfig.getDatatypesExport())){
-				  doBindDatatype(component.getDatatype(), null);
-			  }
-		  }
-	  }
-	  bindTablesFromValueSetBindings(datatype.getValueSetBindings(),componentLocationUsageMap);
+    Map<String, Usage> componentLocationUsageMap = new HashMap<>();
+    for (Component component : datatype.getComponents()) {
+      if (component != null && component.getDatatype() != null) {
+        componentLocationUsageMap.put(String.valueOf(component.getPosition()),
+            component.getUsage());
+        if (ExportUtil.diplayUsage(component.getUsage(), exportConfig.getDatatypesExport())) {
+          doBindDatatype(component.getDatatype(), null);
+        }
+      }
+    }
+    bindTablesFromValueSetBindings(datatype.getValueSetBindings(), componentLocationUsageMap);
   }
 
   private void doBindDatatype(DatatypeLink datatypeLink, Datatype datatype) {
     if (!this.bindedDatatypesId.contains(datatypeLink.getId())) {
       this.bindedDatatypesId.add(datatypeLink.getId());
       this.bindedDatatypes.add(datatypeLink);
-      if(datatype == null){
-    	datatype = datatypeService.findById(datatypeLink.getId());
+      if (datatype == null) {
+        datatype = datatypeService.findById(datatypeLink.getId());
       }
-  	  if(datatype != null){
-  		identifyBindedItemsFromDatatype(datatype);
-  	  }
+      if (datatype != null) {
+        identifyBindedItemsFromDatatype(datatype);
+      }
     }
   }
 
@@ -786,7 +804,7 @@ public class SerializationServiceImpl implements SerializationService {
     Datatype datatype = datatypeService.findById(datatypeId);
     DatatypeLink datatypeLink =
         new DatatypeLink(datatype.getId(), datatype.getName(), datatype.getExt());
-    doBindDatatype(datatypeLink,datatype);
+    doBindDatatype(datatypeLink, datatype);
   }
 
   private void identifyUnbindedValueSetsFromSegmentOrGroup(SegmentRefOrGroup segmentRefOrGroup,
@@ -809,7 +827,7 @@ public class SerializationServiceImpl implements SerializationService {
       }
     } else if (segmentRefOrGroup instanceof Group) {
       for (SegmentRefOrGroup children : ((Group) segmentRefOrGroup).getChildren()) {
-    	  identifyUnbindedValueSetsFromSegmentOrGroup(children, compositeProfile);
+        identifyUnbindedValueSetsFromSegmentOrGroup(children, compositeProfile);
       }
     }
   }

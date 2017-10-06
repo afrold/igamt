@@ -32,6 +32,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SourceType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
@@ -135,7 +136,7 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
       if (table != null) {
         if (table.getDate().toString().equals(vs.getStatusDate().toString())
             && table.getVersion().equals(vsv.getVersionNumber() + "")) {
-          if (table.getCodes().size() == 0) {
+          if (table.getCodes().size() == 0 && table.getSourceType().equals(SourceType.INTERNAL)) {
             needUpdate = true;
             log.info(oid + " Table has no change! however local PHINVADS codes are missing");
           } else {
@@ -191,28 +192,39 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
       table.setComment(vsvByVSOid.get(0).getDescription());
       table.setDate(vs.getStatusDate().toString());
       table.setCodes(new ArrayList<Code>());
-      for (ValueSetConcept pcode : valueSetConcepts) {
-        Code code = new Code();
-        code.setCodeUsage("P");
-        code.setLabel(pcode.getCodeSystemConceptName());
-        code.setValue(pcode.getConceptCode());
-        CodeSystemSearchCriteriaDto csSearchCritDto = new CodeSystemSearchCriteriaDto();
-        csSearchCritDto.setCodeSearch(false);
-        csSearchCritDto.setNameSearch(false);
-        csSearchCritDto.setOidSearch(true);
-        csSearchCritDto.setDefinitionSearch(false);
-        csSearchCritDto.setAssigningAuthoritySearch(false);
-        csSearchCritDto.setTable396Search(false);
-        csSearchCritDto.setSearchType(1);
-        csSearchCritDto.setSearchText(pcode.getCodeSystemOid());
-        CodeSystem cs =
-            this.getService().findCodeSystems(csSearchCritDto, 1, 5).getCodeSystems().get(0);
-        code.setCodeSystem(cs.getHl70396Identifier());
-        code.setCodeSystemVersion(cs.getVersion());
-        code.setComments(pcode.getDefinitionText());
-        code.setType(Constant.CODE);
-        table.addCode(code);
+      
+      if(valueSetConcepts.size() > 500){
+        table.setNumberOfCodes(0);
+        table.setManagedBy(Constant.External);
+        table.setSourceType(SourceType.EXTERNAL);
+      }else {
+        for (ValueSetConcept pcode : valueSetConcepts) {
+          Code code = new Code();
+          code.setCodeUsage("P");
+          code.setLabel(pcode.getCodeSystemConceptName());
+          code.setValue(pcode.getConceptCode());
+          CodeSystemSearchCriteriaDto csSearchCritDto = new CodeSystemSearchCriteriaDto();
+          csSearchCritDto.setCodeSearch(false);
+          csSearchCritDto.setNameSearch(false);
+          csSearchCritDto.setOidSearch(true);
+          csSearchCritDto.setDefinitionSearch(false);
+          csSearchCritDto.setAssigningAuthoritySearch(false);
+          csSearchCritDto.setTable396Search(false);
+          csSearchCritDto.setSearchType(1);
+          csSearchCritDto.setSearchText(pcode.getCodeSystemOid());
+          CodeSystem cs =
+              this.getService().findCodeSystems(csSearchCritDto, 1, 5).getCodeSystems().get(0);
+          code.setCodeSystem(cs.getHl70396Identifier());
+          code.setCodeSystemVersion(cs.getVersion());
+          code.setComments(pcode.getDefinitionText());
+          code.setType(Constant.CODE);
+          table.addCode(code);
+        }
+        table.setNumberOfCodes(valueSetConcepts.size());
+        table.setManagedBy(Constant.Internal);
+        table.setSourceType(SourceType.INTERNAL);
       }
+      
       // 5. update Table on DB
       try {
         mongoOps.save(table);

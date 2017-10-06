@@ -162,6 +162,7 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
     p.getTableLibrary().setSectionTitle("Value Sets");
     p.getTableLibrary().setType("tables");
     p.getTableLibrary().setSectionContents("xsx");
+
     this.setProfile(p);
   }
 

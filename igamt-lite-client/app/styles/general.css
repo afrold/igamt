@@ -2618,10 +2618,8 @@ md-input-container.normal{
 .ig-menu-bar{
     background-color:#2d9de7 !important;
     color:white;
-
-
-
 }
+
 .white-color{
     color:white;
     font-weight: bold;
@@ -3174,3 +3172,82 @@ md-select[disabled] .md-select-value {
   background-color: #dcdcdc !important;
   color: #3f3f3f;
 }
+
+
+.valueset-picklist {
+  height: 500px;
+  max-height: 500px;
+  overflow-y: scroll;
+}
+
+.picklist-header {
+  color:black;
+}
+
+.picklist-header-bar{
+  background:#F0F0F0; color:#B21A1C; align:center;
+  height:40px;
+}
+
+.picklist-buttons {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.picklist-item-selected{
+  background-color:cornflowerblue;
+}
+
+
+
+table.fixed-header {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 600px; /* this can vary */
+}
+
+table.fixed-header * {
+  box-sizing: inherit;
+  -moz-box-sizing: inherit;
+}
+
+thead.fixed-header {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+tbody.fixed-header {
+  overflow-y: scroll;
+  display: inline-block;
+}
+
+thead.fixed-header > tr, tbody.fixed-header > tr, tfoot.fixed-header > tr {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+thead.fixed-header, tfoot.fixed-header {
+  flex-shrink: 0;
+}
+
+th.fixed-header, tbody.fixed-header td.fixed-header {
+  width: 20%; /* this can vary */
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+
+tfoot.fixed-header {
+  display: inline-block;
+}
+
+tfoot.fixed-header td.fixed-header {
+  width: 100%;
+  display: inline-block;
+}
+

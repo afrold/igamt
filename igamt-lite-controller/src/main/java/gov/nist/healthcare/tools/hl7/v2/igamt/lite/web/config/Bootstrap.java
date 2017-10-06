@@ -34,6 +34,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
+import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
@@ -144,6 +146,11 @@ public class Bootstrap implements InitializingBean {
   @Autowired
   ExportFontConfigService exportFontConfigService;
 
+  @Autowired
+  UserService userService;
+
+  @Autowired
+  AccountRepository accountRepository;
   @Autowired
   ProfileService profileService;
   @Autowired
@@ -307,7 +314,77 @@ public class Bootstrap implements InitializingBean {
     // fixCoConstraintsDTVS();
     // clearUserExportConfigurations();
 
+    // 2.0.0-beta7
+    // updateTableForNumOfCodesANDSourceType();
+
   }
+
+
+
+  private void updateTableForNumOfCodesANDSourceType() {
+    List<Table> allTables = tableService.findAll();
+    // String largeTableLISTCSV = "\"ID\"," + "\"Binding Identifier\"," + "\"Name\"," + "\"Code
+    // Size\"," + "\"SCOPE\"," + "\"HL7 Version\"\n";
+    // String IGUsedLargeTableLISTCSV = "\"ID\"," + "\"IG Name\"," + "\"IG Title\"," + "\"IG
+    // SubTitle\"," + "\"IG status\"," + "\"Account Id\"," + "\"User Id\"," + "\"User email\"," +
+    // "\"User FullName\"," + "\"Binding Identifier\"," + "\"VS Name\"," + "\"Code Size\"," +
+    // "\"SCOPE\"," + "\"HL7 Version\"\n";
+
+    // Map<String,Table> largeTable = new HashMap<String, Table> ();
+
+
+    for (Table t : allTables) {
+      int numberOfCodes = t.getCodes().size();
+      tableService.updateAttributes(t.getId(), "numberOfCodes", numberOfCodes);
+
+      if (numberOfCodes > 500) {
+        // largeTable.put(t.getId(), t);
+        // largeTableLISTCSV = largeTableLISTCSV +
+        // "\"" + t.getId() + "\"," +
+        // "\"" + t.getBindingIdentifier() + "\"," +
+        // "\"" + t.getName() + "\"," +
+        // "\"" + t.getCodes().size() + "\"," +
+        // "\"" + t.getScope() + "\"," +
+        // "\"" + t.getHl7Version() + "\"\n";
+
+        t.setManagedBy(Constant.External);
+        t.setSourceType(SourceType.EXTERNAL);
+        t.setCodes(new ArrayList<Code>());
+        t.setNumberOfCodes(numberOfCodes);
+        tableService.save(t);
+
+      }
+    }
+
+    /*
+     * List<IGDocument> allUserIGs = documentService.findAllByScope(IGDocumentScope.USER);
+     * for(IGDocument ig : allUserIGs){ TableLibrary tLib = ig.getProfile().getTableLibrary();
+     * 
+     * for(TableLink tl : tLib.getChildren()){ Table found = largeTable.get(tl.getId());
+     * 
+     * if(found != null){ Account account = accountRepository.findOne(ig.getAccountId());
+     * 
+     * if(account == null) { account = new Account(); account.setUsername("Unknown");
+     * account.setEmail("Unknown"); account.setFullName("Unknown"); }
+     * 
+     * IGUsedLargeTableLISTCSV = IGUsedLargeTableLISTCSV + "\"" + ig.getId() + "\"," + "\"" +
+     * ig.getMetaData().getName() + "\"," + "\"" + ig.getMetaData().getTitle() + "\"," + "\"" +
+     * ig.getMetaData().getSubTitle() + "\"," + "\"" + ig.getMetaData().getStatus() + "\"," +
+     * 
+     * "\"" + ig.getAccountId()+ "\"," + "\"" + account.getUsername() + "\"," + "\"" +
+     * account.getEmail() + "\"," + "\"" + account.getFullName() + "\"," +
+     * 
+     * "\"" + found.getId() + "\"," + "\"" + found.getBindingIdentifier() + "\"," + "\"" +
+     * found.getName() + "\"," + "\"" + found.getCodes().size() + "\"," + "\"" + found.getScope() +
+     * "\"," + "\"" + found.getHl7Version() + "\"\n"; } } }
+     */
+
+
+    // System.out.println(largeTableLISTCSV);
+    // System.out.println(IGUsedLargeTableLISTCSV);
+  }
+
+
 
   private void clearUserExportConfigurations() {
     exportConfigRepository.deleteAll();

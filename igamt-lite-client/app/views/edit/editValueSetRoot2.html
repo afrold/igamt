@@ -1,0 +1,212 @@
+<style id="antiClickjack">body {
+  display: none !important;
+}</style>
+<script type="text/javascript">
+  if (self === top) {
+    var antiClickjack = document.getElementById("antiClickjack");
+    antiClickjack.parentNode.removeChild(antiClickjack);
+  } else {
+    top.location = self.location;
+  }
+</script>
+<script type="text/ng-template" id="EditValueSetRoot.html">
+  <div class="container">
+    <div class="page-header">
+      <span class="header4">Section: {{section.sectionTitle}} </span>
+      <div class="static_info" style="margin-top:10px">
+        <i class="fa fa-calendar" aria-hidden="true"></i>
+        Updated {{section.dateUpdated | date:dateFormat}}
+      </div>
+    </div>
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab>
+        <md-tab-label>
+          <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>Definition
+        </md-tab-label>
+        <md-tab-body>
+          <div ng-controller="SectionsListCtrl" ng-init="init()" class="container" ng-cloak>
+        <span class="pull-right">
+         <md-button title="Save Changes" type="submit" class="btn btn-raised btn-sm btn-success"
+                    ng-disabled="editForm.$invalid || !editForm.$dirty"
+                    ng-click="save()"
+                    ng-hide="viewSettings.tableReadonly">
+             <span><i class="fa fa-check fa-fw"></i> Save</span>
+         </md-button>
+        <md-button title="Cancel Changes" type="button" class="btn btn-raised btn-sm btn-warning"
+                   ng-hide="viewSettings.tableReadonly"
+                   ng-disabled="!editForm.$dirty"
+                   ng-click="reset()">
+                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
+        </md-button>
+                </span>
+          </div>
+
+          <md-content layout-padding>
+            <label class="input-left igamt-label">Title*</label>
+            <md-input-container class="md-block igamt-input-block" flex-gt-sm
+                                ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
+              <input type="text"
+                     ng-change="setDirty()"
+                     name="title" id="title"
+                     ng-model="section.sectionTitle"
+                     required
+                     ng-disabled="viewSettings.tableReadonly || isFixedSectionTitle(section)"
+              />
+
+              <div ng-messages="editForm.title.$invalid">
+                <div ng-message="required">Title is required.</div>
+              </div>
+            </md-input-container>
+
+            <label class="input-left igamt-label">Content</label>
+            <md-input-container class="md-block igamt-input-block" flex-gt-sm style="margin-top:20px">
+              <div ng-if="!viewSettings.tableReadonly">
+                            <textarea froala="froalaEditorOptions" ng-model="section.sectionContents"
+                                      id="content"
+                                      name="content"
+                                      ng-change="setDirty()"></textarea>
+              </div>
+              <div ng-if="viewSettings.tableReadonly">
+                <div class="fr-view">
+                  <div froala-view="section.sectionContents"></div>
+                </div>
+              </div>
+            </md-input-container>
+          </md-content>
+        </md-tab-body>
+      </md-tab>
+
+      <md-tab>
+        <md-tab-label>
+          <i class="fa fa-cog fa-fw" aria-hidden="true"></i>Export Summary
+        </md-tab-label>
+        <md-tab-body>
+
+          <div ng-controller="ValueSetExportConfigCtrl" ng-cloak class="row" style="margin-bottom:20px">
+
+            <div ng-if="viewSettings.tableReadonly">
+              <div class="panel panel-default">
+                <div class="panel-heading">Export ValueSets # {{selectedTables.length}}</div>
+                <div class="panel-body">
+
+              <md-content>
+                <md-list class="md-dense valueset-picklist" flex>
+                  <md-list-item class="md-2-line" ng-repeat="table in selectedTables">
+                    <span style="margin-right: 5px" class="badge"
+                          ng-class="{'label-HL7' : getScopeLabel(table)==='HL7', 'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS','label-PRL':getScopeLabel(table)==='PRL','label-PVS':getScopeLabel(table)==='PVS'}">{{getScopeLabel(table)}} {{table.hl7Version}}</span>
+                    <div class="md-list-item-text" layout="column">
+                      <h3>{{ table.bindingIdentifier}}: {{table.name}}</h3>
+                    </div>
+
+                    <span>#Codes: {{table.numberOfCodes}}, Type: {{table.sourceType}}</span>
+                  </md-list-item>
+                </md-list>
+              </md-content>
+            </div>
+              </div>
+            </div>
+
+            <div ng-if="!viewSettings.tableReadonly">
+              <div class="container">
+                <div class="pull-right">
+                  <md-button title="Save Changes" type="submit" class="btn btn-raised btn-sm btn-success"
+                             ng-click="saveConfig()"
+                             ng-hide="viewSettings.tableReadonly">
+                    <span><i class="fa fa-check fa-fw"></i> Save</span>
+                  </md-button>
+                  <md-button title="Cancel Changes" type="button" class="btn btn-raised btn-sm btn-warning"
+                             ng-hide="viewSettings.tableReadonly"
+                             ng-click="resetConfig()">
+                    <span><i class="fa fa-times fa-fw"></i> Reset</span>
+                  </md-button>
+                </div>
+              </div>
+              <div class="container">
+                <div class="col-md-4">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">Total ValueSets # {{allTables.length}}</div>
+                    <div class="panel-body">
+                      <div>
+                        <md-input-container flex style="margin: 0px !important" layout="row">
+                          <input type="search" flex ng-model="searchTotal.bindingIdentifier"/>
+                        </md-input-container>
+                      </div>
+                      <md-content>
+                        <md-list class="md-dense valueset-picklist" flex>
+                          <md-list-item class="md-2-line"
+                                        ng-repeat="table in allTables |filter:searchTotal"
+                                        ng-dblclick="addValueSet(table)">
+                    <span style="margin-right: 5px" class="badge"
+                          ng-class="{'label-HL7' : getScopeLabel(table)==='HL7', 'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS','label-PRL':getScopeLabel(table)==='PRL','label-PVS':getScopeLabel(table)==='PVS'}">{{getScopeLabel(table)}} {{table.hl7Version}}</span>
+                            <div class="md-list-item-text" layout="column">
+                              <span>{{ table.bindingIdentifier}}: {{table.name}}</span>
+                            </div>
+                            <span>#Codes: {{table.numberOfCodes}}, Type: {{table.sourceType}}</span>
+                            <!--<md-button class="md-secondary md-mini md-primary" ><i-->
+                            <!--class="fa fa-plus fa-w"></i>-->
+                            <!--</md-button>-->
+                            <md-checkbox class="md-secondary" ng-checked="isSelectedToAdd(table)" ng-click="selectToAdd(table)"></md-checkbox>
+                        </md-list>
+                      </md-content>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-2">
+                  <div class="picklist-buttons">
+                    <md-button class="md-raised md-default" ng-click="addSelectedValueSets()" style="width:100%"><i
+                      class="fa fa-angle-right fa-w"></i>
+                    </md-button>
+                    <md-button ng-click="addAllValueSet()" class="md-raised md-default" style="width:100%"><i
+                      class="fa fa-angle-double-right fa-w"></i>
+                    </md-button>
+                    <md-button class=" md-raised md-default" ng-click="removeSelectedValueSets()" style="width:100%"><i
+                      class="fa fa-angle-left fa-w"></i>
+                    </md-button>
+                    <md-button ng-click="removeAllValueSet()" class="md-raised md-default" style="width:100%"><i
+                      class="fa fa-angle-double-left fa-w"></i>
+                    </md-button>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">Selected ValueSets # {{selectedTables.length}}</div>
+                    <div class="panel-body">
+                      <div>
+                        <md-input-container flex style="margin: 0px !important" layout="row">
+                          <input type="search" flex ng-model="searchSelected.bindingIdentifier"/>
+                        </md-input-container>
+                      </div>
+                      <md-content>
+                        <md-list class="md-dense valueset-picklist" flex>
+                          <md-list-item class="md-2-line"
+                                        ng-class="{'picklist-item-selected': isSelectedToRemove(table)}"
+                                        ng-repeat="table in selectedTables|filter:searchSelected"
+                                        ng-dblclick="removeValueSet(table)">
+                    <span style="margin-right: 5px" class="badge"
+                          ng-class="{'label-HL7' : getScopeLabel(table)==='HL7', 'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS','label-PRL':getScopeLabel(table)==='PRL','label-PVS':getScopeLabel(table)==='PVS'}">{{getScopeLabel(table)}} {{table.hl7Version}}</span>
+                            <div class="md-list-item-text" layout="column">
+                              <span>{{ table.bindingIdentifier}}: {{table.name}}</span>
+                            </div>
+                            <span>#Codes: {{table.numberOfCodes}}, Type: {{table.sourceType}}</span>
+                            <!--<md-button class="md-secondary md-mini md-danger" ng-click="removeValueSet(table)"><i-->
+                            <!--class="fa fa-times fa-w"></i>-->
+                            <!--</md-button>-->
+                            <!--<md-checkbox class="md-secondary" ng-click="removeValueSet(table)"></md-checkbox>-->
+                            <md-checkbox class="md-secondary" ng-checked="isSelectedToRemove(table)" ng-click="selectToRemove(table)"></md-checkbox>
+
+                          </md-list-item>
+                        </md-list>
+                      </md-content>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </md-tab-body>
+      </md-tab>
+    </md-tabs>
+  </div>
+</script>

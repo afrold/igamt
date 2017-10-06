@@ -1,0 +1,279 @@
+<style id="antiClickjack">body {
+  display: none !important;
+}</style>
+<script type="text/javascript">
+  if (self === top) {
+    var antiClickjack = document.getElementById("antiClickjack");
+    antiClickjack.parentNode.removeChild(antiClickjack);
+  } else {
+    top.location = self.location;
+  }
+</script>
+<script type="text/ng-template" id="EditValueSetRoot.html">
+
+    <div ng-controller="ValueSetSectionCtrl" ng-init="init()" ng-cloak>
+
+
+
+      <div class="container">
+        <div class="page-header">
+          <span class="header4">Section: {{section.sectionTitle}} </span>
+          <span class="pull-right">
+
+         <md-button title="Save Changes" type="submit" class="btn btn-raised btn-sm btn-success"
+                    ng-disabled="editForm.$invalid || !editForm.$dirty"
+                    ng-click="saveSection()"
+                    ng-hide="viewSettings.tableReadonly">
+             <span><i class="fa fa-check fa-fw"></i> Save</span>
+         </md-button>
+        <md-button title="Cancel Changes" type="button" class="btn btn-raised btn-sm btn-warning"
+                   ng-hide="viewSettings.tableReadonly"
+                   ng-disabled="!editForm.$dirty"
+                   ng-click="resetSection()">
+                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
+        </md-button>
+                </span>
+        </div>
+        <div class="static_info">
+          <i class="fa fa-calendar" aria-hidden="true"></i>
+          Updated	{{section.dateUpdated | date:dateFormat}}
+        </div>
+      </div>
+
+        <md-tabs md-dynamic-height md-border-bottom>
+        <md-tab>
+          <md-tab-label>
+            <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>Definition
+          </md-tab-label>
+          <md-tab-body>
+            <md-content layout-padding>
+              <label class="input-left igamt-label">Title*</label>
+              <md-input-container class="md-block igamt-input-block" flex-gt-sm
+                                  ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
+                <input type="text"
+                       ng-change="setDirty()"
+                       name="title" id="title"
+                       ng-model="section.sectionTitle"
+                       required
+                       ng-disabled="viewSettings.tableReadonly || isFixedSectionTitle(section)"
+                />
+
+                <div ng-messages="editForm.title.$invalid">
+                  <div ng-message="required">Title is required.</div>
+                </div>
+              </md-input-container>
+
+              <label class="input-left igamt-label">Content</label>
+              <md-input-container class="md-block igamt-input-block" flex-gt-sm style="margin-top:20px">
+                <div ng-if="!viewSettings.tableReadonly">
+                            <textarea froala="froalaEditorOptions" ng-model="section.sectionContents"
+                                      id="content"
+                                      name="content"
+                                      ng-change="setDirty()"></textarea>
+                </div>
+                <div ng-if="viewSettings.tableReadonly">
+                  <div class="fr-view">
+                    <div froala-view="section.sectionContents"></div>
+                  </div>
+                </div>
+              </md-input-container>
+            </md-content>
+          </md-tab-body>
+        </md-tab>
+
+        <md-tab>
+          <md-tab-label>
+            <i class="fa fa-cog fa-fw" aria-hidden="true"></i>Export Summary
+          </md-tab-label>
+          <md-tab-body>
+
+            <div ng-cloak class="row" style="margin-bottom:20px">
+              <div>
+                <div class="container" style="padding-bottom:10px; margin-top:20px">
+                  <div class="col-md-4">
+                    <table class="table table-bordered" style="margin-bottom: 0px">
+                      <tr>
+                        <td style="background-color:lightgrey"><b>ValueSets</b></td>
+                        <td>{{allTables.length}}</td>
+                      </tr>
+                      <tr>
+                        <td style="background-color:lightgrey"><b>Exported</b></td>
+                        <td>{{selectedTables.length}}</td>
+                      </tr>
+                      <tr>
+                        <td style="background-color:lightgrey"><b>Not Exported</b></td>
+                        <td>{{allTables.length - selectedTables.length}}</td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="col-md-4">
+                    <table class="table table-bordered" style="margin-bottom: 0px">
+                      <tr>
+                        <td style="background-color:lightgrey"><b>Internally Managed</b></td>
+                        <td>{{countInternals}}</td>
+                      </tr>
+                      <tr>
+                        <td style="background-color:lightgrey"><b>Externally Managed</b></td>
+                        <td>{{allTables.length - countInternals}}</td>
+                      </tr>
+
+                    </table>
+                  </div>
+
+                  <div class="col-md-4">
+                    <table class="table table-bordered" style="margin-bottom: 0px">
+                      <tr ng-if="scopeCountMap.USER && scopeCountMap.USER > 0">
+                        <td style="background-color:lightgrey">
+                          <span style="margin-right: 5px" class="badge label-USE">USER</span>Users
+                        </td>
+                        <td>{{scopeCountMap.USER}}</td>
+                      </tr>
+                      <tr ng-if="scopeCountMap.HL7STANDARD && scopeCountMap.HL7STANDARD > 0">
+                        <td style="background-color:lightgrey">
+                          <span style="margin-right: 5px" class="badge label-HL7">HL7</span>HL7 Standards
+                        </td>
+                        <td>{{scopeCountMap.HL7STANDARD}}</td>
+                      </tr>
+                      <tr ng-if="scopeCountMap.MASTER && scopeCountMap.MASTER > 0">
+                        <td style="background-color:lightgrey">
+                          <span style="margin-right: 5px" class="badge label-MASTER">MAS</span> HL7 Flavors
+                        </td>
+                        <td>{{scopeCountMap.MASTER}}</td>
+                      </tr>
+                      <tr ng-if="scopeCountMap.PHINVADS && scopeCountMap.PHINVADS > 0">
+                        <td style="background-color:lightgrey">
+                          <span style="margin-right: 5px" class="badge label-PVS">PVS</span> PHINVADS
+                        </td>
+                        <td>{{scopeCountMap.PHINVADS}}</td>
+                      </tr>
+                      <tr ng-if="scopeCountMap.PRL && scopeCountMap.PRL > 0">
+                        <td style="background-color:lightgrey">
+                          <span style="margin-right: 5px" class="badge label-PRL">PRL</span> Preloaded
+                        </td>
+                        <td>{{scopeCountMap.PRL}}</td>
+                      </tr>
+                      <tr ng-if="scopeCountMap.ARCHIVED && scopeCountMap.ARCHIVED > 0">
+                        <td style="background-color:lightgrey">
+                          <span style="margin-right: 5px" class="badge">OTH</span> Others
+                        </td>
+                        <td>{{scopeCountMap.ARCHIVED}}</td>
+                      </tr>
+                    </table>
+                  </div>
+
+
+                </div>
+
+                <div class="container">
+                  <div class="col-md-12">
+                    <md-content>
+                      <button class="pull-right btn btn-xs btn-default" ng-click="clearFilters()"><i
+                        class="fa fa-times">Clear All Filters</i></button>
+                      <table st-table="displayed"
+                             class="table table-stripped table-bordered table-condensed fixed-header">
+                        <thead class="fixed-header">
+                        <tr classs="fixed-header">
+                          <th class="col-md-1">
+                            <md-select ng-model="filterCriteria.export" ng-change="filter()">
+                              <md-option value="*" ng-selected="true">All</md-option>
+                              <md-option value="Exported">Exported</md-option>
+                              <md-option value="Not Exported">Not Exported</md-option>
+                            </md-select>
+                          </th>
+                          <th class="col-md-1">
+                            <md-select ng-model="filterCriteria.scope" ng-change="filter()">
+                              <md-option value="*" ng-selected="true">All</md-option>
+                              <md-option ng-if="scopeCountMap.USER && scopeCountMap.USER > 0" value="USER"><span
+                                style="margin-right: 5px" class="badge label-USE">USER</span> USER
+                              </md-option>
+                              <md-option ng-if="scopeCountMap.HL7STANDARD && scopeCountMap.HL7STANDARD > 0"
+                                         value="HL7STANDARD"><span style="margin-right: 5px" class="badge label-MASTER">HL7</span>
+                                HL7 Standards
+                              </md-option>
+                              <md-option ng-if="scopeCountMap.MASTER && scopeCountMap.MASTER > 0" value="MASTER"><span
+                                style="margin-right: 5px" class="badge label-MASTER">MAS</span> HL7 Flavors
+                              </md-option>
+                              <md-option ng-if="scopeCountMap.PHINVADS && scopeCountMap.PHINVADS > 0" value="PHINVADS">
+                                <span style="margin-right: 5px" class="badge label-PVS">PVS</span> Phinvads
+                              </md-option>
+                              <md-option ng-if="scopeCountMap.PRELOADED && scopeCountMap.PRELOADED > 0"
+                                         value="PRELOADED"><span style="margin-right: 5px" class="badge">PRL</span>
+                                Preloaded
+                              </md-option>
+                              <md-option ng-if="scopeCountMap.ARCHIVED && scopeCountMap.ARCHIVED > 0"
+                                         value="ARCHIVED"><span style="margin-right: 5px" class="badge">OTH</span>
+                                OTHERS
+                              </md-option>
+                            </md-select>
+                          </th>
+                          <th class="col-md-3">
+                            <md-input-container flex style="margin: 0px !important" layout="row">
+                              <input type="search" ng-model="filterCriteria.name" ng-change="filter()"/>
+                              <!--<i class="fa fa-times" ng-click="filterCriteria.name = ''; filter()"></i>-->
+                            </md-input-container>
+                          </th>
+                          <th class="col-md-4">
+                            <md-input-container flex style="margin: 0px !important" layout="row">
+                              <input type="search" ng-model="filterCriteria.bindingIdentifier" ng-change="filter()"/>
+                              <!--<i class="fa fa-times" ng-click="filterCriteria.bindingIdentifier = ''; filter()"></i>-->
+                            </md-input-container>
+                          </th>
+                          <th class="col-md-1">
+                          </th>
+                          <th class="col-md-2">
+                            <md-select ng-change="filter()" ng-model="filterCriteria.sourceType">
+                              <md-option value="*" ng-selected="true">All</md-option>
+                              <md-option value="INTERNAL">Internally Managed</md-option>
+                              <md-option value="EXTERNAL">Externally Managed</md-option>
+                            </md-select>
+                          </th>
+                        </tr>
+                        <tr class="tbl-header fixed-header">
+                          <th class="col-md-1">
+                            <md-checkbox ng-if="!viewSettings.tableReadonly" class="md-secondary"
+                                         ng-model="checkedAll.value"
+                                         md-indeterminate="isIndeterminate()"
+                                         ng-checked="isCheckedAll()"
+                                         ng-click="checkAllValueSets()"></md-checkbox>
+                            Export
+                          </th>
+                          <th st-sort="row.scope" class="col-md-1">Scope</th>
+                          <th st-sort="row.name" class="col-md-3">Name</th>
+                          <th st-sort="row.bindingIdentifier" class="col-md-4">ID</th>
+                          <th st-sort="row.numberOfCodes" class="col-md-1">#Codes</th>
+                          <th st-sort="row.sourceType" class="col-md-2">Type</th>
+                        </tr>
+
+                        </thead>
+                        <tbody class="fixed-header">
+                        <tr ng-repeat="row in displayed" class="fixed-header">
+                          <td class="col-md-1">
+                            <md-checkbox ng-if="!viewSettings.tableReadonly" class="md-secondary"
+                                         ng-checked="isChecked(row)" ng-click="checkValueSet(row)"></md-checkbox>
+                          </td>
+
+                          <td class="col-md-1">
+                              <span style="margin-right: 5px" class="badge"
+                                    ng-class="{'label-HL7' : getScopeLabel(row)==='HL7', 'label-USE': getScopeLabel(row)==='USR','label-MASTER':getScopeLabel(row)==='MAS','label-PRL':getScopeLabel(row)==='PRL','label-PVS':getScopeLabel(row)==='PVS'}">{{getScopeLabel(row)}} {{row.hl7Version}}</span>
+                          </td>
+                          <td class="col-md-3">
+                            {{row.name}}
+                          </td>
+                          <td class="col-md-4">{{row.bindingIdentifier}}</td>
+                          <td class="col-md-1">{{row.numberOfCodes}}</td>
+                          <td class="col-md-2">{{displayType(row.sourceType)}}</td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </md-content>
+                  </div>
+                  <!--</div>-->
+                  <!--</div>-->
+                  <!--</div>-->
+                </div>
+              </div>
+          </md-tab-body>
+        </md-tab>
+      </md-tabs>
+    </div>
+</script>
