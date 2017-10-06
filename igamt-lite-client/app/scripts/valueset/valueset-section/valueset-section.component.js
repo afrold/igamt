@@ -38,8 +38,7 @@ angular.module('igl').controller('ValueSetSectionCtrl', function ($scope, $rootS
         $scope.scopeCountMap[table.scope] = 0;
       $scope.scopeCountMap[table.scope] = $scope.scopeCountMap[table.scope] + 1;
     }
-    console.log($scope.editForm);
-  };
+   };
 
   $scope.clearFilters = function () {
     $scope.filterCriteria = {
@@ -150,7 +149,7 @@ angular.module('igl').controller('ValueSetSectionCtrl', function ($scope, $rootS
         $scope.saving = false;
         $scope.saved = true;
         $rootScope.section.dateUpdated = result.date;
-        $rootScope.igdocument.dateUpdated = dateUpdated;
+        $rootScope.igdocument.dateUpdated = $rootScope.section.dateUpdated ;
         $rootScope.igdocument.profile.tableLibrary['exportConfig'] = exportConfig;
         $rootScope.igdocument.profile.tableLibrary['sectionTitle'] = tableLibrary['sectionTitle'];
         $rootScope.igdocument.profile.tableLibrary['sectionContents'] = tableLibrary['sectionContents'];

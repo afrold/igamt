@@ -152,6 +152,12 @@
                         </td>
                         <td>{{scopeCountMap.PRL}}</td>
                       </tr>
+                      <tr ng-if="scopeCountMap.ARCHIVED && scopeCountMap.ARCHIVED > 0">
+                        <td style="background-color:lightgrey">
+                          <span style="margin-right: 5px" class="badge">OTH</span> Others
+                        </td>
+                        <td>{{scopeCountMap.ARCHIVED}}</td>
+                      </tr>
                     </table>
                   </div>
 
@@ -193,6 +199,10 @@
                               <md-option ng-if="scopeCountMap.PRELOADED && scopeCountMap.PRELOADED > 0"
                                          value="PRELOADED"><span style="margin-right: 5px" class="badge">PRL</span>
                                 Preloaded
+                              </md-option>
+                              <md-option ng-if="scopeCountMap.ARCHIVED && scopeCountMap.ARCHIVED > 0"
+                                         value="ARCHIVED"><span style="margin-right: 5px" class="badge">OTH</span>
+                                OTHERS
                               </md-option>
                             </md-select>
                           </th>
