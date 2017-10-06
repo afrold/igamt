@@ -12,6 +12,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -148,23 +149,34 @@ public class TableLibraryController extends CommonController {
   @RequestMapping(value = "/save", method = RequestMethod.POST)
   public LibrarySaveResponse save(@RequestBody TableLibrary tableLibrary)
       throws LibrarySaveException {
-    log.debug("tableLibrary=" + tableLibrary);
-    log.debug("tableLibrary.getId()=" + tableLibrary.getId());
     log.info("Saving the " + tableLibrary.getScope() + " table library.");
     User u = userService.getCurrentUser();
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
     tableLibrary.setAccountId(account.getId());
-    // TODO This is necessary for a cascading save. For now we are
-    // having the user save dts one at a time.
-    // for (Table dt : tableLibrary.getChildren()) {
-    // dt.setAccountId(account.getId());
-    // tableService.save(dt);
-    // }
+    tableLibrary.setDateUpdated(new Date());
     TableLibrary saved = tableLibraryService.save(tableLibrary);
-    log.debug("saved.getId()=" + saved.getId());
-    log.debug("saved.getScope()=" + saved.getScope());
-    return new LibrarySaveResponse(saved.getDateCreated(), saved.getScope().name());
+    return new LibrarySaveResponse(saved.getDateUpdated().getTime() + "", saved.getScope().name());
   }
+
+  @RequestMapping(value = "/{id}/section", method = RequestMethod.POST)
+  public LibrarySaveResponse saveExportConfig(@RequestBody TableLibrary library,
+      @PathVariable("id") String id) throws LibrarySaveException {
+    log.info("Saving the export config for table library with id=" + id);
+    User u = userService.getCurrentUser();
+    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+    TableLibrary found = tableLibraryService.findById(id);
+    if (library.getAccountId() != account.getId()) {
+      throw new IllegalArgumentException();
+    }
+    found.setExportConfig(library.getExportConfig());
+    found.setSectionContents(library.getSectionContents());
+    found.setSectionTitle(library.getSectionTitle());
+    found.setSectionDescription(library.getSectionDescription());
+    found.setDateUpdated(new Date());
+    TableLibrary saved = tableLibraryService.save(found);
+    return new LibrarySaveResponse(saved.getDateUpdated().getTime() + "", saved.getScope().name());
+  }
+
 
   @RequestMapping(value = "/{libId}/addChild", method = RequestMethod.POST)
   public TableLink addChild(@PathVariable String libId, @RequestBody TableLink child)
@@ -222,8 +234,6 @@ public class TableLibraryController extends CommonController {
     for (Table t : tables) {
       TableLink tbl = new TableLink();
       tbl.setBindingIdentifier(t.getBindingIdentifier());
-      String temp = t.getId();
-      System.out.println(temp);
       tbl.setId(t.getId());
       links.add(tbl);
     }

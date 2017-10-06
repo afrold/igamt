@@ -1,17 +1,15 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "table-library")
-public class TableLibrary extends TextbasedSectionModel implements java.io.Serializable, Cloneable {
+public class TableLibrary extends Library implements java.io.Serializable, Cloneable {
 
   private static final long serialVersionUID = 1L;
 
@@ -237,6 +235,7 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
     this.children = children;
   }
 
+  @Override
   public TableLibrary clone() throws CloneNotSupportedException {
     TableLibrary clone = new TableLibrary();
     HashSet<TableLink> clonedChildren = new HashSet<TableLink>();
@@ -252,13 +251,14 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
     clone.setSectionPosition(this.getSectionPosition());
     clone.setSectionTitle(this.getSectionTitle());
     clone.setType(this.getType());
+    clone.setExportConfig(this.exportConfig);
     return clone;
   }
 
   private String genRand() {
     return Integer.toString(new Random().nextInt(100));
-  } 
-  
+  }
+
   public void addTables(Set<TableLink> dtls) {
     children.addAll(dtls);
   }

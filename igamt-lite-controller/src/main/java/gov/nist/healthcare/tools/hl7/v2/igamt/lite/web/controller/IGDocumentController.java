@@ -62,7 +62,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentExportConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.LibraryExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IgDocumentComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
@@ -2047,7 +2047,7 @@ public class IGDocumentController extends CommonController {
   @RequestMapping(value = "/{id}/exportConfig", method = RequestMethod.POST,
       produces = "application/json")
   public boolean saveExportConfig(@PathVariable("id") String id,
-      @RequestBody IGDocumentExportConfig exportConfig, HttpServletRequest request,
+      @RequestBody LibraryExportConfig exportConfig, HttpServletRequest request,
       HttpServletResponse response) throws IGDocumentNotFoundException, IGDocumentException {
     log.info("Save export config for IG Document with id=" + id);
     IGDocument document = findIGDocument(id);

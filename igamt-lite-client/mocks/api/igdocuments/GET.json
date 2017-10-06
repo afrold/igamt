@@ -7637,6 +7637,9 @@
         "authorNotes": "",
         "sourceType": "INTERNAL",
         "sourceUrl": null,
+        "exportConfig": {
+          "include": ["579655655455fa35176cd1e0", "579655655455fa35176ccc93", "579655655455fa35176cd36d","579655655455fa35176cca55", "579655655455fa35176ccb77"]
+        },
         "type": "tables",
         "sectionPosition": 3,
         "sectionTitle": "Value Sets",
@@ -14647,9 +14650,7 @@
       "fullname": "Harold Affo",
       "id": 46,
       "email": "haffo@nist.gov"
-    },
-    "exportConfig": {
-      "valueSetsToExport": ["579655655455fa35176cd1e0", "579655655455fa35176ccc93", "579655655455fa35176cd36d","579655655455fa35176cca55", "579655655455fa35176ccb77"]
     }
+
   }
 ]

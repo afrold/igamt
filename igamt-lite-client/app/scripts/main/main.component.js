@@ -4397,7 +4397,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
           templateUrl: 'ConfirmLeaveDlg.html',
           controller: 'ConfirmLeaveDlgCtrl'
       });
-      // return $rootScope.modalInstance;
+      return $rootScope.modalInstance;
       // };
   }
 

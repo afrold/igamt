@@ -45,7 +45,6 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
 
   $scope.save = function() {
     if ($rootScope.editForm) {
-      console.log("editform called")
       $rootScope.editForm.$setPristine();
       $rootScope.editForm.$dirty = false;
     }
@@ -62,12 +61,9 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
 
     if (data.type === "decision" || data.type === "FAQ" || data.type === "userGuide" || data.type === 'UserNote' || data.type === 'releaseNote') {
       DocumentationService.save(data).then(function(saved) {
-        console.log(data);
-        console.log("befor");
         $rootScope.documentation = saved.data;
         $rootScope.documentationsMap[data.id] = saved.data;
         angular.forEach($rootScope.documentations, function(d) {
-          console.log("found");
           if (d.id == $rootScope.documentation.id) {
             d.title = $rootScope.documentationsMap[saved.data.id].title;
             d.content = $rootScope.documentationsMap[saved.data.id].content;
@@ -112,9 +108,9 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
     } else if (data.type && data.type === "messages") {
       ////console.log($rootScope.originalSection);
       ////console.log(data);
-      SectionSvc.update($rootScope.igdocument.id, section).then(function(result) {
+      SectionSvc.update($rootScope.igdocument.id, $rootScope.section).then(function(result) {
         ////console.log($rootScope.igdocument);
-        SectionSvc.merge($rootScope.originalSection, section);
+        SectionSvc.merge($rootScope.originalSection, $rootScope.section);
         $scope.continue();
       }, function(error) {
         $rootScope.msg().text = error.data.text;
@@ -125,9 +121,9 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
       ////console.log($rootScope.originalSection);
       ////console.log(data);
 
-      SectionSvc.update($rootScope.igdocument.id, section).then(function(result) {
+      SectionSvc.update($rootScope.igdocument.id, $rootScope.section).then(function(result) {
         ////console.log($rootScope.igdocument);
-        SectionSvc.merge($rootScope.originalSection, section);
+        SectionSvc.merge($rootScope.originalSection, $rootScope.section);
         $scope.continue();
       }, function(error) {
         $rootScope.msg().text = error.data.text;
@@ -138,9 +134,9 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
       ////console.log($rootScope.originalSection);
       ////console.log(data);
 
-      SectionSvc.update($rootScope.igdocument.id, section).then(function(result) {
+      SectionSvc.update($rootScope.igdocument.id, $rootScope.section).then(function(result) {
         ////console.log($rootScope.igdocument);
-        SectionSvc.merge($rootScope.originalSection, section);
+        SectionSvc.merge($rootScope.originalSection, $rootScope.section);
         $scope.continue();
       }, function(error) {
         $rootScope.msg().text = error.data.text;
@@ -151,9 +147,13 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
       ////console.log($rootScope.originalSection);
       ////console.log(data);
 
-      SectionSvc.update($rootScope.igdocument.id, section).then(function(result) {
-        ////console.log($rootScope.igdocument);
-        SectionSvc.merge($rootScope.originalSection, section);
+      TableLibrarySvc.saveSection($rootScope.igdocument.profile.tableLibrary.id, $rootScope.section).then(function(result) {
+        $rootScope.section.dateUpdated = result.date;
+        $rootScope.igdocument.dateUpdated =  $rootScope.section.dateUpdated;
+        $rootScope.igdocument.profile.tableLibrary['exportConfig'] =  $rootScope.section.exportConfig;
+        $rootScope.igdocument.profile.tableLibrary['sectionTitle'] =  $rootScope.section['sectionTitle'];
+        $rootScope.igdocument.profile.tableLibrary['sectionContents'] =  $rootScope.section['sectionContents'];
+        $rootScope.igdocument.profile.tableLibrary['sectionDescription'] =  $rootScope.section['sectionDescription'];
         $scope.continue();
       }, function(error) {
         $rootScope.msg().text = error.data.text;

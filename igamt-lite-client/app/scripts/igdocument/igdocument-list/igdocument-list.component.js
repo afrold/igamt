@@ -2121,7 +2121,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
           $rootScope.originalSection = section;
           $scope.loadingSelection = false;
           $rootScope.$emit("event:initEditArea");
-          $rootScope.$emit("event:initValueSetExportConfig");
+          $rootScope.$emit("event:initTableLibrarySection");
           blockUI.stop();
         } catch (e) {
           $scope.loadingSelection = false;

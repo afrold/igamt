@@ -49,7 +49,7 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
   private ShareParticipant owner;
 
 
-  private IGDocumentExportConfig exportConfig = new IGDocumentExportConfig();
+  private LibraryExportConfig exportConfig = new LibraryExportConfig();
 
 
   /**
@@ -412,11 +412,11 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
     this.realUsers = realUsers;
   }
 
-  public IGDocumentExportConfig getExportConfig() {
+  public LibraryExportConfig getExportConfig() {
     return exportConfig;
   }
 
-  public void setExportConfig(IGDocumentExportConfig exportConfig) {
+  public void setExportConfig(LibraryExportConfig exportConfig) {
     this.exportConfig = exportConfig;
   }
 
