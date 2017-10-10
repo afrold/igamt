@@ -2,12 +2,12 @@
  * Created by haffo on 9/11/17.
  */
 
-angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDialog, $rootScope, $http, SectionSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, DatatypeService, IgDocumentService, ProfileSvc, TableService, TableLibrarySvc, DocumentationService, PcService, CompositeProfileService) {
+angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDialog, $rootScope, $http, SectionSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, DatatypeService, IgDocumentService, ProfileSvc, TableService, TableLibrarySvc, DocumentationService, PcService, CompositeProfileService,valid) {
   $scope.continue = function() {
     $rootScope.clearChanges();
     $mdDialog.hide('continue');
   };
-
+  $scope.valid=valid;
 
   $scope.discard = function() {
     var data = $rootScope.currentData;

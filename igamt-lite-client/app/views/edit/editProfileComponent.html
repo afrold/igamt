@@ -19,7 +19,7 @@
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Profile Component: {{profileComponent.name}} </span>
                         <div class="pull-right">
-                            <md-button ng-disabled="!editForm.$dirty||viewSettings.tableReadonly||editForm.$pristine" title="Save Changes" type="button"
+                            <md-button ng-disabled="editForm.$invalid||!editForm.$dirty||viewSettings.tableReadonly||editForm.$pristine" title="Save Changes" type="button"
                                     class="btn btn-raised btn-sm btn-success" ng-click="save()">
                                 <span><i class="fa fa-check fa-fw"></i> Save</span>
                             </md-button>
@@ -271,7 +271,7 @@
                                                                                        name="minLength"
                                                                                        ng-init="initMinL(node)"
                                                                                        ng-change="updateMinL(node);"
-                                                                                       ng-pattern="/^\d+$/"
+                                                                                       ng-pattern="/^\d+$|^NA$/"
                                                                                        ng-model="node.minLength"
                                                                                        ng-minlength="1">
                                                                             </md-input-container>
@@ -281,7 +281,7 @@
                                                                                        style="width:50px;"
                                                                                        ng-init="initMaxL(node)"
                                                                                        ng-change="updateMaxL(node);"
-                                                                                       ng-pattern="/^\d+$|^\*?$/"
+                                                                                       ng-pattern="/^\d+$|^\*?$|^NA$/"
                                                                                        ng-model="node.maxLength">
                                                                             </md-input-container>
                                                                             <a title="Reset to base values" ng-show="node.attributes.minLength || node.attributes.maxLength" ng-click="cancelL(node)" ng-if="!viewSettings.tableReadonly"><i class="fa fa-remove fa-fw"></i></a>

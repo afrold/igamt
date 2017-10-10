@@ -577,7 +577,7 @@
                                                        name="min"
                                                         type="text"
                                                        ng-change="setDirty()"
-                                                       ng-pattern="/^\d+$/"
+                                                       ng-pattern="/^\d+$|^NA$/"
                                                        ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
                                                        ng-model="node.obj.min" required ng-minlength="1"/>
                     </md-input-container>
@@ -587,7 +587,7 @@
                                                        name="max"
                                                        ng-change="setDirty()"
                                                        ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
-                                                       ng-pattern="/^\d+$|^\*?$/"
+                                                       ng-pattern="/^\d+$|^\*?$|^NA$/"
                                                        ng-model="node.obj.max" required>
                     </md-input-container>
                 </ng-form>

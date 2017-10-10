@@ -19,7 +19,7 @@ angular.module('igl')
       console.log($scope.editForm);
     }
 
-    $scope.confLengthPattern= '[1-9]\\d*[#=]{0,1}';
+    $scope.confLengthPattern= '[1-9]\\d*[#=]{0,1}\|^NA$';
 
     $rootScope.$on("event:initEditArea", function (event) {
 

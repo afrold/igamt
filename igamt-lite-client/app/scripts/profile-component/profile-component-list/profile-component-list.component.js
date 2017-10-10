@@ -58,7 +58,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     $rootScope.recordChanged ();
   };
 
-  $scope.confLengthPattern= '[1-9]\\d*[#=]{0,1}';
+  // $scope.confLengthPattern= '[1-9]\\d*[#=]{0,1}';
 
 
   $scope.redirectVS = function(binding) {

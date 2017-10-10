@@ -41,22 +41,22 @@
 
 
                     <md-button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                            ng-disabled="!editForm.$dirty||datatype.status === 'PUBLISHED'"
+                            ng-disabled="editFrom.$invalid||!editForm.$dirty||datatype.status === 'PUBLISHED'"
                             ng-hide="viewSettings.tableReadonly||datatype.status==='PUBLISHED'"
                             ng-click="saveDatatype()">
                               <span><i class="fa fa-check fa-fw"></i> Save</span>
                     </md-button>
-                    <md-button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                            ng-disabled="!editForm.$dirty"
-                            ng-show="datatype.status==='PUBLISHED'&& editForm.$dirty"
-                            ng-click="saveBindingForDatatype()">
-                              <span><i class="fa fa-check fa-fw"></i> Save</span>
-                    </md-button>
-                    <md-button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning"
-                            ng-show="datatype.status==='PUBLISHED'"
-                            ng-disabled="!editForm.$dirty || datatype.status === 'PUBLISHED'" ng-click="reset()">
-                                  <span><i class="fa fa-times fa-fw"></i> Reset</span>
-                    </md-button>
+                    <!--<md-button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"-->
+                            <!--ng-disabled="!editForm.$dirty"-->
+                            <!--ng-show="datatype.status==='PUBLISHED'&& editForm.$dirty"-->
+                            <!--ng-click="saveBindingForDatatype()">-->
+                              <!--<span><i class="fa fa-check fa-fw"></i> Save</span>-->
+                    <!--</md-button>-->
+                    <!--<md-button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning"-->
+                            <!--ng-show="datatype.status==='PUBLISHED'"-->
+                            <!--ng-disabled="!editForm.$dirty || datatype.status === 'PUBLISHED'" ng-click="reset()">-->
+                                  <!--<span><i class="fa fa-times fa-fw"></i> Reset</span>-->
+                    <!--</md-button>-->
                     <md-button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning"
                             ng-hide="viewSettings.tableReadonly || datatype.status==='PUBLISHED'"
                             ng-disabled="!editForm.$dirty || datatype.status === 'PUBLISHED'" ng-click="reset()">
@@ -72,7 +72,6 @@
                     </div>
 
                     <div class="static_info">
-
                         <!--<display-label of="datatype" desc="true"></display-label>-->
                         <!--<display-label of="datatype" desc="false"></display-label>-->
                         <i class="fa fa-calendar" aria-hidden="true"></i>
@@ -1117,14 +1116,14 @@
                 <ng-form name="{{formName}}" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)" layout="row" layout-align="center center">
                     <md-input-container flex="40" class="withoutMargin">
                     <input  name="minLength" ng-change="setDirty()" type="text"
-                           ng-pattern="/^\d+$/"
+                           ng-pattern="/^\d+$|^NA$/"
                            ng-class="{ 'has-error has-feedback' : {{formName}}.minLength.$invalid}"
                            ng-model="node.minLength" required ng-minlength="1"/>
                     </md-input-container>
                     <md-input-container flex="40" class="withoutMargin">
                     <input  type="text" name="maxLength" ng-change="setDirty()"
                            ng-class="{ 'has-error has-feedback' : {{formName}}.maxLength.$invalid}"
-                           ng-pattern="/^\d+$|^\*?$/" ng-model="node.maxLength" required/>
+                           ng-pattern="/^\d+$|^\*?$|^NA$/" ng-model="node.maxLength" required/>
                     </md-input-container>
 
                 </ng-form>
@@ -1148,9 +1147,7 @@
                                 ng-change="setDirty()"
                                 ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
                                 ng-pattern="confLengthPattern"
-                                ng-model-options="{allowInvalid:true}"
-                                ng-model="node.confLength"
-                                ng-model-options="{allowInvalid:true}">
+                                ng-model="node.confLength">
                     </md-input-container>
                 </ng-form>
                     <span flex="20" ng-click="clearConfLength(node)" class="point pull-right" ><i class="fa fa-times fa-fw edit-icon"></i></span>
