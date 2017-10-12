@@ -84,12 +84,9 @@ angular.module('igl').factory('CompareService',
           }
         }
         if (isEmpty) {
-          console.log("empty");
           return null;
         } else {
-          console.log("empty");
-
-          return result;
+            return result;
         }
 
 
@@ -387,24 +384,6 @@ angular.module('igl').factory('CompareService',
                   CompareService.writettTable(childNode, result.components);
 
                 });
-                // objToArray(childArray.value.components.value).forEach(function(childNode) {
-                //     if(childNode.changed==="added"){
-                //         result.component.push({
-                //             msg1:"";
-                //             msg2:childNode
-                //         })
-
-                //     } else if(childNode.changed==="removed"){
-
-                //     } else
-                //     if(childNode.changed==="object change"){
-                //         writettTable(childNode, result.components);
-
-                //     }
-
-
-                // });
-
               }
               var objToArray = function(object) {
                 var result = [];
@@ -430,7 +409,6 @@ angular.module('igl').factory('CompareService',
 
                       });
                     }
-
                   } else if (tables[i].changed === "removed") {
 
                     result.valuesets.push({
@@ -444,12 +422,7 @@ angular.module('igl').factory('CompareService',
                     });
                   }
                 }
-
-
-
               }
-
-
             } else {
 
               if (childArray.value.minCard && childArray.value.minCard.changed === "primitive change") {
@@ -828,5 +801,7 @@ angular.module('igl').factory('CompareService',
 
 
     };
+
     return CompareService;
+
   });

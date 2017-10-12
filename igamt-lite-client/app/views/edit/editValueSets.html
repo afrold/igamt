@@ -61,6 +61,10 @@
                                                 <input ng-disabled="isNonEditableValueSet(table)" type="text"
                                                        name="tableIdentifier" ng-model="table.bindingIdentifier"
                                                        required ng-change="setDirty()">
+
+                                                <div role="alert" style="color:red" ng-show="isDuplicated(table,tables)">
+                                                    <div class="my-message">Extension is already used.</div>
+                                                </div>
                                                 <div ng-messages="editForm.tableIdentifier.$error">
                                                     <div ng-message="required">Mapping Identifier is required.</div>
                                                 </div>
@@ -706,7 +710,7 @@
                                                 <md-tab-body>
                                                     <div class="panel-primary">
                                                         <div class="panel-body">
-                                                            <table class="table table-stripped table-borderless table-condensed">
+                                                            <table class="table table-stripped table-borderless table-condensed" ng-if="table.hl7Version">
                                                                 <thead>
                                                                 <tr class="tbl-header">
                                                                     <th class="col-md-1"></th>
