@@ -1715,16 +1715,18 @@
                                                             <md-input-container flex="100" class="normal">
                                                                 <input ng-model="newConstraint.value"
                                                                        ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
+                                                                       ng-if="newConstraint.contraintType === 'a literal value'"
                                                                        type="text"/>
-                                                            </md-input-container>
-                                                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
-                                                        </div>
-                                                        <div layout="row" ng-show="newConstraint.contraintType == 'a literal value'">
-                                                            <md-input-container flex="100" class="normal">
-                                                                <md-checkbox ng-model="newConstraint.ignoreCase">
+                                                                <input ng-model="newConstraint.value"
+                                                                       ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
+                                                                       ng-if="newConstraint.contraintType !== 'a literal value'"
+                                                                       step="any" ng-pattern="/^1234$/"
+                                                                       type="number" />
+                                                                <md-checkbox ng-model="newConstraint.ignoreCase" ng-if="newConstraint.contraintType == 'a literal value'">
                                                                     Case Sensitive?
                                                                 </md-checkbox>
                                                             </md-input-container>
+                                                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                                         </div>
                                                     </span>
 
@@ -2294,17 +2296,19 @@
                                                         <div layout="row">
                                                             <md-input-container flex="100" class="normal">
                                                                 <input ng-model="newConstraint.value"
-                                                                   ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
-                                                                   type="text"/>
-                                                            </md-input-container>
-                                                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
-                                                        </div>
-                                                        <div layout="row" ng-show="newConstraint.contraintType == 'a literal value'">
-                                                            <md-input-container flex="100" class="normal">
-                                                                <md-checkbox ng-model="newConstraint.ignoreCase">
+                                                                       ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
+                                                                       ng-if="newConstraint.contraintType === 'a literal value'"
+                                                                       type="text"/>
+                                                                <input ng-model="newConstraint.value"
+                                                                       ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
+                                                                       ng-if="newConstraint.contraintType !== 'a literal value'"
+                                                                       step="any" ng-pattern="/^1234$/"
+                                                                       type="number" />
+                                                                <md-checkbox ng-model="newConstraint.ignoreCase" ng-if="newConstraint.contraintType == 'a literal value'">
                                                                     Case Sensitive?
                                                                 </md-checkbox>
                                                             </md-input-container>
+                                                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                                         </div>
                                                     </span>
 
@@ -2866,16 +2870,18 @@
                                                             <md-input-container flex="100" class="normal">
                                                                 <input ng-model="newConstraint.value"
                                                                        ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
+                                                                       ng-if="newConstraint.contraintType === 'a literal value'"
                                                                        type="text"/>
-                                                            </md-input-container>
-                                                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
-                                                        </div>
-                                                        <div layout="row" ng-show="newConstraint.contraintType == 'a literal value'">
-                                                            <md-input-container flex="100" class="normal">
-                                                                <md-checkbox ng-model="newConstraint.ignoreCase">
+                                                                <input ng-model="newConstraint.value"
+                                                                       ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
+                                                                       ng-if="newConstraint.contraintType !== 'a literal value'"
+                                                                       step="any" ng-pattern="/^1234$/"
+                                                                       type="number" />
+                                                                <md-checkbox ng-model="newConstraint.ignoreCase" ng-if="newConstraint.contraintType == 'a literal value'">
                                                                     Case Sensitive?
                                                                 </md-checkbox>
                                                             </md-input-container>
+                                                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                                         </div>
                                                     </span>
 
@@ -3315,16 +3321,18 @@
                                                             <md-input-container flex="100" class="normal">
                                                                 <input ng-model="newConstraint.value"
                                                                        ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
+                                                                       ng-if="newConstraint.contraintType === 'a literal value'"
                                                                        type="text"/>
-                                                            </md-input-container>
-                                                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
-                                                        </div>
-                                                        <div layout="row" ng-show="newConstraint.contraintType == 'a literal value'">
-                                                            <md-input-container flex="100" class="normal">
-                                                                <md-checkbox ng-model="newConstraint.ignoreCase">
+                                                                <input ng-model="newConstraint.value"
+                                                                       ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
+                                                                       ng-if="newConstraint.contraintType !== 'a literal value'"
+                                                                       step="any" ng-pattern="/^1234$/"
+                                                                       type="number" />
+                                                                <md-checkbox ng-model="newConstraint.ignoreCase" ng-if="newConstraint.contraintType == 'a literal value'">
                                                                     Case Sensitive?
                                                                 </md-checkbox>
                                                             </md-input-container>
+                                                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                                         </div>
                                                     </span>
 
@@ -3845,17 +3853,19 @@
                                                             <md-input-container flex="100" class="normal">
                                                                 <input ng-model="newConstraint.value"
                                                                        ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
+                                                                       ng-if="newConstraint.contraintType === 'a literal value'"
                                                                        type="text"/>
-                                                            </md-input-container>
-                                                        </div>
-                                                        <div layout="row" ng-show="newConstraint.contraintType == 'a literal value'">
-                                                            <md-input-container flex="100" class="normal">
-                                                                <md-checkbox ng-model="newConstraint.ignoreCase">
+                                                                <input ng-model="newConstraint.value"
+                                                                       ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
+                                                                       ng-if="newConstraint.contraintType !== 'a literal value'"
+                                                                       step="any" ng-pattern="/^1234$/"
+                                                                       type="number" />
+                                                                <md-checkbox ng-model="newConstraint.ignoreCase" ng-if="newConstraint.contraintType == 'a literal value'">
                                                                     Case Sensitive?
                                                                 </md-checkbox>
                                                             </md-input-container>
+                                                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                                         </div>
-                                                        <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                                     </span>
 
                                                 <span ng-show="newConstraint.contraintType == 'one of list values'">
@@ -4295,16 +4305,18 @@
                                                             <md-input-container flex="100" class="normal">
                                                                 <input ng-model="newConstraint.value"
                                                                        ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
+                                                                       ng-if="newConstraint.contraintType === 'a literal value'"
                                                                        type="text"/>
-                                                            </md-input-container>
-                                                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
-                                                        </div>
-                                                        <div layout="row" ng-show="newConstraint.contraintType == 'a literal value'">
-                                                            <md-input-container flex="100" class="normal">
-                                                                <md-checkbox ng-model="newConstraint.ignoreCase">
+                                                                <input ng-model="newConstraint.value"
+                                                                       ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
+                                                                       ng-if="newConstraint.contraintType !== 'a literal value'"
+                                                                       step="any" ng-pattern="/^1234$/"
+                                                                       type="number" />
+                                                                <md-checkbox ng-model="newConstraint.ignoreCase" ng-if="newConstraint.contraintType == 'a literal value'">
                                                                     Case Sensitive?
                                                                 </md-checkbox>
                                                             </md-input-container>
+                                                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                                         </div>
                                                     </span>
 
