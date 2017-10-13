@@ -1942,7 +1942,7 @@
 
             <md-dialog-actions layout="row">
                 <md-button ng-show="(dialogStep === 1 && existingPredicate) || dialogStep === 2 || dialogStep === 3" class="btn btn-raised btn-primary btn-sm" ng-click="goBack()"><span><i class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
-                <md-button ng-show="dialogStep === 0" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()"><span><i class="fa fa fa-pencil fa-fw"></i>Edit</span></md-button>
+                <md-button ng-show="dialogStep === 0" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()"><span><i class="fa fa fa-pencil fa-fw"></i>Recreate Predicate</span></md-button>
                 <md-button ng-show="dialogStep === 1 || dialogStep === 2" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()" ng-disabled="(dialogStep === 1 && contextKey === null) || (dialogStep === 2 && tempPredicates.length === 0)"><span><i class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
                 <md-button ng-show="dialogStep === 3 || dialogStep === 0" class="btn btn-raised btn-success btn-sm" ng-click="saveClose()"   ng-disabled="!changed || !existingPredicate || !existingPredicate.trueUsage || !existingPredicate.falseUsage" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
             </md-dialog-actions>
@@ -3541,7 +3541,7 @@
             </md-dialog-content>
             <md-dialog-actions layout="row">
                 <md-button ng-show="(dialogStep === 1 && existingPredicate) || dialogStep === 2" class="btn btn-raised btn-primary btn-sm" ng-click="goBack()"><span><i class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
-                <md-button ng-show="dialogStep === 0" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()"><span><i class="fa fa fa-pencil fa-fw"></i>Edit</span></md-button>
+                <md-button ng-show="dialogStep === 0" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()"><span><i class="fa fa fa-pencil fa-fw"></i>Recreate Predicate</span></md-button>
                 <md-button ng-show="dialogStep === 1" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()" ng-disabled="!tempPredicates || tempPredicates.length === 0"><span><i class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
                 <md-button ng-show="dialogStep === 2 || dialogStep === 0" class="btn btn-raised btn-success btn-sm" ng-click="saveClose()"   ng-disabled="!changed || !existingPredicate || !existingPredicate.trueUsage || !existingPredicate.falseUsage" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
             </md-dialog-actions>
@@ -4522,7 +4522,7 @@
 
             <md-dialog-actions layout="row">
                 <md-button ng-show="(dialogStep === 1 && existingPredicate)|| dialogStep === 2" class="btn btn-raised btn-primary btn-sm" ng-click="goBack()"><span><i class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
-                <md-button ng-show="dialogStep === 0" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()"><span><i class="fa fa fa-pencil fa-fw"></i>Edit</span></md-button>
+                <md-button ng-show="dialogStep === 0" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()"><span><i class="fa fa fa-pencil fa-fw"></i>Recreate Predicate</span></md-button>
                 <md-button ng-show="dialogStep === 1" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()" ng-disabled="!tempPredicates || tempPredicates.length === 0"><span><i class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
                 <md-button ng-show="dialogStep === 2 || dialogStep === 0" class="btn btn-raised btn-success btn-sm" ng-click="save()"   ng-disabled="!changed || !existingPredicate || !existingPredicate.trueUsage || !existingPredicate.falseUsage" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
             </md-dialog-actions>
