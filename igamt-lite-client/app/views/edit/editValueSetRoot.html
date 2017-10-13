@@ -22,7 +22,7 @@
 
          <md-button title="Save Changes" type="submit" class="btn btn-raised btn-sm btn-success"
                     ng-disabled="editForm.$invalid || !editForm.$dirty"
-                    ng-click="saveSection()"
+                    ng-click="saveConfig()"
                     ng-hide="viewSettings.tableReadonly">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </md-button>
@@ -47,22 +47,6 @@
           </md-tab-label>
           <md-tab-body>
             <md-content layout-padding>
-              <label class="input-left igamt-label">Title*</label>
-              <md-input-container class="md-block igamt-input-block" flex-gt-sm
-                                  ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
-                <input type="text"
-                       ng-change="setDirty()"
-                       name="title" id="title"
-                       ng-model="section.sectionTitle"
-                       required
-                       ng-disabled="viewSettings.tableReadonly || isFixedSectionTitle(section)"
-                />
-
-                <div ng-messages="editForm.title.$invalid">
-                  <div ng-message="required">Title is required.</div>
-                </div>
-              </md-input-container>
-
               <label class="input-left igamt-label">Content</label>
               <md-input-container class="md-block igamt-input-block" flex-gt-sm style="margin-top:20px">
                 <div ng-if="!viewSettings.tableReadonly">
@@ -230,7 +214,7 @@
                         </tr>
                         <tr class="tbl-header fixed-header">
                           <th class="col-md-1">
-                            <md-checkbox ng-if="!viewSettings.tableReadonly" class="md-secondary"
+                            <md-checkbox ng-if="!viewSettings.tableReadonly"
                                          ng-model="checkedAll.value"
                                          md-indeterminate="isIndeterminate()"
                                          ng-checked="isCheckedAll()"
@@ -248,7 +232,7 @@
                         <tbody class="fixed-header">
                         <tr ng-repeat="row in displayed" class="fixed-header">
                           <td class="col-md-1">
-                            <md-checkbox ng-if="!viewSettings.tableReadonly" class="md-secondary"
+                            <md-checkbox ng-if="!viewSettings.tableReadonly"
                                          ng-checked="isChecked(row)" ng-click="checkValueSet(row)"></md-checkbox>
                           </td>
 

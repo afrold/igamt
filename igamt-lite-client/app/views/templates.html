@@ -127,7 +127,7 @@
                 <md-button class="btn btn-raised btn-warning btn-sm" ng-click="discard()"><span><i
                 class="fa fa-sign-out fa-fw">&nbsp; </i>Discard Changes</span>
                 </md-button>
-                <md-button class="btn btn-raised btn-success btn-sm" ng-click="save()"><span><i
+                <md-button class="btn btn-raised btn-success btn-sm" ng-disabled="!valid" ng-click="save()"><span><i
                 class="fa fa-sign-out fa-fw">&nbsp; </i>Save and Continue</span>
                 </md-button>
                 <div ng-show="error!=null" ng-bind="error"></div>
