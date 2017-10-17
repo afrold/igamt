@@ -131,20 +131,24 @@ angular.module('igl').factory('CompareService',
       },
       cmpValueSet: function(table1, table2) {
 
-        table1.codes =  CompareService.orderBy(table1.codes, 'value');
-        table2.codes =  CompareService.orderBy(table2.codes, 'value');
+        if(table1.sourceType ===table2.sourceType &&table1.sourceType=='INTERNAL'){
+            table1.codes =  CompareService.orderBy(table1.codes, 'value');
+            table2.codes =  CompareService.orderBy(table2.codes, 'value');
 
-        var vs1 = table1;
-        var vs2 = table2;
+            var vs1 = table1;
+            var vs2 = table2;
 
 
-        var diff = ObjectDiff.diffOwnProperties(vs1, vs2);
-        var dataList = [];
-        if (diff.changed === "object change") {
-          CompareService.writettTable(diff, dataList);
-        }
+            var diff = ObjectDiff.diffOwnProperties(vs1, vs2);
+            var dataList = [];
+            if (diff.changed === "object change") {
+                CompareService.writettTable(diff, dataList);
+            }
 
-        return dataList
+            return dataList
+        }else return null;
+
+
       },
       fMsg: function(msg, datatypeList, segmentList) {
 

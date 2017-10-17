@@ -4001,8 +4001,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
 
     $rootScope.isDuplicated= function(obj,list) {
-      console.log(obj);
-      console.log(list);
         if (obj === null || obj === undefined) return false;
 
         return _.find(list, function(item) {
@@ -4027,8 +4025,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
           }else if(obj.type==='segment'){
 
                   if($scope.segmentDuplicated(obj,item)){
-                    console.log(obj);
-                    console.log(item);
                       if($scope.editForm){
                           $scope.editForm.$invalid=true;
                           $scope.editForm.$valid=false;
@@ -4039,8 +4035,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
               }else if(obj.type=='message'){
 
               if($scope.messageDuplicated(obj,item)){
-                  console.log(obj);
-                  console.log(item);
                   if($scope.editForm){
                       $scope.editForm.$invalid=true;
                       $scope.editForm.$valid=false;
@@ -4051,8 +4045,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
           }else if(obj.type ==='profilecomponent'){
 
               if($scope.profileComponentDuplicated(obj,item)){
-                  console.log(obj);
-                  console.log(item);
                   if($scope.editForm){
                       $scope.editForm.$invalid=true;
                       $scope.editForm.$valid=false;
@@ -4063,8 +4055,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
           }else if(obj.type==='compositeprofilestructure'){
 
               if($scope.compositeProfileDuplicated(obj,item)){
-                  console.log(obj);
-                  console.log(item);
                   if($scope.editForm){
                       $scope.editForm.$invalid=true;
                       $scope.editForm.$valid=false;

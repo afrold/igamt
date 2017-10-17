@@ -701,7 +701,7 @@
                                     <i class="fa fa-table fa-fw" aria-hidden="true"></i>Delta
                                 </md-tab-label>
                                 <md-tab-body>
-                                    <div class="panel-body metadata-scroll" style="margin:5px;">
+                                    <div class="panel-body metadata-scroll" style="margin:5px;" ng-controller="cmpTableCtrl">
                                         <md-tabs md-dynamic-height md-border-bottom md-selected="deltaTabStatus.active">
                                             <md-tab>
                                                 <md-tab-label>
@@ -709,88 +709,74 @@
                                                 </md-tab-label>
                                                 <md-tab-body>
                                                     <div class="panel-primary">
-                                                        <div class="panel-body">
-                                                            <table class="table table-stripped table-borderless table-condensed" ng-if="table.hl7Version">
-                                                                <thead>
-                                                                <tr class="tbl-header">
-                                                                    <th class="col-md-1"></th>
-                                                                    <th class="col-md-2">HL7 Version</th>
-                                                                    <th class="col-md-2">Scope</th>
-                                                                    <th class="col-md-3">IG Document</th>
-                                                                    <th class="col-md-4">Value Set</th>
-                                                                </thead>
+                                                        <div style="margin-top: 10px;">
 
+                                                        <md-radio-group ng-model="from" layout="row">
 
+                                                            <md-radio-button value="Current" class="md-primary"> Current IG</md-radio-button>
+                                                            <md-radio-button value="Advanced" class="md-primary">Advanced</md-radio-button>
 
+                                                        </md-radio-group>
+                                                        </div>
 
-                                                                <tbody>
-                                                                <tr>
-
-                                                                    <td class="col-md-1">
-                                                                        <span class="badge badge-delta badge-delta-1">1</span>
-                                                                    </td>
-                                                                    <td class="col-md-2">
-                                                                        <md-select ng-model="version1" disabled placeholder="{{version1}}">
+                                                        <div class="panel-body" layout="row" ng-show="from=='Advanced'">
+                                                            <div flex>
+                                                            <label class="input-left igamt-label">Scope</label>
+                                                                        <md-select ng-model="scope" no-dirty-check>
+                                                                            <md-option ng-repeat="scope in scopes" ng-value="scope.name"> {{scope.alias}}</md-option>
                                                                         </md-select>
-                                                                    </td>
-                                                                    <td class="col-md-2">
-                                                                        <md-select ng-model="scope1" disabled placeholder="{{scope1}}">
-                                                                        </md-select>
-                                                                    </td>
-                                                                    <td class="col-md-3">
-                                                                        <md-select ng-model="ig1" disabled placeholder="{{ig1}}">
-                                                                        </md-select>
-                                                                    </td>
-                                                                    <td class="col-md-4">
-                                                                        <md-select ng-model="table1" disabled placeholder="{{table1.bindingIdentifier}}"></md-select>
-                                                                    </td>
-
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="col-md-1">
-                                                                        <span class="badge badge-delta badge-delta-2">2</span>
-                                                                    </td>
-                                                                    <td class="col-md-2">
-                                                                        <md-select ng-model="version2"  ng-change="setVersion2(version2)" no-dirty-check>
-                                                                            <md-option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{vr}}</md-option>
-                                                                        </md-select>
-                                                                    </td>
-                                                                    <td class="col-md-2">
-                                                                        <md-select ng-model="scope2"  ng-change="setScope2(scope2)" no-dirty-check>
-                                                                            <md-option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{scope.alias}}</md-option>
-                                                                        </md-select>
-                                                                    </td>
-                                                                    <td class="col-md-3">
-                                                                        <md-select ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check>
-                                                                            <md-option ng-repeat="ig in igList2 track by ig.id" ng-value="ig">{{ig.title}}</md-option>
-                                                                        </md-select>
-                                                                    </td>
-                                                                    <td class="col-md-4">
-                                                                        <md-select ng-model="cmp.tableId" ng-change="setTable2(cmp.tableId)" ng-disabled="!ig2" no-dirty-check ng-disabled="tables2.length>1" placeholder="Select  Value Set ">
-                                                                            <md-option value='-1'></md-option>
-                                                                            <md-option ng-repeat="table in tables2" ng-hide="hideVS(table,table1)" ng-value="$index">
-                                                                                {{table.bindingIdentifier}}
-                                                                            </md-option>
-                                                                        </md-select>
-                                                                    </td>
-
-                                                                </tr>
-
-
-                                                                </tbody>
-
-                                                            </table>
-                                                            <div class="" align="center" style="margin-bottom:10px">
-
-                                                                <button ng-click="cmpTable(table1,table2)"
-                                                                        ng-disabled="!table1 || !table2||!vsChanged"
-                                                                        class="btn btn-raised btn-info btn-md">
-                                                                    <i class="fa fa-check"></i> View Delta
-                                                                </button>
 
                                                             </div>
+
+                                                            <div flex>
+                                                            <label class="input-left igamt-label">Version</label>
+
+                                                                        <md-select ng-model="version" no-dirty-check ng-disabled="!scope ||scope==='PHINVADS'">
+                                                                            <md-option ng-repeat="vr in versions" ng-value="vr">{{vr}}</md-option>
+                                                                            <md-option ng-if="scope!=='HL7STANDARD'" value="NV"> No Version</md-option>
+                                                                        </md-select>
+                                                            </div>
+                                                            <div flex>
+                                                            <label class="input-left igamt-label">Binding Indentifier</label>
+                                                            <md-input-container>
+                                                                <input no-dirty-check ng-model="bindingIdentifier">
+                                                            </md-input-container>
+
+                                                            </div>
+                                                            <div flex>
+
+                                                                <button ng-click="searchForDelta()"
+                                                                        class="btn btn-raised btn-info btn-md">
+                                                                    <i class="fa fa-check"></i> Search</button>
+                                                            </div>
+                                                        </div>
+                                                        <div layout="row">
+                                                            <div flex="50" layout="column">
+                                                                <md-toolbar class="value-set-toolBar"> Result
+                                                                </md-toolbar>
+                                                                <div class="value-set-search-panel">
+                                                                <md-input-container style="width: 100%" layout="row">
+                                                                    <span class="material-icons" style="font-size: 42px;">search</span> <input  no-dirty-check  type="search" ng-model="searchTerm.bindingIdentifier">
+                                                                </md-input-container>
+                                                                <md-input-container style="max-height: 300px; overflow: auto" no-dirty-check>
+                                                                    <md-radio-group ng-model="selectedTable" layout="column">
+                                                                    <md-radio-button  ng-repeat="tbl in tablesToCompare |filter:searchTerm" ng-value="tbl" class="md-primary"><display-label of="tbl" desc="true"></display-label> <br/></md-radio-button>
+                                                                    </md-radio-group>
+
+                                                                </md-input-container>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div flex="50">
+                                                                <md-button class="md-primary md-raised" ng-click="cmpTable(table,selectedTable)">Compare</md-button>
+                                                            </div>
+
+
                                                         </div>
                                                     </div>
+
+
                                                 </md-tab-body>
                                             </md-tab>
                                             <md-tab>
@@ -799,14 +785,16 @@
                                                 </md-tab-label>
                                                 <md-tab-body>
 
-                                                    <div class="panel-primary">
+                                                    <div class="panel-primary" ng-if="dataList">
                                                         <div class="panel-body">
+
                                                             <table tt-table tt-params="dynamicVs_params"
                                                                    class=" table-marginless table-bordered table-condensed">
                                                                 <thead>
                                                                 <tr class="tbl-header">
                                                                     <th class="col-md-2">Name</th>
                                                                     <th class="col-md-1">Content Definition</th>
+
                                                                     <th class="col-md-1">Code System</th>
                                                                     <th class="col-md-1">Code Usage</th>
                                                                 </tr>
