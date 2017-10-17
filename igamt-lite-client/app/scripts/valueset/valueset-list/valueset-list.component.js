@@ -63,16 +63,10 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
             return segment;
           }
         }
-
-
-
       });
       modalInstance.result.then(function() {
         $rootScope.editSeg(segment);
       });
-
-
-
     });
   };
 

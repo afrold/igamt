@@ -208,20 +208,14 @@
 							<span ng-class="{selected :activeModel ==='Datatypes'}"
                                     data-nodrag ng-click="editRoutSection('Datatypes')" confirm-click>{{ig.childSections.length+1}}.5.Datatypes {{filteredDatatypesList.length}}/{{datatypes.length}}</span>
                         </div>
-<!--                            <div ng-if="!collapsedata" data-nodrag ui-tree-handle style ="margin-left:30px;"> <label  ng-click="resetDatatypes()" ng-if="!collapsedata" >clear filter</label></div> -->
                         <li ng-repeat="data in filteredDatatypesList| orderBy :'label'" ui-tree-node
                             ng-if="!collapsedata" data-type="datatype">
                             <div ui-tree-handle  data-nodrag  
-                                 confirm-click
                                  context-menu="DataTypeOptions" style ="margin-left:30px;">
 								<span data-nodrag style ="font-weight: normal;"
                                       ng-class="{selected : data.id===activeModel}"
                                       confirm-click
-                                      ng-click="editDataType(data)">
-
-<!--                 <input type="radio" -->
-<!--                 ng-model="data.checked" -->
-<!--                 name="dataTypesRadio" ng-click="rebuildTreeFromDatatype(data)"/>   -->
+                                      ng-click="editDatatype(data)">
                         <display-label of="data" desc="true"></display-label>
                                 </span>
                             </div>

@@ -1616,10 +1616,7 @@ angular
 
         function editDatatypeNext(data) {
           if ($rootScope.hasChanges()||$scope.editForm&&$scope.editForm.$dirty) {
-            console.log("found changes");
-
             $rootScope.openConfirmLeaveDlg().then(function(result) {
-              console.log("dialog opened");
               if(result&&result!=='cancel') {
 
                 processEditDataType(data);

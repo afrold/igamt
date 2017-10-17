@@ -84,12 +84,9 @@ angular.module('igl').factory('CompareService',
           }
         }
         if (isEmpty) {
-          console.log("empty");
           return null;
         } else {
-          console.log("empty");
-
-          return result;
+            return result;
         }
 
 
@@ -134,20 +131,24 @@ angular.module('igl').factory('CompareService',
       },
       cmpValueSet: function(table1, table2) {
 
-        table1.codes =  CompareService.orderBy(table1.codes, 'value');
-        table2.codes =  CompareService.orderBy(table2.codes, 'value');
+        if(table1.sourceType ===table2.sourceType &&table1.sourceType=='INTERNAL'){
+            table1.codes =  CompareService.orderBy(table1.codes, 'value');
+            table2.codes =  CompareService.orderBy(table2.codes, 'value');
 
-        var vs1 = table1;
-        var vs2 = table2;
+            var vs1 = table1;
+            var vs2 = table2;
 
 
-        var diff = ObjectDiff.diffOwnProperties(vs1, vs2);
-        var dataList = [];
-        if (diff.changed === "object change") {
-          CompareService.writettTable(diff, dataList);
-        }
+            var diff = ObjectDiff.diffOwnProperties(vs1, vs2);
+            var dataList = [];
+            if (diff.changed === "object change") {
+                CompareService.writettTable(diff, dataList);
+            }
 
-        return dataList
+            return dataList
+        }else return null;
+
+
       },
       fMsg: function(msg, datatypeList, segmentList) {
 
@@ -387,24 +388,6 @@ angular.module('igl').factory('CompareService',
                   CompareService.writettTable(childNode, result.components);
 
                 });
-                // objToArray(childArray.value.components.value).forEach(function(childNode) {
-                //     if(childNode.changed==="added"){
-                //         result.component.push({
-                //             msg1:"";
-                //             msg2:childNode
-                //         })
-
-                //     } else if(childNode.changed==="removed"){
-
-                //     } else
-                //     if(childNode.changed==="object change"){
-                //         writettTable(childNode, result.components);
-
-                //     }
-
-
-                // });
-
               }
               var objToArray = function(object) {
                 var result = [];
@@ -430,7 +413,6 @@ angular.module('igl').factory('CompareService',
 
                       });
                     }
-
                   } else if (tables[i].changed === "removed") {
 
                     result.valuesets.push({
@@ -444,12 +426,7 @@ angular.module('igl').factory('CompareService',
                     });
                   }
                 }
-
-
-
               }
-
-
             } else {
 
               if (childArray.value.minCard && childArray.value.minCard.changed === "primitive change") {
@@ -828,5 +805,7 @@ angular.module('igl').factory('CompareService',
 
 
     };
+
     return CompareService;
+
   });
