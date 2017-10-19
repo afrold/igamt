@@ -38,11 +38,12 @@
                         </span>
                     </div>
                     <div class="static_info">
+                       <span  ng-if="table.scope!=='HL7STANDARD'">
                         <i class="fa fa-calendar" aria-hidden="true"></i>Updated :{{table.dateUpdated |
-                        date:dateFormat}}<span ng-if="table.owner" style="font-style: italic;"><i class="fa fa-user"
+                         date:dateFormat}}</span><span ng-if="table.owner" style="font-style: italic;"><i class="fa fa-user"
                                                                                                   aria-hidden="true"></i>{{table.owner}}</span>
-                        <span ng-if="table.hl7Version&&table.hl7Version!==''">, HL7 Version: {{table.hl7Version}}</span>
-                        <span ng-if="table.publicationVersion">, Version: {{table.publicationVersion}}</span>
+                        <span ng-if="table.hl7Version&&table.hl7Version!==''"> HL7 Version: {{table.hl7Version}}</span>
+                        <span ng-if="table.publicationVersion"> Version: {{table.publicationVersion}}</span>
                     </div>
 
                     <div class="" ng-controller="cmpTableCtrl">
