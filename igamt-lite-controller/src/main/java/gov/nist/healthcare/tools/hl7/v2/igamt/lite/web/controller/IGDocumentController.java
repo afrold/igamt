@@ -2051,7 +2051,7 @@ public class IGDocumentController extends CommonController {
       HttpServletResponse response) throws IGDocumentNotFoundException, IGDocumentException {
     log.info("Save export config for IG Document with id=" + id);
     IGDocument document = findIGDocument(id);
-    // document.setExportConfig(exportConfig);
+    document.setExportConfig(exportConfig);
     igDocumentService.save(document);
     return true;
   }

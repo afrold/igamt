@@ -542,12 +542,24 @@ angular.module('igl').factory('CompareService',
 
                 };
               }
-              if (childArray.value.contentDefinition && childArray.value.contentDefinition.changed === "primitive change") {
-                result.contentDefinition = {
-                  element1: childArray.value.contentDefinition.removed,
-                  element2: childArray.value.contentDefinition.added
+              if (childArray.value.extensibility && childArray.value.extensibility.changed === "primitive change") {
+                result.extensibility = {
+                  element1: childArray.value.extensibility.removed,
+                  element2: childArray.value.extensibility.added
                 };
               }
+                if (childArray.value.contentDefinition && childArray.value.contentDefinition.changed === "primitive change") {
+                    result.contentDefinition = {
+                        element1: childArray.value.contentDefinition.removed,
+                        element2: childArray.value.contentDefinition.added
+                    };
+                }
+                if (childArray.value.stability && childArray.value.stability.changed === "primitive change") {
+                    result.stability = {
+                        element1: childArray.value.stability.removed,
+                        element2: childArray.value.stability.added
+                    };
+                }
               if (childArray.value.codes && childArray.value.codes.changed === "object change") {
                 result.codes = [];
                 CompareService.objToArray(childArray.value.codes.value).forEach(function(childNode) {
