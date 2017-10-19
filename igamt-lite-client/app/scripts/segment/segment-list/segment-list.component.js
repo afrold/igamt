@@ -1106,15 +1106,21 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
   };
 
   $scope.countPredicateOnComponent = function(position, componentId) {
+    return $scope.getComponentPredicate(position, componentId) != null ? 1:0;
+  };
+
+  $scope.getComponentPredicate = function(position, componentId) {
     var dt = $scope.findDTByComponentId(componentId);
-    if (dt != null)
+    if (dt != null) {
       for (var i = 0, len1 = dt.predicates.length; i < len1; i++) {
         if (dt.predicates[i].constraintTarget.indexOf(position + '[') === 0)
-          return 1;
+          return dt.predicates[i];
       }
-
-    return 0;
+    }
+    return null;
   };
+
+
 
   $scope.isRelevant = function(node) {
     return SegmentService.isRelevant(node);

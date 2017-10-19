@@ -1186,7 +1186,7 @@
                     <a ng-click="managePredicate(node)" class="point">
                         <i class="fa fa-plus fa-fw"></i>
 
-                        <p class="warning">Need predicate</p>
+                        <p class="warning">Missing Predicate</p>
                     </a>
                 </div>
 
@@ -1328,14 +1328,7 @@
             </span>
         </td>
         <td ng-class="hasUsageError(node.id)" data-toggle="tooltip" title="{{displayMessageError(node.id,'USAGE')}}">
-            <span ng-show="node.usage !=='C' || (node.usage==='C' && countPredicateOnComponent(node.position, node.id)===0 )">
-                {{::node.usage}}
-            </span>
-            <div ng-show="node.usage==='C' && countPredicateOnComponent(node.position, node.id) !==0">
-                <p ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
-                    C({{::p.trueUsage}}/{{::p.falseUsage}})
-                </p>
-            </div>
+          <read-component-usage  node="node"></read-component-usage>
         </td>
         <td class="emptyCol">
          </td>
@@ -1388,12 +1381,14 @@
             </div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('predicate')" ng-class="{'emptyCol':node.usage !== 'C'}">
-            <div ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
-                <span title="{{getPredicateAsString(p)}}" class="badge label-white">
-                    <span ng-class="{'label-component-icon' : node.path.split('.').length - 1 == 1, 'label-sub-component-icon' : node.path.split('.').length - 1 == 2}"><i class="fa fa-circle fa-fw"/></span>
-                    <span>{{getConstraintAsTruncatedString(p, 15)}}</span>
-                </span>
-            </div>
+            <!--<div ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">-->
+                <!--<span title="{{getPredicateAsString(p)}}" class="badge label-white">-->
+                    <!--<span ng-class="{'label-component-icon' : node.path.split('.').length - 1 == 1, 'label-sub-component-icon' : node.path.split('.').length - 1 == 2}"><i class="fa fa-circle fa-fw"/></span>-->
+                    <!--<span>{{getConstraintAsTruncatedString(p, 15)}}</span>-->
+                <!--</span>-->
+            <!--</div> -->
+          <!---->
+              <read-component-predicate node="node"></read-component-predicate>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('defText')">
             <div>
@@ -1429,14 +1424,16 @@
             </span>
         </td>
         <td>
-            <span ng-show="node.usage !=='C' || (node.usage==='C' && countPredicateOnComponent(node.position, node.id)===0 )">
-                {{::node.usage}}
-            </span>
-            <div ng-show="node.usage==='C' && countPredicateOnComponent(node.position, node.id) !==0">
-                <p ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
-                    C({{::p.trueUsage}}/{{::p.falseUsage}})
-                </p>
-            </div>
+            <!--<span ng-show="node.usage !=='C' || (node.usage==='C' && countPredicateOnComponent(node.position, node.id)===0 )">-->
+                <!--{{::node.usage}}-->
+            <!--</span>-->
+            <!--<div ng-show="node.usage==='C' && countPredicateOnComponent(node.position, node.id) !==0">-->
+                <!--<p ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">-->
+                    <!--C({{::p.trueUsage}}/{{::p.falseUsage}})-->
+                <!--</p>-->
+
+            <!--</div>-->
+          <read-component-usage  node="node"></read-component-usage>
         </td>
         <td>
             <div>-</div>
@@ -1479,12 +1476,7 @@
             </div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('predicate')" ng-class="{'emptyCol':node.usage !== 'C'}">
-            <div ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
-                <span title="{{getPredicateAsString(p)}}" class="badge label-white">
-                    <span ng-class="{'label-component-icon' : node.path.split('.').length - 1 == 1, 'label-sub-component-icon' : node.path.split('.').length - 1 == 2}"><i class="fa fa-circle fa-fw"/></span>
-                    <span>{{getConstraintAsTruncatedString(p, 15)}}</span>
-                </span>
-            </div>
+          <read-component-predicate node="node"></read-component-predicate>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('defText')">
             <a ng-show="node.text !=null" ng-click="openRichTextDlg(node, 'text', 'Definition Text', true)" class="point">
