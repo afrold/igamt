@@ -515,18 +515,16 @@ public class SerializationServiceImpl implements SerializationService {
         }
       }
     }
-    if (unbindedTables != null && !unbindedTables.isEmpty()) {
+    if (unbindedTables != null && !unbindedTables.isEmpty() && (exportConfig.isUnboundCustom() || exportConfig.isUnboundCustom()) && tableLibrary.getExportConfig() == null) {
       for (TableLink tableLink : this.unbindedTables) {
-        if (exportConfig.isUnboundCustom() || exportConfig.isUnboundHL7()) {
-          Table table = tableService.findById(tableLink.getId());
-          if (table != null && ExportUtil.displayUnbindedTable(exportConfig, table)) {
-            SerializableTable serializableTable = serializeTableService.serializeTable(tableLink,
-                prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
-                tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig,
-                exportConfig.getValueSetsMetadata(), exportConfig.getMaxCodeNumber());
-            valueSetsSection.addSection(serializableTable);
-          }
-        }
+	      Table table = tableService.findById(tableLink.getId());
+	      if (table != null && ExportUtil.displayUnbindedTable(exportConfig, table)) {
+	        SerializableTable serializableTable = serializeTableService.serializeTable(tableLink,
+	            prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
+	            tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig,
+	            exportConfig.getValueSetsMetadata(), exportConfig.getMaxCodeNumber());
+	        valueSetsSection.addSection(serializableTable);
+	      }
       }
     }
     return valueSetsSection;
