@@ -710,7 +710,7 @@
                                                 </md-tab-label>
                                                 <md-tab-body>
                                                     <div class="panel-primary">
-                                                        <div style="margin-top: 10px;">
+                                                        <div style="margin-top: 20px;margin-bottom: 20px;">
 
                                                         <md-radio-group ng-model="from" layout="row" no-dirty-check>
 
@@ -756,8 +756,7 @@
                                                             <table st-table="tablesToCompare" ng-if="tablesToCompare.length>0"
                                                                    class="table table-stripped table-bordered table-condensed fixed-header" style="max-height: 250px">
                                                                 <thead class="fixed-header">
-                                                                <tr>
-                                                                <tr class="tbl-header fixed-header">
+                                                                 <tr class="fixed-header">
                                                                     <th class="col-md-1">
                                                                     </th>
                                                                     <th class="col-md-1">
@@ -787,9 +786,6 @@
                                                                     </th>
 
                                                                 </tr>
-                                                                </tr>
-
-
 
                                                                 <tr class="tbl-header fixed-header">
                                                                     <th class="col-md-1">
@@ -801,7 +797,7 @@
                                                                     <th  class="col-md-2">Type</th>
                                                                 </tr>
                                                                 </thead>
-                                                                <tbody class="fixed-header" style="max-height: 250px">
+                                                                <tbody class="fixed-header" style="max-height: 500px">
                                                                     <tr ng-repeat="row in tablesToCompare|filter:filter" class="fixed-header">
                                                                     <td class="col-md-1">
                                                                         <md-checkbox  ng-click="selectTableForDelta(row)"  ng-checked="isSelectedForDelta(row)">
