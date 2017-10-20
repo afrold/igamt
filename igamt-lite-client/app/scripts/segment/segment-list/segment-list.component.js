@@ -189,6 +189,25 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     return false;
   };
 
+  $scope.checkDuplicatedDM = function (item) {
+    if($rootScope.segment !== null &&
+        $rootScope.segment.dynamicMappingDefinition != null &&
+        $rootScope.segment.dynamicMappingDefinition.dynamicMappingItems !== null &&
+        item !== null &&
+        item.firstReferenceValue !== null){
+
+      var count = 0;
+
+      for (var i = 0; i < $rootScope.segment.dynamicMappingDefinition.dynamicMappingItems.length; i++) {
+        if($rootScope.segment.dynamicMappingDefinition.dynamicMappingItems[i].firstReferenceValue === item.firstReferenceValue){
+          count = count + 1;
+          if(count === 2) return true;
+        }
+      }
+    }
+    return false;
+  };
+
   $scope.checkThenData = function (def, data, dynamicMappingTableCodes, dtLib, tablesMap){
     if(def.path=='2'){
       if(def.constraintType === "dmr"){
