@@ -129,7 +129,7 @@ angular.module('igl').controller('ValueSetSectionCtrl', function ($scope, $rootS
 
 
   $scope.displayType = function(row){
-    return  row.sourceType == 'INTERNAL' ? 'Internally Managed': 'Externally Managed';
+    return  row.sourceType == 'INTERNAL' || row.sourceType == null ? 'Internally Managed': 'Externally Managed';
   };
 
   $scope.itemsByPage = 15;

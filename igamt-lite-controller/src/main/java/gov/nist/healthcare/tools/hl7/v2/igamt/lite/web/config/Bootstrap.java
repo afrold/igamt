@@ -315,7 +315,7 @@ public class Bootstrap implements InitializingBean {
     // clearUserExportConfigurations();
 
     // 2.0.0-beta7
-    // updateTableForNumOfCodesANDSourceType();
+    updateTableForNumOfCodesANDSourceType();
 
   }
 
