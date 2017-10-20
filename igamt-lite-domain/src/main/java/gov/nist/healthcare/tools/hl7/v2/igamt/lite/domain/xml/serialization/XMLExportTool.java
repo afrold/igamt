@@ -233,7 +233,7 @@ public class XMLExportTool {
       Table t = tablesMap.get(key);
 
       if (t != null) {
-        if (t.getCodes() == null || t.getCodes().size() == 0 || t.getCodes().size() > 999
+        if (t.getCodes() == null || t.getCodes().size() == 0 || t.getCodes().size() > 500
             || (t.getCodes().size() == 1 && t.getCodes().get(0).getValue().equals("..."))) {
           Element elmBindingIdentifier = new Element("BindingIdentifier");
           if (t.getHl7Version() != null && !t.getHl7Version().equals("")) {
@@ -304,7 +304,7 @@ public class XMLExportTool {
           elmValueSetDefinitionsHL7Other.appendChild(elmValueSetDefinition);
         }
 
-        if (t.getCodes() != null && t.getCodes().size() < 1000) {
+        if (t.getCodes() != null && t.getCodes().size() <= 500) {
           for (Code c : t.getCodes()) {
             Element elmValueElement = new Element("ValueElement");
             elmValueElement.addAttribute(new Attribute("Value", this.str(c.getValue())));

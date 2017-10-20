@@ -467,15 +467,14 @@
                                                                     </div>
 
 
-                                                                    <div ng-if="table.codes.length >= 1000"
+                                                                    <div ng-if="table.codes.length >= 500"
                                                                          style="margin-bottom: 10px">
                                                                         <div class="alert alert-warning" role="alert">
-                                                                            This table has too many codes (more than
-                                                                            1000), so it will be ignored.
+                                                                            IGAMT does not display more than 500 codes
                                                                         </div>
                                                                     </div>
 
-                                                                    <table ng-if="table.codes.length < 1000"
+                                                                    <table ng-if="table.codes.length < 500"
                                                                            st-safe-src="table.smallCodes"
                                                                            st-table="displayCollection"
                                                                            class="table table-striped table-condensed table-bordered">
