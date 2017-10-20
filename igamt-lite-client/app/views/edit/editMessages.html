@@ -38,7 +38,7 @@
                  <i class="fa fa-calendar" aria-hidden="true"></i>
 					Updated {{message.dateUpdated | date:dateFormat}}
                      <span ng-if="message.owner" style="font-style: italic;">
-                         <i class="fa fa-user" aria-hidden="true"></i> 
+                         <i class="fa fa-user" aria-hidden="true"></i>
                          ,{{datatype.owner}}
                     </span>
                     <span ng-if="message.hl7Version">,HL7 Version: {{message.hl7Version}}</span>
@@ -1423,7 +1423,7 @@
     <md-dialog>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>Change Usage O to X Confirmation</h2>
+                <h2>Confirm Leave</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()">
                     <i class="material-icons">clear</i>
