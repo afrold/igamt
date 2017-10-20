@@ -83,16 +83,23 @@ angular.module('igl').factory('TableService', ['$rootScope', 'ViewSettings', 'El
             });
             return delay.promise;
         },
+        findShortByScope: function(scope) {
+            var delay = $q.defer();
+            $http.post('api/tables/findShortByScope', scope).then(function(response) {
+                delay.resolve(angular.fromJson(response.data));
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        },
          publish: function(table) {
                 var delay = $q.defer();
                 table.accountId = userInfoService.getAccountID();
-                //table.status="PUBLISHED";
                 $http.post('api/tables/publish', table).then(function(response) {
                     var saveResponse = angular.fromJson(response.data);
                    
                     delay.resolve(saveResponse);
                 }, function(error) {
-                    //console.log("DatatypeService.save error=" + error);
                     delay.reject(error);
                 });
                 return delay.promise;
@@ -151,6 +158,21 @@ angular.module('igl').factory('TableService', ['$rootScope', 'ViewSettings', 'El
         findAllPhinvads: function() {
             var delay = $q.defer();
             $http.get('api/igdocuments/PHINVADS/tables').then(function(response) {
+                var tables = angular.fromJson(response.data);
+                delay.resolve(tables);
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        },
+        searchForDelta: function(scope,version,bindingIdentifier) {
+
+            var wrapper={
+                scope:scope,version:version,bindingIdentifier:bindingIdentifier
+            };
+            console.log(wrapper);
+            var delay = $q.defer();
+            $http.post('api/tables/searchForDelta',wrapper).then(function(response) {
                 var tables = angular.fromJson(response.data);
                 delay.resolve(tables);
             }, function(error) {
