@@ -189,6 +189,25 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     return false;
   };
 
+  $scope.checkDuplicatedDM = function (item) {
+    if($rootScope.segment !== null &&
+        $rootScope.segment.dynamicMappingDefinition != null &&
+        $rootScope.segment.dynamicMappingDefinition.dynamicMappingItems !== null &&
+        item !== null &&
+        item.firstReferenceValue !== null){
+
+      var count = 0;
+
+      for (var i = 0; i < $rootScope.segment.dynamicMappingDefinition.dynamicMappingItems.length; i++) {
+        if($rootScope.segment.dynamicMappingDefinition.dynamicMappingItems[i].firstReferenceValue === item.firstReferenceValue){
+          count = count + 1;
+          if(count === 2) return true;
+        }
+      }
+    }
+    return false;
+  };
+
   $scope.checkThenData = function (def, data, dynamicMappingTableCodes, dtLib, tablesMap){
     if(def.path=='2'){
       if(def.constraintType === "dmr"){
@@ -200,21 +219,10 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         var found = _.find(dtLib, function(link){ return link.id === data.datatypeId; });
         if(!found) return 'Missing OBX-5 datatype definition';
       }
-    }else if (def.path=='5'){
-      if((!data.valueSets || data.valueSets.length === 0) &&
-        (!data.valueData || !data.valueData.value)){
-        return 'OBX-5 value or valueset is required';
-      }
-
-      if(data.valueSets && data.valueSets.length > 0) {
-        for (var i = 0; i < data.valueSets.length; i++) {
-          if(!tablesMap[data.valueSets[i].tableId]) return 'OBX-5 valueset binding is wrong';
-        }
-      }
     }else {
       if(def.constraintType === 'valueset' && data.valueSets && data.valueSets.length > 0) {
         for (var i = 0; i < data.valueSets.length; i++) {
-          if(!tablesMap[data.valueSets[i].tableId]) return 'OBX-5 valueset binding is wrong';
+          if(!tablesMap[data.valueSets[i].tableId]) return 'Value Set binding is broken.';
         }
       }
     }

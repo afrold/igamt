@@ -74,13 +74,15 @@
                     <div class="static_info">
                         <!--<display-label of="datatype" desc="true"></display-label>-->
                         <!--<display-label of="datatype" desc="false"></display-label>-->
-                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                      <span  ng-if="datatype.scope!=='HL7STANDARD'">
+                      <i  class="fa fa-calendar" aria-hidden="true"></i>
                         Updated :{{datatype.dateUpdated | date:dateFormat}}
+                      </span>
                         <span ng-if="datatype.owner" style="font-style: italic;">
-                     <span ng-if="datatype.owner"> Author : <img style="max-width:30px !important;border-radius: 50%" src="{{generateHash(datatype.owner.email)}}"/> {{datatype.owner.fullname}}</span>
+                     <span > Author : <img style="max-width:30px !important;border-radius: 50%" src="{{generateHash(datatype.owner.email)}}"/> {{datatype.owner.fullname}}</span>
                      </span>
-                        <span ng-if="datatype.hl7Version!=='*'">,HL7 Version: {{datatype.hl7Version}}</span>
-                        <span ng-if="datatype.publicationVersion">,Version: {{datatype.publicationVersion}}</span>
+                        <span ng-if="datatype.hl7Version!=='*'"> HL7 Version: {{datatype.hl7Version}}</span>
+                        <span ng-if="datatype.publicationVersion"> Version: {{datatype.publicationVersion}}</span>
 
                     </div>
                     <div class="" ng-controller="cmpDatatypeCtrl as cmp">
