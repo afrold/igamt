@@ -67,6 +67,9 @@
 
                                             <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input  type="text"  name="identifier" ng-change="setDirty()" ng-model="message.identifier" ng-disabled="viewSettings.tableReadonly" required>
+                                                <div role="alert"  style="color:red" ng-show="isDuplicated(message,igdocument.profile.messages.children)">
+                                                    <div class="my-message">Identifier is already used.</div>
+                                                </div>
                                                 <div ng-messages="editForm.identifier.$error">
                                                     <div ng-message="required">Identifier is required.</div>
                                                 </div>

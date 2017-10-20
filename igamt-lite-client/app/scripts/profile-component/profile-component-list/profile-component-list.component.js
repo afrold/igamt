@@ -8,7 +8,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 
   $scope.editProfileComponent = false;
   $scope.edit = false;
-  $scope.profileComponents = [];
+
   $scope.tabStatus = {
     active: 1
   };

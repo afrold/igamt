@@ -81,13 +81,13 @@
 
 
 
-                        <ol ui-tree-nodes="" ng-model="ig.profile.profileComponentLibrary.children" ng-show="!profilecollapsed" data-type="profileComponents">
+                        <ol ui-tree-nodes="" ng-model="profileComponents" ng-show="!profilecollapsed" data-type="profileComponents">
                             <div ui-tree-handle class="messageContent" style="margin-left:15px;">
                                 <i data-nodrag ng-click="switcherpc()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapseprofilecomponent, 'fa-caret-right': collapseprofilecomponent}"></i>
                                 <span data-nodrag ng-class="{selected :activeModel ==='Profile Components'}" context-menu="ProfileComponentsRootOption" confirm-click>
                 {{ig.childSections.length+1}}.1.Profile Components </span>
                             </div>
-                            <li ng-repeat="pc in ig.profile.profileComponentLibrary.children | orderBy :'name'" ui-tree-node ng-if="!collapseprofilecomponent" data-type="profileComponents">
+                            <li ng-repeat="pc in profileComponents| orderBy :'name'" ui-tree-node ng-if="!collapseprofilecomponent" data-type="profileComponents">
                                 <div ui-tree-handle data-nodrag confirm-click style="margin-left:30px;">
                                     <span data-nodrag style="font-weight: normal;" context-menu="ProfileComponentsOption" ng-class="{selected : pc.id===activeModel}" confirm-click ng-click="editPC(pc);">
                                         {{pc.name}}
@@ -115,13 +115,13 @@
                                     </div>
                                 </li>
                         </ol>
-                        <ol ui-tree-nodes="" ng-model="ig.profile.compositeProfiles.children" ng-show="!profilecollapsed" data-type="compositeMessages">
+                        <ol ui-tree-nodes="" ng-model="compositeProfiles" ng-show="!profilecollapsed" data-type="compositeMessages">
                             <div ui-tree-handle class="messageContent" style="margin-left:15px;">
                                 <i data-nodrag ng-click="switchercm()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsecompositemessage, 'fa-caret-right': collapsecompositemessage}"></i>
                                 <span data-nodrag ng-class="{selected :activeModel ==='Composite Messages'}" context-menu="CompositeMessagesRootOption" confirm-click>
                 {{ig.childSections.length+1}}.3.Composite Profiles</span>
                             </div>
-                            <li ng-repeat="cm in ig.profile.compositeProfiles.children | orderBy :'name'" ui-tree-node ng-if="!collapsecompositemessage" data-type="compositeMessages">
+                            <li ng-repeat="cm in compositeProfiles| orderBy :'name'" ui-tree-node ng-if="!collapsecompositemessage" data-type="compositeMessages">
                                 <div ui-tree-handle data-nodrag confirm-click style="margin-left:30px;">
                                     <span data-nodrag style="font-weight: normal;" context-menu="compositeMessagesOption" ng-class="{selected : cm.id===activeModel}" confirm-click ng-click="editCM(cm);">
                                         {{cm.name}}_{{cm.ext}}

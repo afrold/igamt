@@ -41,7 +41,7 @@
 
 
                     <md-button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                            ng-disabled="editFrom.$invalid||!editForm.$dirty||datatype.status === 'PUBLISHED'"
+                            ng-disabled="editForm.$invalid||!editForm.$dirty||datatype.status === 'PUBLISHED'"
                             ng-hide="viewSettings.tableReadonly||datatype.status==='PUBLISHED'"
                             ng-click="saveDatatype()">
                               <span><i class="fa fa-check fa-fw"></i> Save</span>
@@ -122,11 +122,9 @@
                                                 <input type="text" ng-change="recordChanged()"
                                                        ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED'||versionAndUseMap[datatype.id]"
                                                        name="ext" id="ext" ng-model="datatype.ext" required>
-
-                                                <div role="alert" style="color:red" ng-show="isDuplicatedTwoContexts(datatype, 'name', 'ext', datatypeLibrary.children)">
+                                                <div role="alert" style="color:red" ng-if="isDuplicated(datatype,datatypes)">
                                                     <div class="my-message">Extension is already used.</div>
                                                 </div>
-
                                                 <div ng-messages="editForm.ext.$error">
                                                     <div ng-message="required">Extension is required.</div>
                                                  </div>
