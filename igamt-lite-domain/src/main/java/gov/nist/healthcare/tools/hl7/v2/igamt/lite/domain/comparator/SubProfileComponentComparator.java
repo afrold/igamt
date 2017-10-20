@@ -10,9 +10,11 @@
  * that they have been modified. Ismail Mellouli (NIST) Mar 24, 2017
  */
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.comparator;
 
 import java.util.Comparator;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponent;
 
 public class SubProfileComponentComparator implements Comparator<SubProfileComponent> {
 

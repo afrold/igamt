@@ -7,18 +7,20 @@
  * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
- * that they have been modified. Ismail Mellouli (NIST) Mar 20, 2017
+ * that they have been modified. Ismail Mellouli (NIST) Mar 8, 2017
  */
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.comparator;
 
 import java.util.Comparator;
 
-public class ApplyInfoComparator implements Comparator<ApplyInfo> {
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+
+public class FieldComparator implements Comparator<Field> {
 
   @Override
-  public int compare(ApplyInfo a1, ApplyInfo a2) {
-    return a1.getPosition() - a2.getPosition();
+  public int compare(Field f1, Field f2) {
+    return f1.getPosition() - f2.getPosition();
   }
 
 }
