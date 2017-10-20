@@ -17,9 +17,9 @@ angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope,
   $scope.title = '';
 
   if (type == 'message') {
-    $scope.title = 'Comment of ' + targetObj.name + '.' + $rootScope.refinePath($scope.currentNode.locationPath);
+    $scope.title = 'Comment:' + targetObj.name + '.' + $rootScope.refinePath($scope.currentNode.locationPath);
   } else {
-    $scope.title = 'Comment of ' + targetObj.name + '.' + $scope.currentNode.path;
+    $scope.title = 'Comment: ' + targetObj.name + '.' + $scope.currentNode.path;
   }
   $scope.descriptionText = '';
 
