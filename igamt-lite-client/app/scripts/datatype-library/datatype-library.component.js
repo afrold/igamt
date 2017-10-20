@@ -468,8 +468,9 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         //$rootScope.isEditing = true;
         // $scope.hl7Version = $rootScope.datatypeLibrary.metaData.hl7Version;
         $rootScope.datatypeLibraryId = $rootScope.datatypeLibrary.id;
-        $scope.datatypeLibMetaDataCopy = angular.copy(datatypeLibraryDocument.datatypeLibrary.metaData);
+        $scope.datatypeLibMetaDataCopy = angular.copy(datatypeLibraryDocument.metaData);
         $rootScope.currentData= $scope.datatypeLibMetaDataCopy;
+        $scope.datatypeLibsStruct=[];
         $scope.loadingSelection = false;
         $scope.DataTypeTree = [];
         $scope.datatypeLibCopy = angular.copy($rootScope.datatypeLibrary);
@@ -708,7 +709,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
       $scope.dtChanged = false;
       $scope.vsTemplate = false;
       $scope.dataList = CompareService.cmpDatatype(datatype1, datatype2, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
-      console.log("hg==========");
       console.log($scope.dataList);
       $scope.loadingSelection = false;
       if ($scope.dynamicDt_params) {
@@ -1068,7 +1068,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         }
 
         TableLibrarySvc.deleteChild($scope.tableLibrary.id, newLink.id).then(function(link) {
-          console.log("table deleted");
 
         }, function(error) {
           $rootScope.msg().text = error.data.text;
@@ -1522,7 +1521,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
       newDatatypeLibraryDocument.id = null;
       newDatatypeLibraryDocument.datatypeLibrary = newDatatypeLibrary;
       newDatatypeLibraryDocument.tableLibrary = newTableLibrary;
-      // newDatatypeLibraryDocument.metaData.ext = newDatatypeLibrary.metaData.ext + "-" + (Math.floor(Math.random() * 10000000) + 1);
       newDatatypeLibraryDocument.accountId = userInfoService.getAccountID();
       $scope.datatypeLibsStruct.push(newDatatypeLibrary);
       DatatypeLibrarySvc.save(newDatatypeLibrary).then(function(response) {
@@ -2206,17 +2204,11 @@ angular.module('igl').controller('DatatypeLibraryCtl',
     $scope.addingToc = [];
 
     $scope.addDatatypesFromTree = function() {
-      //$scope.openDataypeList();
       $scope.miniDTMap = [];
       $scope.datatypeLibList = [];
       $rootScope.datatype=null;
-      if ($rootScope.datatypeLibrary.scope === 'MASTER') {
-        $scope.subview = "addingViewForMaster.html";
+      $scope.subview = "addingViewForMaster.html";
 
-      } else if ($rootScope.datatypeLibrary.scope === 'USER') {
-        $scope.subview = "addingViewForMaster.html";
-
-      }
     };
 
     $scope.containDatatypeWithname = function(datatype) {

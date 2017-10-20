@@ -4,52 +4,8 @@
 
 
 angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc', 'VersionAndUseService', '$q', 'DatatypeLibrarySvc', 'CloneDeleteSvc', 'TableService', 'TableLibrarySvc', '$mdDialog','PcService', 'md5','$mdSidenav','SearchService',function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc, VersionAndUseService, $q, DatatypeLibrarySvc, CloneDeleteSvc, TableService, TableLibrarySvc, $mdDialog,PcService,md5,$mdSidenav,SearchService) {
-  // This line fetches the info from the server if the user is currently
-  // logged in.
-  // If success, the app is updated according to the role.
-
-  //     $(document).keydown(function(e) {
-  //     var nodeName = e.target.nodeName.toLowerCase();
-
-  //     if (e.which === 8) {
-  //         if ((nodeName === 'input' && e.target.type === 'text') ||
-  //             nodeName === 'textarea') {
-  //             // do nothing
-  //         } else {
-  //             e.preventDefault();
-  //         }
-  //     }
-  // });
-  // $mdSidenav('right')
-  //     .toggle()
-  //     .then(function () {
-  //     });
-  $rootScope.fullScreen=false;
-  $rootScope.toggleScreen=function(){
-    $rootScope.fullScreen=!$rootScope.fullScreen;
-  }
 
 
-  // $scope.close = function () {
-  //     // Component lookup should always be available since we are not using `ng-if`
-  //     $mdSidenav('right').close()
-  //         .then(function () {
-  //         });
-  // };
-  // $scope.toggleRight = buildToggler('right');
-  // function buildToggler(navID) {
-  //     return function() {
-  //         // Component lookup should always be available since we are not using `ng-if`
-  //         $mdSidenav(navID)
-  //             .toggle()
-  //             .then(function () {
-  //             });
-  //     };
-  // }
-  //
-  // $scope.isOpenRight = function(){
-  //     return $mdSidenav('right').isOpen();
-  // };
   $rootScope.goNav = function(path){
     $location.url(path);
   };
@@ -61,7 +17,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     var link="//www.gravatar.com/avatar/"+hash+"?s=50&d=retro";
     return link;
 
-  }
+  };
   $rootScope.generateHashDebug=function(string){
     var hash = md5.createHash(string);
     console.log("hash")
@@ -1406,11 +1362,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
 
 
-  $rootScope.filteredSegmentsList = [];
-  $rootScope.filteredTablesList = [];
-  $rootScope.filteredDatatypesList = [];
-  $rootScope.selectedMessage = null;
-  $rootScope.selectedSegment = null;
+
 
   $rootScope.processMessageTree = function(element, parent) {
 
@@ -1419,9 +1371,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
       if (element != undefined && element != null) {
         if (element.type === "message") {
           $rootScope.selectedMessage = element;
-          $rootScope.filteredSegmentsList = [];
-          $rootScope.filteredTablesList = [];
-          $rootScope.filteredDatatypesList = [];
           var m = {};
           m.children = [];
           $rootScope.messageTree = m;
@@ -1475,9 +1424,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             parent = s;
           }
 
-          $rootScope.filteredSegmentsList.push(element);
-          $rootScope.filteredSegmentsList = _.uniq($rootScope.filteredSegmentsList);
-
           angular.forEach(element.fields, function(field) {
             $rootScope.processMessageTree(field, parent);
           });
@@ -1508,14 +1454,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
           f.obj.datatype.label = $rootScope.getLabel(f.obj.datatype.name, f.obj.datatype.ext);
           parent.children.push(f);
 
-          $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
-          $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
-          if (element.tables && element.tables.length > 0) {
-            angular.forEach(element.tables, function(table) {
-              $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
-            });
-          }
-          $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
           $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], f);
         } else if (element.type === "component") {
           var c = {};
@@ -1580,14 +1518,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
           c.obj.datatype.ext = d.ext;
           c.obj.datatype.label = $rootScope.getLabel(c.obj.datatype.name, c.obj.datatype.ext);
           parent.children.push(c);
-          $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
-          $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
-          if (element.tables && element.tables.length > 0) {
-            angular.forEach(element.tables, function(table) {
-              $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
-            });
-          }
-          $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
           $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], c);
         } else if (element.type === "datatype") {
           if (!parent) {
@@ -1613,9 +1543,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
     try {
       if (element.type === "segment") {
-        $rootScope.selectedSegment = element;
-        $rootScope.filteredTablesList = [];
-        $rootScope.filteredDatatypesList = [];
 
         if (!parent) {
           var s = {};
@@ -1635,34 +1562,13 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         f.path = parent.path + "." + element.position + "[1]";
         f.children = [];
         parent.children.push(f);
-        $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
-        $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
-        if (element.tables && element.tables.length > 0) {
-          angular.forEach(element.tables, function(table) {
-            $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
-          });
-          //$rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
-        }
-        $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
-        $rootScope.processSegmentsTree($rootScope.datatypesMap[element.datatype.id], f);
+          $rootScope.processSegmentsTree($rootScope.datatypesMap[element.datatype.id], f);
       } else if (element.type === "component") {
         var c = {};
         c.obj = element;
         c.path = parent.path + "." + element.position + "[1]";
         c.children = [];
         parent.children.push(c);
-        $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
-        $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
-        if (element.tables && element.tables.length > 0) {
-          angular.forEach(element.tables, function(table) {
-            $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
-          });
-          //$rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
-        }
-        $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
-        ////console.log($rootScope.filteredTablesList);
-        ////console.log($rootScope.filteredTablesList);
-
         $rootScope.processSegmentsTree($rootScope.datatypesMap[element.datatype.id], c);
       } else if (element.type === "datatype") {
 
@@ -1868,12 +1774,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
   $rootScope.checkedDatatype = null;
 
-  $rootScope.rebuildTreeFromDatatype = function(data) {
-    $rootScope.checkedDatatype = data;
-    $rootScope.filteredTablesList = [];
-    $rootScope.processDatatypeTree(data, null);
-  }
-
   $rootScope.processDatatypeTree = function(element, parent) {
     ////console.log(element);
 
@@ -1897,15 +1797,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         c.path = parent.path + "." + element.position + "[1]";
         c.children = [];
         parent.children.push(c);
-        $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
-        $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
-        if (element.tables && element.tables != null && element.tables.length > 0) {
-          angular.forEach(element.tables, function(table) {
-            $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
-          });
-          //$rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
-        }
-        $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
+
         $rootScope.processDatatypeTree($rootScope.datatypesMap[element.datatype.id], c);
       }
 
