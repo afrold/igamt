@@ -50,6 +50,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfiles;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.comparator.IgDocumentComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -2041,19 +2042,6 @@ public class IGDocumentController extends CommonController {
     } catch (Exception e) {
       throw new GVTExportException(e);
     }
-  }
-
-
-  @RequestMapping(value = "/{id}/exportConfig", method = RequestMethod.POST,
-      produces = "application/json")
-  public boolean saveExportConfig(@PathVariable("id") String id,
-      @RequestBody LibraryExportConfig exportConfig, HttpServletRequest request,
-      HttpServletResponse response) throws IGDocumentNotFoundException, IGDocumentException {
-    log.info("Save export config for IG Document with id=" + id);
-    IGDocument document = findIGDocument(id);
-    document.setExportConfig(exportConfig);
-    igDocumentService.save(document);
-    return true;
   }
 
 
