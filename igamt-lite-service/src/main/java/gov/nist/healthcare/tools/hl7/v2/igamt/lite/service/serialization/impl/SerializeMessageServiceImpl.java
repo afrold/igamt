@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
@@ -124,7 +121,7 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
 			    			Integer location = Integer.parseInt(stringTokenizer.nextToken());
 				    		for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
 				    			if(segmentRefOrGroup.getPosition() == location){
-				    				path = retrieveSegmentOrGroupName(segmentRefOrGroup,stringTokenizer);
+				    				path = super.retrieveSegmentOrGroupName(segmentRefOrGroup,stringTokenizer);
 				    				break;
 				    			}
 				    		}
@@ -145,32 +142,6 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
     	}
     	return commentsLocationPathMap;
     }
-
-	private String retrieveSegmentOrGroupName(SegmentRefOrGroup segmentRefOrGroup, StringTokenizer stringTokenizer) {
-		if(segmentRefOrGroup instanceof SegmentRef){
-    		Segment segment = segmentService.findById(((SegmentRef) segmentRefOrGroup).getRef().getId());
-    		if(segment!=null){
-    			return segment.getName();
-    		}
-    	} else if(segmentRefOrGroup instanceof Group){
-    		Group group = (Group) segmentRefOrGroup;
-    		if(stringTokenizer.hasMoreTokens()){
-    			String token = stringTokenizer.nextToken();
-    			try{
-	    			Integer location = Integer.parseInt(token);
-	    			for(SegmentRefOrGroup groupSegmentRefOrGroup : group.getChildren()){
-	    				if(groupSegmentRefOrGroup.getPosition() == location){
-	    					return group.getName()+"."+retrieveSegmentOrGroupName(groupSegmentRefOrGroup, stringTokenizer);
-	    				}
-	    			}
-    			} catch (NumberFormatException nfe){
-	    			logger.error("Unable to retreive path: Comment group's segment location is malformed ["+token+"]");
-	    		}
-    		}
-    		return group.getName();
-    	}
-		return null;
-	}
 
 
 	@Override
