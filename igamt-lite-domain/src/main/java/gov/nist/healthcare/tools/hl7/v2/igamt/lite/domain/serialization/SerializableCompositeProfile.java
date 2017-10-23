@@ -108,7 +108,7 @@ public class SerializableCompositeProfile extends SerializableSection {
         if(compositeProfile.getValueSetBindings()!=null && !compositeProfile.getValueSetBindings().isEmpty()) {
             Element valueSetBindingListElement = super
                 .createValueSetBindingListElement(compositeProfile.getValueSetBindings(), tables,
-                    compositeProfile.getName());
+                    compositeProfile.getName(),locationPathMap);
             if (valueSetBindingListElement != null) {
                 compositeProfileElement.appendChild(valueSetBindingListElement);
             }
