@@ -179,10 +179,9 @@
                                                         <div style="padding: 5px;">
 
                                                             <div ng-if="!isNonEditableValueSet(table)">
-                                                                <h5> Attributes
-                                                                </h5>
-                                                                <hr/>
-                                                                <div class="">
+                                                                <md-toolbar class="value-set-toolBar"> Attributes
+                                                                </md-toolbar>
+                                                                <div class="md-panelContent">
                                                                     <div class="inside-metadata divide"
                                                                          layout-gt-sm="row">
 
@@ -275,9 +274,8 @@
                                                                 </div>
                                                             </div>
                                                             <br/>
-                                                            <h5 class="">Content</h5>
-                                                            <hr/>
-                                                            <div class="codes-container">
+                                                            <md-toolbar class="value-set-toolBar">Content</md-toolbar>
+                                                            <div class="codes-container md-panelContent">
                                                                 <div ng-if="table.scope!=='PHINVADS'">
                                                                 <label class="input-left igamt-label">External Value Set Reference URL</label>
 
