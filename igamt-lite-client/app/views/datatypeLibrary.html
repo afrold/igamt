@@ -191,7 +191,7 @@ if (self === top) {
                                     <div layout="row" class="container">
                                         <span class="material-icons" style="font-size: 42px;">search</span>
                                         <md-input-container flex style="margin: 0px !important" layout="row">
-                                            <input type="search"  flex ng-model="search.metaData.name" />
+                                            <input type="search" no-dirty-check flex ng-model="search.datatypeLibrary.metaData.name" />
                                         </md-input-container>
                                     </div>
 
@@ -210,7 +210,7 @@ if (self === top) {
 
                                                     <div flex class="md-list-item-text" layout="column" style="margin-left: 5px; max-width: 100%">
 
-                                                        <span class="md-headline ig-title"><a class="point" ng-click="navToLibrary(row)">{{row.metaData.name}}</a>
+                                                        <span class="md-headline ig-title"><a class="point" ng-click="navToLibrary(row)">{{row.datatypeLibrary.metaData.name}}</a>
                                                         </span>
 
                                                         <div class="md-subhead" flex layout="row" layout-align="start start">
@@ -277,7 +277,7 @@ if (self === top) {
                                         <span class="material-icons" style="font-size: 42px;">search</span>
                                         <md-input-container flex style="margin: 0px !important" layout="row">
 
-                                            <input type="search"  flex ng-model="search.metaData.name"  />
+                                            <input type="search" flex ng-model="search.datatypeLibrary.metaData.name"/>
 
                                         </md-input-container>
                                     </div>
@@ -298,13 +298,13 @@ if (self === top) {
 
                                                     <div flex class="md-list-item-text" layout="column" style="margin-left: 5px; max-width: 100%">
 
-                                                        <span class="md-headline ig-title"> <a class="point" ng-click="navToLibrary(row)">{{row.metaData.name}}</a>
+                                                        <span class="md-headline ig-title"> <a class="point" ng-click="navToLibrary(row)">{{row.datatypeLibrary.metaData.name}}</a>
                                                         </span>
                                                         <div class="md-subhead" flex layout="row" layout-align="start start">
                                                             <div flex="40" class="ig-list-info">
                                                                 <i class="fa fa-calendar" aria-hidden="true"></i>
                                                                 Created on {{row.datatypeLibrary.dateUpdated | date:dateFormat}}
-                                                                <span> by {{row.metaData.owner}}</span>
+                                                                <span> by {{row.datatypeLibrary.metaData.owner}}</span>
                                                             </div>
 
 

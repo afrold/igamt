@@ -468,9 +468,8 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         //$rootScope.isEditing = true;
         // $scope.hl7Version = $rootScope.datatypeLibrary.metaData.hl7Version;
         $rootScope.datatypeLibraryId = $rootScope.datatypeLibrary.id;
-        $scope.datatypeLibMetaDataCopy = angular.copy(datatypeLibraryDocument.metaData);
+        $scope.datatypeLibMetaDataCopy = angular.copy(datatypeLibraryDocument.datatypeLibrary.metaData);
         $rootScope.currentData= $scope.datatypeLibMetaDataCopy;
-        $scope.datatypeLibsStruct=[];
         $scope.loadingSelection = false;
         $scope.DataTypeTree = [];
         $scope.datatypeLibCopy = angular.copy($rootScope.datatypeLibrary);

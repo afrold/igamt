@@ -179,9 +179,10 @@
                                                         <div style="padding: 5px;">
 
                                                             <div ng-if="!isNonEditableValueSet(table)">
-                                                                <md-toolbar class="value-set-toolBar"> Attributes
-                                                                </md-toolbar>
-                                                                <div class="md-panelContent">
+                                                                <h5> Attributes
+                                                                </h5>
+                                                                <hr/>
+                                                                <div class="">
                                                                     <div class="inside-metadata divide"
                                                                          layout-gt-sm="row">
 
@@ -274,54 +275,41 @@
                                                                 </div>
                                                             </div>
                                                             <br/>
-                                                            <md-toolbar class="value-set-toolBar">Content</md-toolbar>
-                                                            <div class="codes-container md-panelContent"
-                                                                 ng-if="table.sourceType=='EXTERNAL'">
+                                                            <h5 class="">Content</h5>
+                                                            <hr/>
+                                                            <div class="codes-container">
+                                                                <div ng-if="table.scope!=='PHINVADS'">
                                                                 <label class="input-left igamt-label">External Value Set Reference URL</label>
 
                                                                 <md-input-container class="md-block igamt-input-block"
                                                                                     flex-gt-sm>
                                                                     <input type="url" name="url"
                                                                            ng-disabled="isNonEditableValueSet(table)"
-                                                                           ng-model="table.referenceUrl" required>
+                                                                           ng-model="table.referenceUrl" ng-required="table.sourceType=='EXTERNAL'">
                                                                     <span ng-if="!editForm.url.$valid"
                                                                           style="color :red;">
                                                                     <i class="fa fa-exclamation-triangle"
                                                                        aria-hidden="true"></i> Please Enter a Valid URL
                                                                 </span>
                                                                 </md-input-container>
-                                                                <!--<span class="url-error" ng-if="!editForm.url.valid"> Invalid URL </span>-->
 
-                                                                <label class="input-left igamt-label"
-                                                                       ng-if="table.contentDefinition=='Intensional'">Definition
-                                                                    Text </label>
+                                                                    <div ng-if="table.sourceType=='EXTERNAL'">
+                                                                    <label class="input-left igamt-label"
+                                                                           ng-if="table.contentDefinition=='Intensional'">Definition
+                                                                        Text </label>
 
-                                                                <md-input-container class="md-block igamt-input-block"
-                                                                                    flex-gt-sm
-                                                                                    ng-if="table.contentDefinition=='Intensional'">
+                                                                    <md-input-container class="md-block igamt-input-block"
+                                                                                        flex-gt-sm
+                                                                                        ng-if="table.contentDefinition=='Intensional'">
                                                                     <textarea id="infoForExternal" type="text"
                                                                               name="infoForExternal"
                                                                               ng-disabled="isNonEditableValueSet(table)"
                                                                               ng-model="table.infoForExternal"></textarea>
-                                                                </md-input-container>
-                                                            </div>
-                                                            <div class="codes-container md-panelContent"
-                                                                 ng-if="table.sourceType!=='EXTERNAL'">
-                                                                <div ng-if="table.status=='UNPUBLISHED'&&table.referenceUrl!==null&&table.scope!=='PHINVADS'">
-                                                                    <label class="input-left igamt-label">Reference
-                                                                        URL</label>
-                                                                    <md-input-container
-                                                                            class="md-block igamt-input-block"
-                                                                            flex-gt-sm>
-                                                                        <input type="url" name="url"
-                                                                               ng-model="table.referenceUrl">
-                                                                        <span ng-if="!editForm.url.$valid"
-                                                                              style="color :red;">
-                                                                    <i class="fa fa-exclamation-triangle"
-                                                                       aria-hidden="true"></i> Please Enter a Valid URL
-                                                                </span>
                                                                     </md-input-container>
+                                                                    </div>
                                                                 </div>
+
+
                                                                 <div ng-if="table.scope=='PHINVADS'">
                                                                     <label class="input-left igamt-label"> Reference
                                                                         URL </label>
@@ -329,6 +317,11 @@
                                                                     <a href="{{getPhinvadsURL(table)}}" target="_blank"
                                                                        ng-if="table.sourceType!=='EXTERNAL'">{{getPhinvadsURL(table)}}</a>
                                                                 </div>
+                                                                <!--<span class="url-error" ng-if="!editForm.url.valid"> Invalid URL </span>-->
+
+
+                                                            </div>
+                                                            <div class="codes-container md-panelContent">
                                                                 <div class="row container">
                                                                 <span class="pull-left" ng-if="table.codes.length>0">
                                                                     <span>Codes Per Page : </span>

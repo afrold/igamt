@@ -50,7 +50,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     blockUI.start();
     cleanState();
     $rootScope.table = angular.copy($rootScope.entireTable);
-    //$rootScope.findValueSetBindings();
+    $rootScope.table.smallCodes=angular.copy($rootScope.table.codes);
     blockUI.stop();
   };
   $scope.redirectSeg = function(segmentRef) {
@@ -189,6 +189,8 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
 
       TableService.save(table).then(function(result) {
         $rootScope.entireTable=angular.copy(result);
+        // $rootScope.table.codes=$rootScope.entireTable.codes;
+
 
         var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.tableLibrary.children);
 
@@ -474,8 +476,6 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
       $scope.confirm= function () {
         $rootScope.table.referenceUrl=$scope.url;
         $rootScope.table.sourceType="EXTERNAL";
-        $rootScope.table.codes=[];
-        $rootScope.table.smallCodes=[];
         $rootScope.recordChanged();
         $mdDialog.hide("OK");
 

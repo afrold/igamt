@@ -559,13 +559,12 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
       $rootScope.validationResult=null;
 
 
-
       if (igdocument != null) {
       // Set rootscope accountId for sharing
       $rootScope.accountId = igdocument.accountId;
       $timeout(function () {
         $scope.selectIgTab(1);
-
+        $rootScope.subview=null;
         $rootScope.TreeIgs = [];
         $rootScope.TreeIgs.push(igdocument);
         $rootScope.selectedMessagesIDS = [];
@@ -612,7 +611,6 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
                           $rootScope.igdocument.shareParticipants.push(response.data);
                         },
                         function (error) {
-                          console.log(error);
                         }
                       );
                   });

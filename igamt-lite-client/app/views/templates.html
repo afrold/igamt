@@ -4603,16 +4603,16 @@
                                         </div>
                                     </div>
                                     <div class="container">
-                                        <table class="fixed_headers table-bordered">
+                                        <table class="fixed-header table-bordered">
                                             <thead>
-                                                <tr class="tbl-header" style="color:white !important;font-weight: bold">
+                                                <tr class="tbl-header fixed-header" style="color:black !important;font-weight: bold">
                                                     <th class="widthInside">Name</th>
                                                     <th class="widthInside">Versions</th>
                                                     <th class="widthInside"></th>
 
                                                 </tr>
                                             </thead>
-                                            <tbody style="max-height:500px; overflow:scroll; display:block">
+                                            <tbody class="fixed-header">
                                                 <tr ng-repeat="data in hl7Datatypes| filter:search|orderBy: 'name'">
                                                     <td class="widthInside">
                                                         <span>{{data.name}}</span>
@@ -4640,9 +4640,9 @@
                                         <input type="search" class="form-control" placeholder="Search" ng-model="search1.name" style="width:500px" />
                                     </div>
                                     <div class="container">
-                                        <table class="fixed_headers table-bordered">
+                                        <table class="fixed-header table-bordered">
                                             <thead>
-                                                <tr class="tbl-header" style="color:white !important;font-weight: bold">
+                                                <tr class="tbl-header fixed-header" style="color:black !important;font-weight: bold">
                                                     <th class="widthInside2">Name</th>
                                                     <th class="widthInside2">Extension</th>
                                                     <th class="widthInside2">Compatible HL7 Version</th>
@@ -4651,7 +4651,7 @@
                                                     <th class="widthInside2">Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody style="max-height:500px; overflow:scroll; display:block">
+                                            <tbody style="max-height:500px; overflow:scroll; display:block" class="fixed-header">
                                                 <tr ng-repeat="data in addedDatatypes| filter:search1">
                                                     <td class="widthInside2">
                                                         <span>{{data.name}}</span>

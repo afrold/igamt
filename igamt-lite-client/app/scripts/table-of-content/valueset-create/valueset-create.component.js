@@ -8,6 +8,7 @@ angular.module('igl').controller('CreateValueSet', ['$rootScope', '$scope', '$md
   $scope.selectedTableLibary=selectedTableLibary;
   $scope.newTable.shareParticipantIds = [];
   $scope.newTable.sourceType="INTERNAL";
+  $scope.newTable.smallCodes=[];
   $scope.newTable.scope = selectedTableLibary.scope;
   $scope.newTable.id = null;
   $scope.newTable.libIds = [];
@@ -40,11 +41,6 @@ angular.module('igl').controller('CreateValueSet', ['$rootScope', '$scope', '$md
         $rootScope.tables.splice(0, 0, newTable);
         $rootScope.table = newTable;
         $rootScope.tablesMap[newTable.id] = newTable;
-
-        if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
-          $rootScope.filteredTablesList.push(newTable);
-          $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
-        }
         $mdDialog.hide(result);
         $rootScope.$broadcast('event:openTable', newTable);
       }, function (error) {
