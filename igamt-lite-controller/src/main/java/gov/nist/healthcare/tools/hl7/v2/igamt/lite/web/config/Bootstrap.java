@@ -317,6 +317,8 @@ public class Bootstrap implements InitializingBean {
     // 2.0.0-beta7
     updateTableForNumOfCodesANDSourceType();
     makePhinvadsExternal();
+    // updateTableForNumOfCodesANDSourceType();
+
 
   }
 
@@ -337,23 +339,12 @@ public class Bootstrap implements InitializingBean {
     for (Table t : allTables) {
       int numberOfCodes = t.getCodes().size();
       tableService.updateAttributes(t.getId(), "numberOfCodes", numberOfCodes);
-
+      if (t.getScope().equals(SCOPE.PHINVADS) || numberOfCodes > 500) {
+        tableService.updateAttributes(t.getId(), "sourceType", SourceType.EXTERNAL);
+        tableService.updateAttributes(t.getId(), "managedBy", Constant.External);
+      }
       if (numberOfCodes > 500) {
-        // largeTable.put(t.getId(), t);
-        // largeTableLISTCSV = largeTableLISTCSV +
-        // "\"" + t.getId() + "\"," +
-        // "\"" + t.getBindingIdentifier() + "\"," +
-        // "\"" + t.getName() + "\"," +
-        // "\"" + t.getCodes().size() + "\"," +
-        // "\"" + t.getScope() + "\"," +
-        // "\"" + t.getHl7Version() + "\"\n";
-
-        t.setManagedBy(Constant.External);
-        t.setSourceType(SourceType.EXTERNAL);
-        t.setCodes(new ArrayList<Code>());
-        t.setNumberOfCodes(numberOfCodes);
-        tableService.save(t);
-
+        tableService.updateAttributes(t.getId(), "codes", new ArrayList<Code>());
       }
     }
 

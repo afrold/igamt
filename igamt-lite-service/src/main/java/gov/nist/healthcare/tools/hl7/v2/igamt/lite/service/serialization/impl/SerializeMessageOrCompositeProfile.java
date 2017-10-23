@@ -1,6 +1,28 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraints;
@@ -12,12 +34,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.Seriali
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeSegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -33,6 +49,9 @@ import java.util.UUID;
  * Created by Maxence Lefort on 3/9/17.
  */
 public abstract class SerializeMessageOrCompositeProfile {
+	
+	static final Logger logger = LoggerFactory.getLogger(SerializeMessageOrCompositeProfile.class);
+	
     @Autowired SegmentService segmentService;
     @Autowired SerializeConstraintService serializeConstraintService;
     @Autowired SerializationUtil serializationUtil;
@@ -155,4 +174,101 @@ public abstract class SerializeMessageOrCompositeProfile {
         serializableGroup = new SerializableSegmentRefOrGroup(group,serializableSegmentRefOrGroups,groupConstraints, this instanceof SerializeCompositeProfileService);
         return serializableGroup;
     }
+    
+    protected HashMap<String,String> retrieveComponentsPaths(Message message){
+    	HashSet<String> locationsToRetrieve = new HashSet<>();
+    	for(Comment comment : message.getComments()){
+    		if(comment != null && comment.getLocation() != null && !comment.getLocation().isEmpty() && !locationsToRetrieve.contains(comment.getLocation())){
+    			locationsToRetrieve.add(comment.getLocation());
+    		}
+    	}
+    	for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : message.getValueSetBindings()){
+    		if(valueSetOrSingleCodeBinding != null && valueSetOrSingleCodeBinding.getLocation()!=null && !valueSetOrSingleCodeBinding.getLocation().isEmpty() && !locationsToRetrieve.contains(valueSetOrSingleCodeBinding.getLocation())){
+    			locationsToRetrieve.add(valueSetOrSingleCodeBinding.getLocation());
+    		}
+    	}
+    	return retrieveComponentsPaths(locationsToRetrieve,message.getChildren());
+    }
+    
+    protected HashMap<String,String> retrieveComponentsPaths(CompositeProfile compositeProfile){
+    	HashSet<String> locationsToRetrieve = new HashSet<>();
+    	for(Comment comment : compositeProfile.getComments()){
+    		if(comment != null && comment.getLocation() != null && !comment.getLocation().isEmpty() && !locationsToRetrieve.contains(comment.getLocation())){
+    			locationsToRetrieve.add(comment.getLocation());
+    		}
+    	}
+    	for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : compositeProfile.getValueSetBindings()){
+    		if(valueSetOrSingleCodeBinding != null && valueSetOrSingleCodeBinding.getLocation()!=null && !valueSetOrSingleCodeBinding.getLocation().isEmpty() && !locationsToRetrieve.contains(valueSetOrSingleCodeBinding.getLocation())){
+    			locationsToRetrieve.add(valueSetOrSingleCodeBinding.getLocation());
+    		}
+    	}
+    	return retrieveComponentsPaths(locationsToRetrieve,compositeProfile.getChildren(),compositeProfile.getSegmentsMap());
+    }
+    
+    private HashMap<String,String> retrieveComponentsPaths(HashSet<String> locationsToRetrieve, List<SegmentRefOrGroup> segmentRefOrGroups){
+    	return retrieveComponentsPaths(locationsToRetrieve,segmentRefOrGroups,null);
+    }
+
+    
+    private HashMap<String,String> retrieveComponentsPaths(HashSet<String> locationsToRetrieve, List<SegmentRefOrGroup> segmentRefOrGroups, Map<String, Segment> compositeProfileSegmentsMap){
+    	HashMap<String,String> componentsLocationPathMap = new HashMap<>();
+    	for(String location : locationsToRetrieve){
+    		String path = null;
+    		StringTokenizer stringTokenizer = new StringTokenizer(location, ".");
+    		if(stringTokenizer.hasMoreTokens()){
+	    		try{
+	    			Integer locationToken = Integer.parseInt(stringTokenizer.nextToken());
+		    		for(SegmentRefOrGroup segmentRefOrGroup : segmentRefOrGroups){
+		    			if(segmentRefOrGroup.getPosition() == locationToken){
+		    				path = this.retrieveSegmentOrGroupName(segmentRefOrGroup,stringTokenizer,compositeProfileSegmentsMap);
+		    				break;
+		    			}
+		    		}
+	    		} catch (NumberFormatException nfe){
+	    			logger.error("Unable to retreive path: Comment location is malformed ["+location+"]");
+	    			path = location;
+	    		}
+    		}
+    		if(null == path){
+    			path = location;
+    		}
+    		while(stringTokenizer.hasMoreTokens()){
+    			path += "." + stringTokenizer.nextToken();
+    		}
+    		componentsLocationPathMap.put(location, path);
+		}
+    	return componentsLocationPathMap;
+    }
+    
+    private String retrieveSegmentOrGroupName(SegmentRefOrGroup segmentRefOrGroup, StringTokenizer stringTokenizer,Map<String, Segment> compositeProfileSegmentsMap) {
+		if(segmentRefOrGroup instanceof SegmentRef){
+			Segment segment = null;
+			String segmentId = ((SegmentRef) segmentRefOrGroup).getRef().getId();
+			if(compositeProfileSegmentsMap != null){
+				segment = compositeProfileSegmentsMap.get(segmentId);
+    		} else {
+    			segment = segmentService.findById(segmentId);
+    		}
+    		if(segment!=null){
+    			return segment.getName();
+    		}
+    	} else if(segmentRefOrGroup instanceof Group){
+    		Group group = (Group) segmentRefOrGroup;
+    		if(stringTokenizer.hasMoreTokens()){
+    			String token = stringTokenizer.nextToken();
+    			try{
+	    			Integer location = Integer.parseInt(token);
+	    			for(SegmentRefOrGroup groupSegmentRefOrGroup : group.getChildren()){
+	    				if(groupSegmentRefOrGroup.getPosition() == location){
+	    					return group.getName()+"."+retrieveSegmentOrGroupName(groupSegmentRefOrGroup, stringTokenizer,compositeProfileSegmentsMap);
+	    				}
+	    			}
+    			} catch (NumberFormatException nfe){
+	    			logger.error("Unable to retreive path: Comment group's segment location is malformed ["+token+"]");
+	    		}
+    		}
+    		return group.getName();
+    	}
+		return null;
+	}
 }

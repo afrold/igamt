@@ -1,8 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
@@ -15,6 +17,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeCompositeProfileService;
 
@@ -34,6 +37,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.Seriali
 @Service
 public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrCompositeProfile implements SerializeCompositeProfileService {
 
+	@Autowired
+	TableService tableService;
+	
     @Override
     public SerializableCompositeProfile serializeCompositeProfile(CompositeProfile compositeProfile,
         String prefix, SerializationLayout serializationLayout, String hl7Version,
@@ -72,8 +78,8 @@ public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrComp
             }
         }
         String title = generateTitle(compositeProfile);
-
-        SerializableCompositeProfile serializableCompositeProfile = new SerializableCompositeProfile(compositeProfile,prefix,title,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText,tables,showConfLength);
+        HashMap<String,String> positionNameSegOrGroupMap = super.retrieveComponentsPaths(compositeProfile);
+        SerializableCompositeProfile serializableCompositeProfile = new SerializableCompositeProfile(compositeProfile,prefix,title,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText,tables,positionNameSegOrGroupMap,showConfLength);
         SerializableSection compositeProfileSegments = new SerializableSection(compositeProfile.getIdentifier()+"_segments",prefix+"."+String.valueOf(compositeProfile.getPosition())+"."+segmentSectionPosition,"1","4","Segment definitions");
         this.messageSegmentsNameList = new ArrayList<>();
         this.segmentPosition = 1;
@@ -112,13 +118,20 @@ public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrComp
 
     private Table findTableInProfile(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding,
         CompositeProfile compositeProfile) {
-    	if(compositeProfile!=null && compositeProfile.getTablesMap() != null && !compositeProfile.getTablesMap().isEmpty()){
-	        for(String currentId : compositeProfile.getTablesMap().keySet()){
-	            if(currentId.equals(valueSetOrSingleCodeBinding.getId())){
-	                return compositeProfile.getTablesMap().get(currentId);
-	            }
-	        }
+    	if(valueSetOrSingleCodeBinding != null && valueSetOrSingleCodeBinding.getTableId() !=null && !valueSetOrSingleCodeBinding.getTableId().isEmpty()){
+	    	if(compositeProfile!=null && compositeProfile.getTablesMap() != null && !compositeProfile.getTablesMap().isEmpty()){
+		        for(String currentId : compositeProfile.getTablesMap().keySet()){
+		            if(currentId.equals(valueSetOrSingleCodeBinding.getTableId())){
+		                return compositeProfile.getTablesMap().get(currentId);
+		            }
+		        }
+	    	}
+	    	Table table = tableService.findById(valueSetOrSingleCodeBinding.getTableId());
+	    	if(table!=null){
+	    		return table;
+	    	}
     	}
         return null;
     }
+    
 }

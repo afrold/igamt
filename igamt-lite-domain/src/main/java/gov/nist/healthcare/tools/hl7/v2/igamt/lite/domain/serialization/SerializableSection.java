@@ -12,6 +12,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -105,8 +106,12 @@ public class SerializableSection extends SerializableElement {
         this.titleAttribute = new Attribute("title", title);
         this.sectionElement.addAttribute(titleAttribute);
     }
-
+    
     protected Element createCommentListElement(List<Comment> commentList, String locationPrefix){
+    	return createCommentListElement(commentList, locationPrefix, new HashMap<String,String>());
+    }
+
+    protected Element createCommentListElement(List<Comment> commentList, String locationPrefix, HashMap<String,String> locationPathMap){
         Element commentListElement = new Element("CommentList");
         if(commentList!=null && !commentList.isEmpty()){
             for(Comment comment : commentList){
@@ -114,10 +119,11 @@ public class SerializableSection extends SerializableElement {
                     Element commentElement = new Element("Comment");
                     if (comment.getLocation() != null) {
                         String location = "";
-                        if(locationPrefix!=null && !locationPrefix.isEmpty()){
-                            location+=locationPrefix+"-";
+                        if(locationPathMap.containsKey(comment.getLocation())){
+                        	location+=locationPathMap.get(comment.getLocation());
+                        } else {
+                        	location+=comment.getLocation();
                         }
-                        location+=comment.getLocation();
                         commentElement
                             .addAttribute(new Attribute("Location", location));
                     }
@@ -141,6 +147,10 @@ public class SerializableSection extends SerializableElement {
     }
 
     protected Element createValueSetBindingListElement(List<ValueSetOrSingleCodeBinding> valueSetOrSingleCodeBindings, List<Table> tables,String locationPrefix){
+        return createValueSetBindingListElement(valueSetOrSingleCodeBindings, tables, locationPrefix,new HashMap<String,String>());
+    }
+    
+    protected Element createValueSetBindingListElement(List<ValueSetOrSingleCodeBinding> valueSetOrSingleCodeBindings, List<Table> tables,String locationPrefix, HashMap<String,String> locationPathMap){
         Element valueSetBindingListElement = new Element("ValueSetBindingList");
         for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : valueSetOrSingleCodeBindings){
             if(valueSetOrSingleCodeBinding!=null) {
@@ -155,10 +165,14 @@ public class SerializableSection extends SerializableElement {
                     }
                     if (valueSetOrSingleCodeBinding.getLocation() != null) {
                         String location = "";
-                        if (locationPrefix != null && !locationPrefix.isEmpty()) {
-                            location += locationPrefix + "-";
+                        if(locationPathMap.containsKey(valueSetOrSingleCodeBinding.getLocation())){
+                        	location = locationPathMap.get(valueSetOrSingleCodeBinding.getLocation());
+                        } else {
+	                        if (locationPrefix != null && !locationPrefix.isEmpty()) {
+	                            location += locationPrefix + "-";
+	                        }
+	                        location += valueSetOrSingleCodeBinding.getLocation();
                         }
-                        location += valueSetOrSingleCodeBinding.getLocation();
                         valueSetBindingElement.addAttribute(new Attribute("Location", location));
                         valueSetBindingElement.addAttribute(new Attribute("SortLocation", valueSetOrSingleCodeBinding.getLocation()));
                     }

@@ -1,8 +1,11 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +42,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
 @Service
 public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProfile implements SerializeMessageService {
 
+	static final Logger logger = LoggerFactory.getLogger(SerializeMessageService.class);
+	
     @Autowired
     SerializationUtil serializationUtil;
 
@@ -80,7 +85,8 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
                 }
             }
         }
-        SerializableMessage serializableMessage = new SerializableMessage(message,prefix,headerLevel,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText,tables,showConfLength);
+        HashMap<String,String> positionNameSegOrGroupMap = super.retrieveComponentsPaths(message);
+        SerializableMessage serializableMessage = new SerializableMessage(message,prefix,headerLevel,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText,tables,positionNameSegOrGroupMap,showConfLength);
         SerializableSection messageSegments = new SerializableSection(message.getId()+"_segments",prefix+"."+String.valueOf(message.getPosition())+"."+segmentSectionPosition,"1","4","Segment definitions");
         this.messageSegmentsNameList = new ArrayList<>();
         this.segmentPosition = 1;
@@ -100,6 +106,7 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
         }
         return serializableMessage;
     }
+
 
 	@Override
 	public SerializableElement serializeMessage(Message message, String host) {

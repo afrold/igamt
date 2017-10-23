@@ -2,11 +2,11 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,11 +33,13 @@ public class SerializableCompositeProfile extends SerializableSection {
     private String defPostText;
     private List<Table> tables;
     private boolean showConfLength;
+    private HashMap<String,String> locationPathMap;
+    
     public SerializableCompositeProfile(CompositeProfile compositeProfile, String prefix, String title,
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups,
         SerializableConstraints serializableConformanceStatements,
         SerializableConstraints serializablePredicates, String usageNote, String defPreText,
-        String defPostText, List<Table> tables, Boolean showConfLength) {
+        String defPostText, List<Table> tables, HashMap<String,String> locationPathMap, Boolean showConfLength) {
         super(compositeProfile.getIdentifier(),
             prefix + "." + String.valueOf(compositeProfile.getPosition()),
             String.valueOf(compositeProfile.getPosition() + 1),
@@ -51,6 +53,7 @@ public class SerializableCompositeProfile extends SerializableSection {
         this.defPostText = defPostText;
         this.tables = tables;
         this.showConfLength = showConfLength;
+        this.locationPathMap = locationPathMap;
     }
 
     @Override public Element serializeElement() {
@@ -105,13 +108,13 @@ public class SerializableCompositeProfile extends SerializableSection {
         if(compositeProfile.getValueSetBindings()!=null && !compositeProfile.getValueSetBindings().isEmpty()) {
             Element valueSetBindingListElement = super
                 .createValueSetBindingListElement(compositeProfile.getValueSetBindings(), tables,
-                    compositeProfile.getName());
+                    compositeProfile.getName(),locationPathMap);
             if (valueSetBindingListElement != null) {
                 compositeProfileElement.appendChild(valueSetBindingListElement);
             }
         }
         if(compositeProfile.getComments()!=null && !compositeProfile.getComments().isEmpty()) {
-            Element commentListElement = super.createCommentListElement(compositeProfile.getComments(),compositeProfile.getName());
+            Element commentListElement = super.createCommentListElement(compositeProfile.getComments(),compositeProfile.getName(),locationPathMap);
             if (commentListElement != null) {
                 compositeProfileElement.appendChild(commentListElement);
             }
