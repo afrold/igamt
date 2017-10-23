@@ -31,6 +31,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     $scope.tabStatus = {
       active: 1
     };
+    console.log("INITIALISING")
     $scope.selectedCodes = [];
     $rootScope.$on('event:cloneTableFlavor', function(event, table) {
       $scope.copyTable(table);

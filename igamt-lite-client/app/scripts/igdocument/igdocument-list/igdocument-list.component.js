@@ -2147,7 +2147,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 
         $rootScope.table.smallCodes = [];
         if($rootScope.table.codes && $rootScope.table.codes.length <= 500){
-            $rootScope.table.smallCodes = $rootScope.table.codes;
+            $rootScope.table.smallCodes = angular.copy($rootScope.table.codes);
         }
         $rootScope.table.smallCodes.sort($scope.codeCompare);
         $rootScope.entireTable=angular.copy($rootScope.table);

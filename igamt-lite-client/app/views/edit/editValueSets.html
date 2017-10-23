@@ -509,7 +509,7 @@
 
                                                                         </thead>
                                                                         <tbody>
-                                                                        <tr ng-repeat="c in displayCollection |filter:searchObject"
+                                                                        <tr ng-repeat="c in displayCollection  |filter:searchObject track by $index"
                                                                             ng-if="!isNonEditableValueSet(table)">
                                                                             <td class="col-md-1" align="center"
                                                                                 ng-if="!isNonEditableValueSet(table)">
@@ -612,7 +612,7 @@
                                                                             </td>
                                                                         </tr>
 
-                                                                        <tr ng-repeat="c in displayCollection track by $index |filter:searchObject"
+                                                                        <tr ng-repeat="c in displayCollection |filter:searchObject track by $index"
                                                                             ng-if="isNonEditableValueSet(table)">
 
                                                                             <td class="col-md-3">
