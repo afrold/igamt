@@ -110,7 +110,7 @@ public class SerializableMessage extends SerializableSection {
         if(message.getValueSetBindings()!=null && !message.getValueSetBindings().isEmpty()) {
             Element valueSetBindingListElement = super
                 .createValueSetBindingListElement(message.getValueSetBindings(), tables,
-                    message.getName());
+                    message.getName(),locationPathMap);
             if (valueSetBindingListElement != null) {
                 messageElement.appendChild(valueSetBindingListElement);
             }
