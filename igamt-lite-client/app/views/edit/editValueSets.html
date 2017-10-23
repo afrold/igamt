@@ -179,10 +179,9 @@
                                                         <div style="padding: 5px;">
 
                                                             <div ng-if="!isNonEditableValueSet(table)">
-                                                                <h5> Attributes
-                                                                </h5>
-                                                                <hr/>
-                                                                <div class="">
+                                                                <md-toolbar class="value-set-toolBar"> Attributes
+                                                                </md-toolbar>
+                                                                <div class="md-panelContent">
                                                                     <div class="inside-metadata divide"
                                                                          layout-gt-sm="row">
 
@@ -250,9 +249,10 @@
                                                             </div>
 
                                                             <div ng-if="isNonEditableValueSet(table)">
-                                                              <h3 class="">Value Set Definition Attribute</h3>
-                                                              <hr/>
-                                                                <div class="">
+                                                                <md-toolbar class="value-set-toolBar">Value Set
+                                                                    Definition Attribute
+                                                                </md-toolbar>
+                                                                <div class="md-panelContent">
                                                                     <div class="inside-metadata divide"
                                                                          layout-gt-sm="row">
                                                                         <label class="input-left igamt-label valueset-ext-label">Extensibility</label>
@@ -274,9 +274,8 @@
                                                                 </div>
                                                             </div>
                                                             <br/>
-                                                            <h3 class="">Content</h3>
-                                                            <hr/>
-                                                            <div class="codes-container">
+                                                            <md-toolbar class="value-set-toolBar">Content</md-toolbar>
+                                                            <div class="codes-container md-panelContent">
                                                                 <div ng-if="table.scope!=='PHINVADS'">
                                                                 <label class="input-left igamt-label">External Value Set Reference URL</label>
 
@@ -311,7 +310,7 @@
 
                                                                 <div ng-if="table.scope=='PHINVADS'">
                                                                     <label class="input-left igamt-label"> Reference
-                                                                        URL: </label>
+                                                                        URL </label>
 
                                                                     <a href="{{getPhinvadsURL(table)}}" target="_blank"
                                                                        ng-if="table.sourceType!=='EXTERNAL'">{{getPhinvadsURL(table)}}</a>
@@ -320,7 +319,7 @@
 
 
                                                             </div>
-                                                            <div class="codes-container">
+                                                            <div class="codes-container md-panelContent">
                                                                 <div class="row container">
                                                                 <span class="pull-left" ng-if="table.codes.length>0">
                                                                     <span>Codes Per Page : </span>
