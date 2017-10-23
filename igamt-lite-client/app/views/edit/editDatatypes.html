@@ -1183,7 +1183,7 @@
                             <md-option ng-repeat="dt in results" ng-value="dt">
                                 <display-label of="datatypesMap[dt.id]" desc="false"></display-label>
                             </md-option>
-                            <md-option ng-click="otherDT(node)" value="none"> Change Data Type root</md-option>
+                            <md-option ng-click="otherDT(node)" ng-value="node.datatype"> Change Data Type root</md-option>
                         </md-select>
 
                     </div>

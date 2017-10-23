@@ -128,7 +128,6 @@ angular
 
             return true;
 
-
           },
 
 
@@ -2282,9 +2281,20 @@ angular
             );
           }
 
-        }
+        };
 
 
+        $rootScope.dataProperties=['igs',]
+        $rootScope.clearData=function () {
+
+
+        };
+
+
+        $rootScope.getRquired=function(test){
+
+
+        };
 
 
 

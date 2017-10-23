@@ -278,8 +278,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
       codeSystem: '',
       codeUsage: 'R'
     };
-    $rootScope.searchObject={
-      };
+    $rootScope.searchObject={};
 
 
     $rootScope.table.smallCodes.unshift(newValue);
