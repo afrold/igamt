@@ -42,6 +42,7 @@ import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.AppInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ApplyInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
@@ -154,6 +155,8 @@ public class IGDocumentController extends CommonController {
 
   @Autowired
   UserService userService;
+  @Autowired
+  AppInfo appInfo;
   @Autowired
   ProfileService profileService;
   @Autowired
@@ -1287,7 +1290,7 @@ public class IGDocumentController extends CommonController {
       produces = "application/json")
   public List<String> findHl7Versions() {
     log.info("Fetching all HL7 versions.");
-    List<String> result = igDocumentCreation.findHl7Versions();
+    List<String> result = appInfo.getHl7Versions();
     return result;
   }
 
