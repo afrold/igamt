@@ -1,13 +1,13 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
+import java.util.HashMap;
+import java.util.List;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import nu.xom.Attribute;
 import nu.xom.Element;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -33,10 +33,11 @@ public class SerializableMessage extends SerializableSection {
     private String defPostText;
     private List<Table> tables;
     private boolean showConfLength;
+    private HashMap<String,String> locationPathMap;
     
     public SerializableMessage(Message message, String prefix, String headerLevel, List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups,
         SerializableConstraints serializableConformanceStatements, SerializableConstraints serializablePredicates, String usageNote,
-        String defPreText, String defPostText, List<Table> tables, Boolean showConfLength) {
+        String defPreText, String defPostText, List<Table> tables, HashMap<String,String> locationPathMap, Boolean showConfLength) {
         super(message.getId(),
             prefix + "." + String.valueOf(message.getPosition()),
             String.valueOf(message.getPosition() + 1),
@@ -54,6 +55,7 @@ public class SerializableMessage extends SerializableSection {
         this.defPostText = defPostText;
         this.tables = tables;
         this.showConfLength = showConfLength;
+        this.locationPathMap = locationPathMap;
     }
 
     @Override public Element serializeElement() {
@@ -114,7 +116,7 @@ public class SerializableMessage extends SerializableSection {
             }
         }
         if(message.getComments()!=null && !message.getComments().isEmpty()) {
-            Element commentListElement = super.createCommentListElement(message.getComments(),message.getName());
+            Element commentListElement = super.createCommentListElement(message.getComments(),message.getName(),locationPathMap);
             if (commentListElement != null) {
                 messageElement.appendChild(commentListElement);
             }
@@ -122,6 +124,8 @@ public class SerializableMessage extends SerializableSection {
         super.sectionElement.appendChild(messageElement);
         return super.sectionElement;
     }
+    
+    
 
     private void addComments(SerializableSegmentRefOrGroup serializableSegmentRefOrGroup) {
         String comments = "";

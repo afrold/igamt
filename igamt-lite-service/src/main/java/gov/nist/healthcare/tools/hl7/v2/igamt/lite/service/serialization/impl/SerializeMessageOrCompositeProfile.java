@@ -12,11 +12,15 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.Seriali
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeSegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.UUID;
 
 /**
@@ -33,6 +37,9 @@ import java.util.UUID;
  * Created by Maxence Lefort on 3/9/17.
  */
 public abstract class SerializeMessageOrCompositeProfile {
+	
+	static final Logger logger = LoggerFactory.getLogger(SerializeMessageOrCompositeProfile.class);
+	
     @Autowired SegmentService segmentService;
     @Autowired SerializeConstraintService serializeConstraintService;
     @Autowired SerializationUtil serializationUtil;
@@ -155,4 +162,30 @@ public abstract class SerializeMessageOrCompositeProfile {
         serializableGroup = new SerializableSegmentRefOrGroup(group,serializableSegmentRefOrGroups,groupConstraints, this instanceof SerializeCompositeProfileService);
         return serializableGroup;
     }
+    
+    protected String retrieveSegmentOrGroupName(SegmentRefOrGroup segmentRefOrGroup, StringTokenizer stringTokenizer) {
+		if(segmentRefOrGroup instanceof SegmentRef){
+    		Segment segment = segmentService.findById(((SegmentRef) segmentRefOrGroup).getRef().getId());
+    		if(segment!=null){
+    			return segment.getName();
+    		}
+    	} else if(segmentRefOrGroup instanceof Group){
+    		Group group = (Group) segmentRefOrGroup;
+    		if(stringTokenizer.hasMoreTokens()){
+    			String token = stringTokenizer.nextToken();
+    			try{
+	    			Integer location = Integer.parseInt(token);
+	    			for(SegmentRefOrGroup groupSegmentRefOrGroup : group.getChildren()){
+	    				if(groupSegmentRefOrGroup.getPosition() == location){
+	    					return group.getName()+"."+retrieveSegmentOrGroupName(groupSegmentRefOrGroup, stringTokenizer);
+	    				}
+	    			}
+    			} catch (NumberFormatException nfe){
+	    			logger.error("Unable to retreive path: Comment group's segment location is malformed ["+token+"]");
+	    		}
+    		}
+    		return group.getName();
+    	}
+		return null;
+	}
 }

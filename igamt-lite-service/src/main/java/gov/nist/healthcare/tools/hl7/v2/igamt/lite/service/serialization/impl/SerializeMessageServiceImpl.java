@@ -1,11 +1,16 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.StringTokenizer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
@@ -39,6 +44,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
 @Service
 public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProfile implements SerializeMessageService {
 
+	static final Logger logger = LoggerFactory.getLogger(SerializeMessageService.class);
+	
     @Autowired
     SerializationUtil serializationUtil;
 
@@ -80,7 +87,8 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
                 }
             }
         }
-        SerializableMessage serializableMessage = new SerializableMessage(message,prefix,headerLevel,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText,tables,showConfLength);
+        HashMap<String,String> positionNameSegOrGroupMap = retrieveCommentsPaths(message);
+        SerializableMessage serializableMessage = new SerializableMessage(message,prefix,headerLevel,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText,tables,positionNameSegOrGroupMap,showConfLength);
         SerializableSection messageSegments = new SerializableSection(message.getId()+"_segments",prefix+"."+String.valueOf(message.getPosition())+"."+segmentSectionPosition,"1","4","Segment definitions");
         this.messageSegmentsNameList = new ArrayList<>();
         this.segmentPosition = 1;
@@ -100,6 +108,41 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
         }
         return serializableMessage;
     }
+    
+    private HashMap<String,String> retrieveCommentsPaths(Message message){
+    	HashMap<String,String> commentsLocationPathMap = new HashMap<>();
+    	for(Comment comment : message.getComments()){
+    		if(comment.getLocation()!=null){
+	    		if(!commentsLocationPathMap.containsKey(comment.getLocation())){
+		    		String path = null;
+		    		StringTokenizer stringTokenizer = new StringTokenizer(comment.getLocation(), ".");
+		    		if(stringTokenizer.hasMoreTokens()){
+			    		try{
+			    			Integer location = Integer.parseInt(stringTokenizer.nextToken());
+				    		for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
+				    			if(segmentRefOrGroup.getPosition() == location){
+				    				path = super.retrieveSegmentOrGroupName(segmentRefOrGroup,stringTokenizer);
+				    				break;
+				    			}
+				    		}
+			    		} catch (NumberFormatException nfe){
+			    			logger.error("Unable to retreive path: Comment location is malformed ["+comment.getLocation()+"]");
+			    			path = comment.getLocation();
+			    		}
+		    		}
+		    		if(null == path){
+		    			path = comment.getLocation();
+		    		}
+		    		while(stringTokenizer.hasMoreTokens()){
+		    			path += "." + stringTokenizer.nextToken();
+		    		}
+		    		commentsLocationPathMap.put(comment.getLocation(), path);
+	    		}
+    		}
+    	}
+    	return commentsLocationPathMap;
+    }
+
 
 	@Override
 	public SerializableElement serializeMessage(Message message, String host) {
