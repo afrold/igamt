@@ -2,7 +2,6 @@
  * Created by haffo on 9/12/17.
  */
 angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout, $q, SegmentService, FieldService, FilteringSvc, MastermapSvc, SegmentLibrarySvc, DatatypeLibrarySvc, MessageService, DatatypeService, TableService, blockUI, ValidationService,$mdDialog) {
-  //        $scope.loading = false;
   $scope.accordStatus = {
     isCustomHeaderOpen: false,
     isFirstOpen: true,
@@ -28,14 +27,6 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
   };
 
   $scope.initSegment = function() {
-    console.log("Calling Init")
-    if($scope.editForm){
-      console.log("Calling Init inside form")
-
-    }else{
-      console.log("we dont have a form");
-    }
-
     $scope.accordStatus = {
       isCustomHeaderOpen: false,
       isFirstOpen: false,
@@ -582,8 +573,6 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     } else {
       $scope.otherDT(field);
     }
-
-
   };
   // $scope.applyDT = function(field, datatype) {
   //     blockUI.start();
