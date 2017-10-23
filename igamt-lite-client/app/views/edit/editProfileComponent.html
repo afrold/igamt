@@ -43,12 +43,10 @@
 
                                         <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                             <input type="text" name="name" ng-model="profileComponent.name" required ng-disabled="viewSettings.tableReadonly">
+                                            <div role="alert"  style="color:red" ng-if="isDuplicated(profileComponent,profileComponents)">
+                                                <div class="my-message">Name is already used.</div>
+                                            </div>
                                         </md-input-container>
-                                        <!--<label class="input-left igamt-label">Description</label>-->
-
-                                        <!--<md-input-container class="md-block igamt-input-block" flex-gt-sm>-->
-                                            <!--<input type="text" name="description" ng-model="profileComponent.description" ng-disabled="viewSettings.tableReadonly">-->
-                                        <!--</md-input-container>-->
 
                                         <label class="input-left igamt-label" ng-show="!viewSettings.tableReadonly">Author Notes</label>
 

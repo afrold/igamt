@@ -72,7 +72,7 @@ public class ValidationController extends CommonController {
         userDatatype.getName(), userDatatype.getHl7Version(), "HL7STANDARD");
     return validationService.validateDatatype(
         hl7Datatypes != null && !hl7Datatypes.isEmpty() ? hl7Datatypes.get(0) : null, userDatatype,
-        userDatatype.getId(), igHl7Version);
+        userDatatype.getId(), igHl7Version, null);
 
   }
 
@@ -83,7 +83,7 @@ public class ValidationController extends CommonController {
     log.info("Validation ig..." + userSegment.getId());
     Segment hl7Segment = segmentService.findByNameAndVersionAndScope(userSegment.getName(),
         userSegment.getHl7Version(), "HL7STANDARD");
-    return validationService.validateSegment(hl7Segment, userSegment, true, igHl7Version);
+    return validationService.validateSegment(hl7Segment, userSegment, true, igHl7Version, null);
   }
 
   @RequestMapping(value = "/validateMessage", method = RequestMethod.POST,

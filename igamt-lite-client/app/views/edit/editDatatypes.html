@@ -41,7 +41,7 @@
 
 
                     <md-button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                            ng-disabled="editFrom.$invalid||!editForm.$dirty||datatype.status === 'PUBLISHED'"
+                            ng-disabled="editForm.$invalid||!editForm.$dirty||datatype.status === 'PUBLISHED'"
                             ng-hide="viewSettings.tableReadonly||datatype.status==='PUBLISHED'"
                             ng-click="saveDatatype()">
                               <span><i class="fa fa-check fa-fw"></i> Save</span>
@@ -74,13 +74,15 @@
                     <div class="static_info">
                         <!--<display-label of="datatype" desc="true"></display-label>-->
                         <!--<display-label of="datatype" desc="false"></display-label>-->
-                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                      <span  ng-if="datatype.scope!=='HL7STANDARD'">
+                      <i  class="fa fa-calendar" aria-hidden="true"></i>
                         Updated :{{datatype.dateUpdated | date:dateFormat}}
+                      </span>
                         <span ng-if="datatype.owner" style="font-style: italic;">
-                     <span ng-if="datatype.owner"> Author : <img style="max-width:30px !important;border-radius: 50%" src="{{generateHash(datatype.owner.email)}}"/> {{datatype.owner.fullname}}</span>
+                     <span > Author : <img style="max-width:30px !important;border-radius: 50%" src="{{generateHash(datatype.owner.email)}}"/> {{datatype.owner.fullname}}</span>
                      </span>
-                        <span ng-if="datatype.hl7Version!=='*'">,HL7 Version: {{datatype.hl7Version}}</span>
-                        <span ng-if="datatype.publicationVersion">,Version: {{datatype.publicationVersion}}</span>
+                        <span ng-if="datatype.hl7Version!=='*'"> HL7 Version: {{datatype.hl7Version}}</span>
+                        <span ng-if="datatype.publicationVersion"> Version: {{datatype.publicationVersion}}</span>
 
                     </div>
                     <div class="" ng-controller="cmpDatatypeCtrl as cmp">
@@ -120,11 +122,9 @@
                                                 <input type="text" ng-change="recordChanged()"
                                                        ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED'||versionAndUseMap[datatype.id]"
                                                        name="ext" id="ext" ng-model="datatype.ext" required>
-
-                                                <div role="alert" style="color:red" ng-show="isDuplicatedTwoContexts(datatype, 'name', 'ext', datatypeLibrary.children)">
+                                                <div role="alert" style="color:red" ng-if="isDuplicated(datatype,datatypes)">
                                                     <div class="my-message">Extension is already used.</div>
                                                 </div>
-
                                                 <div ng-messages="editForm.ext.$error">
                                                     <div ng-message="required">Extension is required.</div>
                                                  </div>

@@ -7,18 +7,29 @@
  * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
- * that they have been modified. Ismail Mellouli (NIST) Mar 8, 2017
+ * that they have been modified. Abdelghani EL OUAKILI (NIST) Feb 9, 2017
  */
-
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.comparator;
 
 import java.util.Comparator;
 
-public class FieldComparator implements Comparator<Field> {
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 
+/**
+ * @author Abdelghani EL Ouakili (NIST)
+ *
+ */
+public class IgDocumentComparator implements Comparator<IGDocument> {
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+   */
   @Override
-  public int compare(Field f1, Field f2) {
-    return f1.getPosition() - f2.getPosition();
+  public int compare(IGDocument o1, IGDocument o2) {
+    // TODO Auto-generated method stub
+    return o1.getPosition() - o2.getPosition();
   }
 
 }

@@ -2144,7 +2144,11 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
         $rootScope.codeSystems = [];
         console.log($rootScope.table);
         $rootScope.codeSystems=$rootScope.table.codeSystems;
-        $rootScope.table.smallCodes = $rootScope.table.codes.slice(0, 1000);
+
+        $rootScope.table.smallCodes = [];
+        if($rootScope.table.codes && $rootScope.table.codes.length <= 500){
+            $rootScope.table.smallCodes = $rootScope.table.codes;
+        }
         $rootScope.table.smallCodes.sort($scope.codeCompare);
         $rootScope.entireTable=angular.copy($rootScope.table);
         // $rootScope.findValueSetBindings();

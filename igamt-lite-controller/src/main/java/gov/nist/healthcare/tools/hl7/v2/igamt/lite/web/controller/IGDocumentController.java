@@ -64,7 +64,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IgDocumentComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageComparator;
@@ -91,6 +90,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.comparator.IgDocumentComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CCValue;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintTHENColumnData;
@@ -117,7 +117,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibra
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
@@ -200,9 +199,6 @@ public class IGDocumentController extends CommonController {
 
   @Autowired
   private MessageService messageService;
-
-  @Autowired
-  private ProfileSerialization profileSerializationService;
 
   @Value("${server.email}")
   private String SERVER_EMAIL;
@@ -1791,7 +1787,6 @@ public class IGDocumentController extends CommonController {
       }
       for (Long accountId : participants) {
         d.getShareParticipantIds().add(new ShareParticipantPermission(accountId));
-
         // Find the user
         Account acc = accountRepository.findOne(accountId);
         // Send confirmation email
@@ -1817,8 +1812,9 @@ public class IGDocumentController extends CommonController {
       produces = "application/json")
   public boolean unshareIgDocument(@PathVariable("id") String id,
       @RequestBody Long shareParticipantId) throws IGDocumentException {
-    log.info("Unsharing id document with id=" + id + " with participant=" + shareParticipantId);
     try {
+      log.info("Unsharing id document with id=" + id + " with participant=" + shareParticipantId);
+
       User u = userService.getCurrentUser();
       Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
       if (account == null)
@@ -1932,20 +1928,19 @@ public class IGDocumentController extends CommonController {
   }
 
   private void sendShareConfirmation(IGDocument doc, Account target, Account source) {
-
-    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
-
-    msg.setSubject("NIST IGAMT IG Document Shared with you.");
-    msg.setTo(target.getEmail());
-    msg.setText("Dear " + target.getUsername() + ", \n\n" + source.getFullName() + "("
-        + source.getUsername() + ")"
-        + " wants to share the following Implementation Guide with you: \n" + "\n Title: "
-        + doc.getMetaData().getTitle() + "\n Sub Title: " + doc.getMetaData().getSubTitle()
-        + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:"
-        + doc.getMetaData().getHl7Version()
-        + "\n If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Implementation Guides' tab"
-        + "\n\n" + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
     try {
+      SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+      msg.setSubject("NIST IGAMT IG Document Shared with you.");
+      msg.setTo(target.getEmail());
+      msg.setText("Dear " + target.getUsername() + ", \n\n" + source.getFullName() + "("
+          + source.getUsername() + ")"
+          + " wants to share the following Implementation Guide with you: \n" + "\n Title: "
+          + doc.getMetaData().getTitle() + "\n Sub Title: " + doc.getMetaData().getSubTitle()
+          + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:"
+          + doc.getMetaData().getHl7Version()
+          + "\n If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Implementation Guides' tab"
+          + "\n\n" + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
+
       this.mailSender.send(msg);
     } catch (MailException ex) {
       log.error(ex.getMessage(), ex);
@@ -1953,19 +1948,19 @@ public class IGDocumentController extends CommonController {
   }
 
   private void sendUnshareEmail(IGDocument doc, Account target, Account source) {
-
-    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
-
-    msg.setSubject("NIST IGAMT IGDocument unshare");
-    msg.setTo(target.getEmail());
-    msg.setText("Dear " + target.getUsername() + " \n\n" + "This is to let you know that "
-        + source.getFullName() + "(" + source.getUsername()
-        + ") has stopped sharing the following Implementation Guide \n" + "\n Title: "
-        + doc.getMetaData().getTitle() + "\n Sub Title: " + doc.getMetaData().getSubTitle()
-        + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:"
-        + doc.getMetaData().getHl7Version() + "\n\n" + "P.S: If you need help, contact us at '"
-        + ADMIN_EMAIL + "'");
     try {
+      SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+
+      msg.setSubject("NIST IGAMT IGDocument unshare");
+      msg.setTo(target.getEmail());
+      msg.setText("Dear " + target.getUsername() + " \n\n" + "This is to let you know that "
+          + source.getFullName() + "(" + source.getUsername()
+          + ") has stopped sharing the following Implementation Guide \n" + "\n Title: "
+          + doc.getMetaData().getTitle() + "\n Sub Title: " + doc.getMetaData().getSubTitle()
+          + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:"
+          + doc.getMetaData().getHl7Version() + "\n\n" + "P.S: If you need help, contact us at '"
+          + ADMIN_EMAIL + "'");
+
       this.mailSender.send(msg);
     } catch (MailException ex) {
       log.error(ex.getMessage(), ex);
@@ -1982,8 +1977,9 @@ public class IGDocumentController extends CommonController {
   @RequestMapping(value = "/{id}/updateDate", method = RequestMethod.POST,
       produces = "application/json")
   public Long updateDate(@PathVariable("id") String id) throws IGDocumentException {
-    log.info("Updating date of ig document with id=" + id);
     try {
+      log.info("Updating date of ig document with id=" + id);
+
       User u = userService.getCurrentUser();
       if (accountRepository.findByTheAccountsUsername(u.getUsername()) == null)
         throw new UserAccountNotFoundException();

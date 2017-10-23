@@ -78,7 +78,7 @@
                                                                         <i class="fa fa-eye fa-fw"></i>
                                                                     </md-button>
 
-                                                                    <md-button  ng-click="clone(row);selectIGDocumentType('USER')" title="Clone IG document" class="md-info md-raised md-small" type="button">
+                                                                    <md-button  ng-if="row.comment !== 'PENDING_APPROVAL'" ng-click="clone(row);selectIGDocumentType('USER')" title="Clone IG document" class="md-info md-raised md-small" type="button">
                                                                         <i class="fa fa-plus fa-fw"></i>
                                                                     </md-button>
 
@@ -86,11 +86,11 @@
                                                                         <i class="fa fa-trash-o fa-fw"></i>
                                                                     </md-button>
 
-                                                                    <md-button ng-click="confirmShareDocument(row)"  title="Approve Share Document" ng-if="row.comment === 'PENDING_APPROVAL'"  class="md-success md-raised md-small" type="button">
+                                                                    <md-button ng-click="confirmShareDocument(row)"  title="Accept Document" ng-if="row.comment === 'PENDING_APPROVAL'"  class="md-success md-raised md-small" type="button">
                                                                         <i class="fa fa-check fa-fw"></i>
                                                                     </md-button>
 
-                                                                    <md-button ng-if="row.comment === 'PENDING_APPROVAL'" title="Reject Share Document" ng-click="rejectShareDocument(row)"  class="md-warn md-raised md-small" type="button">
+                                                                    <md-button ng-if="row.comment === 'PENDING_APPROVAL'" title="Reject Document" ng-click="rejectShareDocument(row)"  class="md-warn md-raised md-small" type="button">
                                                                         <i class="fa fa-times fa-fw"></i>
                                                                     </md-button>
 

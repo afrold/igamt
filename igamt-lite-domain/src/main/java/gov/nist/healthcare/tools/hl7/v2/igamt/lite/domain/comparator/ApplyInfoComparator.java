@@ -7,27 +7,20 @@
  * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
- * that they have been modified. Abdelghani EL OUAKILI (NIST) Aug 24, 2017
+ * that they have been modified. Ismail Mellouli (NIST) Mar 20, 2017
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
+
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.comparator;
 
 import java.util.Comparator;
 
-/**
- * @author Abdelghani EL Ouakili (NIST)
- *
- */
-public class SegmentLinkComparator implements Comparator<SegmentLink> {
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ApplyInfo;
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-   */
+public class ApplyInfoComparator implements Comparator<ApplyInfo> {
+
   @Override
-  public int compare(SegmentLink o1, SegmentLink o2) {
-    // TODO Auto-generated method stub
-    return o1.compareTo(o2);
+  public int compare(ApplyInfo a1, ApplyInfo a2) {
+    return a1.getPosition() - a2.getPosition();
   }
 
 }

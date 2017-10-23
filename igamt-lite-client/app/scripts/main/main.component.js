@@ -3891,7 +3891,98 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     });
   };
 
-  $rootScope.isEmpty = function (value) {
+
+    $rootScope.isDuplicated= function(obj,list) {
+        if (obj === null || obj === undefined) return false;
+
+        return _.find(list, function(item) {
+          if(obj.type ==='datatype'){
+              if($scope.datatypeDuplicated(obj,item)){
+                if($scope.editForm){
+                    $scope.editForm.$invalid=true;
+                    $scope.editForm.$valid=false;
+                    return true;
+                }
+              }
+
+          }else if(obj.type==='table'){
+                  if($scope.tableDuplicated(obj,item)){
+                      if($scope.editForm){
+                          $scope.editForm.$invalid=true;
+                          $scope.editForm.$valid=false;
+                          return true;
+                      }
+                  }
+
+          }else if(obj.type==='segment'){
+
+                  if($scope.segmentDuplicated(obj,item)){
+                      if($scope.editForm){
+                          $scope.editForm.$invalid=true;
+                          $scope.editForm.$valid=false;
+                          return true;
+                      }
+                  }
+
+              }else if(obj.type=='message'){
+
+              if($scope.messageDuplicated(obj,item)){
+                  if($scope.editForm){
+                      $scope.editForm.$invalid=true;
+                      $scope.editForm.$valid=false;
+                      return true;
+                  }
+              }
+
+          }else if(obj.type ==='profilecomponent'){
+
+              if($scope.profileComponentDuplicated(obj,item)){
+                  if($scope.editForm){
+                      $scope.editForm.$invalid=true;
+                      $scope.editForm.$valid=false;
+                      return true;
+                  }
+              }
+
+          }else if(obj.type==='compositeprofilestructure'){
+
+              if($scope.compositeProfileDuplicated(obj,item)){
+                  if($scope.editForm){
+                      $scope.editForm.$invalid=true;
+                      $scope.editForm.$valid=false;
+                      return true;
+                  }
+              }
+
+          };
+
+        });
+    };
+    $scope.datatypeDuplicated = function(obj,item){
+      return obj.id!==item.id&&obj.scope===item.scope&&obj.name ===item.name&&obj.ext===item.ext&&obj.hl7Version===item.hl7Version&&obj.publicationVersion===item.publicationVersion;
+    };
+    $scope.segmentDuplicated = function(obj,item){
+        return obj.id!==item.id&&obj.scope===item.scope&&obj.name ===item.name&& obj.ext===item.ext&& obj.hl7Version===item.hl7Version;
+    };
+    
+    $scope.tableDuplicated  = function (obj ,item ) {
+      return obj.id!==item.id&&obj.bindingIdentifier===item.bindingIdentifier&& obj.scope===item.scope;
+        
+    };
+    $scope.messageDuplicated=function (obj,item) {
+        return obj.id!==item.id&&obj.hl7Version===item.hl7Version&&obj.identifier==item.identifier;
+    };
+    $scope.profileComponentDuplicated=function (obj,item) {
+        return obj.id!==item.id&&obj.name==item.name;
+    };
+    $scope.compositeProfileDuplicated=function (obj,item) {
+        return obj.id!==item.id&&obj.name==item.name&&obj.ext==item.ext;
+
+    };
+
+
+
+    $rootScope.isEmpty = function (value) {
     if(!value) return true;
     if(value === '') return true;
     return false;
