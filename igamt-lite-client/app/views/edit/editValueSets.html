@@ -250,10 +250,9 @@
                                                             </div>
 
                                                             <div ng-if="isNonEditableValueSet(table)">
-                                                                <md-toolbar class="value-set-toolBar">Value Set
-                                                                    Definition Attribute
-                                                                </md-toolbar>
-                                                                <div class="md-panelContent">
+                                                              <h3 class="">Value Set Definition Attribute</h3>
+                                                              <hr/>
+                                                                <div class="">
                                                                     <div class="inside-metadata divide"
                                                                          layout-gt-sm="row">
                                                                         <label class="input-left igamt-label valueset-ext-label">Extensibility</label>
@@ -275,7 +274,7 @@
                                                                 </div>
                                                             </div>
                                                             <br/>
-                                                            <h5 class="">Content</h5>
+                                                            <h3 class="">Content</h3>
                                                             <hr/>
                                                             <div class="codes-container">
                                                                 <div ng-if="table.scope!=='PHINVADS'">
@@ -312,7 +311,7 @@
 
                                                                 <div ng-if="table.scope=='PHINVADS'">
                                                                     <label class="input-left igamt-label"> Reference
-                                                                        URL </label>
+                                                                        URL: </label>
 
                                                                     <a href="{{getPhinvadsURL(table)}}" target="_blank"
                                                                        ng-if="table.sourceType!=='EXTERNAL'">{{getPhinvadsURL(table)}}</a>
@@ -321,7 +320,7 @@
 
 
                                                             </div>
-                                                            <div class="codes-container md-panelContent">
+                                                            <div class="codes-container">
                                                                 <div class="row container">
                                                                 <span class="pull-left" ng-if="table.codes.length>0">
                                                                     <span>Codes Per Page : </span>
