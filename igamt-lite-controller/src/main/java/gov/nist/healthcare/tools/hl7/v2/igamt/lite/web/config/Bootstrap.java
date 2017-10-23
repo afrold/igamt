@@ -316,6 +316,7 @@ public class Bootstrap implements InitializingBean {
 
     // 2.0.0-beta7
     updateTableForNumOfCodesANDSourceType();
+    makePhinvadsExternal();
 
   }
 
@@ -384,6 +385,14 @@ public class Bootstrap implements InitializingBean {
     // System.out.println(IGUsedLargeTableLISTCSV);
   }
 
+  private void makePhinvadsExternal() {
+    List<Table> allPhvs = tableService.findByScope(SCOPE.PHINVADS.name());
+
+    for (Table t : allPhvs) {
+      tableService.updateAttributes(t.getId(), "sourceType", SourceType.INTERNAL);
+
+    }
+  }
 
 
   private void clearUserExportConfigurations() {

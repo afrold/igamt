@@ -357,7 +357,7 @@ angular.module('igl').run(function ($rootScope, $location, Restangular, $modal, 
       fileUploadURL: $rootScope.appInfo.uploadedImagesUrl + "/upload",
       fileAllowedTypes: ['application/pdf', 'application/msword', 'application/x-pdf', 'text/plain', 'application/xml','text/xml'],
       charCounterCount: false,
-      quickInsertTags: 8,
+      quickInsertTags: [''],
       immediateAngularModelUpdate:true,
       events: {
         'froalaEditor.initialized': function () {
