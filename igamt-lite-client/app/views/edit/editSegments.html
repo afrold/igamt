@@ -460,9 +460,9 @@
                                                                             </md-select>
                                                                         </md-input-container>
                                                                     </div>
-                                                                    <span ng-if="checkIfDataDuplicated(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value, segment.coConstraintsTable.ifColumnData) && !isEmpty(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value)" style="color:red">Duplicated</span>
-                                                                    <span ng-if="!checkIfDataDuplicated(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value, segment.coConstraintsTable.ifColumnData) && isEmpty(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value)" style="color:red">Required</span>
-                                                                    <span ng-if="checkIfDataDuplicated(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value, segment.coConstraintsTable.ifColumnData) && isEmpty(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value)" style="color:red">Required</span>
+                                                                    <span ng-show="checkIfDataDuplicated(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value, segment.coConstraintsTable.ifColumnData) && !isEmpty(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value)" style="color:red">Duplicated</span>
+                                                                    <span ng-show="!checkIfDataDuplicated(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value, segment.coConstraintsTable.ifColumnData) && isEmpty(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value)" style="color:red">Required</span>
+                                                                    <span ng-show="checkIfDataDuplicated(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value, segment.coConstraintsTable.ifColumnData) && isEmpty(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value)" style="color:red">Required</span>
                                                                 </td>
 
                                                                 <td ng-show="!segment.coConstraintsTable.ifColumnDefinition" style="font-weight: bold;overflow: hidden;width: 200px;background-color: #b1daff !important;"/>
@@ -577,7 +577,7 @@
                                                                             </md-input-container>
                                                                         </div>
                                                                     </div>
-                                                                    <span ng-if="checkThenData(columnDefinition, segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex], dynamicMappingTable.codes, igdocument.profile.datatypeLibrary.children, tablesMap)" style="color:red">
+                                                                    <span ng-show="checkThenData(columnDefinition, segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex], dynamicMappingTable.codes, igdocument.profile.datatypeLibrary.children, tablesMap)" style="color:red">
                                                                         {{checkThenData(columnDefinition, segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex], dynamicMappingTable.codes, igdocument.profile.datatypeLibrary.children, tablesMap)}}
                                                                     </span>
                                                                 </td>
