@@ -1427,13 +1427,13 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
               }
               $rootScope.updateDynamicMappingInfo();
               $rootScope.initCoConstraintsTable();
-              $scope.coConRowIndexList = [];
+              $rootScope.coConRowIndexList = [];
 
               for (var i = 0, len1 = $rootScope.segment.coConstraintsTable.rowSize; i < len1; i++) {
                 var rowIndexObj = {};
                 rowIndexObj.rowIndex = i;
                 rowIndexObj.id = new ObjectId().toString();
-                $scope.coConRowIndexList.push(rowIndexObj);
+                $rootScope.coConRowIndexList.push(rowIndexObj);
               }
 
               $rootScope.crossRef = {};
