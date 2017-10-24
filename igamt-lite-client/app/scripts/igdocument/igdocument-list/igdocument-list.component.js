@@ -1393,7 +1393,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
         delete $rootScope["table"];
         delete $rootScope["codeSystems"];
         delete $rootScope["codes"];
-        delete $rootScope["smallCodes"];
+        // delete $rootScope["smallCodes"];
         delete $rootScope["section"];
 
     };
@@ -1520,7 +1520,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
       delete $rootScope["table"];
       delete $rootScope["codeSystems"];
       delete $rootScope["codes"];
-      delete $rootScope["smallCodes"];
+      // delete $rootScope["smallCodes"];
       delete $rootScope["section"];
 
   };
@@ -1620,7 +1620,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
         delete $rootScope["table"];
         delete $rootScope["codeSystems"];
         delete $rootScope["codes"];
-        delete $rootScope["smallCodes"];
+        // delete $rootScope["smallCodes"];
         delete $rootScope["section"];
 
     };
@@ -1745,7 +1745,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
         delete $rootScope["table"];
         delete $rootScope["codeSystems"];
         delete $rootScope["codes"];
-        delete $rootScope["smallCodes"];
+        // delete $rootScope["smallCodes"];
         delete $rootScope["section"];
     };
 
@@ -2020,7 +2020,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
       delete $rootScope["table"];
       delete $rootScope["codeSystems"];
       delete $rootScope["codes"];
-      delete $rootScope["smallCodes"];
+      // delete $rootScope["smallCodes"];
       delete $rootScope["section"];
   };
 
@@ -2102,7 +2102,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
   };
   $rootScope.removeCodeSystem=function(chip){
 
-    angular.forEach($rootScope.table.smallCodes, function (code) {
+    angular.forEach($rootScope.table.codes, function (code) {
       if(code.codeSystem===chip){
         console.log("found");
         code.codeSystem=null;
@@ -2143,11 +2143,11 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
         console.log($rootScope.table);
         $rootScope.codeSystems=$rootScope.table.codeSystems;
 
-        $rootScope.table.smallCodes = [];
-        if($rootScope.table.codes && $rootScope.table.codes.length <= 500){
-            $rootScope.table.smallCodes = angular.copy($rootScope.table.codes);
-        }
-        $rootScope.table.smallCodes.sort($scope.codeCompare);
+        // $rootScope.table.smallCodes = [];
+        // if($rootScope.table.codes && $rootScope.table.codes.length <= 500){
+        //     $rootScope.table.smallCodes = angular.copy($rootScope.table.codes);
+        // }
+        // $rootScope.table.smallCodes.sort($scope.codeCompare);
         $rootScope.entireTable=angular.copy($rootScope.table);
         // $rootScope.findValueSetBindings();
         $scope.loadingSelection = false;

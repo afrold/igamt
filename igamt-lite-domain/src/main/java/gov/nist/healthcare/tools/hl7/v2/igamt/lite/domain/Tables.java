@@ -1,10 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
@@ -13,8 +10,8 @@ import org.bson.types.ObjectId;
 public class Tables extends TextbasedSectionModel implements Serializable, Cloneable {
 
   /**
-	 * 
-	 */
+   * 
+   */
   private static final long serialVersionUID = -2904036105687742572L;
 
   private String id;
@@ -217,7 +214,6 @@ public class Tables extends TextbasedSectionModel implements Serializable, Clone
     clonedTables.setChildren(new HashSet<Table>());
     for (Table t : this.children) {
       Table clone = t.clone();
-      clone.setId(t.getId());
       clonedTables.addTable(clone);
       // if (tableRecords.containsKey(t.getId())) {
       // clonedTables.addTable(tableRecords.get(t.getId()));

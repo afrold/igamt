@@ -51,45 +51,90 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
     if (index > -1) $scope.selectedTables.splice(index, 1);
   };
 
-  $scope.save = function () {
-    var childrenLinks = [];
-    for (var i = 0; i < $scope.selectedTables.length; i++) {
-      $http.get('api/tables/' + $scope.selectedTables[i].id, {
-        timeout: 600000
-      }).then(function (response) {
-        var addedTable = response.data;
-        $rootScope.tables.splice(0, 0, addedTable);
-        $rootScope.tablesMap[addedTable.id] = addedTable;
+
+  // $scope.save = function () {
+  //   var childrenLinks = [];
+  //
+  //   angular.forEach($scope.selectedTables, function (v) {
+  //     if(v.sourceType=='INTERNAL'){
+  //         $scope.selectedTables.push($scope.copy(v));
+  //         v.sourceType=='EXTERNAL';
+  //     }
+  //   });
+  //
+  //   for (var i = 0; i < $scope.selectedTables.length; i++) {
+  //     $http.get('api/tables/' + $scope.selectedTables[i].id, {
+  //       timeout: 600000
+  //     }).then(function (response) {
+  //       var addedTable = response.data;
+  //       $rootScope.tables.splice(0, 0, addedTable);
+  //       $rootScope.tablesMap[addedTable.id] = addedTable;
+  //     });
+  //
+  //     var newLink = angular.fromJson({
+  //       id: $scope.selectedTables[i].id,
+  //       bindingIdentifier: $scope.selectedTables[i].bindingIdentifier
+  //     });
+  //
+  //
+  //     $scope.selectedTableLibary.children.push(newLink);
+  //     childrenLinks.push(newLink);
+  //   }
+  //   TableLibrarySvc.addChildren($scope.selectedTableLibary.id, childrenLinks).then(function (link) {
+  //
+  //     if ($scope.editForm) {
+  //       $scope.editForm.$setPristine();
+  //       $scope.editForm.$dirty = false;
+  //     }
+  //     $rootScope.clearChanges();
+  //     $mdDialog.hide();
+  //     $rootScope.msg().text = "tableSaved";
+  //     $rootScope.msg().type = "success";
+  //     $rootScope.msg().show = true;
+  //
+  //   }, function (error) {
+  //     $scope.saving = false;
+  //     $rootScope.msg().text = error.data.text;
+  //     $rootScope.msg().type = error.data.type;
+  //     $rootScope.msg().show = true;
+  //   });
+  //
+  //
+  // };
+
+    $scope.save=function () {
+      TableService.savePhinvads($scope.selectedTableLibary.id,  $scope.selectedTables).then(function(tables){
+          angular.forEach(tables, function(t){
+
+            $rootScope.tables.push(t);
+            $rootScope.tablesMap[t.id]=t;
+            var newLink = angular.fromJson({
+                id:t.id,
+                bindingIdentifier: t.bindingIdentifier
+                  });
+
+            $scope.selectedTableLibary.children.push(newLink);
+                  if ($scope.editForm) {
+                    $scope.editForm.$setPristine();
+                    $scope.editForm.$dirty = false;
+                  }
+                  $rootScope.clearChanges();
+                  $mdDialog.hide();
+                  $rootScope.msg().text = "tableSaved";
+                  $rootScope.msg().type = "success";
+                  $rootScope.msg().show = true;
+
+
+          });
+      }, function (error) {
+
+              $scope.saving = false;
+              $rootScope.msg().text = error.data.text;
+              $rootScope.msg().type = error.data.type;
+              $rootScope.msg().show = true;
       });
 
-      var newLink = angular.fromJson({
-        id: $scope.selectedTables[i].id,
-        bindingIdentifier: $scope.selectedTables[i].bindingIdentifier
-      });
-      $scope.selectedTableLibary.children.push(newLink);
-      childrenLinks.push(newLink);
     }
-    TableLibrarySvc.addChildren($scope.selectedTableLibary.id, childrenLinks).then(function (link) {
-
-      if ($scope.editForm) {
-        $scope.editForm.$setPristine();
-        $scope.editForm.$dirty = false;
-      }
-      $rootScope.clearChanges();
-      $mdDialog.hide();
-      $rootScope.msg().text = "tableSaved";
-      $rootScope.msg().type = "success";
-      $rootScope.msg().show = true;
-
-    }, function (error) {
-      $scope.saving = false;
-      $rootScope.msg().text = error.data.text;
-      $rootScope.msg().type = error.data.type;
-      $rootScope.msg().show = true;
-    });
-
-
-  };
 });
 
 

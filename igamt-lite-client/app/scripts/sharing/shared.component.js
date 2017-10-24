@@ -358,7 +358,7 @@ angular
           blockUI.start();
 
           $rootScope.table = t;
-          $rootScope.table.smallCodes = $rootScope.table.codes.slice(0,1000);
+          $rootScope.table.codes = $rootScope.table.codes.slice(0,1000);
           $rootScope.$emit("event:initTable");
           $rootScope.codeSystems = [];
           for (var i = 0; i < $rootScope.table.codes.length; i++) {
