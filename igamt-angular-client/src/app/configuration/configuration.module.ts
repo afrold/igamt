@@ -1,6 +1,6 @@
 import {NgModule}     from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {Configuration} from './configuration';
+import {ConfigurationComponent} from './configuration.compronent';
 import {ConfigurationRoutingModule} from './configuration-routing.module';
 import {AccordionModule, ButtonModule, TabViewModule, GrowlModule} from 'primeng/primeng';
 
@@ -14,7 +14,7 @@ import {AccordionModule, ButtonModule, TabViewModule, GrowlModule} from 'primeng
         GrowlModule
 	],
 	declarations: [
-		Configuration
+		ConfigurationComponent
 	]
 })
 export class ConfigurationModule {}

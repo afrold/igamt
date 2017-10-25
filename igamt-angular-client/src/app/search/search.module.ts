@@ -1,6 +1,6 @@
 import {NgModule}     from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {Search} from './search';
+import {SearchComponent} from './search.component';
 import {SearchRoutingModule} from './search-routing.module';
 import {AccordionModule, ButtonModule, TabViewModule, GrowlModule} from 'primeng/primeng';
 
@@ -14,7 +14,7 @@ import {AccordionModule, ButtonModule, TabViewModule, GrowlModule} from 'primeng
         GrowlModule
 	],
 	declarations: [
-		Search
+    SearchComponent
 	]
 })
 export class SearchModule {}

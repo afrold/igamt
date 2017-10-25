@@ -1,6 +1,6 @@
 import {NgModule}     from '@angular/core';
 import {RouterModule} from '@angular/router'
-import {IgdocumentsList} from './igdocuments-list';
+import {IgDocumentListComponent} from './igdocument-list.component';
 import {MyIgsComponent} from './my-igs/my-igs.component';
 import {PreloadedIgsComponent} from './preloaded-igs/preloaded-igs.component';
 import {SharedIgsComponent} from './shared-igs/shared-igs.component';
@@ -11,7 +11,7 @@ import {AllIgsComponent} from './all-igs/all-igs.component';
 		RouterModule.forChild([
 			{
 				path: '',
-				component: IgdocumentsList,
+				component: IgDocumentListComponent,
 				children: [
 					{
 						path: '',
@@ -31,4 +31,4 @@ import {AllIgsComponent} from './all-igs/all-igs.component';
 		RouterModule
 	]
 })
-export class IgdocumentsListRoutingModule {}
+export class IgDocumentListRoutingModule {}

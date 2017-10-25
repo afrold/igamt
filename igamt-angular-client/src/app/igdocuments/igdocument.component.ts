@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 
 @Component({
-    templateUrl: './igdocuments.html'
+    templateUrl: './igdocument.component.html'
 })
-export class Igdocuments {
+export class IgDocumentComponent {
     igDocumentsTabMenu: any[];
 
     ngOnInit() {
