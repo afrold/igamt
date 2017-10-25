@@ -2361,9 +2361,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             }
             $rootScope.clearChanges();
             DatatypeService.merge($rootScope.datatype, result);
-
-            console.log("=============Refreshing Params ")
-            if ($scope.datatypesParams){
+              if ($scope.datatypesParams){
               $scope.datatypesParams.refresh();
             }
             VersionAndUseService.findById(result.id).then(function(inf){
