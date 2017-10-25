@@ -23,6 +23,7 @@
     "@angular/router": "^4.2.4",
     "angular-font-awesome": "^2.0.3",
     "bootstrap": "^3.3.7",
+    "cli-api-mocker": "^1.0.2",
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",
     "primeng": "^4.2.1",

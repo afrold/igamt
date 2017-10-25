@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import {trigger,state,style,transition,animate} from '@angular/animations';
+import { Component, OnInit} from '@angular/core';
+import {trigger, state, style, transition, animate} from '@angular/animations';
+import {AppInfoService} from './appinfo.service';
 
 @Component({
   selector: 'app-root',
@@ -18,14 +19,24 @@ import {trigger,state,style,transition,animate} from '@angular/animations';
     ])
   ],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   menuActive: boolean;
 
-  activeMenuId: string;
+  appInfo: null;
+
+  constructor(private appInfoService: AppInfoService) {}
+
+  ngOnInit() {
+    this.appInfoService.getInfo().then(appInfo => this.appInfo = appInfo);
+  }
+
 
   onMenuButtonClick(event: Event) {
     this.menuActive = !this.menuActive;
     event.preventDefault();
   }
+
+
+
 }
