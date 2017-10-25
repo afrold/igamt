@@ -488,7 +488,7 @@
                                 <tr class="tbl-header">
                                     <th flex="30" st-sort="bindingIdentifier">Binding Identifier</th>
                                     <th flex="30" st-sort="name">Name</th>
-                                    <th flex="30">Number of codes</th>
+                                    <th flex="30" st-sort="numberOfCodes">Number of codes</th>
                                     <th flex="10"></th>
                                 </tr>
                                 </thead>
@@ -533,22 +533,20 @@
                                             <input ng-model="search3.bindingIdentifier">
 
                                         </md-input-container></th>
-                                    <th flex="30">
+                                    <th flex="50">
                                         <md-input-container class="normal">
                                             <input ng-model="search3.name">
 
                                         </md-input-container>
                                     </th>
                                     <th flex="10"></th>
-                                    <th flex="20"></th>
-
                                     <th flex="10"></th>
                                 </tr>
                                 <tr class="tbl-header">
                                     <th flex="30" st-sort="bindingIdentifier">Binding Identifier</th>
-                                    <th flex="30" st-sort="name">Name</th>
-                                    <th flex="10">Number Of Codes</th>
-                                    <th flex="20">Type</th>
+                                    <th flex="50" st-sort="name">Name</th>
+                                    <th flex="10" st-sort="numberOfCodes">Number Of Codes</th>
+                                    <!--<th flex="20">Type</th>-->
 
                                     <th flex="10"></th>
                                 </tr>
@@ -558,20 +556,20 @@
                                     <td flex="30">
                                         {{table.bindingIdentifier}}
                                     </td>
-                                    <td flex="30">
+                                    <td flex="50">
                                         {{table.name}}
                                     </td>
                                     <td flex="10">
                                         {{table.numberOfCodes}}
                                     </td>
-                                    <td flex="20">
-                                        <md-input-container class="normal">
-                                            <md-select ng-model="table.sourceType" no-dirty-check ng-disabled="table.numberOfCodes>=500">
-                                                <md-option value="INTERNAL">Internally Managed</md-option>
-                                                <md-option value="EXTERNAL">Externally Managed</md-option>
-                                            </md-select>
-                                        </md-input-container>
-                                    </td>
+                                    <!--<td flex="20">-->
+                                        <!--<md-input-container class="normal">-->
+                                            <!--<md-select ng-model="table.sourceType" no-dirty-check ng-disabled="table.numberOfCodes>=500">-->
+                                                <!--<md-option value="INTERNAL">Internally Managed</md-option>-->
+                                                <!--<md-option value="EXTERNAL">Externally Managed</md-option>-->
+                                            <!--</md-select>-->
+                                        <!--</md-input-container>-->
+                                    <!--</td>-->
                                     <td flex="10" style="text-align:center;cursor: pointer;"><a class="pointer" ng-click="deleteTable(table)">
                                         <i class="fa fa-times fa-fw"></i></a>
                                     </td>

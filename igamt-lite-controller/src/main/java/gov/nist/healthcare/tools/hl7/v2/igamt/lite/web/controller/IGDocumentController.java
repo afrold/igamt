@@ -2069,10 +2069,7 @@ public class IGDocumentController extends CommonController {
 
       }
     }
-
     return ret;
-
-
   }
 
 

@@ -55,12 +55,12 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
   // $scope.save = function () {
   //   var childrenLinks = [];
   //
-  //   angular.forEach($scope.selectedTables, function (v) {
-  //     if(v.sourceType=='INTERNAL'){
-  //         $scope.selectedTables.push($scope.copy(v));
-  //         v.sourceType=='EXTERNAL';
-  //     }
-  //   });
+  //   // angular.forEach($scope.selectedTables, function (v) {
+  //   //   if(v.sourceType=='INTERNAL'){
+  //   //       $scope.selectedTables.push($scope.copy(v));
+  //   //       v.sourceType=='EXTERNAL';
+  //   //   }
+  //   // });
   //
   //   for (var i = 0; i < $scope.selectedTables.length; i++) {
   //     $http.get('api/tables/' + $scope.selectedTables[i].id, {
