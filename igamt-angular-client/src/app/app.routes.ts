@@ -7,8 +7,8 @@ import {DocumentationComponent} from './documentation/documentation.component';
 
 export const routes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'igDocuments', loadChildren: './igdocuments/igdocuments.module#IgdocumentsModule'},
-  {path: 'datatypeLibraries', loadChildren: './datatype-libraries/datatype-libraries.module#DatatypeLibrariesModule'},
+  {path: 'igDocuments', loadChildren: './igdocuments/igdocument.module#IgDocumentModule'},
+  {path: 'datatypeLibraries', loadChildren: './datatype-library/datatype-library.module#DatatypeLibraryModule'},
   {path: 'sharedElements', loadChildren: './shared-elements/shared-elements.module#SharedElementsModule'},
   {path: 'delta', loadChildren: './delta/delta.module#DeltaModule'},
   {path: 'configuration', loadChildren: './configuration/configuration.module#ConfigurationModule'},

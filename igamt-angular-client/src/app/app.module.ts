@@ -41,7 +41,7 @@ import {InlineProfileComponent} from './app.profile.component';
   ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
-    TestplanService, AppInfoService
+     AppInfoService
   ],
   bootstrap: [AppComponent]
 })
