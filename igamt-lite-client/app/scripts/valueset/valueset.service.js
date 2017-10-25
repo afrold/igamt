@@ -165,6 +165,17 @@ angular.module('igl').factory('TableService', ['$rootScope', 'ViewSettings', 'El
             });
             return delay.promise;
         },
+
+        savePhinvads: function(libId,tables) {
+        var delay = $q.defer();
+            $http.post('api/igdocuments/'+libId+'/addPhinvads', tables).then(function(response) {
+            var tables = angular.fromJson(response.data);
+            delay.resolve(tables);
+            }, function(error) {
+            delay.reject(error);
+            });
+            return delay.promise;
+        },
         searchForDelta: function(scope,version,bindingIdentifier) {
 
             var wrapper={

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.TimerTask;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -192,12 +193,12 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
       table.setComment(vsvByVSOid.get(0).getDescription());
       table.setDate(vs.getStatusDate().toString());
       table.setCodes(new ArrayList<Code>());
-      
-      if(valueSetConcepts.size() > 500){
+
+      if (valueSetConcepts.size() > 500) {
         table.setNumberOfCodes(0);
         table.setManagedBy(Constant.External);
         table.setSourceType(SourceType.EXTERNAL);
-      }else {
+      } else {
         for (ValueSetConcept pcode : valueSetConcepts) {
           Code code = new Code();
           code.setCodeUsage("P");
@@ -224,7 +225,7 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
         table.setManagedBy(Constant.Internal);
         table.setSourceType(SourceType.INTERNAL);
       }
-      
+
       // 5. update Table on DB
       try {
         mongoOps.save(table);
@@ -259,11 +260,16 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
 
   public List<Table> findAllpreloadedPHINVADSTablesBySearch(String searchValue) {
     List<Table> tables = new ArrayList<Table>();
-    tables = mongoOps.find(Query.query(Criteria.where("scope").is(Constant.SCOPE.PHINVADS)
-        .and("bindingIdentifier").regex(".*" + searchValue + ".*")), Table.class);
+    tables =
+        mongoOps
+            .find(
+                Query.query(Criteria.where("scope")
+                    .is(Constant.SCOPE.PHINVADS).and("bindingIdentifier").regex(Pattern
+                        .compile(searchValue, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE))),
+                Table.class);
 
     for (Table t : tables) {
-      t.setCodes(null);
+      t.setCodes(new ArrayList<Code>());
     }
     return tables;
   }

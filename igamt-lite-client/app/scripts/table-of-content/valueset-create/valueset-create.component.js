@@ -8,7 +8,7 @@ angular.module('igl').controller('CreateValueSet', ['$rootScope', '$scope', '$md
   $scope.selectedTableLibary=selectedTableLibary;
   $scope.newTable.shareParticipantIds = [];
   $scope.newTable.sourceType="INTERNAL";
-  $scope.newTable.smallCodes=[];
+  $scope.newTable.codes=[];
   $scope.newTable.scope = selectedTableLibary.scope;
   $scope.newTable.id = null;
   $scope.newTable.libIds = [];

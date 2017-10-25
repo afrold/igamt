@@ -2361,9 +2361,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             }
             $rootScope.clearChanges();
             DatatypeService.merge($rootScope.datatype, result);
-
-            console.log("=============Refreshing Params ")
-            if ($scope.datatypesParams){
+              if ($scope.datatypesParams){
               $scope.datatypesParams.refresh();
             }
             VersionAndUseService.findById(result.id).then(function(inf){
@@ -2412,16 +2410,16 @@ angular.module('igl').controller('DatatypeLibraryCtl',
       try {
         TableService.getOne(table.id).then(function(tbl) {
           $rootScope.table = tbl;
-          $rootScope.table.smallCodes = $rootScope.table.codes.slice(0,1000);
+          // $rootScope.table.smallCodes = $rootScope.table.codes.slice(0,1000);
           $rootScope.currentData = $rootScope.table;
-          $rootScope.codeSystems = [];
-          for (var i = 0; i < $rootScope.table.codes.length; i++) {
-            if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
-              if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
-                $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
-              }
-            }
-          }
+          // $rootScope.codeSystems = [];
+          // for (var i = 0; i < $rootScope.table.codes.length; i++) {
+          //   if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
+          //     if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
+          //       $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
+          //     }
+          //   }
+          // }
           $rootScope.references = [];
           angular.forEach($rootScope.datatypes, function(dt) {
             $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
