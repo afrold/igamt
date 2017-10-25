@@ -11,7 +11,7 @@ import {AboutComponent} from './about/about.component';
 import {DocumentationComponent} from './documentation/documentation.component';
 
 import {AppInfoService} from './appinfo.service';
-import {MenubarModule} from 'primeng/primeng';
+import {MenubarModule,PanelModule} from 'primeng/primeng';
 import {AppRoutes} from './app.routes';
 import {AppMenuComponent, AppSubMenuComponent} from './app.menu.component';
 import {AppTopBarComponent} from './app.topbar.component';
@@ -32,6 +32,7 @@ import {InlineProfileComponent} from './app.profile.component';
   ],
   imports: [
     BrowserModule,
+    PanelModule,
     FormsModule,
     ReactiveFormsModule,
     AppRoutes,
