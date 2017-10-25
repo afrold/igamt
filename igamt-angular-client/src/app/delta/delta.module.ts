@@ -1,6 +1,6 @@
 import {NgModule}     from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {Delta} from './delta';
+import {DeltaComponent} from './delta.component';
 import {DeltaRoutingModule} from './delta-routing.module';
 import {AccordionModule, ButtonModule, TabViewModule, GrowlModule} from 'primeng/primeng';
 
@@ -14,7 +14,7 @@ import {AccordionModule, ButtonModule, TabViewModule, GrowlModule} from 'primeng
         GrowlModule
 	],
 	declarations: [
-		Delta
+    DeltaComponent
 	]
 })
 export class DeltaModule {}

@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './igdocument-metadata.component.html'
 })
 
-export class IgdocumentMetadataComponent implements OnInit {
+export class IgDocumentMetadataComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {

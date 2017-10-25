@@ -1,6 +1,6 @@
 import {NgModule}     from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {SharedElements} from './shared-elements';
+import {SharedElementsComponent} from './shared-elements.component';
 import {SharedElementsRoutingModule} from './shared-elements-routing.module';
 import {AccordionModule, ButtonModule, TabViewModule, GrowlModule} from 'primeng/primeng';
 
@@ -14,7 +14,7 @@ import {AccordionModule, ButtonModule, TabViewModule, GrowlModule} from 'primeng
         GrowlModule
 	],
 	declarations: [
-		SharedElements
+		SharedElementsComponent
 	]
 })
 export class SharedElementsModule {}

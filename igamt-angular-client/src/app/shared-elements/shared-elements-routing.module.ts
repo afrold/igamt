@@ -1,11 +1,11 @@
 import {NgModule}     from '@angular/core';
 import {RouterModule} from '@angular/router'
-import {SharedElements} from './shared-elements';
+import {SharedElementsComponent} from './shared-elements.component';
 
 @NgModule({
 	imports: [
 		RouterModule.forChild([
-			{path:'',component: SharedElements}
+			{path:'',component: SharedElementsComponent}
 		])
 	],
 	exports: [

@@ -11,7 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { DocumentationComponent } from './documentation/documentation.component'
 
-import { TestplanService } from './service/testplanservice';
+import { TestplanService } from './service/testplan.service';
 
 
 @NgModule({

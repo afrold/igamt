@@ -1,15 +1,15 @@
 import {NgModule}     from '@angular/core';
 import {RouterModule} from '@angular/router'
-import {DatatypeLibraries} from './datatype-libraries';
+import {DatatypeLibraryComponent} from "./datatype-library.component";
 
 @NgModule({
 	imports: [
 		RouterModule.forChild([
-			{path:'',component: DatatypeLibraries}
+			{path:'',component: DatatypeLibraryComponent}
 		])
 	],
 	exports: [
 		RouterModule
 	]
 })
-export class DatatypeLibrariesRoutingModule {}
+export class DatatypeLibraryRoutingModule {}

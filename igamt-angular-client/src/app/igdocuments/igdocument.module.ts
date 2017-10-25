@@ -1,9 +1,8 @@
 import {NgModule}     from '@angular/core';
 import {CommonModule} from '@angular/common';
 import { FormsModule, ReactiveFormsModule }    from '@angular/forms';
-import { Igdocuments } from './igdocuments';
-import {IgdocumentsRoutingModule} from './igdocuments-routing.module';
-
+import { IgDocumentComponent } from './igdocument.component';
+import {IgDocumentRoutingModule} from './igdocument-routing.module';
 import {TabMenuModule} from 'primeng/primeng';
 
 
@@ -12,10 +11,10 @@ import {TabMenuModule} from 'primeng/primeng';
 		CommonModule,
 		FormsModule,
 		TabMenuModule,
-		IgdocumentsRoutingModule
+		IgDocumentRoutingModule
 	],
 	declarations: [
-		Igdocuments
+		IgDocumentComponent
 	]
 })
-export class IgdocumentsModule {}
+export class IgDocumentModule {}

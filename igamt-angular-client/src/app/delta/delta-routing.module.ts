@@ -1,11 +1,11 @@
 import {NgModule}     from '@angular/core';
 import {RouterModule} from '@angular/router'
-import {Delta} from './delta';
+import {DeltaComponent} from './delta.component';
 
 @NgModule({
 	imports: [
 		RouterModule.forChild([
-			{path:'',component: Delta}
+			{path:'',component: DeltaComponent}
 		])
 	],
 	exports: [

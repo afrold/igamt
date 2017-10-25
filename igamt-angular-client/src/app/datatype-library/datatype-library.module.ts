@@ -1,20 +1,20 @@
 import {NgModule}     from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {DatatypeLibraries} from './datatype-libraries';
-import {DatatypeLibrariesRoutingModule} from './datatype-libraries-routing.module';
+import {DatatypeLibraryComponent} from './datatype-library.component';
+import {DatatypeLibraryRoutingModule} from './datatype-library-routing.module';
 import {AccordionModule, ButtonModule, TabViewModule, GrowlModule} from 'primeng/primeng';
 
 @NgModule({
 	imports: [
 		CommonModule,
-		DatatypeLibrariesRoutingModule,
+		DatatypeLibraryRoutingModule,
         AccordionModule,
         ButtonModule,
         TabViewModule,
         GrowlModule
 	],
 	declarations: [
-		DatatypeLibraries
+		DatatypeLibraryComponent
 	]
 })
-export class DatatypeLibrariesModule {}
+export class DatatypeLibraryModule {}

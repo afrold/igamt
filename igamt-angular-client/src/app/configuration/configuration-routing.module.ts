@@ -1,11 +1,11 @@
 import {NgModule}     from '@angular/core';
 import {RouterModule} from '@angular/router'
-import {Configuration} from './configuration';
+import {ConfigurationComponent} from './configuration.compronent';
 
 @NgModule({
 	imports: [
 		RouterModule.forChild([
-			{path:'',component: Configuration}
+			{path:'',component: ConfigurationComponent}
 		])
 	],
 	exports: [
