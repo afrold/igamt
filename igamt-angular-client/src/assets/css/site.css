@@ -98,6 +98,46 @@ body {
     height: 100%;
 }
 
+.label-icon {
+  width: 5px;
+  height: 5px;
+  border-radius: 10px;
+}
+
+.label-segment {
+  background-color: #0f44f2;
+}
+
+.label-field {
+  background-color: #f24a08;
+  font-weight: 400;
+  margin-bottom: 1.0px;
+}
+
+.label-component {
+  background-color: #f2c60d;
+  font-weight: 400;
+  margin-bottom: 1.0px;
+}
+
+.label-dynamicCase {
+  background-color: #ff43d8;
+}
+
+.label-sub-component {
+  background-color: rgba(0, 0, 0, 0.91);
+  font-weight: 400;
+  margin-bottom: 1.0px;
+}
+
+.label-datatype {
+  background-color: rgba(30, 24, 242, 0.91);
+}
+
+.label-gray {
+  background-color: gray;
+}
+
 .topbar-menu > li {
     display: inline-block;
     height: 100%;

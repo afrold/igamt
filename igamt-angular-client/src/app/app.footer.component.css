@@ -2,7 +2,9 @@
   background: #333333;
   /*background-color: white;*/
   color: white;
-  position: relative;
+  position: absolute;
+  bottom : 0;
+  width: 100%;
 }
 
 .footer__inner {
