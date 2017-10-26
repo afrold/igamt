@@ -36,7 +36,6 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
   private IGDocumentScope scope;
 
   private int position;
-
   private Set<Section> childSections = new HashSet<Section>();
 
   private Set<ShareParticipantPermission> shareParticipantIds =
