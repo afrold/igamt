@@ -54,7 +54,7 @@ export class AppMenuComponent implements OnInit {
           }
         ]
       },
-      {label: 'Data type Libraries', icon: 'list', routerLink: ['/data-type-libraries']},
+      {label: 'Data type Libraries', icon: 'list', routerLink: ['/datatype-libraries']},
       {label: 'Comparator', icon: 'dashboard', routerLink: ['/comparator']},
       {label: 'Documentation', icon: 'dashboard', routerLink: ['/documentation']},
       {label: 'Configuration', icon: 'dashboard', routerLink: ['/configuration']},

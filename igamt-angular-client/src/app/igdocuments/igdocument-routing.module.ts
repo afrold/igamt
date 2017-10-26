@@ -1,6 +1,6 @@
 import {NgModule}     from '@angular/core';
 import {RouterModule} from '@angular/router';
-import {IgDocumentComponent} from "./igdocument.component";
+import {IgDocumentComponent} from './igdocument.component';
 
 @NgModule({
 	imports: [
