@@ -28,29 +28,34 @@ export class AppMenuComponent implements OnInit {
         label: 'IG Documents', icon: 'palette', badge: '6',
         items: [
           {
-            label: 'Create New Ig Document', icon: 'plus', routerLink: ['/igDocuments'], command: (event) => {
+            label: 'Create New Document', icon: 'plus', routerLink: ['/ig-documents'], command: (event) => {
             this.createNewIgDocument();
           }
           },
           {
-            label: 'My Ig Documents', icon: 'brush', routerLink: ['/igDocuments'], command: (event) => {
-            this.loadScopeIgDocuments('indigo');
+            label: 'My Documents', icon: 'brush', routerLink: ['/ig-documents'], command: (event) => {
+            this.loadScopeIgDocuments('USER');
           }
           },
           {
-            label: 'Pre-loaded IG Documents', icon: 'brush', routerLink: ['/igDocuments'], command: (event) => {
-            this.loadScopeIgDocuments('indigo');
+            label: 'Shared With Me', icon: 'brush', routerLink: ['/ig-documents'], command: (event) => {
+            this.loadScopeIgDocuments('SHARED');
           }
           },
           {
-            label: 'All IG Documents', icon: 'brush', routerLink: ['/igDocuments'], command: (event) => {
-            this.loadScopeIgDocuments('indigo');
+            label: 'Pre-loaded Documents', icon: 'brush', routerLink: ['/ig-documents'], command: (event) => {
+            this.loadScopeIgDocuments('PRELOADED');
+          }
+          },
+          {
+            label: 'All IG Documents', icon: 'brush', routerLink: ['/ig-documents'], command: (event) => {
+            this.loadScopeIgDocuments('ALL');
           }
           }
         ]
       },
-      {label: 'Data type Libraries', icon: 'list', routerLink: ['/datatypeLibraries']},
-      {label: 'Comparator', icon: 'dashboard', routerLink: ['/delta']},
+      {label: 'Data type Libraries', icon: 'list', routerLink: ['/data-type-libraries']},
+      {label: 'Comparator', icon: 'dashboard', routerLink: ['/comparator']},
       {label: 'Documentation', icon: 'dashboard', routerLink: ['/documentation']},
       {label: 'Configuration', icon: 'dashboard', routerLink: ['/configuration']},
       {label: 'Search', icon: 'search', routerLink: ['/search']},
