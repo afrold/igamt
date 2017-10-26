@@ -1,39 +1,30 @@
-<div class="layout-wrapper">
-  <div id="layout-topbar">
-    <a href="#" class="menu-button" (click)="onMenuButtonClick($event)">
-      <i class="fa fa-bars"></i>
-    </a>
+<div class="layout-wrapper" [ngClass]="{'layout-compact':layoutCompact}" (click)="onLayoutClick()">
 
-    <a href="#" class="logo" [routerLink]="['/']">
-      <img alt="logo" src="assets/images/NISTLogo.png" />
-    </a>
+  <div #layoutContainer class="layout-container"
+       [ngClass]="{'menu-layout-static': !isOverlay(),
+            'menu-layout-overlay': isOverlay(),
+            'layout-menu-overlay-active': overlayMenuActive,
+            'menu-layout-horizontal': isHorizontal(),
+            'menu-layout-slim': isSlim(),
+            'layout-menu-static-inactive': staticMenuDesktopInactive,
+            'layout-menu-static-active': staticMenuMobileActive}">
 
-    <ul class="topbar-menu">
-      <li>
-        <a href="#" [routerLink]="['/igDocuments']">IG Documents</a>
-      </li>
-      <li>
-        <a href="#" [routerLink]="['/datatypeLibraries']">Data Type Libraries</a>
-      </li>
-      <li>
-        <a [routerLink]="['/sharedElements']">Shared Elements</a>
-      </li>
-      <li>
-        <a [routerLink]="['/delta']">Delta</a>
-      </li>
-      <li>
-        <a [routerLink]="['/documentation']">Documentation</a>
-      </li>
-      <li>
-        <a [routerLink]="['/configuration']">Configuration</a>
-      </li>
-      <li>
-        <a [routerLink]="['/search']">Search</a>
-      </li>
-      <li>
-        <a [routerLink]="['/about']">About</a>
-      </li>
-    </ul>
-  </div>
+    <app-topbar></app-topbar>
+
+    <div class="layout-menu" [ngClass]="{'layout-menu-dark':darkMenu}" (click)="onMenuClick($event)">
+      <div #layoutMenuScroller class="nano">
+        <div class="nano-content menu-scroll-content">
+          <inline-profile *ngIf="profileMode=='inline'&&!isHorizontal()"></inline-profile>
+          <app-menu [reset]="resetMenu"></app-menu>
+        </div>
+      </div>
+    </div>
+
+    <div class="layout-main">
       <router-outlet></router-outlet>
+    </div>
+    <app-footer></app-footer>
+    <div class="layout-mask"></div>
+  </div>
+
 </div>
