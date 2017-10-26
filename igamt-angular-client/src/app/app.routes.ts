@@ -3,6 +3,7 @@ import {ModuleWithProviders} from '@angular/core';
 import {HomeComponent} from './home/home.component';
 import {AboutComponent} from './about/about.component';
 import {DocumentationComponent} from './documentation/documentation.component';
+import {NotFoundComponent} from "./common/404/404.component";
 
 
 export const routes: Routes = [
@@ -14,6 +15,7 @@ export const routes: Routes = [
   {path: 'configuration', loadChildren: './configuration/configuration.module#ConfigurationModule'},
   {path: 'search', loadChildren: './search/search.module#SearchModule'},
   {path: 'about', component: AboutComponent},
-  {path: 'documentation', component: DocumentationComponent}
+  {path: 'documentation', component: DocumentationComponent},
+  {path : '**', component: NotFoundComponent}
 ];
 export const AppRoutes: ModuleWithProviders = RouterModule.forRoot(routes);

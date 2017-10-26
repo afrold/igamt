@@ -5,7 +5,7 @@ import {IgDocumentMetadataComponent} from './igdocument-metadata/igdocument-meta
 import {SectionComponent} from './section/section.component';
 import {IgDocumentEditRoutingModule} from './igdocument-edit-routing.module';
 import {AccordionModule, ButtonModule, TabViewModule, GrowlModule} from 'primeng/primeng';
-import {SegmentEditComponent} from "./segment-edit/segment-edit.component";
+import {IgDocumentGuard} from "./igdocument-edit.guard";
 
 @NgModule({
 	imports: [
@@ -18,6 +18,9 @@ import {SegmentEditComponent} from "./segment-edit/segment-edit.component";
 	],
 	declarations: [
 		IgDocumentEditComponent, IgDocumentMetadataComponent, SectionComponent
-	]
+	],
+  providers : [
+    IgDocumentGuard
+  ]
 })
 export class IgDocumentEditModule {}

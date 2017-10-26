@@ -1,7 +1,9 @@
 /**
  * Created by hnt5 on 10/23/17.
  */
-import {Component} from "@angular/core";
+import {Component, Input} from "@angular/core";
+import {ActivatedRoute} from "@angular/router";
+import {Workspace, Entity} from "../../../service/workspace/workspace.service";
 
 
 @Component({
@@ -10,14 +12,23 @@ import {Component} from "@angular/core";
 })
 export class SegmentEditComponent {
 
+  _segment;
   segmentEditTabs : any[];
 
-  constructor() {}
+  @Input() set segment(segment : any){
+    this._segment = segment;
+  }
+
+  constructor(private _ws : Workspace){
+    this.segment = _ws.getCurrent(Entity.SEGMENT);
+  };
 
   ngOnInit(){
     this.segmentEditTabs = [
-      {label: 'Metadata', icon: 'fa-list', routerLink:'./segment-metadata'},
-      {label: 'Definition', icon: 'fa-list', routerLink:'./segment-definition'}
+      {label: 'Metadata', icon: 'fa-info-circle', routerLink:'./metadata'},
+      {label: 'Definition', icon: 'fa-table', routerLink:'./definition'},
+      {label: 'Delta', icon: 'fa-table', routerLink:'./delta'},
+      {label: 'Cross-Reference', icon: 'fa-link', routerLink:'./crossref'}
     ];
   }
 

@@ -7,14 +7,21 @@ import {SegmentEditComponent} from "./segment-edit.component";
 import {SegmentEditRoutingModule} from "./segment-edit-routing.module";
 import {TabMenuModule} from "primeng/components/tabmenu/tabmenu";
 import {FormsModule} from "@angular/forms";
+import {DialogModule} from "primeng/components/dialog/dialog";
+import {DropdownModule} from "primeng/components/dropdown/dropdown";
+import {SegmentGuard} from "./segment-edit.guard";
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     TabMenuModule,
+    DialogModule,
+    DropdownModule,
     SegmentEditRoutingModule,
   ],
+  providers : [ SegmentGuard ],
   declarations: [
     SegmentEditComponent
   ],

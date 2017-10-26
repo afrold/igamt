@@ -5,10 +5,14 @@ import {HttpModule} from '@angular/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
-import {AppComponent} from './app.component';
-import {HomeComponent} from './home/home.component';
-import {AboutComponent} from './about/about.component';
-import {DocumentationComponent} from './documentation/documentation.component';
+import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
+import { DocumentationComponent } from './documentation/documentation.component'
+
+import {Workspace} from "./service/workspace/workspace.service";
+import {AlertModule} from "ngx-bootstrap";
+import {NotFoundComponent} from "./common/404/404.component";
 
 import {AppInfoService} from './appinfo.service';
 import {MenubarModule,PanelModule} from 'primeng/primeng';
@@ -29,8 +33,10 @@ import {InlineProfileComponent} from './app.profile.component';
     AppSubMenuComponent,
     AppTopBarComponent,
     AppFooterComponent,
+    NotFoundComponent
   ],
   imports: [
+    AlertModule.forRoot(),
     BrowserModule,
     PanelModule,
     FormsModule,
@@ -42,7 +48,8 @@ import {InlineProfileComponent} from './app.profile.component';
   ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
-     AppInfoService
+     AppInfoService,
+    Workspace
   ],
   bootstrap: [AppComponent]
 })
