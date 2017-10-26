@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { DocumentationComponent } from './documentation/documentation.component';
+import {NotFoundComponent} from "./common/404/404.component";
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import { DocumentationComponent } from './documentation/documentation.component'
             {path: 'configuration', loadChildren: './configuration/configuration.module#ConfigurationModule'},
             {path: 'search', loadChildren: './search/search.module#SearchModule'},
             {path: 'about', component: AboutComponent},
-            {path: 'documentation', component: DocumentationComponent}
+            {path: 'documentation', component: DocumentationComponent},
+            {path : '**', component: NotFoundComponent}
         ])
     ],
     exports: [RouterModule]

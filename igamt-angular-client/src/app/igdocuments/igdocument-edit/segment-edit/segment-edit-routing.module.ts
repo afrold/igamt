@@ -4,19 +4,19 @@
 import {RouterModule} from "@angular/router";
 import {NgModule} from "@angular/core";
 import {SegmentEditComponent} from "./segment-edit.component";
+import {SegmentGuard} from "./segment-edit.guard";
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
-        path: '',
+        path: ':id',
         component: SegmentEditComponent,
+        canActivate : [ SegmentGuard ],
         children: [
           {
-            path: '',
-            children: [
-
-            ]
+            path: 'definition',
+            loadChildren: './segment-definition/segment-definition.module#SegmentDefinitionModule'
           }
         ]
       }

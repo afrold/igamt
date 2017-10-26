@@ -356,7 +356,7 @@ body {
 .content-title {
     background-image: linear-gradient(to left, #2bc0ec, #1b81d7);
     padding: 10px;
-    height: 40px;
+    /*height: 40px;*/
     color: #ffffff;
 }
 
@@ -367,7 +367,6 @@ body {
     top: 70px;
     left: 0;
     width: 100%;
-    z-index: 999999;
 }
 
 .igamt-tabHeader2 {
@@ -377,7 +376,6 @@ body {
     top: 120px;
     left: 0;
     width: 100%;
-    z-index: 999999;
 }
 .igamt-tabHeader3 {
     display: block;
@@ -385,7 +383,6 @@ body {
     top: 170px;
     left: 0;
     width: 100%;
-    z-index: 999999;
 }
 
 .igamt-tabContents3 {
@@ -394,7 +391,6 @@ body {
     top: 170px;
     left: 0;
     width: 100%;
-    z-index: 999999;
 }
 
 
@@ -408,7 +404,7 @@ body {
 
 .feature-title {
     font-size: 30px;
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
     display: block;
 }
 

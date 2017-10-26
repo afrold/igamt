@@ -12,6 +12,9 @@ import { AboutComponent } from './about/about.component';
 import { DocumentationComponent } from './documentation/documentation.component'
 
 import { TestplanService } from './service/testplan.service';
+import {Workspace} from "./service/workspace/workspace.service";
+import {AlertModule} from "ngx-bootstrap";
+import {NotFoundComponent} from "./common/404/404.component";
 
 
 @NgModule({
@@ -19,19 +22,22 @@ import { TestplanService } from './service/testplan.service';
         AppComponent,
         HomeComponent,
         AboutComponent,
-        DocumentationComponent
+        DocumentationComponent,
+        NotFoundComponent
     ],
     imports: [
+        AlertModule.forRoot(),
         BrowserModule,
         FormsModule,
         ReactiveFormsModule,
         AppRoutingModule,
         HttpModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
-        TestplanService
+        TestplanService,
+        Workspace
     ],
     bootstrap: [AppComponent]
 })
