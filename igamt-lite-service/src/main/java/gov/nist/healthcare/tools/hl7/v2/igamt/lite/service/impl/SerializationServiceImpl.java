@@ -515,7 +515,7 @@ public class SerializationServiceImpl implements SerializationService {
         }
       }
     }
-    if (unbindedTables != null && !unbindedTables.isEmpty() && (exportConfig.isUnboundCustom() || exportConfig.isUnboundCustom()) && tableLibrary.getExportConfig() == null) {
+    if (unbindedTables != null && !unbindedTables.isEmpty() && (exportConfig.isUnboundCustom() || exportConfig.isUnboundCustom()) && (tableLibrary.getExportConfig() != null && tableLibrary.getExportConfig().getInclude()!=null)) {
       for (TableLink tableLink : this.unbindedTables) {
 	      Table table = tableService.findById(tableLink.getId());
 	      if (table != null && ExportUtil.displayUnbindedTable(exportConfig, table)) {
