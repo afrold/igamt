@@ -71,6 +71,20 @@
           </md-tab-label>
           <md-tab-body>
 
+            <div class="row" style="margin-bottom:20px">
+              <div class="container" style="padding-bottom:10px; margin-top:20px">
+                <div class="col-md-12">
+              <md-checkbox ng-if="!viewSettings.tableReadonly"
+                           ng-checked="isConfigEnabled()" ng-click="enableConfig()">Enable Configuration</md-checkbox>
+
+                </div>
+                <div class="col-md-12">
+                  <div class="alert alert-warning" ng-if="!viewSettings.tableReadonly && isConfigEnabled()">
+                    <span >Only selected value sets will be exported</span>
+                   </div>
+                </div>
+              </div>
+            </div>
             <div ng-cloak class="row" style="margin-bottom:20px">
               <div>
                 <div class="container" style="padding-bottom:10px; margin-top:20px">
@@ -80,11 +94,11 @@
                         <td style="background-color:lightgrey"><b>ValueSets</b></td>
                         <td>{{allTables.length}}</td>
                       </tr>
-                      <tr>
+                      <tr ng-if="isConfigEnabled()">
                         <td style="background-color:lightgrey"><b>Exported</b></td>
                         <td>{{selectedTables.length}}</td>
                       </tr>
-                      <tr>
+                      <tr ng-if="isConfigEnabled()">
                         <td style="background-color:lightgrey"><b>Not Exported</b></td>
                         <td>{{allTables.length - selectedTables.length}}</td>
                       </tr>
@@ -148,7 +162,7 @@
 
                 </div>
 
-                <div class="container">
+                <div class="container" ng-show="isConfigEnabled()">
                   <div class="col-md-12">
                     <md-content>
                       <button class="pull-right btn btn-xs btn-default" ng-click="clearFilters()"><i
@@ -259,6 +273,7 @@
                   <!--</div>-->
                 </div>
               </div>
+            </div>
           </md-tab-body>
         </md-tab>
       </md-tabs>
