@@ -111,12 +111,17 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
       }
     }
     $rootScope.segment.coConstraintsTable.rowSize = $rootScope.segment.coConstraintsTable.rowSize + 1;
-    $scope.initRowIndexForCocon();
+    SegmentService.initRowIndexForCocon($rootScope.segment.coConstraintsTable).then(function(result) {
+        $rootScope.coConRowIndexList = result;
+    });
     $scope.setDirty();
   };
 
 
   $scope.delCoConstraintRow = function (rowIndex){
+      var time0 = new Date();
+      console.log("Delete Start: " + time0.getHours() + ":" + time0.getMinutes() + ":" + time0.getSeconds() + ":" + time0.getMilliseconds());
+
     if($rootScope.segment.coConstraintsTable.ifColumnDefinition){
       $rootScope.segment.coConstraintsTable.ifColumnData.splice(rowIndex, 1);
     }
@@ -126,6 +131,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         for(var i in $rootScope.segment.coConstraintsTable.thenColumnDefinitionList){
           if($rootScope.segment.coConstraintsTable.thenMapData[$rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i].id]){
             $rootScope.segment.coConstraintsTable.thenMapData[$rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i].id].splice(rowIndex, 1);
+              console.log("A");
           }
         }
       }
@@ -136,14 +142,20 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         for(var i in $rootScope.segment.coConstraintsTable.userColumnDefinitionList){
           if($rootScope.segment.coConstraintsTable.userMapData[$rootScope.segment.coConstraintsTable.userColumnDefinitionList[i].id]){
             $rootScope.segment.coConstraintsTable.userMapData[$rootScope.segment.coConstraintsTable.userColumnDefinitionList[i].id].splice(rowIndex, 1);
+              console.log("B");
           }
         }
       }
     }
 
     $rootScope.segment.coConstraintsTable.rowSize = $rootScope.segment.coConstraintsTable.rowSize - 1;
-    $scope.initRowIndexForCocon();
+    SegmentService.initRowIndexForCocon($rootScope.segment.coConstraintsTable).then(function(result) {
+        $rootScope.coConRowIndexList = result;
+    });
     $scope.setDirty();
+
+      var time1 = new Date();
+      console.log("Delete End: " + time1.getHours() + ":" + time1.getMinutes() + ":" + time1.getSeconds() + ":" + time1.getMilliseconds());
   };
 
 
@@ -152,7 +164,9 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     $rootScope.segment.coConstraintsTable.ifColumnData = [];
 
     $scope.resetCoConstraintsTable();
-    $scope.initRowIndexForCocon();
+    SegmentService.initRowIndexForCocon($rootScope.segment.coConstraintsTable).then(function(result) {
+        $rootScope.coConRowIndexList = result;
+    });
     $scope.setDirty();
   };
 
@@ -165,17 +179,21 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.resetCoConstraintsTable();
-    $scope.initRowIndexForCocon();
+    SegmentService.initRowIndexForCocon($rootScope.segment.coConstraintsTable).then(function(result) {
+        $rootScope.coConRowIndexList = result;
+    });
     $scope.setDirty();
   };
 
   $scope.checkIfDataDuplicated = function (value, list) {
-    var count = 0;
-    for (var i = 0; i < list.length; i++) {
-      if(list[i].valueData.value === value){
-        count = count + 1;
-        if(count === 2) return true;
-      }
+    if(value && value !== ''){
+        var count = 0;
+        for (var i = 0; i < list.length; i++) {
+            if(list[i].valueData.value === value){
+                count = count + 1;
+                if(count === 2) return true;
+            }
+        }
     }
     return false;
   };
@@ -200,23 +218,28 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
   };
 
   $scope.checkThenData = function (def, data, dynamicMappingTableCodes, dtLib, tablesMap){
-    if(def.path=='2'){
-      if(def.constraintType === "dmr"){
-        if(!data.valueData.value || data.valueData.value === '') return 'Missing OBX-2 value';
-        var found = _.find(dynamicMappingTableCodes, function(code){ return code.value === data.valueData.value; });
-        if(!found) return 'Missing OBX-2 value';
-      }else if(def.constraintType === "dmf"){
-        if(!data.datatypeId || data.datatypeId === '') return 'Missing OBX-5 datatype definition';
-        var found = _.find(dtLib, function(link){ return link.id === data.datatypeId; });
-        if(!found) return 'Missing OBX-5 datatype definition';
-      }
-    }else {
-      if(def.constraintType === 'valueset' && data.valueSets && data.valueSets.length > 0) {
-        for (var i = 0; i < data.valueSets.length; i++) {
-          if(!tablesMap[data.valueSets[i].tableId]) return 'Value Set binding is broken.';
+    if(data){
+        if(def.path=='2'){
+            if(def.constraintType === "dmr"){
+                if(!data.valueData.value || data.valueData.value === '') return 'Missing OBX-2 value';
+                var found = _.find(dynamicMappingTableCodes, function(code){ return code.value === data.valueData.value; });
+                if(!found) return 'Missing OBX-2 value';
+            }else if(def.constraintType === "dmf"){
+                if(!data.datatypeId || data.datatypeId === '') return 'Missing OBX-5 datatype definition';
+                var found = _.find(dtLib, function(link){ return link.id === data.datatypeId; });
+                if(!found) return 'Missing OBX-5 datatype definition';
+            }
+        }else {
+            if(def.constraintType === 'valueset' && data.valueSets && data.valueSets.length > 0) {
+                for (var i = 0; i < data.valueSets.length; i++) {
+                    if(!tablesMap[data.valueSets[i].tableId]) return 'Value Set binding is broken.';
+                }
+            }
         }
-      }
+    }else {
+        return null;
     }
+
   };
 
   $scope.delCoConstraintUSERDefinition = function (columnDefinition) {
@@ -228,7 +251,6 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.resetCoConstraintsTable();
-    $scope.initRowIndexForCocon();
     $scope.setDirty();
   };
 
@@ -240,9 +262,11 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         }
       }
     }
-
-    $rootScope.initCoConstraintsTable();
-    $scope.initRowIndexForCocon();
+    SegmentService.initCoConstraintsTable($rootScope.segment).then(function(result) {
+      if(result) SegmentService.initRowIndexForCocon($rootScope.segment.coConstraintsTable).then(function(result2) {
+          $rootScope.coConRowIndexList = result2;
+      });
+    });
   };
 
   $scope.openDialogForEditCoConstraintIFDefinition = function(coConstraintIFDefinition){
@@ -315,7 +339,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
           }
         }
       }
-      $rootScope.initCoConstraintsTable();
+      SegmentService.initCoConstraintsTable($rootScope.segment).then(function(result) {});
       $scope.setDirty();
     });
   };
@@ -406,7 +430,10 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
               $rootScope.segment.coConstraintsTable.userMapData[$rootScope.segment.coConstraintsTable.userColumnDefinitionList[i].id] = newUserMapData;
             }
           }
-          $scope.initRowIndexForCocon();
+          SegmentService.initRowIndexForCocon($rootScope.segment.coConstraintsTable).then(function(result) {
+              $rootScope.coConRowIndexList = result;
+          });
+
           $scope.setDirty();
         }, 100);
     }
@@ -888,28 +915,22 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
     if(isAdded) {
       $rootScope.segment.coConstraintsTable.rowSize = $rootScope.segment.coConstraintsTable.rowSize + 1;
-      $scope.initRowIndexForCocon();
+      SegmentService.initRowIndexForCocon($rootScope.segment.coConstraintsTable).then(function(result) {
+          $rootScope.coConRowIndexList = result;
+      });
       $scope.setDirty();
-    }
-  };
-
-  $scope.initRowIndexForCocon = function(){
-    $rootScope.coConRowIndexList = [];
-
-    for (var i = 0, len1 = $rootScope.segment.coConstraintsTable.rowSize; i < len1; i++) {
-      var rowIndexObj = {};
-      rowIndexObj.rowIndex = i;
-      rowIndexObj.id = new ObjectId().toString();
-      $rootScope.coConRowIndexList.push(rowIndexObj);
     }
   };
 
   $scope.deleteCoConstraints = function() {
     $rootScope.segment.coConstraintsTable = {};
     $rootScope.segment.coConstraintsTable.rowSize = 0;
-    $rootScope.initCoConstraintsTable();
-    $scope.initRowIndexForCocon();
-    $scope.setDirty();
+    SegmentService.initCoConstraintsTable($rootScope.segment).then(function(result) {
+        SegmentService.initRowIndexForCocon($rootScope.segment.coConstraintsTable).then(function(result) {
+            $rootScope.coConRowIndexList = result;
+        });
+        $scope.setDirty();
+    });
   };
 
   $scope.headerChanged = function() {
@@ -930,8 +951,10 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     if ($scope.segmentsParams) {
       $scope.segmentsParams.refresh();
     }
+    SegmentService.initRowIndexForCocon($rootScope.segment.coConstraintsTable).then(function(result) {
+        $rootScope.coConRowIndexList = result;
+    });
     blockUI.stop();
-    $scope.initRowIndexForCocon();
   };
 
   $scope.close = function() {
@@ -942,7 +965,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
   $scope.copy = function(segment) {
     CloneDeleteSvc.copySegment(segment);
-  }
+  };
 
   $scope.delete = function(segment) {
     CloneDeleteSvc.deleteSegment(segment);
@@ -1253,11 +1276,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     SegmentService.save($rootScope.segment).then(function(result) {
       $rootScope.segment.dateUpdated = result.dateUpdated;
       $rootScope.$emit("event:updateIgDate");
-      // if ($rootScope.selectedSegment !== null && $rootScope.segment.id === $rootScope.selectedSegment.id) {
-      //   $rootScope.processSegmentsTree($rootScope.segment, null);
-      // }
-
-      $rootScope.updateDynamicMappingInfo();
+      SegmentService.updateDynamicMappingInfo();
 
       var oldLink = SegmentLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.segmentLibrary.children);
       var newLink = SegmentService.getSegmentLink(result);

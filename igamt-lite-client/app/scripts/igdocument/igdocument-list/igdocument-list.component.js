@@ -1381,85 +1381,124 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
   $scope.showSelected = function (node) {
     $scope.selectedNode = node;
   };
-    $scope.clearSegmentScope=function(){
-        delete $rootScope["datatype"];
-        delete $rootScope["message"];
-        delete $rootScope["profileComponent"];
-        delete $rootScope["messageTree"];
-        delete $rootScope["pcTree"];
-        delete $rootScope["cpTree"];
-        delete $rootScope["originalCompositeProfileStructure"];
-        delete $rootScope["compositeProfileStructure"];
-        delete $rootScope["table"];
-        delete $rootScope["codeSystems"];
-        delete $rootScope["codes"];
-        // delete $rootScope["smallCodes"];
-        delete $rootScope["section"];
 
-    };
+  $scope.clearSegmentScope=function(){
+    delete $rootScope["datatype"];
+    delete $rootScope["message"];
+    delete $rootScope["profileComponent"];
+    delete $rootScope["messageTree"];
+    delete $rootScope["pcTree"];
+    delete $rootScope["cpTree"];
+    delete $rootScope["originalCompositeProfileStructure"];
+    delete $rootScope["compositeProfileStructure"];
+    delete $rootScope["table"];
+    delete $rootScope["codeSystems"];
+    delete $rootScope["codes"];
+    delete $rootScope["section"];
+  };
 
-
-    $scope.selectSegment = function (segment) {
-    console.log($rootScope);
+  $scope.selectSegment = function (segment) {
+    var startTime = new Date();
+    console.log(segment);
+    console.log("Start Select Segment: " + startTime.getHours() + ":" + startTime.getMinutes() + ":" + startTime.getSeconds() + ":" + startTime.getMilliseconds());
     $rootScope.Activate(segment.id);
-    if (segment && segment != null) {
+    if (segment && segment !== null) {
       $scope.loadingSelection = true;
       blockUI.start();
       $timeout(
         function () {
           try {
             SegmentService.get(segment.id).then(function (result) {
+                console.log("Original");
+                console.log(result);
+              var time0 = new Date();
+              console.log("Retrieved Segment: " + time0.getHours() + ":" + time0.getMinutes() + ":" + time0.getSeconds() + ":" + time0.getMilliseconds());
               $rootScope.segment = angular.copy(result);
+                console.log("COPY");
+                console.log($rootScope.segment );
+
+
+
               $rootScope.segment.fields = $filter('orderBy')($rootScope.segment.fields, 'position');
               $rootScope.currentData = $rootScope.segment;
               $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
               $rootScope.segment["type"] = "segment";
+              $rootScope.crossRef = {};
+              $scope.clearSegmentScope();
               $scope.loadingSelection = false;
-              console.log("edit Form");
-
-              console.log($scope.editForm);
-
               try {
                 if ($scope.segmentsParams)
                   $scope.segmentsParams.refresh();
               } catch (e) {
 
               }
-              $rootScope.updateDynamicMappingInfo();
-              $rootScope.initCoConstraintsTable();
-              $rootScope.coConRowIndexList = [];
 
-              for (var i = 0, len1 = $rootScope.segment.coConstraintsTable.rowSize; i < len1; i++) {
-                var rowIndexObj = {};
-                rowIndexObj.rowIndex = i;
-                rowIndexObj.id = new ObjectId().toString();
-                $rootScope.coConRowIndexList.push(rowIndexObj);
-              }
-
-              $rootScope.crossRef = {};
-                $scope.clearSegmentScope();
-
-              SegmentService.crossRef($rootScope.segment.id,$rootScope.igdocument.id).then(function (result) {
-                $rootScope.crossRef = result;
-                console.log("Cross REF Found!!![" + $rootScope.segment.id + "][" + $rootScope.igdocument.id + "]");
-                console.log($rootScope.crossRef);
-
+              console.log($rootScope.segment);
+              var crossRefPromise = SegmentService.crossRef($rootScope.segment.id,$rootScope.igdocument.id);
+              crossRefPromise.then (function (result) {
+                  $rootScope.crossRef = result;
+                  var time1 = new Date();
+                  console.log("CROSSREF DONE: " + time1.getHours() + ":" + time1.getMinutes() + ":" + time1.getSeconds() + ":" + time1.getMilliseconds());
               }, function (error) {
-                $scope.loadingSelection = false;
-                $rootScope.msg().text = error.data.text;
-                $rootScope.msg().type = error.data.type;
-                $rootScope.msg().show = true;
+                  $scope.loadingSelection = false;
+                  $rootScope.msg().text = error.data.text;
+                  $rootScope.msg().type = error.data.type;
+                  $rootScope.msg().show = true;
+                  blockUI.stop();
               });
-              $scope.loadingSelection = false;
-              $rootScope.$emit("event:initEditArea");
-              $rootScope.$emit("event:initSegment");
-              console.log($scope.editForm);
 
-              $rootScope.subview = "EditSegments.html";
+              if($rootScope.segment.scope === 'USER' && $rootScope.segment.name === 'OBX'){
+                  SegmentService.updateDynamicMappingInfo().then (function (dynamicMappingTable) {
+                      $rootScope.dynamicMappingTable = dynamicMappingTable;
+                      var time2 = new Date();
+                      console.log("DynamicMapping DONE: " + time2.getHours() + ":" + time2.getMinutes() + ":" + time2.getSeconds() + ":" + time2.getMilliseconds());
 
-              blockUI.stop();
+                      SegmentService.initCoConstraintsTable($rootScope.segment).then (function (coConstraintsTable) {
+                          $rootScope.segment.coConstraintsTable = coConstraintsTable;
+                          console.log($rootScope.segment.coConstraintsTable);
+                          var time3 = new Date();
+                          console.log("initCoConstraintsTable DONE: " + time3.getHours() + ":" + time3.getMinutes() + ":" + time3.getSeconds() + ":" + time3.getMilliseconds());
 
-
+                          SegmentService.initRowIndexForCocon($rootScope.segment.coConstraintsTable).then (function (coConRowIndexList) {
+                              $rootScope.coConRowIndexList = coConRowIndexList;
+                              console.log($rootScope.coConRowIndexList);
+                              var time4 = new Date();
+                              console.log("initRowIndexForCocon DONE: "  + time4.getHours() + ":" + time4.getMinutes() + ":" + time4.getSeconds() + ":" + time4.getMilliseconds());
+                              $q.all([crossRefPromise]).then (function (result) {
+                                  var endTime = new Date();
+                                  console.log("Rendering Start: " + endTime.getHours() + ":" + endTime.getMinutes() + ":" + endTime.getSeconds() + ":" + endTime.getMilliseconds());
+                                  $rootScope.$emit("event:initEditArea");
+                                  $rootScope.$emit("event:initSegment");
+                                  $rootScope.subview = "EditSegments.html";
+                                  $scope.loadingSelection = false;
+                                  blockUI.stop();
+                              }, function (error) {
+                                  $scope.loadingSelection = false;
+                                  $rootScope.msg().text = error.data.text;
+                                  $rootScope.msg().type = error.data.type;
+                                  $rootScope.msg().show = true;
+                                  blockUI.stop();
+                              });
+                          });
+                      });
+                  });
+              }else {
+                  $q.all([crossRefPromise]).then (function (result) {
+                      var endTime = new Date();
+                      console.log("Rendering Start: " + endTime.getHours() + ":" + endTime.getMinutes() + ":" + endTime.getSeconds() + ":" + endTime.getMilliseconds());
+                      $rootScope.$emit("event:initEditArea");
+                      $rootScope.$emit("event:initSegment");
+                      $rootScope.subview = "EditSegments.html";
+                      $scope.loadingSelection = false;
+                      blockUI.stop();
+                  }, function (error) {
+                      $scope.loadingSelection = false;
+                      $rootScope.msg().text = error.data.text;
+                      $rootScope.msg().type = error.data.type;
+                      $rootScope.msg().show = true;
+                      blockUI.stop();
+                  });
+              }
 
             }, function (error) {
               $scope.loadingSelection = false;
