@@ -102,8 +102,50 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
   //
   // };
 
+
+
     $scope.save=function () {
-      TableService.savePhinvads($scope.selectedTableLibary.id,  $scope.selectedTables).then(function(tables){
+        var tablesToInclude=[];
+        angular.forEach($scope.selectedTables,function (table) {
+
+           if(table.sourceType=='INTERNAL'&& table.includeOriginal){
+               var newTable= angular.copy(table);
+               newTable.shareParticipantIds = [];
+               newTable.status="UNPUBLISHED";
+               newTable.scope="USER";
+               newTable.id = new ObjectId().toString();
+               newTable.createdFrom =table.id;
+               newTable.libIds = [];
+               newTable.referenceUrl=table.referenceUrl;
+               newTable.referenceUrl= $rootScope.getPhinvadsURL(table);
+
+               newTable.libIds.push($rootScope.tableLibrary.id);
+
+               tablesToInclude.push(newTable);
+               table.sourceType="EXTERNAL";
+               tablesToInclude.push(table);
+
+           }else if(table.sourceType=='EXTERNAL'){
+               tablesToInclude.push(table);
+           }else if(table.sourceType=='INTERNAL'&& !table.includeOriginal){
+               var newTable= angular.copy(table);
+               newTable.shareParticipantIds = [];
+               newTable.status="UNPUBLISHED";
+               newTable.scope="USER";
+               newTable.id = new ObjectId().toString();
+               newTable.createdFrom =table.id;
+               newTable.libIds = [];
+               newTable.referenceUrl=table.referenceUrl;
+               newTable.referenceUrl= $rootScope.getPhinvadsURL(table);
+               newTable.libIds.push($rootScope.tableLibrary.id);
+               tablesToInclude.push(newTable);
+           }
+
+        });
+
+
+
+      TableService.savePhinvads($scope.selectedTableLibary.id,  tablesToInclude).then(function(tables){
           angular.forEach(tables, function(t){
 
             $rootScope.tables.push(t);

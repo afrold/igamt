@@ -51,7 +51,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfiles;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SourceType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -2051,20 +2050,22 @@ public class IGDocumentController extends CommonController {
 
     Set<Table> ret = new HashSet<>();
 
+
     for (Table t : from) {
-      Table temp = tableService.findById(t.getId());
-      tableLibrary.addTable(temp);
-      ret.add(temp);
+      if (t.getScope().equals(SCOPE.PHINVADS)) {
+        Table temp = tableService.findById(t.getId());
+        tableLibrary.addTable(temp);
+        ret.add(temp);
+      } else {
+        Table temp = tableService.findById(t.getCreatedFrom());
+        if (temp != null) {
+          t.setCodes(temp.getCodes());
+          tableLibrary.addTable(t);
 
-      if (t.getSourceType().equals(SourceType.INTERNAL)) {
-        Table clone = temp.clone();
-        clone.setSourceType(SourceType.INTERNAL);
-        tableLibrary.addTable(clone);
-        clone.setScope(SCOPE.USER);
-        clone.setReferenceUrl(appInfo.getProperties().get(SCOPE.PHINVADS.name()) + t.getOid());
-        ret.add(clone);
-        tableService.save(clone);
 
+          tableService.save(t);
+          ret.add(t);
+        }
 
       }
       tableLibraryService.save(tableLibrary);
