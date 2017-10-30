@@ -987,16 +987,15 @@
         </td>
         <td ng-class="hasUsageError(node.id)" data-toggle="tooltip" title="{{displayMessageError(node.id,'USAGE')}}">
             <span ng-if="node.usage !=='C' || (node.usage==='C' && countPredicate(node.position)===0 )" ng-controller="FormRowCtrl">
-                <ng-form name="{{formName}}">
+                <ng-form name="{{formName}}" ng-init="init(node)">
                     <select class="form-control"
                             placeholder="Select Usage"
                             name="usage"
                             id="usage"
                             ng-change="setUsage(node); openPredicateDialog(node); setCardinalities(node)"
-                            ng-class="{ 'has-error has-feedback' : {{formName}}.usage.$invalid}"
                             required
                             ng-model="node.usage">
-                        <option ng-repeat="usage in config.usages track by $index" ng-value="usage">
+                        <option ng-repeat="usage in config.usages" ng-value="usage">
                             {{usage}}
                         </option>
                     </select>
@@ -1091,12 +1090,12 @@
                     </span>
 
                     <div ng-if="editableDT===node.id" style="text-align:left">
-                        <select placeholder="Select Data type"  class="inside-table" ng-model="node.datatype" ng-change="backDT();setDirty()"  ng-controller="FormRowCtrl" ng-init="init(node)">
-                            <option  ng-repeat="dt in results track by $index" ng-value="dt">
+                        <md-select placeholder="Select Data type"  class="inside-table" ng-model="node.datatype" ng-change="backDT();setDirty()"  ng-controller="FormRowCtrl" ng-init="init(node)">
+                            <md-option ng-repeat="dt in results" ng-value="dt">
                                 <display-label of="datatypesMap[dt.id]" desc="false"></display-label>
-                            </option>
-                            <option ng-click="otherDT(node)" ng-value="node.datatype"> Change Data Type root</option>
-                        </select>
+                            </md-option>
+                            <md-option ng-click="otherDT(node)" ng-value="node.datatype"> Change Data Type root</md-option>
+                        </md-select>
                     </div>
 
                     <div align="center">
