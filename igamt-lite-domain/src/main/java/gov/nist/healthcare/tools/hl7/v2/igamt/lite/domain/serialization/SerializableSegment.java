@@ -388,7 +388,7 @@ public class SerializableSegment extends SerializableSection {
             CoConstraintUSERColumnData coConstraintUSERColumnData = coConstraintsTable
                 .getUserMapData().get(coConstraintColumnDefinition.getId()).get(i);
             td = new Element("td");
-            if (!coConstraintUSERColumnData.getText().isEmpty()) {
+            if (coConstraintUSERColumnData!=null && coConstraintUSERColumnData.getText() !=null && !coConstraintUSERColumnData.getText().isEmpty()) {
               td.appendChild(coConstraintUSERColumnData.getText());
             } else {
               td.addAttribute(new Attribute("class", "greyCell"));
