@@ -221,17 +221,28 @@ public class SerializableSegment extends SerializableSection {
   private Element generateDynamicMappingElement() {
     DynamicMappingDefinition dynamicMappingDefinition = segment.getDynamicMappingDefinition();
     Element dynamicMappingElement = new Element("DynamicMapping");
-    String basePath = dynamicMappingDefinition.getMappingStructure().getSegmentName() + "-";
-    dynamicMappingElement.addAttribute(new Attribute("DynamicDatatypeField",
-        basePath + dynamicMappingDefinition.getMappingStructure().getTargetLocation()));
-    dynamicMappingElement.addAttribute(new Attribute("Reference",
-        basePath + dynamicMappingDefinition.getMappingStructure().getReferenceLocation()));
+    if( dynamicMappingDefinition.getMappingStructure()!=null){
+    	String basePath = "";
+    	if(dynamicMappingDefinition.getMappingStructure().getSegmentName()!=null && !dynamicMappingDefinition.getMappingStructure().getSegmentName().isEmpty()){
+    		basePath = dynamicMappingDefinition.getMappingStructure().getSegmentName() + "-";
+    	}
+    	if(dynamicMappingDefinition.getMappingStructure().getTargetLocation() != null && !dynamicMappingDefinition.getMappingStructure().getTargetLocation().isEmpty()){
+		    dynamicMappingElement.addAttribute(new Attribute("DynamicDatatypeField",
+		        basePath + dynamicMappingDefinition.getMappingStructure().getTargetLocation()));
+    	}
+    	if(dynamicMappingDefinition.getMappingStructure().getReferenceLocation() != null && ! dynamicMappingDefinition.getMappingStructure().getReferenceLocation().isEmpty()){
+		    dynamicMappingElement.addAttribute(new Attribute("Reference",
+		        basePath + dynamicMappingDefinition.getMappingStructure().getReferenceLocation()));
+    	}
+    }
     for (DynamicMappingItem dynamicMappingItem : dynamicMappingDefinition
         .getDynamicMappingItems()) {
       if (dynamicMappingItem != null) {
         Element dynamicMappingItemElement = new Element("DynamicMappingItem");
-        dynamicMappingItemElement.addAttribute(
-            new Attribute("FirstReferenceValue", dynamicMappingItem.getFirstReferenceValue()));
+        if(dynamicMappingItem.getFirstReferenceValue() != null && !dynamicMappingItem.getFirstReferenceValue().isEmpty()){
+        	dynamicMappingItemElement.addAttribute(
+        			new Attribute("FirstReferenceValue", dynamicMappingItem.getFirstReferenceValue()));
+        }
         if (dynamicMappingItem.getSecondReferenceValue() != null
             && !dynamicMappingItem.getSecondReferenceValue().isEmpty()) {
           dynamicMappingItemElement.addAttribute(
@@ -388,7 +399,7 @@ public class SerializableSegment extends SerializableSection {
             CoConstraintUSERColumnData coConstraintUSERColumnData = coConstraintsTable
                 .getUserMapData().get(coConstraintColumnDefinition.getId()).get(i);
             td = new Element("td");
-            if (!coConstraintUSERColumnData.getText().isEmpty()) {
+            if (coConstraintUSERColumnData!=null && coConstraintUSERColumnData.getText() !=null && !coConstraintUSERColumnData.getText().isEmpty()) {
               td.appendChild(coConstraintUSERColumnData.getText());
             } else {
               td.addAttribute(new Attribute("class", "greyCell"));
