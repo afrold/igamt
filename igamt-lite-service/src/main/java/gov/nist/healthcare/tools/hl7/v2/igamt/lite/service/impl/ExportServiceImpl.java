@@ -8,6 +8,8 @@ import org.apache.commons.io.input.NullInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
@@ -48,16 +50,20 @@ public class ExportServiceImpl implements ExportService {
 
     @Autowired
     private ExportUtil exportUtil;
-
+    
     @Autowired
-    private SerializationService serializationService;
+    private ApplicationContext applicationContext;
+
+//    @Autowired
+//    private SerializationService serializationService;
 
     @Autowired
     private ExportFontConfigService exportFontConfigService;
 
     @Override public InputStream exportIGDocumentAsDocx(IGDocument igDocument,
         SerializationLayout serializationLayout, ExportConfig exportConfig, ExportFontConfig exportFontConfig) throws IOException {
-        if (igDocument != null) {
+        SerializationService serializationService = new SerializationServiceImpl(applicationContext);
+    	if (igDocument != null) {
             ExportParameters exportParameters = exportUtil.setExportParameters(
                 DOCUMENT_TITLE_IMPLEMENTATION_GUIDE, true, true, EXPORT_FORMAT_WORD, exportConfig, exportFontConfig);
             igDocument.getMetaData().setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
@@ -73,7 +79,8 @@ public class ExportServiceImpl implements ExportService {
     @Override public InputStream exportIGDocumentAsHtml(IGDocument igDocument,
         SerializationLayout serializationLayout, ExportConfig exportConfig, ExportFontConfig exportFontConfig) throws IOException {
         if (igDocument != null) {
-            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_IMPLEMENTATION_GUIDE,true,false,EXPORT_FORMAT_HTML, exportConfig, exportFontConfig);
+            SerializationService serializationService = new SerializationServiceImpl(applicationContext);
+        	ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_IMPLEMENTATION_GUIDE,true,false,EXPORT_FORMAT_HTML, exportConfig, exportFontConfig);
             return exportUtil.exportAsHtmlFromXsl(serializationService.serializeIGDocument(igDocument,
                     serializationLayout, exportConfig).toXML(),
                 GLOBAL_STYLESHEET, exportParameters,igDocument.getMetaData());
@@ -85,7 +92,8 @@ public class ExportServiceImpl implements ExportService {
     @Override public InputStream exportDatatypeLibraryDocumentAsHtml(
         DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig, ExportFontConfig exportFontConfig) {
         if (datatypeLibraryDocument != null) {
-            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,false,EXPORT_FORMAT_HTML,exportConfig, exportFontConfig);
+            SerializationService serializationService = new SerializationServiceImpl(applicationContext);
+        	ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,false,EXPORT_FORMAT_HTML,exportConfig, exportFontConfig);
             return exportUtil.exportAsHtmlFromXsl(serializationService
                     .serializeDatatypeLibrary(datatypeLibraryDocument, exportConfig).toXML(),
                 GLOBAL_STYLESHEET, exportParameters,datatypeLibraryDocument.getMetaData());
@@ -97,7 +105,8 @@ public class ExportServiceImpl implements ExportService {
     @Override public InputStream exportDatatypeLibraryDocumentAsDocx(
         DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig, ExportFontConfig exportFontConfig) {
         if (datatypeLibraryDocument != null) {
-            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,true,EXPORT_FORMAT_WORD, exportConfig, exportFontConfig);
+            SerializationService serializationService = new SerializationServiceImpl(applicationContext);
+        	ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,true,EXPORT_FORMAT_WORD, exportConfig, exportFontConfig);
             return exportUtil.exportAsDocxFromXml(serializationService
                     .serializeDatatypeLibrary(datatypeLibraryDocument, exportConfig).toXML(),
                 GLOBAL_STYLESHEET, exportParameters, datatypeLibraryDocument.getMetaData(),datatypeLibraryDocument.getDateUpdated());
@@ -108,6 +117,7 @@ public class ExportServiceImpl implements ExportService {
 
 	@Override
 	public String exportDataModelAsHtml(Object dataModel, String title, String host) {
+        SerializationService serializationService = new SerializationServiceImpl(applicationContext);
 		nu.xom.Document document = serializationService.serializeDataModel(dataModel, host);
 		if(document!=null){
 			try {
