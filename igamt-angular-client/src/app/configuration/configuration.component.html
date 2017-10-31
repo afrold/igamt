@@ -7,6 +7,13 @@
 
 <div class="content-section implementation">
     <p-growl [value]="msgs"></p-growl>
-    
+
     <h3 class="first">Configuration page module</h3>
+
+  <h3>Fonts</h3>
+  <ul>
+    <li *ngFor="let font of fonts">{{font.name}}</li>
+  </ul>
 </div>
+
+<app-froala-editor></app-froala-editor>
