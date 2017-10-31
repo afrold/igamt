@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,16 +95,22 @@ public abstract class SerializeMessageOrCompositeProfile {
         }
     }
 
-    protected SerializableConstraints serializeConstraints(List<? extends Constraint> constraints,
-        String name, int position, String type){
+    protected SerializableConstraints serializeConstraints(List<? extends Constraint> constraints, String name, int position, String type) throws ConstraintSerializationException {
         List<SerializableConstraint> serializableConstraintList = new ArrayList<>();
-        for(Constraint constraint : constraints){
-            SerializableConstraint serializableConstraint = new SerializableConstraint(constraint, name);
-            serializableConstraintList.add(serializableConstraint);
+        for (Constraint constraint : constraints) {
+            try {
+                SerializableConstraint serializableConstraint = new SerializableConstraint(constraint, name);
+                serializableConstraintList.add(serializableConstraint);
+            } catch (Exception e){
+                throw new ConstraintSerializationException(e,constraint);
+            }
         }
         String id = UUID.randomUUID().toString();
-        SerializableConstraints serializableConstraints = new SerializableConstraints(serializableConstraintList,id,String.valueOf(position),name,type);
+        SerializableConstraints serializableConstraints =
+            new SerializableConstraints(serializableConstraintList, id, String.valueOf(position),
+                name, type);
         return serializableConstraints;
+
     }
 
     protected SerializableSegmentRefOrGroup serializeSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup, UsageConfig segmentUsageConfig, UsageConfig fieldUsageConfig, Map<String,Segment> compositeProfileSegments){

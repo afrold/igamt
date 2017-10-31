@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundExc
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 @RestController @RequestMapping("/export") public class ExportController extends CommonController {
 
     Logger log = LoggerFactory.getLogger(ExportController.class);
@@ -268,20 +273,28 @@ import io.swagger.annotations.ApiResponses;
     @ApiResponses({@ApiResponse(code = 200, message = "Success"),
         @ApiResponse(code = 400, message = "Bad request")})
     @RequestMapping(value = "/igDocument/{id}/html", method = RequestMethod.GET, produces = "text/html")
-    public String getIgDocumentAsHtml(@PathVariable(value = "id") String id)
-        throws DataNotFoundException {
+    public String getIgDocumentAsHtml(@PathVariable(value = "id") String id) {
+        InputStream resultInputStream = null;
+        String result = "";
         IGDocument igDocument = igDocumentService.findById(id);
         if (igDocument != null) {
             try {
-                return IOUtils.toString(exportService
+                resultInputStream = exportService
                     .exportIGDocumentAsHtml(igDocument, SerializationLayout.IGDOCUMENT,
                         ExportConfig.getBasicExportConfig(true),
-                        exportFontConfigService.getDefaultExportFontConfig()));
-            } catch (Exception e) {
-                e.printStackTrace();
+                        exportFontConfigService.getDefaultExportFontConfig());
+            } catch (SerializationException e) {
+                return e.toJson();
+            }
+            if(resultInputStream != null){
+                try {
+                    result = IOUtils.toString(resultInputStream);
+                } catch (IOException e) {
+
+                }
             }
         }
-        return null;
+        return result;
     }
 
     @ApiOperation(value = "Export a profile component as JSON", notes = "Search a profile component by ID and export it in JSON.")

@@ -1,10 +1,6 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableElement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableMessage;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.MessageSerializationException;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -17,15 +13,17 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exceptio
  * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified.
  * <p>
- * Created by Maxence Lefort on 12/13/16.
+ * Created by Maxence Lefort on 10/30/17.
  */
-public interface SerializeMessageService {
+public class MessageSerializationException extends SerializationException{
+    private Message message;
 
-    public SerializableMessage serializeMessage(Message message, String prefix, String headerLevel,
-        SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig)  throws
-        MessageSerializationException;
+    public MessageSerializationException(Exception originalException, String errorMessage, Message message) {
+        super(originalException, errorMessage);
+        this.message = message;
+    }
 
-	public SerializableElement serializeMessage(Message message, String host)  throws
-      MessageSerializationException;
-
+    @Override public String toJson() {
+        return "Error while serializing message "+message.getName();
+    }
 }

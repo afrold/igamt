@@ -2,14 +2,12 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
-
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,23 +43,23 @@ public class SerializableSection extends SerializableElement {
     public SerializableSection(String id,String prefix,String position, String headerLevel, String title) {
         this.id = id;
         this.sectionElement = new Element("Section");
-        this.sectionElement.addAttribute(new Attribute("id", id));
+        this.sectionElement.addAttribute(new Attribute("id", id == null ? "" : id));
         this.serializableSectionList = new ArrayList<>();
         this.prefix = prefix;
         this.position = position;
         this.headerLevel = headerLevel;
         this.title = title;
-        this.prefixAttribute = new Attribute("prefix", prefix);
+        this.prefixAttribute = new Attribute("prefix", prefix  == null ? "" : prefix);
         this.sectionElement.addAttribute(this.prefixAttribute);
-        this.sectionElement.addAttribute(new Attribute("position", position));
-        this.headerAttribute = new Attribute("h", headerLevel);
+        this.sectionElement.addAttribute(new Attribute("position", position == null ? "" : position));
+        this.headerAttribute = new Attribute("h", headerLevel == null ? "" : headerLevel);
         this.sectionElement.addAttribute(headerAttribute);
-        this.titleAttribute = new Attribute("title", title);
+        this.titleAttribute = new Attribute("title", title == null ? "" : title);
         this.sectionElement.addAttribute(titleAttribute);
     }
 
     @Override
-    public Element serializeElement() {
+    public Element serializeElement() throws SerializationException {
         for(SerializableSection serializableSection : serializableSectionList){
             if(serializableSection!=null) {
                 sectionElement.appendChild(serializableSection.serializeElement());

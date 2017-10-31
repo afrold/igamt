@@ -4,6 +4,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocumen
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableElement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 
 /**
@@ -20,9 +21,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.Seriali
  * Created by Maxence Lefort on 12/7/16.
  */
 public interface SerializationService {
-    public nu.xom.Document serializeIGDocument(IGDocument igDocument,
-        SerializationLayout serializationLayout, ExportConfig exportConfig);
-    public nu.xom.Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig);
-    public nu.xom.Document serializeElement(SerializableElement element);
-	public nu.xom.Document serializeDataModel(Object dataModel, String host);
+    nu.xom.Document serializeIGDocument(IGDocument igDocument, SerializationLayout serializationLayout, ExportConfig exportConfig) throws SerializationException;
+    nu.xom.Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig) throws SerializationException;
+    nu.xom.Document serializeElement(SerializableElement element) throws SerializationException;
+    nu.xom.Document serializeDataModel(Object dataModel, String host) throws SerializationException;
 }

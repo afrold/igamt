@@ -1,8 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import java.io.IOException;
 import java.io.InputStream;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
 import org.slf4j.Logger;
@@ -56,7 +56,8 @@ public class ExportServiceImpl implements ExportService {
     private ExportFontConfigService exportFontConfigService;
 
     @Override public InputStream exportIGDocumentAsDocx(IGDocument igDocument,
-        SerializationLayout serializationLayout, ExportConfig exportConfig, ExportFontConfig exportFontConfig) throws IOException {
+        SerializationLayout serializationLayout, ExportConfig exportConfig, ExportFontConfig exportFontConfig)
+        throws SerializationException {
         if (igDocument != null) {
             ExportParameters exportParameters = exportUtil.setExportParameters(
                 DOCUMENT_TITLE_IMPLEMENTATION_GUIDE, true, true, EXPORT_FORMAT_WORD, exportConfig, exportFontConfig);
@@ -71,7 +72,8 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override public InputStream exportIGDocumentAsHtml(IGDocument igDocument,
-        SerializationLayout serializationLayout, ExportConfig exportConfig, ExportFontConfig exportFontConfig) throws IOException {
+        SerializationLayout serializationLayout, ExportConfig exportConfig, ExportFontConfig exportFontConfig)
+        throws SerializationException {
         if (igDocument != null) {
             ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_IMPLEMENTATION_GUIDE,true,false,EXPORT_FORMAT_HTML, exportConfig, exportFontConfig);
             return exportUtil.exportAsHtmlFromXsl(serializationService.serializeIGDocument(igDocument,

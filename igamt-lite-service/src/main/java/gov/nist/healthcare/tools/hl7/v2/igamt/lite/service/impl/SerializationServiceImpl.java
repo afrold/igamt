@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.MessageSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,7 +152,7 @@ public class SerializationServiceImpl implements SerializationService {
 
   @Override
   public Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument,
-      ExportConfig exportConfig) {
+      ExportConfig exportConfig){
     this.exportConfig = exportConfig;
     this.unbindedTables = null;
     SerializableStructure serializableStructure = new SerializableStructure();
@@ -204,7 +206,7 @@ public class SerializationServiceImpl implements SerializationService {
 
   @Override
   public Document serializeIGDocument(IGDocument igDocument,
-      SerializationLayout serializationLayout, ExportConfig exportConfig) {
+      SerializationLayout serializationLayout, ExportConfig exportConfig) throws SerializationException {
     this.exportConfig = exportConfig;
     igDocumentMessages = igDocument.getProfile().getMessages();
     this.bindedDatatypes = new ArrayList<>();
@@ -216,7 +218,6 @@ public class SerializationServiceImpl implements SerializationService {
     } else {
       bindedTables = new HashSet<>();
     }
-
 
     this.bindedSegments = new ArrayList<>();
     this.unbindedTables = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
@@ -603,7 +604,8 @@ public class SerializationServiceImpl implements SerializationService {
 
 
   private SerializableSection serializeMessages(Profile profile,
-      SerializationLayout serializationLayout, String hl7Version, int position) {
+      SerializationLayout serializationLayout, String hl7Version, int position) throws
+      MessageSerializationException {
     String id = profile.getMessages().getId();
     String sectionPosition = String.valueOf(position);
     String prefix = String.valueOf(profile.getSectionPosition() + 1) + "."
@@ -1264,7 +1266,8 @@ public class SerializationServiceImpl implements SerializationService {
   }
 
   @Override
-  public Document serializeDataModel(Object dataModel, String host) {
+  public Document serializeDataModel(Object dataModel, String host)
+      throws SerializationException {
     SerializableStructure serializableStructure = new SerializableStructure();
     SerializableElement serializableElement = null;
     if (dataModel instanceof Datatype) {

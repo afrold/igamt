@@ -1,10 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
-
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -16,18 +10,22 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified.
- * <p/>
- * Created by Maxence Lefort on 2/23/17.
+ * <p>
+ * Created by Maxence Lefort on 10/30/17.
  */
-@Service
-public interface ExportFontConfigService {
-  public List<ExportFontConfig> findOneByAccountId(Long accountId);
+public abstract class SerializationException extends Exception {
 
-  public ExportFontConfig findOne(Long id);
+    private Exception originalException;
+    private String message;
 
-  public ExportFontConfig getDefaultExportFontConfig();
+    public SerializationException(Exception originalException) {
+        this.originalException = originalException;
+    }
 
-  public ExportFontConfig save(ExportFontConfig exportFontConfig);
+    public SerializationException(Exception originalException, String message) {
+        this.originalException = originalException;
+        this.message = message;
+    }
 
-  public void delete(ExportFontConfig exportFontConfig);
+    public abstract String toJson();
 }

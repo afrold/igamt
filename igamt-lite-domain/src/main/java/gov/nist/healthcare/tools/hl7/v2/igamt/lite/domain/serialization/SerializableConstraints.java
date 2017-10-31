@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -39,13 +40,13 @@ public class SerializableConstraints extends SerializableSection {
         this.type = type;
     }
 
-    @Override public Element serializeElement() {
+    @Override public Element serializeElement() throws ConstraintSerializationException {
         Element constraintsElement = new Element("Constraints");
-        constraintsElement.addAttribute(new Attribute("id", this.id));
-        constraintsElement.addAttribute(new Attribute("position", this.position));
+        constraintsElement.addAttribute(new Attribute("id", this.id  == null ? "" : this.id));
+        constraintsElement.addAttribute(new Attribute("position", this.position == null ? "" : this.position));
         constraintsElement.addAttribute(new Attribute("h", String.valueOf(3)));
-        constraintsElement.addAttribute(new Attribute("title", this.title));
-        constraintsElement.addAttribute(new Attribute("Type", this.type));
+        constraintsElement.addAttribute(new Attribute("title", this.title == null ? "" : this.title));
+        constraintsElement.addAttribute(new Attribute("Type", this.type == null ? "" : this.type));
         for(SerializableConstraint constraint : constraints){
             constraintsElement.appendChild(constraint.serializeElement());
         }
