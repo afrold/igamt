@@ -2063,11 +2063,12 @@ public class IGDocumentController extends CommonController {
         clone.setScope(SCOPE.USER);
         clone.setReferenceUrl(appInfo.getProperties().get(SCOPE.PHINVADS.name()) + t.getOid());
         ret.add(clone);
-        tableLibraryService.save(tableLibrary);
         tableService.save(clone);
 
 
       }
+      tableLibraryService.save(tableLibrary);
+
     }
     return ret;
   }
