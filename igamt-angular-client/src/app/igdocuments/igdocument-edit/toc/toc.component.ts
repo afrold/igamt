@@ -20,7 +20,7 @@ export class TocComponent {
 
   ngOnInit(){
     this.ig = this._ws.getCurrent(Entity.IG);
-    console.log(this.ig);
+    console.log(this._ig);
   }
 
 }

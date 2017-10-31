@@ -1,7 +1,4 @@
 <div style="overflow-x: scroll; width: 100%;" *ngIf="table">
-    <button (click)="addCc(table.content.free)" *ngIf="table.headers.selectors.length" style="float: left; margin-top : 10px; margin-bottom: 10px;" type="button" pButton class="btn-xs btn-primary">
-        <i class="fa fa-plus fa-fw">&nbsp; </i> Add Co-Constraint
-    </button>
     <button (click)="addCcGroup()" *ngIf="table.grp && table.headers.selectors.length" style="float: left; margin-top : 10px; margin-bottom: 10px;" type="button" pButton class="btn-xs btn-info">
         <i class="fa fa-plus fa-fw">&nbsp; </i> Add Co-Constraint Group
     </button>
@@ -78,6 +75,15 @@
             </tr>
 
             <!--TABLE CONTENT-->
+            <tr style="background-color: lightgrey;">
+              <td></td>
+              <td [attr.colspan]="groupHeaderSize(table)+2" style="text-align: center;">
+                <button (click)="addCc(table.content.free)" *ngIf="table.headers.selectors.length" style="float: left;" type="button" pButton class="btn-xs btn-primary">
+                  <i class="fa fa-plus fa-fw">&nbsp; </i> Add Co-Constraint
+                </button>
+                Independent Co-Constraints
+              </td>
+            </tr>
             <ng-container *ngTemplateOutlet="cclist; context : {$implicit : table.content.free}"></ng-container>
             <ng-container *ngFor="let group of table.content.groups; let i = index">
                 <ng-container *ngTemplateOutlet="ccgroup; context : {$implicit : group, list : table.content.groups, index : i}"></ng-container>
@@ -100,13 +106,12 @@
 
 <ng-template #code let-node let-req="req">
     <input type="text" [(ngModel)]="node.value" style="width: 70%;" [required]="req" [placeholder]="req ? 'required' : ''">
-    <p-dropdown appendTo="body" [style]="{'width': '25%'}" [placeholder]="'LOC'" [options]="[{ label : '1', value : '1'}, {label : '4', value : '4'}, {label : '1 or 4', value : '4'}]" [(ngModel)]="node.location"></p-dropdown>
+    <p-dropdown appendTo="body" [style]="{'width': '27%'}" [placeholder]="'LOC'" [required]="req" [options]="[{ label : '1', value : '1'}, {label : '4', value : '4'}, {label : '1 or 4', value : '4'}]" [(ngModel)]="node.location"></p-dropdown>
 </ng-template>
 
 <ng-template #textArea let-node >
     <textarea rows="1" style="width: 100%;" type="text" [(ngModel)]="node.value"></textarea>
 </ng-template>
-
 
 <ng-template #usage let-node>
     <p-dropdown [options]="config.usages" [(ngModel)]="node.usage" [style]="{'width':'100%'}"></p-dropdown>
@@ -181,17 +186,17 @@
 </ng-template>
 
 <ng-template #ccgroup let-node let-index="index" let-list="list">
-    <tr style="background-color: lightgrey;">
+    <tr style="background-color: black; border-top : 2px solid black;">
         <td style="width: 30px;">
             <button (click)="delGroup(list,index)" type="button" pButton class="btn-xs btn-danger">
                 <i class="fa fa-trash">&nbsp; </i>
             </button>
         </td>
         <td [attr.colspan]="groupHeaderSize(table)">
-            <input style="width: 90% !important;" [(ngModel)]="node.data.name" type="text" required placeholder="required" >
-            <button (click)="addCc(node.content.free)" style="float: right;" type="button" pButton class="btn-xs btn-primary">
-                <i class="fa fa-plus fa-fw">&nbsp; </i>
-            </button>
+          <button (click)="addCc(node.content.free)" style="float: left; margin-right: 5px;" type="button" pButton class="btn-xs btn-primary">
+            <i class="fa fa-plus fa-fw">&nbsp; </i> Add Co-Constraint
+          </button>
+          <input style="width: 80% !important;" [(ngModel)]="node.data.name" type="text" required placeholder="required" >
         </td>
         <td class="small">
             <ng-container *ngTemplateOutlet="usage; context : {$implicit : node.data.requirements}"></ng-container>
@@ -215,18 +220,16 @@
             <span *ngIf="header.content.type === 3">
                 <span class="label label-icon label-gray">Datatype</span>
             </span>
+            <span *ngIf="header.content.type === 4">
+                <span class="label label-icon label-gray">Flavor</span>
+            </span>
             <span *ngIf="header.content.type === 5">
                 <span class="label label-icon label-gray">Code</span>
             </span>
         </span>
-        <span *ngIf="header.content.elmType === 'field'">
-            <span class="label label-icon label-field">F</span>
-        </span>
-        <span *ngIf="header.content.elmType === 'component'">
-            <span class="label label-icon label-component">C</span>
-        </span>
+        <display-badge [type]="header.content.elmType"></display-badge>
         {{header.label}}
-        <button (click)="delCol(list, index, header.id)" style="float: right;" type="button" pButton class="btn-xs btn-danger">
+        <button *ngIf="!header.keep" (click)="delCol(list, index, header.id)" style="float: right;" type="button" pButton class="btn-xs btn-danger">
             <i class="fa fa-trash">&nbsp; </i>
         </button>
     </div>
@@ -239,9 +242,12 @@
     </button>
 </ng-template>
 
-<ng-template #datatype let-node>
-    <p-dropdown #dtField placeholder="DATATYPE" [options]="config.dynCodes" appendTo="body"[(ngModel)]="node.value" [style]="{'width':'48%'}"  (onChange)="dtChange(node)" ></p-dropdown>
-    <p-dropdown #flField placeholder="FLAVOR" *ngIf="node.value" [options]="config.datatypes" appendTo="body" [(ngModel)]="node.dt" [style]="{'width':'48%'}"  ></p-dropdown>
+<ng-template #datatype let-node let-cc="obj">
+    <p-dropdown #dtField placeholder="Datatype" [options]="config.dynCodes" appendTo="body"[(ngModel)]="node.value" [style]="{'width':'100%', 'text-align' : 'center'}"  (onChange)="dtChange(cc.k5)" required="true"></p-dropdown>
+</ng-template>
+
+<ng-template #flavor let-node let-cc="obj">
+  <p-dropdown #flField placeholder="Flavor" *ngIf="cc.k2.value" [options]="config.datatypes | dtFlavor : cc.k2.value" appendTo="body" [(ngModel)]="node.value" [style]="{'width':'100%', 'text-align' : 'center'}" required="true"></p-dropdown>
 </ng-template>
 
 <valueset-binding-picker></valueset-binding-picker>

@@ -17,6 +17,10 @@ import {TreeModule} from "primeng/components/tree/tree";
 import {ValueSetBindingPickerComponent} from "../../../../common/valueset-binding-picker/valueset-binding-picker.component";
 import {DataListModule} from "primeng/components/datalist/datalist";
 import {DataTableModule} from "primeng/components/datatable/datatable";
+import {SegmentStructureComponent} from "./segment-structure/segment-structure.component";
+import {TreeTableModule} from "primeng/components/treetable/treetable";
+import {SegmentTableComponent} from "./segment-structure/segment-table/segment-table.component";
+import {UtilsModule} from "../../../../utils/utils.module";
 
 
 @NgModule({
@@ -30,11 +34,13 @@ import {DataTableModule} from "primeng/components/datatable/datatable";
     SegmentDefinitionRouting,
     GrowlModule,
     DataListModule,
-    DataTableModule
+    DataTableModule,
+    TreeTableModule,
+    UtilsModule
 	],
   providers : [CoConstraintTableService, SegmentTreeNodeService],
 	declarations: [
-    SegmentDefinitionComponent, CoConstraintTableComponent, SegmentTreeComponent, CCHeaderDialogDm, CCHeaderDialogUser, ValueSetBindingPickerComponent
+    SegmentDefinitionComponent, CoConstraintTableComponent, SegmentTreeComponent, CCHeaderDialogDm, CCHeaderDialogUser, ValueSetBindingPickerComponent, SegmentStructureComponent, SegmentTableComponent
 	],
   schemas : [ CUSTOM_ELEMENTS_SCHEMA ]
 })

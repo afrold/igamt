@@ -7,7 +7,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DtFlavorPipe implements PipeTransform {
     transform(list : any[], base : string) : any[] {
         if(list && base){
-            return list.filter(node => node.name.startsWith(base));
+            return list.filter(node => node.label.startsWith(base));
         }
         return [];
     }

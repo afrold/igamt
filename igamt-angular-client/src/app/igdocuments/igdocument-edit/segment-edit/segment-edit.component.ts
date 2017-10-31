@@ -8,7 +8,8 @@ import {Workspace, Entity} from "../../../service/workspace/workspace.service";
 
 @Component({
   selector : 'segment-edit',
-  templateUrl : './segment-edit.component.html'
+  templateUrl : './segment-edit.component.html',
+  styleUrls : ['./segment-edit.component.css']
 })
 export class SegmentEditComponent {
 

@@ -55,9 +55,11 @@ export class CoConstraintTableComponent {
     if (this.table.dyn) {
       this.ccTableService.get_bound_codes(this._segment).then(function (response) {
         ctrl.config.dynCodes = [];
+        console.log(response.json());
         for (let code of response.json().codes) {
           ctrl.config.dynCodes.push({label: code.value, value: code.value});
         }
+
       });
     }
   }
@@ -73,6 +75,8 @@ export class CoConstraintTableComponent {
           return this.datatype;
         case CCSelectorType.ByCode :
           return this.code;
+        case CCSelectorType.DatatypeFlavor :
+          return this.flavor;
       }
     }
     else if (node && node.label) {
@@ -201,7 +205,7 @@ export class CoConstraintTableComponent {
   addCcGroup() {
     this.table.content.groups.push({
       data: {
-        name: 'g1',
+        name: '',
         requirements: {
           usage: 'R',
           cardinality: {
@@ -221,7 +225,7 @@ export class CoConstraintTableComponent {
   }
 
   dtChange(node) {
-    node.dt = '';
+    node.value = '';
   }
 
   groupHeaderSize(table) {
@@ -257,15 +261,15 @@ export class CoConstraintTableComponent {
       datatypes: []
     };
     this.readRoute();
-    // for(let table of this.dtlist){
-    //     this.config.datatypes.push({ label : table.label, value : table.id});
-    // }
-
   }
 
   readRoute() {
     let ig = this._ws.getCurrent(Entity.IG);
     this.tableid = ig.profile.tableLibrary.id;
     this.segment = this._ws.getCurrent(Entity.SEGMENT);
+    for(let dt of ig.profile.datatypeLibrary.children){
+      this.config.datatypes.push({ label : dt.label, value : dt});
+    }
+    console.log(this.config);
   }
 }

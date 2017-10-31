@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {LocationStrategy, HashLocationStrategy} from '@angular/common';
+import {LocationStrategy, HashLocationStrategy, CommonModule} from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -35,7 +35,9 @@ import {InlineProfileComponent} from './app.profile.component';
     AppFooterComponent,
     NotFoundComponent
   ],
+  exports : [ ],
   imports: [
+    CommonModule,
     AlertModule.forRoot(),
     BrowserModule,
     PanelModule,

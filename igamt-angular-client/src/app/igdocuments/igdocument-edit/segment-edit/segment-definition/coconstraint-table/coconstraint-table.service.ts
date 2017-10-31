@@ -46,19 +46,31 @@ export class CoConstraintTableService {
         tmp.headers.selectors.push({
             id : 'k3',
             label : 'OBX-3',
+            keep : true,
             content : {
                 type : CCSelectorType.ByCode,
                 elmType : 'field',
                 path : '3[1]'
             }
         });
-        tmp.headers.data.push({
+        tmp.headers.selectors.push({
             id : 'k2',
             label : 'OBX-2',
+            keep : true,
             content : {
                 type : CCSelectorType.DataType,
                 elmType : 'field',
                 path : '2[1]'
+            }
+        });
+        tmp.headers.data.push({
+            id : 'k5',
+            label : 'OBX-5',
+            keep : true,
+            content : {
+                type : CCSelectorType.DatatypeFlavor,
+                elmType : 'field',
+                path : '5[1]'
             }
         });
         return tmp;
@@ -124,10 +136,14 @@ export class CoConstraintTableService {
 
             case CCSelectorType.DataType :
                 obj[header.id]  = {
-                    value : '',
-                    dt : ''
+                    value : ''
                 };
                 break;
+            case CCSelectorType.DatatypeFlavor :
+              obj[header.id]  = {
+                value : ''
+              };
+              break;
             case CCSelectorType.ByCode :
                 obj[header.id]  = {
                     value : '',

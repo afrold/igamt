@@ -1,0 +1,63 @@
+<div style="overflow: scroll;">
+  <p-treeTable [value]="tree" resizableColumns="true" >
+    <p-column field="obj.name" header="Name">
+      <ng-template let-col let-node="rowData" pTemplate="body">
+          <display-badge [type]="node.data.obj.type"></display-badge> {{node.data.index}} {{node.data.obj.name}}
+      </ng-template>
+    </p-column>
+    <p-column header="Usage">
+      <ng-template let-col let-node="rowData" pTemplate="body">
+        <div>
+          <p-dropdown [options]="usages" [(ngModel)]="node.data.obj.usage" appendTo="body"></p-dropdown>
+        </div>
+      </ng-template>
+    </p-column>
+
+    <p-column header="Cardinality">
+      <ng-template let-col let-node="rowData" pTemplate="body">
+        <input [(ngModel)]="node.data.obj.min" type="number" style="width:45%;border-width:0px 0px 1px 0px"/>
+        <input [(ngModel)]="node.data.obj.max" type="text" style="width:45%;border-width:0px 0px 1px 0px"/>
+      </ng-template>
+    </p-column>
+
+    <p-column header="Length">
+      <ng-template let-col let-node="rowData" pTemplate="body">
+        <input [(ngModel)]="node.data.obj.minLength" type="text" style="width:45%;border-width:0px 0px 1px 0px"/>
+        <input [(ngModel)]="node.data.obj.maxLength" type="text" style="width:45%;border-width:0px 0px 1px 0px"/>
+        <i class="fa fa-times"></i>
+      </ng-template>
+    </p-column>
+
+    <p-column header="Conf. Length">
+      <ng-template let-col let-node="rowData" pTemplate="body">
+        <input [(ngModel)]="node.data.obj.confLength" type="text" style="width:45%;border-width:0px 0px 1px 0px"/>
+        <i class="fa fa-times"></i>
+      </ng-template>
+    </p-column>
+    <p-column header="Datatype">
+      <ng-template let-col let-node="rowData" pTemplate="body">
+      </ng-template>
+    </p-column>
+    <p-column header="ValueSet / SingleCode">
+      <ng-template let-col let-node="rowData" pTemplate="body">
+      </ng-template>
+    </p-column>
+    <p-column header="Constant Value">
+      <ng-template let-col let-node="rowData" pTemplate="body">
+      </ng-template>
+    </p-column>
+    <p-column header="Predicate">
+      <ng-template let-col let-node="rowData" pTemplate="body">
+      </ng-template>
+    </p-column>
+    <p-column header="Text Definition">
+      <ng-template let-col let-node="rowData" pTemplate="body">
+      </ng-template>
+    </p-column>
+    <p-column header="Comment">
+      <ng-template let-col let-node="rowData" pTemplate="body">
+      </ng-template>
+    </p-column>
+  </p-treeTable>
+
+</div>

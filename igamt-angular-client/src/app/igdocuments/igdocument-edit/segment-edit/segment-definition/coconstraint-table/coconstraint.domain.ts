@@ -22,6 +22,7 @@ export interface CCContent {
 export interface CCHeader {
     id : string,
     label : string,
+    keep? : boolean,
     content? : DataElementHeader,
 }
 

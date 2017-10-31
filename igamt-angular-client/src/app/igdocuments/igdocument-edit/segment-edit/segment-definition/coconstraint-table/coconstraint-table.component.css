@@ -37,11 +37,11 @@ input {
 }
 
 .ng-valid[required], .ng-valid.required  {
-    border-left: 5px solid #42A948; /* green */
+    /*border-bottom: 1px solid #42A948; !* green *!*/
 }
 
 .ng-invalid:not(form)  {
-    border-left: 5px solid #a94442; /* red */
+    border-bottom: 2px solid #d82320; /* red */
 }
 
 input::-webkit-input-placeholder {
@@ -62,4 +62,8 @@ input::-moz-placeholder {
 input:-ms-input-placeholder {
     color: red !important;
     text-align: center;
+}
+
+.label-gray {
+  background-color: gray;
 }

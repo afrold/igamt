@@ -14,7 +14,8 @@ export class SegmentTreeNodeService {
     getFD(segment){
         let nodes : TreeNode[] = [];
         let i = 1;
-        for (let field of segment.fields){
+        let list = segment.fields.sort((x,y) => x.position - y.position);
+        for (let field of list){
             nodes.push(this.lazyNode(field,i++,null));
         }
         return nodes ;
@@ -29,7 +30,6 @@ export class SegmentTreeNodeService {
             path : (parent && parent.data && parent.data.path) ? parent.data.path+'.'+i : i+''
         };
         // node.parent = parent;
-        node.type = element.type;
         node.leaf = !(element.datatype && element.datatype.name != 'ST');
         node.selectable = true;
         return node;

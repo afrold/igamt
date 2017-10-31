@@ -10,6 +10,7 @@ import {FormsModule} from "@angular/forms";
 import {DialogModule} from "primeng/components/dialog/dialog";
 import {DropdownModule} from "primeng/components/dropdown/dropdown";
 import {SegmentGuard} from "./segment-edit.guard";
+import {UtilsModule} from "../../../utils/utils.module";
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import {SegmentGuard} from "./segment-edit.guard";
     DialogModule,
     DropdownModule,
     SegmentEditRoutingModule,
+    UtilsModule
   ],
   providers : [ SegmentGuard ],
   declarations: [
