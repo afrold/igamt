@@ -24,7 +24,7 @@
 <form name="addAccountForm" class="form-horizontal" novalidate>
 <div class="form-group control-group"
      ng-class="{'has-success has-feedback': addAccountForm.inputFullName.$valid, 'igl-has-error has-feedback': !addAccountForm.inputFullName.$valid}">
-    <label class="control-label col-md-3" for="inputFullName">
+    <label class="control-label col-md-5" for="inputFullName">
         <div msg key='registration.fullname'></div>
     </label>
 
@@ -63,7 +63,7 @@
 
 <div class="form-group control-group"
      ng-class="{'has-success has-feedback': addAccountForm.inputEmail.$valid, 'igl-has-error has-feedback': !addAccountForm.inputEmail.$valid}">
-    <label class="control-label col-md-3" for="inputEmail">
+    <label class="control-label col-md-5" for="inputEmail">
         <div msg key='registration.email'></div>
     </label>
 
@@ -90,7 +90,7 @@
 
 <div class="form-group control-group"
      ng-class="{'has-success has-feedback': addAccountForm.inputPhoneNumber.$valid, 'igl-has-error has-feedback': !addAccountForm.inputPhoneNumber.$valid}">
-    <label class="control-label col-md-3" for="inputPhoneNumber">
+    <label class="control-label col-md-5" for="inputPhoneNumber">
         <div msg key='registration.phone'></div>
     </label>
 
@@ -117,7 +117,7 @@
 
 <div class="form-group control-group"
      ng-class="{'has-success has-feedback': addAccountForm.inputTitle.$valid, 'igl-has-error has-feedback': !addAccountForm.inputTitle.$valid}">
-    <label class="control-label col-md-3" for="inputTitle">
+    <label class="control-label col-md-5" for="inputTitle">
         <div msg key='registration.title'></div>
     </label>
 
@@ -129,7 +129,7 @@
 
 <div class="form-group control-group"
      ng-class="{'has-success has-feedback': addAccountForm.inputEmployer.$valid, 'igl-has-error has-feedback': !addAccountForm.inputEmployer.$valid}">
-    <label class="control-label col-md-3" for="inputEmployer">
+    <label class="control-label col-md-5" for="inputEmployer">
         <div msg key='registration.employer'></div>
     </label>
 
@@ -142,7 +142,7 @@
 
 <div class="form-group control-group"
      ng-class="{'has-success has-feedback': addAccountForm.inputJuridiction.$valid, 'igl-has-error has-feedback': !addAccountForm.inputJuridiction.$valid}">
-    <label class="control-label col-md-3" for="inputJuridiction">
+    <label class="control-label col-md-5" for="inputJuridiction">
         <div msg key='registration.juridiction'></div>
     </label>
 
@@ -155,7 +155,7 @@
 </div>
 <div class="form-group control-group"
      ng-class="{'has-success has-feedback': addAccountForm.inputUsername.$valid, 'igl-has-error has-feedback': !addAccountForm.inputUsername.$valid}">
-    <label class="control-label col-md-3" for="inputUsername">
+    <label class="control-label col-md-5" for="inputUsername">
         <div msg key='registration.username'></div>
     </label>
 
@@ -183,7 +183,7 @@
 </div>
 <div class="form-group control-group"
      ng-class="{'has-success has-feedback': addAccountForm.inputPassword.$valid, 'igl-has-error has-feedback': !addAccountForm.inputPassword.$valid}">
-    <label class="control-label col-md-3" for="inputPassword">
+    <label class="control-label col-md-5" for="inputPassword">
         <div msg key='registration.password'></div>
     </label>
 
@@ -218,7 +218,7 @@
 </div>
 <div class="form-group control-group"
      ng-class="{'has-success has-feedback': addAccountForm.inputPasswordConfirm.$valid, 'igl-has-error has-feedback': !addAccountForm.inputPasswordConfirm.$valid}">
-    <label class="control-label col-md-3" for="inputPasswordConfirm">
+    <label class="control-label col-md-5" for="inputPasswordConfirm">
         <div msg key='registration.passwordConfirm'></div>
     </label>
 
@@ -237,14 +237,14 @@
 </div>
 
 <div class="form-group control-group">
-    <div class="col-md-offset-3 col-md-5">
+    <div class="col-md-offset-5 col-md-5">
         <label class="control-label">
             <div msg key="registration.agreement.title"></div>
         </label>
 
         <div class="controls">
                  <textarea msg key="registration.agreement.content" disabled rows="12"
-                          style="text-align:left;width:700px;border:1px; border-color: black">
+                          style="text-align:left;width:700px;border:solid 1px gray;">
                 </textarea>
                 <br/>
                 <br/>
@@ -257,7 +257,7 @@
 </div>
 
     <div class="form-group">
-        <div class="col-md-offset-3 col-md-5">
+        <div class="col-md-offset-5 col-md-5">
             <button class="btn btn-raised btn-primary" id="createAccountButton" ng-click='registerAccount()'
                     ng-disabled='!addAccountForm.$valid || registered'>
                 <div msg key="registration.createButton"></div>
