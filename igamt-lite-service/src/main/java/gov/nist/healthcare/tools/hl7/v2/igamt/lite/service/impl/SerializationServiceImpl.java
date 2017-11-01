@@ -13,6 +13,9 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
@@ -91,40 +94,28 @@ import nu.xom.Document;
  * <p>
  * Created by Maxence Lefort on 12/7/16.
  */
-@Service
 public class SerializationServiceImpl implements SerializationService {
 
-  @Autowired
   SerializationUtil serializationUtil;
 
-  @Autowired
   SerializeMessageService serializeMessageService;
 
-  @Autowired
   SerializeSegmentService serializeSegmentService;
 
-  @Autowired
   SerializeDatatypeService serializeDatatypeService;
 
-  @Autowired
   SerializeCompositeProfileService serializeCompositeProfileService;
 
-  @Autowired
   SerializeProfileComponentService serializeProfileComponentService;
 
-  @Autowired
   SerializeTableService serializeTableService;
 
-  @Autowired
   SegmentService segmentService;
 
-  @Autowired
   CompositeProfileService compositeProfileService;
 
-  @Autowired
   TableService tableService;
 
-  @Autowired
   DatatypeService datatypeService;
 
   private ExportConfig exportConfig;
@@ -147,8 +138,27 @@ public class SerializationServiceImpl implements SerializationService {
 
   private boolean doFilterValueSets = true;
 
+  @Autowired
+  private ApplicationContext applicationContext;
+  
+  public SerializationServiceImpl(ApplicationContext applicationContext) {
+	super();
+	this.applicationContext = applicationContext;
+	serializeCompositeProfileService = applicationContext.getBean(SerializeCompositeProfileService.class);
+	serializationUtil = applicationContext.getBean(SerializationUtil.class);
+	serializeMessageService = applicationContext.getBean(SerializeMessageService.class);
+	serializeSegmentService = applicationContext.getBean(SerializeSegmentService.class);
+	serializeDatatypeService = applicationContext.getBean(SerializeDatatypeService.class);
+	serializeCompositeProfileService = applicationContext.getBean(SerializeCompositeProfileService.class);
+	serializeProfileComponentService = applicationContext.getBean(SerializeProfileComponentService.class);
+	serializeTableService = applicationContext.getBean(SerializeTableService.class);
+	segmentService = applicationContext.getBean(SegmentService.class);
+	compositeProfileService = applicationContext.getBean(CompositeProfileService.class);
+	tableService = applicationContext.getBean(TableService.class);
+	datatypeService = applicationContext.getBean(DatatypeService.class);
+  }
 
-  @Override
+@Override
   public Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument,
       ExportConfig exportConfig) {
     this.exportConfig = exportConfig;
@@ -215,6 +225,7 @@ public class SerializationServiceImpl implements SerializationService {
       this.doFilterValueSets = false;
     } else {
       bindedTables = new HashSet<>();
+      this.doFilterValueSets = true;
     }
 
 
@@ -515,7 +526,7 @@ public class SerializationServiceImpl implements SerializationService {
         }
       }
     }
-    if (unbindedTables != null && !unbindedTables.isEmpty() && (exportConfig.isUnboundCustom() || exportConfig.isUnboundCustom()) && (tableLibrary.getExportConfig() != null && tableLibrary.getExportConfig().getInclude()!=null)) {
+    if (doFilterValueSets && unbindedTables != null && !unbindedTables.isEmpty() && (exportConfig.isUnboundCustom() || exportConfig.isUnboundCustom())) {
       for (TableLink tableLink : this.unbindedTables) {
 	      Table table = tableService.findById(tableLink.getId());
 	      if (table != null && ExportUtil.displayUnbindedTable(exportConfig, table)) {
@@ -1284,4 +1295,9 @@ public class SerializationServiceImpl implements SerializationService {
     }
     return serializableStructure.serializeStructure();
   }
+  
+  
+  
+  
+  
 }
