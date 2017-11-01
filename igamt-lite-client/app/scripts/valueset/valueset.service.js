@@ -92,6 +92,15 @@ angular.module('igl').factory('TableService', ['$rootScope', 'ViewSettings', 'El
             });
             return delay.promise;
         },
+        findShortById: function(id) {
+            var delay = $q.defer();
+            $http.post('api/tables/findShortById', id).then(function(response) {
+                delay.resolve(angular.fromJson(response.data));
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        },
          publish: function(table) {
                 var delay = $q.defer();
                 table.accountId = userInfoService.getAccountID();

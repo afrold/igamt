@@ -64,5 +64,6 @@ public interface TableOperations {
       String bindingIdentifier);
 
 
+  public Table findShortById(String id);
 
 }

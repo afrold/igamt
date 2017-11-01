@@ -239,6 +239,12 @@ public class TableServiceImpl implements TableService {
     return tableRepository.findShortByScope(scope);
   }
 
+  @Override
+  public Table findShortById(String id) {
+    // TODO Auto-generated method stub
+    return tableRepository.findShortById(id);
+  }
+
   /*
    * (non-Javadoc)
    * 

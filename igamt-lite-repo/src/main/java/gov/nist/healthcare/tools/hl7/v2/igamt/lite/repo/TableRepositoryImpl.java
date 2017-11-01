@@ -258,6 +258,16 @@ public class TableRepositoryImpl implements TableOperations {
     return tables;
   }
 
+  @Override
+  public Table findShortById(String id) {
+
+    Criteria where = Criteria.where("id").is(id);
+    Query qry = Query.query(where);
+    qry.fields().exclude("codes");
+    Table table = mongo.findOne(qry, Table.class);
+    return table;
+  }
+
   /*
    * (non-Javadoc)
    * 

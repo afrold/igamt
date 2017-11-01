@@ -144,10 +144,16 @@ public class TableController extends CommonController {
     return tableService.findAllByIds(tableIds);
   }
 
+  @RequestMapping(value = "/findShortById", method = RequestMethod.POST)
+  public Table findShortById(@RequestBody String id) {
+    return tableService.findShortById(id);
+  }
+
   @RequestMapping(value = "/findShortAllByIds", method = RequestMethod.POST)
   public List<Table> findShortAllByIds(@RequestBody Set<String> tableIds) {
     return tableService.findShortAllByIds(tableIds);
   }
+
 
   @RequestMapping(value = "/findShortByScope", method = RequestMethod.POST)
   public List<Table> findShortByScope(@RequestBody String scope) {

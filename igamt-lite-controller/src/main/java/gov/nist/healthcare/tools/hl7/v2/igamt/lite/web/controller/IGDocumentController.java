@@ -2043,30 +2043,33 @@ public class IGDocumentController extends CommonController {
 
   @RequestMapping(value = "/{libId}/addPhinvads", method = RequestMethod.POST,
       produces = "application/json")
-  public Set<Table> addPhinvads(@PathVariable("libId") String libId, @RequestBody List<Table> from)
-      throws CloneNotSupportedException {
+  public Set<Table> addPhinvads(@PathVariable("libId") String libId,
+      @RequestBody PhinvadsAddingWrapper wrapper) throws CloneNotSupportedException {
 
     TableLibrary tableLibrary = tableLibraryService.findById(libId);
-
     Set<Table> ret = new HashSet<>();
 
 
-    for (Table t : from) {
+    for (Table t : wrapper.tables) {
       if (t.getScope().equals(SCOPE.PHINVADS)) {
         Table temp = tableService.findById(t.getId());
         tableLibrary.addTable(temp);
         ret.add(temp);
       } else {
-        Table temp = tableService.findById(t.getCreatedFrom());
-        if (temp != null) {
-          t.setCodes(temp.getCodes());
-          tableLibrary.addTable(t);
-
-
-          tableService.save(t);
-          ret.add(t);
+        if (wrapper.getCodesPresence().get(t.getId())) {
+          Table temp = tableService.findById(t.getCreatedFrom());
+          if (temp != null) {
+            t.setCodes(temp.getCodes());
+          }
         }
+        tableLibrary.addTable(t);
+        ret.add(t);
 
+
+        tableService.save(t);
+      }
+      for (String s : wrapper.codesPresence.keySet()) {
+        tableLibrary.getCodePresence().put(s, wrapper.codesPresence.get(s));
       }
       tableLibraryService.save(tableLibrary);
 

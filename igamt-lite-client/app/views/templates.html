@@ -488,8 +488,10 @@
                                 <tr class="tbl-header">
                                     <th flex="30" st-sort="bindingIdentifier">Binding Identifier</th>
                                     <th flex="30" st-sort="name">Name</th>
-                                    <th flex="30" st-sort="numberOfCodes">#codes</th>
-                                    <th flex="10"></th>
+                                    <th flex="20" st-sort="numberOfCodes">#codes</th>
+                                    <th flex="10"> As Is</th>
+                                    <th flex="10">As a Flavor</th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -500,17 +502,21 @@
                                     <td flex="30">
                                         {{table.name}}
                                     </td>
-                                    <td flex="30">
+                                    <td flex="20">
                                         {{table.numberOfCodes}}
                                     </td>
                                     <td flex="10" style="text-align:center">
-                                        <a class="pointer" ng-hide="isAlreadyIn(table) || isAlreadySelected(table)" ng-click="addTable(table)"><i class="fa fa-plus fa-fw"></i></a>
+                                        <a class="pointer" ng-hide="isAlreadyIn(table) || isAlreadySelected(table)" ng-click="AsIs(table)"><i class="fa fa-plus fa-fw"></i></a>
                                         <span ng-show="isAlreadyIn(table)">Added</span>
                                         <span ng-show="isAlreadySelected(table)">Selected</span>
                                     </td>
+
+                                    <td flex="10" style="text-align:center">
+                                        <a class="pointer" ng-click="AsFlavor(table)"><i class="fa fa-plus fa-fw"></i></a>
+                                    </td>
                                 </tr>
                                 </tbody>
-                                <tr style="float:center !important;" ng-if="phinvadsTables.length > 10">
+                                <tr style="float:center!important;" ng-if="phinvadsTables.length > 10">
                                     <td colspan="6" class="text-center" style="float:center !important;">
                                         <div st-pagination="" st-items-by-page="10" st-displayed-pages="7" style="float:center !important;"></div>
                                     </td>
@@ -524,7 +530,7 @@
 
 
                         <div class="col-md-6" ng-if="searched">
-                            <table ng-show="selectedTables.length > 0" st-safe-src="selectedTables" st-table="selectedTablesTemp" class="table table-striped table-condensed table-bordered">
+                            <table ng-show="selectedTables.length > 0"  st-table="selectedTables" class="table table-striped table-condensed table-bordered">
                                 <thead>
                                 <tr>
                                     <th flex="30">
@@ -551,16 +557,18 @@
                                     <th flex="20" st-sort="name">Name</th>
                                     <th flex="10" st-sort="numberOfCodes">#Codes</th>
                                     <th flex="20">Type</th>
-                                    <th flex="10">Include Original</th>
-
-
+                                    <th flex="10">Include Codes</th>
                                     <th flex="10"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="table in selectedTablesTemp | filter:search3">
+                                <tr ng-repeat="table in selectedTables  | filter:search3 track by $index">
                                     <td flex="30">
-                                        {{table.bindingIdentifier}}
+                                        <span ng-if="table.scope!=='USER'">{{table.bindingIdentifier}}</span>
+                                        <md-input-container class="normal" ng-if="table.scope=='USER'">
+                                            <input ng-model="table.bindingIdentifier">
+                                        </md-input-container>
+
                                     </td>
                                     <td flex="30">
                                         {{table.name}}
@@ -569,15 +577,10 @@
                                         {{table.numberOfCodes}}
                                     </td>
                                     <td flex="20">
-                                        <md-input-container class="normal">
-                                            <md-select ng-model="table.sourceType" no-dirty-check ng-disabled="table.numberOfCodes>=500">
-                                                <md-option value="INTERNAL">Internally Managed</md-option>
-                                                <md-option value="EXTERNAL">Externally Managed</md-option>
-                                            </md-select>
-                                        </md-input-container>
+                                        {{table.sourceType}}
                                     </td>
                                     <td flex="10">
-                                        <md-checkbox ng-model="table.includeOriginal" ng-if="table.sourceType=='INTERNAL'"></md-checkbox>
+                                        <md-checkbox ng-model="codesPresence[table.id]" ng-disabled="table.numberOfCodes>500"></md-checkbox>
                                     </td>
                                     <td flex="10" style="text-align:center;cursor: pointer;"><a class="pointer" ng-click="deleteTable(table)">
                                         <i class="fa fa-times fa-fw"></i></a>

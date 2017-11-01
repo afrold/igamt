@@ -10,6 +10,7 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
   $scope.preloadedPhinvadsTables = [];
   $scope.phinvadsTables = [];
   $scope.selectedTables = [];
+  $scope.codesPresence={};
   $scope.searched = false;
   // $scope.tablestoAdd=tablestoAdd;
 
@@ -50,6 +51,49 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
     var index = $scope.selectedTables.indexOf(table);
     if (index > -1) $scope.selectedTables.splice(index, 1);
   };
+
+
+  $scope.AsFlavor=function (table) {
+
+      var newTable= angular.copy(table);
+      newTable.shareParticipantIds = [];
+      newTable.status="UNPUBLISHED";
+      newTable.scope="USER";
+
+      newTable.id = new ObjectId().toString();
+      newTable.createdFrom =table.id;
+      newTable.libIds = [];
+      newTable.referenceUrl= $rootScope.getPhinvadsURL(table);
+
+      newTable.libIds.push($rootScope.tableLibrary.id);
+
+      newTable.sourceType="INTERNAL";
+
+      if(newTable.numberOfCodes&&newTable.numberOfCodes>500){
+
+          $scope.codesPresence[newTable.id]=false;
+
+      }else{
+          $scope.codesPresence[newTable.id]=true;
+      }
+
+      $scope.selectedTables.push(newTable);
+
+  };
+
+  $scope.AsIs=function (table){
+      $scope.selectedTables.push(table);
+      if(table.numberOfCodes&&table.numberOfCodes>500){
+
+          $scope.codesPresence[table.id]=false;
+
+      }else{
+          $scope.codesPresence[table.id]=true;
+      }
+  };
+
+
+
 
 
   // $scope.save = function () {
@@ -104,52 +148,16 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
 
 
 
+
+
     $scope.save=function () {
-        var tablesToInclude=[];
-        angular.forEach($scope.selectedTables,function (table) {
+        var wrapper={tables:$scope.selectedTables,codesPresence:$scope.codesPresence};
 
-           if(table.sourceType=='INTERNAL'&& table.includeOriginal){
-               var newTable= angular.copy(table);
-               newTable.shareParticipantIds = [];
-               newTable.status="UNPUBLISHED";
-               newTable.scope="USER";
-               newTable.id = new ObjectId().toString();
-               newTable.createdFrom =table.id;
-               newTable.libIds = [];
-               newTable.referenceUrl=table.referenceUrl;
-               newTable.referenceUrl= $rootScope.getPhinvadsURL(table);
-
-               newTable.libIds.push($rootScope.tableLibrary.id);
-
-               tablesToInclude.push(newTable);
-               table.sourceType="EXTERNAL";
-               tablesToInclude.push(table);
-
-           }else if(table.sourceType=='EXTERNAL'){
-               tablesToInclude.push(table);
-           }else if(table.sourceType=='INTERNAL'&& !table.includeOriginal){
-               var newTable= angular.copy(table);
-               newTable.shareParticipantIds = [];
-               newTable.status="UNPUBLISHED";
-               newTable.scope="USER";
-               newTable.id = new ObjectId().toString();
-               newTable.createdFrom =table.id;
-               newTable.libIds = [];
-               newTable.referenceUrl=table.referenceUrl;
-               newTable.referenceUrl= $rootScope.getPhinvadsURL(table);
-               newTable.libIds.push($rootScope.tableLibrary.id);
-               tablesToInclude.push(newTable);
-           }
-
-        });
-
-
-
-      TableService.savePhinvads($scope.selectedTableLibary.id,  tablesToInclude).then(function(tables){
+        TableService.savePhinvads($scope.selectedTableLibary.id, wrapper).then(function(tables){
           angular.forEach(tables, function(t){
 
             $rootScope.tables.push(t);
-            $rootScope.tablesMap[t.id]=t;
+            $scope.selectedTableLibary.codePresence[t.id]= $scope.codesPresence[t.id];
             var newLink = angular.fromJson({
                 id:t.id,
                 bindingIdentifier: t.bindingIdentifier

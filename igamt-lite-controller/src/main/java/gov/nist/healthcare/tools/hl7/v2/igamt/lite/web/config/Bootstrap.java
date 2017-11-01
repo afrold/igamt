@@ -318,6 +318,7 @@ public class Bootstrap implements InitializingBean {
     // updateTableForNumOfCodesANDSourceType();
     // updateTableForNumOfCodesANDSourceType();
 
+    // setCodePresence();
 
   }
 
@@ -382,7 +383,23 @@ public class Bootstrap implements InitializingBean {
       tableService.updateAttributes(t.getId(), "sourceType", SourceType.INTERNAL);
 
     }
-  }
+  };
+
+  private void setCodePresence() {
+    List<TableLibrary> tbls = tableLibraryService.findAll();
+    for (TableLibrary tbl : tbls) {
+      tbl.setCodePresence(new HashMap<String, Boolean>());
+      for (TableLink link : tbl.getChildren()) {
+        if (link.getId() != null) {
+          System.out.println(link);
+          tbl.getCodePresence().put(link.getId(), true);
+
+        }
+
+      }
+      tableLibraryService.save(tbl);
+    }
+  };
 
 
   private void clearUserExportConfigurations() {
