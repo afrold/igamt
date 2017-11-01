@@ -1937,7 +1937,7 @@ public class IGDocumentController extends CommonController {
         + " wants to share the following Implementation Guide with you: \n" + "\n Title: "
         + doc.getMetaData().getTitle() + "\n Sub Title: " + doc.getMetaData().getSubTitle()
         + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:"
-        + doc.getMetaData().getHl7Version()
+        + doc.getProfile().getMetaData().getHl7Version()
         + "\n If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Implementation Guides' tab"
         + "\n\n" + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
 
@@ -1953,7 +1953,7 @@ public class IGDocumentController extends CommonController {
         + source.getUsername() + ") has stopped sharing the following Implementation Guide \n"
         + "\n Title: " + doc.getMetaData().getTitle() + "\n Sub Title: "
         + doc.getMetaData().getSubTitle() + "\n Description:" + doc.getMetaData().getDescription()
-        + "\n HL7 Version:" + doc.getMetaData().getHl7Version() + "\n\n"
+        + "\n HL7 Version:" + doc.getProfile().getMetaData().getHl7Version() + "\n\n"
         + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
     this.mailSender.send(msg);
   }
