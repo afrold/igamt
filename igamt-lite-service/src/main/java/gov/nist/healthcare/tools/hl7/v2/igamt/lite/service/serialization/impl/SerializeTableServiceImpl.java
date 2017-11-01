@@ -1,5 +1,12 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.AppInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
@@ -13,11 +20,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeTableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -45,10 +47,10 @@ public class SerializeTableServiceImpl implements SerializeTableService {
     private AppInfo appInfo;
 
     @Override public SerializableTable serializeTable(TableLink tableLink, String prefix,
-        Integer position, CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber) {
+        Integer position, CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber, HashMap<String, Boolean> codePresence) {
         if(tableLink!=null && tableLink.getId()!=null) {
           Table table = tableService.findById(tableLink.getId());
-          return this.serializeTable(tableLink, table, prefix, position, valueSetCodesUsageConfig, valueSetMetadataConfig,maxCodeNumber);
+          return this.serializeTable(tableLink, table, prefix, position, valueSetCodesUsageConfig, valueSetMetadataConfig,maxCodeNumber, codePresence);
         }
         return null;
     }
@@ -56,19 +58,19 @@ public class SerializeTableServiceImpl implements SerializeTableService {
     @Override
     public SerializableTable serializeTable(TableLink tableLink, Table table, String prefix,
         Integer position, CodeUsageConfig valueSetCodesUsageConfig,
-        ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber) {
-      return serializeTable(table, String.valueOf(3),prefix, position, valueSetCodesUsageConfig, valueSetMetadataConfig,maxCodeNumber);
+        ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber, HashMap<String, Boolean> codePresence) {
+      return serializeTable(table, String.valueOf(3),prefix, position, valueSetCodesUsageConfig, valueSetMetadataConfig,maxCodeNumber, codePresence);
     }
 
 	@Override
 	public SerializableTable serializeTable(Table table) {
 		ExportConfig defaultConfig = ExportConfig.getBasicExportConfig(true);
-		return serializeTable(table,String.valueOf(0),String.valueOf(1),1,defaultConfig.getCodesExport(),defaultConfig.getValueSetsMetadata(),defaultConfig.getMaxCodeNumber());
+		return serializeTable(table,String.valueOf(0),String.valueOf(1),1,defaultConfig.getCodesExport(),defaultConfig.getValueSetsMetadata(),defaultConfig.getMaxCodeNumber(), new HashMap<String, Boolean>());
 	}
 	
 	private SerializableTable serializeTable(Table table, String headerLevel, String prefix,
 	        Integer position, CodeUsageConfig valueSetCodesUsageConfig,
-	        ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber){
+	        ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber, HashMap<String, Boolean> codePresence){
 		if (table != null) {
 			String id = table.getId();
 			String title = "ID not found: " + table.getId();
@@ -105,8 +107,15 @@ public class SerializeTableServiceImpl implements SerializeTableService {
 						referenceUrl = table.getReferenceUrl();
 					}
 				}
+				boolean exportCodes = true;
+				if(codePresence!=null && codePresence.containsKey(table.getId())){
+					Boolean tableCodePresence = codePresence.get(table.getId());
+					if(tableCodePresence != null && !tableCodePresence.booleanValue()){
+						exportCodes = false;
+					}
+				}
 				serializedTable = new SerializableTable(id, prefix, String.valueOf(position), headerLevel, title, table,
-						table.getBindingIdentifier(), defPreText, defPostText, valueSetMetadataConfig,maxCodeNumber,referenceUrl);
+						table.getBindingIdentifier(), defPreText, defPostText, valueSetMetadataConfig,maxCodeNumber,exportCodes,referenceUrl);
 			}
 			return serializedTable;
 		}
