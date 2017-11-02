@@ -195,7 +195,7 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
       table.setCodes(new ArrayList<Code>());
 
       if (valueSetConcepts.size() > 500) {
-        table.setNumberOfCodes(0);
+        table.setNumberOfCodes(valueSetConcepts.size());
         table.setManagedBy(Constant.External);
         table.setSourceType(SourceType.EXTERNAL);
       } else {

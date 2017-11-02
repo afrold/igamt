@@ -373,7 +373,7 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
             $rootScope.segment = angular.copy($rootScope.segmentsMap[$rootScope.segment.id]);
             $rootScope.segment.fields = $filter('orderBy')($rootScope.segment.fields, 'position');
 
-            $rootScope.initCoConstraintsTable();
+            SegmentService.initCoConstraintsTable();
         },
 
         updateTableBinding: function(segmentUpdateParameterList) {
