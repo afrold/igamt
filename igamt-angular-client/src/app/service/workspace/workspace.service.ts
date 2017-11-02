@@ -11,7 +11,7 @@ export enum Entity {
 }
 
 @Injectable()
-export class Workspace {
+export class WorkspaceService {
 
   private map : { [index : number] : any };
 

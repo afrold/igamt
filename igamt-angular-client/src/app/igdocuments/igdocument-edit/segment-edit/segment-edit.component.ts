@@ -3,7 +3,7 @@
  */
 import {Component, Input} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
-import {Workspace, Entity} from "../../../service/workspace/workspace.service";
+import {WorkspaceService, Entity} from "../../../service/workspace/workspace.service";
 
 
 @Component({
@@ -20,7 +20,7 @@ export class SegmentEditComponent {
     this._segment = segment;
   }
 
-  constructor(private _ws : Workspace){
+  constructor(private _ws : WorkspaceService){
     this.segment = _ws.getCurrent(Entity.SEGMENT);
   };
 

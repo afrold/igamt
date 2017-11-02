@@ -9,7 +9,7 @@ import {CoConstraintTableService} from "./coconstraint-table.service";
 import {CCHeaderDialogUser} from "./header-dialog/header-dialog-user.component";
 import {ValueSetBindingPickerComponent} from "../../../../../common/valueset-binding-picker/valueset-binding-picker.component";
 import {Http} from "@angular/http";
-import {Workspace, Entity} from "../../../../../service/workspace/workspace.service";
+import {WorkspaceService, Entity} from "../../../../../service/workspace/workspace.service";
 @Component({
   selector: 'coconstraint-table',
   templateUrl: 'coconstraint-table.template.html',
@@ -45,7 +45,7 @@ export class CoConstraintTableComponent {
 
   constructor(private ccTableService: CoConstraintTableService,
               private http : Http,
-              private _ws : Workspace) {
+              private _ws : WorkspaceService) {
   }
 
   @Input() set segment(value: any) {

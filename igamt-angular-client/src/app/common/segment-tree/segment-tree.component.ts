@@ -33,13 +33,13 @@ export class SegmentTreeComponent {
 
     loadNode(event){
         if(event.node){
-            return this.nodeService.getDT(event.node).then(nodes => event.node.children = nodes);
+            return this.nodeService.getComponentsAsTreeNodes(event.node).then(nodes => event.node.children = nodes);
         }
     }
 
     initTree(){
         if(this._segment){
-            this.tree = this.nodeService.getFD(this._segment);
+            this.tree = this.nodeService.getFieldsAsTreeNodes(this._segment);
         }
     }
 

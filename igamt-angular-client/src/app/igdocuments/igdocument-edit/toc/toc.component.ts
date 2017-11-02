@@ -1,5 +1,5 @@
 import {Component, Input} from "@angular/core";
-import {Workspace, Entity} from "../../../service/workspace/workspace.service";
+import {WorkspaceService, Entity} from "../../../service/workspace/workspace.service";
 
 @Component({
   selector : 'igamt-toc',
@@ -10,7 +10,7 @@ export class TocComponent {
 
   _ig : any;
 
-  constructor(private _ws : Workspace){
+  constructor(private _ws : WorkspaceService){
 
   }
 

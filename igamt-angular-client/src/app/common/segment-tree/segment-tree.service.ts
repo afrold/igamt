@@ -9,56 +9,57 @@ import {TreeNode} from "primeng/components/common/treenode";
 @Injectable()
 export class SegmentTreeNodeService {
 
-    constructor(private http: Http) {}
+  constructor(private http: Http) {
+  }
 
-    getFD(segment){
-        let nodes : TreeNode[] = [];
-        let i = 1;
-        let list = segment.fields.sort((x,y) => x.position - y.position);
-        for (let field of list){
-            nodes.push(this.lazyNode(field,i++,null));
+  getFieldsAsTreeNodes(segment) {
+    let nodes: TreeNode[] = [];
+    let list = segment.fields.sort((x, y) => x.position - y.position);
+    for (let field of list) {
+      nodes.push(this.lazyNode(field, null));
+    }
+    return nodes;
+  }
+
+  lazyNode(element, parent) {
+    let node: TreeNode = {};
+
+    node.label = element.name;
+    node.data = {
+      index: element.position,
+      obj: element,
+      path: (parent && parent.data && parent.data.path) ? parent.data.path + '.' + element.position : element.position + ''
+    };
+
+    //TODO ADD METADATA TO CHECK IF LEAF
+    node.leaf = !(element.datatype && element.datatype.name != 'ST');
+    node.selectable = true;
+    return node;
+  }
+
+  async getComponentsAsTreeNodes(node) {
+    let nodes: TreeNode[] = [];
+
+    //TODO GET FROM API
+    let dummyDT = {
+      components: [
+        {
+          name: 'Component X',
+          type: 'component',
+          position : 1,
+          confLength: 'NA',
+          datatype: {
+            name: 'ST'
+          }
         }
-        return nodes ;
+      ]
+    };
+
+    for (let d of dummyDT.components) {
+      nodes.push(this.lazyNode(d, node));
     }
 
-    lazyNode(element,i:number,parent){
-        let node : TreeNode = {};
-        node.label = element.name;
-        node.data = {
-            index : i,
-            obj : element,
-            path : (parent && parent.data && parent.data.path) ? parent.data.path+'.'+i : i+''
-        };
-        // node.parent = parent;
-        node.leaf = !(element.datatype && element.datatype.name != 'ST');
-        node.selectable = true;
-        return node;
-    }
+    return nodes;
 
-    async getDT(node) {
-        let nodes : TreeNode[] = [];
-        let dummyDT = {
-            components : [
-                {
-                    name : 'Component X',
-                    type : 'component',
-                    datatype : {
-                        name : 'ST'
-                    }
-                }
-            ]
-        };
-
-        let i = 1;
-        for(let d of dummyDT.components){
-            nodes.push(this.lazyNode(d,i++,node));
-        }
-
-        // await this.http.get('api/datatype/12345').map(data => data.json()).subscribe( data => {
-        //
-        // });
-
-        return nodes;
-
-    }
+  }
 }

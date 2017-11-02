@@ -26,6 +26,19 @@
     /*height: 100%;*/
 /*}*/
 
+.tt-table td {
+  height: 10px;
+  padding-top : 0 !important;
+  padding-bottom : 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  border-left: 1px solid #dddddd !important;
+}
+
+.tt-cell {
+  padding: 10px;
+}
+
 /*body {*/
     /*margin: 0px;*/
     /*min-height: 100%;*/
