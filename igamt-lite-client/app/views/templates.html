@@ -482,8 +482,10 @@
                                             <input ng-model="search2.name">
                                         </md-input-container>
                                     </th>
-                                    <th flex="30"></th>
+                                    <th flex="20"></th>
                                     <th flex="10"></th>
+                                    <th flex="10"></th>
+
                                 </tr>
                                 <tr class="tbl-header">
                                     <th flex="30" st-sort="bindingIdentifier">Binding Identifier</th>
@@ -565,9 +567,12 @@
                                 <tr ng-repeat="table in selectedTables  | filter:search3 track by $index">
                                     <td flex="30">
                                         <span ng-if="table.scope!=='USER'">{{table.bindingIdentifier}}</span>
-                                        <md-input-container class="normal" ng-if="table.scope=='USER'">
-                                            <input ng-model="table.bindingIdentifier">
+                                        <md-input-container class="normal" ng-if="table.scope=='USER'" style="width: 100%">
+                                            <input ng-model="table.bindingIdentifier" no-dirty-check>
                                         </md-input-container>
+                                        <div role="alert" style="color:red" ng-show="duplicated(table)" >
+                                            <div class="my-message">Binding Identifier already used</div>
+                                        </div>
 
                                     </td>
                                     <td flex="30">
@@ -602,7 +607,7 @@
             </md-dialog-content>
             <md-dialog-actions layout="row">
 
-                <md-button class="btn btn-raised btn-primary btn-sm" ng-if="selectedTables.length" ng-click="save()"> Add </md-button>
+                <md-button class="btn btn-raised btn-primary btn-sm" ng-disabled="saveDisabled()" ng-if="selectedTables.length" ng-click="save()"> Add </md-button>
             </md-dialog-actions>
         </form>
     </md-dialog>

@@ -255,6 +255,7 @@ public class TableLibrary extends Library implements java.io.Serializable, Clone
     clone.setSectionTitle(this.getSectionTitle());
     clone.setType(this.getType());
     clone.setExportConfig(this.exportConfig);
+    clone.setCodePresence(codePresence);
     return clone;
   }
 

@@ -137,6 +137,7 @@ angular.module('igl').factory('TableLibrarySvc', function($http, $httpBackend, $
         var delay = $q.defer();
         $http.post('api/table-library/'+ libId+ '/addChildren', tableLinks).then(function (response) {
             var res = angular.fromJson(response.data);
+
             delay.resolve(res);
         }, function (error) {
             delay.reject(error);
@@ -156,6 +157,7 @@ angular.module('igl').factory('TableLibrarySvc', function($http, $httpBackend, $
     };
 
   svc.saveSection = function(id, tableLibrary) {
+
     var delay = $q.defer();
     $http.post(
       'api/table-library/'+ id + '/section', tableLibrary).then(function (response) {
@@ -166,6 +168,18 @@ angular.module('igl').factory('TableLibrarySvc', function($http, $httpBackend, $
     });
     return delay.promise;
   };
+    svc.updatePresence=function (libId, tableId,newValue) {
+        var delay = $q.defer();
+        $http.post(
+            'api/table-library/'+ libId + '/updatePresence/'+tableId+'/'+newValue).then(function (response) {
+            var res = angular.fromJson(response.data);
+            delay.resolve(res);
+        }, function (error) {
+            delay.reject(error);
+        });
+        return delay.promise;
+    };
+
 
 
     return svc;

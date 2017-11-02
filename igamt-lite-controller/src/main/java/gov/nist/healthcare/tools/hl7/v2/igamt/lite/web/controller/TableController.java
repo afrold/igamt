@@ -35,8 +35,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.VersionAndUse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.VersionAndUseService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
@@ -53,6 +55,8 @@ public class TableController extends CommonController {
 
   @Autowired
   private TableService tableService;
+  @Autowired
+  private TableLibraryService tableLibraryService;
 
   @Autowired
   UserService userService;
@@ -92,6 +96,24 @@ public class TableController extends CommonController {
     // codes.add(c);
     // table.setCodes(codes);
     // }
+    return table;
+  }
+
+  @RequestMapping(value = "/{libId}/{id}", method = RequestMethod.GET,
+      produces = "application/json")
+  public Table getInLibary(@PathVariable("libId") String libId, @PathVariable("id") String id)
+      throws DataNotFoundException {
+    TableLibrary lib = tableLibraryService.findById(libId);
+    Table table = null;
+    if (lib.getCodePresence().containsKey(id)) {
+      if (!lib.getCodePresence().get(id).equals(false)) {
+        table = tableService.findById(id);
+      } else {
+        table = tableService.findShortById(id);
+      }
+    } else {
+      table = tableService.findById(id);
+    }
     return table;
   }
 

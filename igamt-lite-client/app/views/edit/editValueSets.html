@@ -274,7 +274,7 @@
                                                             </div>
                                                             <br/>
                                                             <md-toolbar class="value-set-toolBar">Content</md-toolbar>
-                                                            <div class="codes-container md-panelContent" ng-if="table.scope!=='PHINVADS'">
+                                                            <div class="codes-container md-panelContent" ng-if="table.scope!=='PHINVADS'&&table.scope!=='HL7STANDARD'">
                                                                 <label class="input-left igamt-label">Reference URL</label>
 
                                                                 <md-input-container class="md-block igamt-input-block"
@@ -306,8 +306,7 @@
                                                             </div>
                                                             <div class="codes-container md-panelContent">
                                                                 <div ng-if="table.scope=='PHINVADS'">
-                                                                    <label class="input-left igamt-label"> Reference
-                                                                        URL </label>
+                                                                    <label class="input-left igamt-label"> Reference URL </label>
 
                                                                     <a href="{{getPhinvadsURL(table)}}" target="_blank">{{getPhinvadsURL(table)}}</a>
                                                                 </div>

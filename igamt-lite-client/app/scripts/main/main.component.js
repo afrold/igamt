@@ -3861,12 +3861,12 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     });
   };
 
-  $rootScope.isDuplicated = function(obj, context, list) {
-    if (obj == null || obj == undefined || obj[context] == null) return false;
-    return _.find(_.without(list, obj), function(item) {
-      return item[context] == obj[context] && item.id != obj.id;
-    });
-  };
+  // $rootScope.isDuplicated = function(obj, context, list) {
+  //   if (obj == null || obj == undefined || obj[context] == null) return false;
+  //   return _.find(_.without(list, obj), function(item) {
+  //     return item[context] == obj[context] && item.id != obj.id;
+  //   });
+  // };
 
   // $rootScope.validateExtension = function (obj, context, list) {
   // //if (obj == null || obj == undefined) return false;

@@ -2132,22 +2132,19 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
     $scope.loadingSelection = true;
     blockUI.start();
     try {
-
-      if($rootScope.igdocument.profile.tableLibrary.codePresence&&$rootScope.igdocument.profile.tableLibrary.codePresence[t.id]!==false){
-          TableService.getOne(table.id).then(function (tbl) {
-              $rootScope.searchObject={
-              };
+          TableService.getOneInLibrary(table.id,$rootScope.tableLibrary.id).then(function (tbl) {
+              $rootScope.searchObject = {};
 
               $rootScope.table = tbl;
               $rootScope.$emit("event:initTable");
               $rootScope.currentData = $rootScope.table;
               $rootScope.codeSystems = [];
               console.log($rootScope.table);
-              $rootScope.codeSystems=$rootScope.table.codeSystems;
-              $rootScope.entireTable=angular.copy($rootScope.table);
+              $rootScope.codeSystems = $rootScope.table.codeSystems;
+              $rootScope.entireTable = angular.copy($rootScope.table);
               $scope.loadingSelection = false;
               $scope.clearTableScope();
-              TableService.crossRef($rootScope.table,$rootScope.igdocument.id).then(function (result) {
+              TableService.crossRef($rootScope.table, $rootScope.igdocument.id).then(function (result) {
                   $rootScope.crossRef = result;
               }, function (error) {
                   $scope.loadingSelection = false;
@@ -2164,38 +2161,6 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
               $rootScope.msg().show = true;
               blockUI.stop();
           });
-      }else{
-          TableService.findShortById(table.id).then(function (tbl) {
-              $rootScope.searchObject={
-              };
-
-              $rootScope.table = tbl;
-              $rootScope.$emit("event:initTable");
-              $rootScope.currentData = $rootScope.table;
-              $rootScope.codeSystems = [];
-              console.log($rootScope.table);
-              $rootScope.codeSystems=$rootScope.table.codeSystems;
-              $rootScope.entireTable=angular.copy($rootScope.table);
-              $scope.loadingSelection = false;
-              $scope.clearTableScope();
-              TableService.crossRef($rootScope.table,$rootScope.igdocument.id).then(function (result) {
-                  $rootScope.crossRef = result;
-              }, function (error) {
-                  $scope.loadingSelection = false;
-                  $rootScope.msg().text = error.data.text;
-                  $rootScope.msg().type = error.data.type;
-                  $rootScope.msg().show = true;
-              });
-              $rootScope.$emit("event:initEditArea");
-              blockUI.stop();
-          }, function (errr) {
-              $scope.loadingSelection = false;
-              $rootScope.msg().text = errr.data.text;
-              $rootScope.msg().type = errr.data.type;
-              $rootScope.msg().show = true;
-              blockUI.stop();
-          });
-      }
 
     } catch (e) {
       $scope.loadingSelection = false;
