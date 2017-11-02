@@ -51,6 +51,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfiles;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SourceType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -240,13 +241,13 @@ public class IGDocumentController extends CommonController {
       throws UserAccountNotFoundException, IGDocumentListException {
     try {
       if ("PRELOADED".equalsIgnoreCase(type)) {
-        return GetorderByposition(preloaded());
+        return getOrderByposition(preloaded());
       } else if ("USER".equalsIgnoreCase(type)) {
-        return GetorderByposition(userIGDocuments());
+        return getOrderByposition(userIGDocuments());
       } else if ("SHARED".equalsIgnoreCase(type)) {
-        return GetorderByposition(sharedIGDocument());
+        return getOrderByposition(sharedIGDocument());
       } else if ("all".equalsIgnoreCase(type)) {
-        return GetorderByposition(allIGDocument());
+        return getOrderByposition(allIGDocument());
       }
       throw new IGDocumentListException("Unknown IG document type");
     } catch (RuntimeException e) {
@@ -327,9 +328,9 @@ public class IGDocumentController extends CommonController {
 
     List<IGDocument> d =
         igDocumentService.findByAccountIdAndScope(account.getId(), IGDocumentScope.USER);
-    if (!d.isEmpty()) {
+    if (d != null && !d.isEmpty()) {
       for (IGDocument ig : d) {
-        SetUserInfos(ig);
+        setUserInfos(ig);
       }
     }
     return d;
@@ -517,7 +518,6 @@ public class IGDocumentController extends CommonController {
 
           // Deleted LibId
 
-
           tl.setId(t.getId());
           clonedTableLibrary.addTable(tl);
           if (oldTableId != null) {
@@ -559,7 +559,6 @@ public class IGDocumentController extends CommonController {
   private void updateModifiedIdForPC(List<ProfileComponent> profilecomponents,
       HashMap<String, String> tableIdChangeMap, HashMap<String, String> datatypeIdChangeMap,
       HashMap<String, String> segmentIdChangeMap, HashMap<String, String> messageIdChangeMap) {
-
 
     for (ProfileComponent pc : profilecomponents) {
 
@@ -615,7 +614,6 @@ public class IGDocumentController extends CommonController {
         if (att.getOldRef() != null && att.getOldRef().getId() != null
             && segmentIdChangeMap.containsKey(att.getOldRef().getId()))
           att.getOldRef().setId(segmentIdChangeMap.get(att.getOldRef().getId()));
-
 
         if (att.getDynamicMappingDefinition() != null) {
           for (DynamicMappingItem dmi : att.getDynamicMappingDefinition()
@@ -1304,7 +1302,6 @@ public class IGDocumentController extends CommonController {
       }
     }
 
-
     return toReturn;
   }
 
@@ -1350,7 +1347,7 @@ public class IGDocumentController extends CommonController {
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
     IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(idrw.getMsgEvts(),
         idrw.getMetaData(), idrw.getHl7Version(), account.getId());
-    SetUserInfos(igDocument);
+    setUserInfos(igDocument);
     return igDocument;
   }
 
@@ -1787,13 +1784,19 @@ public class IGDocumentController extends CommonController {
       }
       for (Long accountId : participants) {
         d.getShareParticipantIds().add(new ShareParticipantPermission(accountId));
-        // Find the user
-        Account acc = accountRepository.findOne(accountId);
-        // Send confirmation email
-        sendShareConfirmation(d, acc, account);
       }
       igDocumentService.save(d);
+
+      for (Long accountId : participants) {
+        Account acc = accountRepository.findOne(accountId);
+        // Send confirmation email
+        if (acc != null)
+          sendShareConfirmation(d, acc, account);
+      }
       return true;
+    } catch (RuntimeException e) {
+      log.error("", e);
+      throw new IGDocumentException("Failed to share IG Document \n" + e.getMessage());
     } catch (Exception e) {
       log.error("", e);
       throw new IGDocumentException("Failed to share IG Document \n" + e.getMessage());
@@ -1851,9 +1854,9 @@ public class IGDocumentController extends CommonController {
       if (account == null)
         throw new UserAccountNotFoundException();
       List<IGDocument> d = igDocumentService.findSharedIgDocuments(account.getId());
-      if (!d.isEmpty()) {
+      if (d != null && !d.isEmpty()) {
         for (IGDocument ig : d) {
-          SetUserInfos(ig);
+          setUserInfos(ig);
         }
       }
       return d;
@@ -1863,7 +1866,7 @@ public class IGDocumentController extends CommonController {
     }
   }
 
-  public void SetUserInfos(IGDocument ig) {
+  public void setUserInfos(IGDocument ig) {
     Set<Long> participants = new HashSet<Long>();
     if (ig.getShareParticipantIds() != null && !ig.getShareParticipantIds().isEmpty())
       for (ShareParticipantPermission participant : ig.getShareParticipantIds()) {
@@ -1872,7 +1875,7 @@ public class IGDocumentController extends CommonController {
     participants.add(ig.getAccountId());
 
     List<Account> accounts = accountRepository.findAllInIds(participants);
-    if (!accounts.isEmpty()) {
+    if (accounts != null && !accounts.isEmpty()) {
       for (Account acc : accounts) {
         ShareParticipant participant = new ShareParticipant(acc.getId());
         participant.setUsername(acc.getUsername());
@@ -1887,7 +1890,6 @@ public class IGDocumentController extends CommonController {
     }
   }
 
-
   private List<IGDocument> allIGDocument() throws IGDocumentException {
     try {
       User u = userService.getCurrentUser();
@@ -1896,16 +1898,15 @@ public class IGDocumentController extends CommonController {
         throw new UserAccountNotFoundException();
       if (hasRole("admin")) {
         List<IGDocument> d = igDocumentService.findAllByScope(IGDocumentScope.USER);
-        if (!d.isEmpty()) {
+        if (d != null && !d.isEmpty()) {
           for (IGDocument ig : d) {
-            SetUserInfos(ig);
+            setUserInfos(ig);
           }
         }
         return d;
       } else {
         throw new IGDocumentException("you don't have the rights to access these resources");
       }
-
     } catch (Exception e) {
       log.error("", e);
       throw new IGDocumentException("Failed to share IG Document \n" + e.getMessage());
@@ -1928,43 +1929,33 @@ public class IGDocumentController extends CommonController {
   }
 
   private void sendShareConfirmation(IGDocument doc, Account target, Account source) {
-    try {
-      SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
-      msg.setSubject("NIST IGAMT IG Document Shared with you.");
-      msg.setTo(target.getEmail());
-      msg.setText("Dear " + target.getUsername() + ", \n\n" + source.getFullName() + "("
-          + source.getUsername() + ")"
-          + " wants to share the following Implementation Guide with you: \n" + "\n Title: "
-          + doc.getMetaData().getTitle() + "\n Sub Title: " + doc.getMetaData().getSubTitle()
-          + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:"
-          + doc.getMetaData().getHl7Version()
-          + "\n If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Implementation Guides' tab"
-          + "\n\n" + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
+    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+    msg.setSubject("NIST IGAMT IG Document Sharing Notification");
+    msg.setTo(target.getEmail());
+    msg.setText("Dear " + target.getUsername() + ", \n\n" + source.getFullName() + "("
+        + source.getUsername() + ")"
+        + " wants to share the following Implementation Guide with you: \n" + "\n Title: "
+        + doc.getMetaData().getTitle() + "\n Sub Title: " + doc.getMetaData().getSubTitle()
+        + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:"
+        + doc.getProfile().getMetaData().getHl7Version()
+        + "\n If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Implementation Guides' tab"
+        + "\n\n" + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
 
-      this.mailSender.send(msg);
-    } catch (MailException ex) {
-      log.error(ex.getMessage(), ex);
-    }
+    this.mailSender.send(msg);
+
   }
 
   private void sendUnshareEmail(IGDocument doc, Account target, Account source) {
-    try {
-      SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
-
-      msg.setSubject("NIST IGAMT IGDocument unshare");
-      msg.setTo(target.getEmail());
-      msg.setText("Dear " + target.getUsername() + " \n\n" + "This is to let you know that "
-          + source.getFullName() + "(" + source.getUsername()
-          + ") has stopped sharing the following Implementation Guide \n" + "\n Title: "
-          + doc.getMetaData().getTitle() + "\n Sub Title: " + doc.getMetaData().getSubTitle()
-          + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:"
-          + doc.getMetaData().getHl7Version() + "\n\n" + "P.S: If you need help, contact us at '"
-          + ADMIN_EMAIL + "'");
-
-      this.mailSender.send(msg);
-    } catch (MailException ex) {
-      log.error(ex.getMessage(), ex);
-    }
+    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+    msg.setSubject("NIST IGAMT IGDocument  Unsharing Notification");
+    msg.setTo(target.getEmail());
+    msg.setText("Dear " + target.getUsername() + " \n\n" + source.getFullName() + "("
+        + source.getUsername() + ") has stopped sharing the following Implementation Guide \n"
+        + "\n Title: " + doc.getMetaData().getTitle() + "\n Sub Title: "
+        + doc.getMetaData().getSubTitle() + "\n Description:" + doc.getMetaData().getDescription()
+        + "\n HL7 Version:" + doc.getProfile().getMetaData().getHl7Version() + "\n\n"
+        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
+    this.mailSender.send(msg);
   }
 
   /**
@@ -1991,7 +1982,7 @@ public class IGDocumentController extends CommonController {
     }
   }
 
-  public List<IGDocument> GetorderByposition(List<IGDocument> toOrder) {
+  public List<IGDocument> getOrderByposition(List<IGDocument> toOrder) {
     // List<IGDocument>
     List<IGDocument> sortedList = new ArrayList<IGDocument>();
     sortedList.addAll(toOrder);
@@ -2076,7 +2067,5 @@ public class IGDocumentController extends CommonController {
     }
     return ret;
   }
-
-
 
 }

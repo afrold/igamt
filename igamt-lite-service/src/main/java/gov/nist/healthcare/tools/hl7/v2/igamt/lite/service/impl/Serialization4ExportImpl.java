@@ -45,6 +45,7 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.mongodb.gridfs.GridFSDBFile;
@@ -79,7 +80,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 	private FileStorageService fileStorageService;
 
 	@Autowired
-	private SerializationService serializationService;
+	private ApplicationContext applicationContext;
 
 	public File serializeProfileToFile(Profile profile) throws UnsupportedEncodingException {
 		File out;
@@ -131,6 +132,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
 	@Override
 	public String serializeIGDocumentToXML(IGDocument igdoc) {
+		SerializationService serializationService = new SerializationServiceImpl(applicationContext);
 			String xml = serializationService.serializeIGDocument(igdoc, SerializationLayout.IGDOCUMENT, ExportConfig.getBasicExportConfig(false)).toXML();
 			return xml;
 	}
