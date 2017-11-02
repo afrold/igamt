@@ -10,7 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { DocumentationComponent } from './documentation/documentation.component'
 
-import {Workspace} from "./service/workspace/workspace.service";
+import {WorkspaceService} from "./service/workspace/workspace.service";
 import {AlertModule} from "ngx-bootstrap";
 import {NotFoundComponent} from "./common/404/404.component";
 
@@ -21,6 +21,7 @@ import {AppMenuComponent, AppSubMenuComponent} from './app.menu.component';
 import {AppTopBarComponent} from './app.topbar.component';
 import {AppFooterComponent} from './app.footer.component';
 import {InlineProfileComponent} from './app.profile.component';
+import {GeneralConfigurationService} from "./service/general-configuration/general-configuration.service";
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import {InlineProfileComponent} from './app.profile.component';
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
      AppInfoService,
-    Workspace
+    WorkspaceService,
+    GeneralConfigurationService
   ],
   bootstrap: [AppComponent]
 })

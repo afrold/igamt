@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {Workspace, Entity} from "../../service/workspace/workspace.service";
+import {WorkspaceService, Entity} from "../../service/workspace/workspace.service";
 import {Http} from "@angular/http";
 import {MenuItem} from "primeng/components/common/menuitem";
 
@@ -15,7 +15,7 @@ export class IgDocumentEditComponent {
   _ig : any;
 
   constructor(private route : ActivatedRoute,
-              private _ws   : Workspace,
+              private _ws   : WorkspaceService,
               private $http : Http){
     this.ig = this._ws.getCurrent(Entity.IG);
   };

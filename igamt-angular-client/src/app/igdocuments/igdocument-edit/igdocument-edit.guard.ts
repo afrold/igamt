@@ -3,13 +3,13 @@
  */
 import {Injectable} from "@angular/core";
 import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot} from "@angular/router";
-import {Workspace, Entity} from "../../service/workspace/workspace.service";
+import {WorkspaceService, Entity} from "../../service/workspace/workspace.service";
 import {Http} from "@angular/http";
 
 @Injectable()
 export class IgDocumentGuard implements CanActivate {
 
-  constructor(private _ws : Workspace,
+  constructor(private _ws : WorkspaceService,
               private $http : Http){};
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {

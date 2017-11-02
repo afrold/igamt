@@ -1,8 +1,12 @@
 /**
  * Created by hnt5 on 10/27/17.
  */
-import {Component, Input} from "@angular/core";
+import {Component, Input, ElementRef} from "@angular/core";
 import {SegmentTreeNodeService} from "../../../../../../common/segment-tree/segment-tree.service";
+import {GeneralConfigurationService} from "../../../../../../service/general-configuration/general-configuration.service";
+declare var jquery:any;
+declare var $ :any;
+
 @Component({
   selector : 'segment-table',
   templateUrl : './segment-table.component.html',
@@ -14,11 +18,16 @@ export class SegmentTableComponent {
   usages : any[];
   tree;
 
-  constructor(private treeNodeService : SegmentTreeNodeService){}
+  constructor(private treeNodeService : SegmentTreeNodeService, private configService : GeneralConfigurationService){}
+
   ngOnInit(){
-    this.tree = this.treeNodeService.getFD(this.segment);
-    this.usages = [ { label : 'R', value : 'R' },{ label : 'RE', value : 'RE' },{ label : 'C', value : 'C' },
-                    { label : 'X', value : 'O' }]
+    this.tree = this.treeNodeService.getFieldsAsTreeNodes(this.segment);
+    this.usages = this.configService.usages;
   }
 
+  loadNode($event){
+    if($event.node){
+      return this.treeNodeService.getComponentsAsTreeNodes($event.node).then(nodes => $event.node.children = nodes);
+    }
+  }
 }
