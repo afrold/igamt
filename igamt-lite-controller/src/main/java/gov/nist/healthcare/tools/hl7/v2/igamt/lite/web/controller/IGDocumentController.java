@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.GrantedAuthority;
@@ -45,6 +44,7 @@ import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.AppInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ApplyInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfiles;
@@ -2047,24 +2047,30 @@ public class IGDocumentController extends CommonController {
         tableLibrary.addTable(temp);
         ret.add(temp);
       } else {
-        if (wrapper.getCodesPresence().get(t.getId())) {
-          Table temp = tableService.findById(t.getCreatedFrom());
-          if (temp != null) {
+        Table temp = tableService.findById(t.getCreatedFrom());
+
+        if (t.getSourceType().equals(SourceType.EXTERNAL)) {
+          t.setCodes(null);
+        } else {
+          if (wrapper.getCodesPresence().containsKey(t.getId())) {
+            if (!wrapper.getCodesPresence().get(t.getId())) {
+              t.setCodes(new ArrayList<Code>());
+            }
+          } else {
             t.setCodes(temp.getCodes());
           }
         }
+        tableService.save(t);
         tableLibrary.addTable(t);
         ret.add(t);
-
-
-        tableService.save(t);
       }
-      for (String s : wrapper.codesPresence.keySet()) {
-        tableLibrary.getCodePresence().put(s, wrapper.codesPresence.get(s));
-      }
-      tableLibraryService.save(tableLibrary);
-
     }
+    for (String s : wrapper.codesPresence.keySet()) {
+      tableLibrary.getCodePresence().put(s, wrapper.codesPresence.get(s));
+    }
+    tableLibraryService.save(tableLibrary);
+
+
     return ret;
   }
 

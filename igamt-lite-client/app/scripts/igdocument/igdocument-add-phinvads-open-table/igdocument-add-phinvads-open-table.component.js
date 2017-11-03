@@ -57,53 +57,55 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
 
 
 
-  $scope.AsFlavor=function (table) {
+    $scope.AsFlavor=function (table) {
 
       var newTable= angular.copy(table);
       newTable.shareParticipantIds = [];
       newTable.status="UNPUBLISHED";
       newTable.scope="USER";
-      newTable.bindingIdentifier = table.bindingIdentifier+(Math.floor(Math.random() * 100) + 1);
-
+      newTable.bindingIdentifier = table.bindingIdentifier+"_"+(Math.floor(Math.random() * 1000) + 1);
       newTable.id = new ObjectId().toString();
       newTable.createdFrom =table.id;
       newTable.libIds = [];
       newTable.referenceUrl= $rootScope.getPhinvadsURL(table);
-
       newTable.libIds.push($rootScope.tableLibrary.id);
-
-      newTable.sourceType="INTERNAL";
-
-      if(newTable.numberOfCodes && newTable.numberOfCodes>500){
-
-          $scope.codesPresence[newTable.id]=false;
-
-      }else{
-          $scope.codesPresence[newTable.id]=true;
-      }
-
+      newTable.sourceType=null;
       $scope.selectedTables.push(newTable);
+        if( newTable.numberOfCodes&& newTable.numberOfCodes>500){
+            $scope.codesPresence[ newTable.id]=false;
+        }else{
+            $scope.codesPresence[ newTable.id]=true;
+        }
 
-  };
+    };
 
-    $scope.getAllTables=function () {
+    // $scope.changeType=function (table) {
+    //     $scope.codesPresence[table.id]=false;
+    // };
+
+    $scope.getAllTables=function(){
         return _.union($rootScope.tables,$scope.selectedTables);
-
     };
 
   $scope.AsIs=function (table){
       $scope.selectedTables.push(table);
       if(table.numberOfCodes&&table.numberOfCodes>500){
-
           $scope.codesPresence[table.id]=false;
-
       }else{
           $scope.codesPresence[table.id]=true;
       }
   };
 
     $scope.save=function () {
-        var wrapper={tables:$scope.selectedTables,codesPresence:$scope.codesPresence};
+        var reducedMap={};
+        for(i=0;i<$scope.selectedTables.length; i++){
+            if($scope.codesPresence[$scope.selectedTables[i].id]==false){
+                reducedMap[$scope.selectedTables[i].id]=false;
+            }
+
+        }
+
+        var wrapper={tables:$scope.selectedTables,codesPresence:reducedMap};
 
         TableService.savePhinvads($scope.selectedTableLibary.id, wrapper).then(function(tables){
           angular.forEach(tables, function(t){
@@ -136,12 +138,12 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
               $rootScope.msg().show = true;
       });
 
-    }
+    };
     
     $scope.saveDisabled=function () {
-        var allTables=$scope.getAllTables();
         for(i=0; i<$scope.selectedTables.length; i++) {
-            if ($scope.duplicated($scope.selectedTables[i])) {
+            var table=$scope.selectedTables[i];
+            if ($scope.duplicated(table)||table.sourceType==null||table.bindingIdentifier=='') {
                 return true;
             }
         }

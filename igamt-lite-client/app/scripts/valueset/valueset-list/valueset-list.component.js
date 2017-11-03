@@ -189,7 +189,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
 
       TableService.save(table).then(function(result) {
         $rootScope.entireTable=angular.copy(result);
-        // $rootScope.table.codes=$rootScope.entireTable.codes;
+        $rootScope.table.codes=$rootScope.entireTable.codes;
 
 
         var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.tableLibrary.children);

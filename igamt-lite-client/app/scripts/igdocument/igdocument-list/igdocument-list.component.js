@@ -1400,7 +1400,6 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 
 
     $scope.selectSegment = function (segment) {
-    console.log($rootScope);
     $rootScope.Activate(segment.id);
     if (segment && segment != null) {
       $scope.loadingSelection = true;
@@ -2127,19 +2126,16 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 
   $scope.selectTable = function (t) {
     $rootScope.Activate(t.id);
-    var table = angular.copy(t);
     $rootScope.subview = "EditValueSets.html";
     $scope.loadingSelection = true;
     blockUI.start();
     try {
-          TableService.getOneInLibrary(table.id,$rootScope.tableLibrary.id).then(function (tbl) {
+          TableService.getOneInLibrary(t.id,$rootScope.tableLibrary.id).then(function (tbl) {
               $rootScope.searchObject = {};
-
-              $rootScope.table = tbl;
+              $rootScope.table = angular.copy(tbl);
               $rootScope.$emit("event:initTable");
               $rootScope.currentData = $rootScope.table;
               $rootScope.codeSystems = [];
-              console.log($rootScope.table);
               $rootScope.codeSystems = $rootScope.table.codeSystems;
               $rootScope.entireTable = angular.copy($rootScope.table);
               $scope.loadingSelection = false;
