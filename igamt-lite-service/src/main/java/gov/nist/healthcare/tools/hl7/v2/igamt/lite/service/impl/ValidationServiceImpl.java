@@ -1082,7 +1082,7 @@ public class ValidationServiceImpl implements ValidationService {
             message + "Cardinality Min cannot be less than 1 when Usage is: " + toBeUsage + ". ";
 
       }
-      if (!(toBeMax >= toBeMin || toBeMax < 1)) {
+      if (toBeMax < toBeMin) {
         message = message + maxCannotBeLessThanMin;
       }
       result = message;
@@ -1100,7 +1100,7 @@ public class ValidationServiceImpl implements ValidationService {
         message = "Cardinality Min must be 0 when Usage is: " + toBeUsage + ". ";
       }
 
-      if ((toBeMin >= 0) && toBeMin > toBeMax) {
+      if (toBeMin >= 0 && toBeMin > toBeMax) {
         message = message + (maxCannotBeLessThanMin);
       }
       result = message;
@@ -1112,7 +1112,7 @@ public class ValidationServiceImpl implements ValidationService {
     if (toBeUsage.equalsIgnoreCase(Usage.O.value())
         || toBeUsage.equalsIgnoreCase(Usage.C.value())) {
 
-      if (!(toBeMin == 0) && !(toBeMax >= 1 && toBeMax != toBeMin)) {
+      if (toBeMin != 0 && !(toBeMax >= 1 && toBeMax != toBeMin)) {
         String message = "Cardinality Min must be 0 when Usage is: " + toBeUsage + ". ";
         message = message + (maxCannotBeLessThanMin);
         result = message;
