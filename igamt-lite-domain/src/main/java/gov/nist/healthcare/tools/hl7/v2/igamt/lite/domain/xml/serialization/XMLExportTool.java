@@ -230,11 +230,11 @@ public class XMLExportTool {
     elmValueSetDefinitionsHL7Other.addAttribute(new Attribute("Order", "4"));
 
     for (String key : tablesMap.keySet()) {
+      HashMap<String, Boolean> codePresenceMap = profile.getTableLibrary().getCodePresence();
       Table t = tablesMap.get(key);
 
       if (t != null) {
-        if (t.getCodes() == null || t.getCodes().size() == 0 || t.getCodes().size() > 500
-            || (t.getCodes().size() == 1 && t.getCodes().get(0).getValue().equals("..."))) {
+        if (t.getCodes() == null || t.getCodes().size() == 0 || t.getCodes().size() > 500 || (t.getCodes().size() == 1 && t.getCodes().get(0).getValue().equals("...")) || !codePresenceMap.get(t.getId())) {
           Element elmBindingIdentifier = new Element("BindingIdentifier");
           if (t.getHl7Version() != null && !t.getHl7Version().equals("")) {
             if (t.getBindingIdentifier().startsWith("0396")
