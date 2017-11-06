@@ -46,14 +46,14 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
     return true;
   };
 
-  $scope.addTable = function (table) {
-    $scope.selectedTables.push(table);
-  };
+    $scope.addTable = function (table) {
+        $scope.selectedTables.push(table);
+    };
 
-  $scope.deleteTable = function (table) {
-    var index = $scope.selectedTables.indexOf(table);
-    if (index > -1) $scope.selectedTables.splice(index, 1);
-  };
+    $scope.deleteTable = function (table) {
+            var index = $scope.selectedTables.indexOf(table);
+            if (index > -1) $scope.selectedTables.splice(index, 1);
+     };
 
 
 
@@ -102,7 +102,6 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
             if($scope.codesPresence[$scope.selectedTables[i].id]==false){
                 reducedMap[$scope.selectedTables[i].id]=false;
             }
-
         }
 
         var wrapper={tables:$scope.selectedTables,codesPresence:reducedMap};
@@ -143,7 +142,7 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
     $scope.saveDisabled=function () {
         for(i=0; i<$scope.selectedTables.length; i++) {
             var table=$scope.selectedTables[i];
-            if ($scope.duplicated(table)||table.sourceType==null||table.bindingIdentifier=='') {
+            if ($scope.duplicated(table)||!table.sourceType||table.bindingIdentifier==="") {
                 return true;
             }
         }

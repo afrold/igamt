@@ -2139,7 +2139,10 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
               $rootScope.codeSystems = $rootScope.table.codeSystems;
               $rootScope.entireTable = angular.copy($rootScope.table);
               $scope.loadingSelection = false;
+              $rootScope.$emit("event:initEditArea");
+              blockUI.stop();
               $scope.clearTableScope();
+              $rootScope.clearChanges();
               TableService.crossRef($rootScope.table, $rootScope.igdocument.id).then(function (result) {
                   $rootScope.crossRef = result;
               }, function (error) {
@@ -2148,8 +2151,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
                   $rootScope.msg().type = error.data.type;
                   $rootScope.msg().show = true;
               });
-              $rootScope.$emit("event:initEditArea");
-              blockUI.stop();
+
           }, function (errr) {
               $scope.loadingSelection = false;
               $rootScope.msg().text = errr.data.text;

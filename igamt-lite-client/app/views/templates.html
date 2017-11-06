@@ -6825,7 +6825,7 @@
                     </md-input-container>
 
                     <label class="input-left igamt-label"> Type </label>
-                    <md-select ng-model="newTable.sourceType">
+                    <md-select ng-model="newTable.sourceType"  name="sourceType" id="sourceType" required >
                         <md-option ng-repeat="opt in sourceTypes" ng-value="opt.value">{{opt.label}}</md-option>
                     </md-select>
 
@@ -6877,7 +6877,7 @@
                     </md-input-container>
 
 
-                    <div ng-class="'alert alert-warning'" ng-show="igDocumentMsg.show" id="ehralert">
+                    <div ng-class="'alert alert-warning'">
                         <p>Warning: Making this value set externally managed will remove all the codes. Do you want to continue?</p>
                     </div>
 

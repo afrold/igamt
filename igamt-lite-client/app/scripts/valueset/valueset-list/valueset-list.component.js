@@ -176,6 +176,8 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
   };
 
   $scope.save = function() {
+    console.log("EDIT FORM")
+    console.log($scope.editForm);
     if ($rootScope.table.scope === 'USER') {
       $scope.saving = true;
       var table = $rootScope.table;
@@ -466,6 +468,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
       $scope.confirm= function () {
         $rootScope.table.referenceUrl=$scope.url;
         $rootScope.table.sourceType="EXTERNAL";
+        $rootScope.table.codes=[];
         $rootScope.recordChanged();
         $mdDialog.hide("OK");
 
