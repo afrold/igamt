@@ -318,7 +318,6 @@ public class Bootstrap implements InitializingBean {
     // updateTableForNumOfCodesANDSourceType();
     // updateTableForNumOfCodesANDSourceType();
 
-    // setCodePresence();
 
   }
 
@@ -338,7 +337,9 @@ public class Bootstrap implements InitializingBean {
 
     for (Table t : allTables) {
       int numberOfCodes = t.getCodes().size();
-      tableService.updateAttributes(t.getId(), "numberOfCodes", numberOfCodes);
+      if (!t.getScope().equals(SCOPE.PHINVADS)) {
+        tableService.updateAttributes(t.getId(), "numberOfCodes", numberOfCodes);
+      }
       if (t.getScope().equals(SCOPE.PHINVADS) || numberOfCodes > 500) {
         tableService.updateAttributes(t.getId(), "sourceType", SourceType.EXTERNAL);
         tableService.updateAttributes(t.getId(), "managedBy", Constant.External);
