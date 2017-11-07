@@ -33,6 +33,7 @@ import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SourceType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
@@ -125,6 +126,9 @@ public class TableController extends CommonController {
       log.debug("table=" + table);
       log.debug("table.getId()=" + table.getId());
       log.info("Saving the " + table.getScope() + " table.");
+      if (table.getSourceType().equals(SourceType.INTERNAL)) {
+        table.setNumberOfCodes(table.getCodes().size());
+      }
       Table saved = tableService.save(table);
       log.debug("saved.getId()=" + saved.getId());
       log.debug("saved.getScope()=" + saved.getScope());

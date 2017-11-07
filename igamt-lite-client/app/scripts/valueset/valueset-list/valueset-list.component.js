@@ -292,6 +292,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     if (!$scope.isNewObject('table', 'add', $rootScope.table.id)) {
       $rootScope.recordChangeForEdit2('value', "add", null, 'value', newValueBlock);
     }
+    $rootScope.table.numberOfCodes+=1;
     $scope.setDirty();
   };
 
@@ -334,9 +335,11 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
   $scope.addOrRemoveValue = function(c) {
     if (c.selected === true) {
       $scope.selectedCodes.push(c);
+        $rootScope.table.numberOfCodes+=1;
     } else if (c.selected === false) {
       var index = $scope.selectedCodes.indexOf(c);
       if (index > -1) {
+          $rootScope.table.numberOfCodes-=1;
         $scope.selectedCodes.splice(index, 1);
       }
     }
@@ -371,6 +374,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
   }
   $scope.deleteSlectedValues = function() {
     $rootScope.table.codes = _.difference($rootScope.table.codes, $scope.selectedCodes);
+      $rootScope.table.numberOfCodes-=$scope.selectedCodes.length;
     // $rootScope.table.smallCodes = _.difference($rootScope.table.smallCodes, $scope.selectedCodes);
     $scope.selectedCodes = [];
     $rootScope.recordChanged();
@@ -397,7 +401,9 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     // }
     console.log($scope.selectedCodes);
     $rootScope.table.codes.splice($rootScope.table.codes.indexOf(value), 1);
-    $scope.setDirty();
+      $rootScope.table.numberOfCodes-=1;
+
+      $scope.setDirty();
   };
 
   $scope.isNewValueThenDelete = function(id) {
@@ -462,6 +468,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
 
       $scope.cancel=function(){
         $rootScope.table.sourceType="INTERNAL";
+        $rootScope.table.referenceUrl=null;
         $mdDialog.hide();
 
       }

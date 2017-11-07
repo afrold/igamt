@@ -358,13 +358,14 @@ angular.module('igl').factory(
           newLink.id = newTable.id;
 
           TableLibrarySvc.addChild($rootScope.tableLibrary.id, newLink).then(function (link) {
-            $rootScope.tableLibrary.children.splice(0, 0, newLink);
-            $rootScope.tables.splice(0, 0, newTable);
-            $rootScope.table = newTable;
-              TableLibrarySvc.updatePresence($rootScope.tableLibrary.id,table.id, $rootScope.tableLibrary.codePresence[table.id]).then(function (response) {
-                  $rootScope.tableLibrary.codePresence[newTable.id]=response;
-              });
-
+              $rootScope.tableLibrary.children.splice(0, 0, newLink);
+              $rootScope.tables.splice(0, 0, newTable);
+              $rootScope.table = newTable;
+              if ($rootScope.tableLibrary.codePresence[table.id]!==undefined){
+                  TableLibrarySvc.updatePresence($rootScope.tableLibrary.id, table.id, $rootScope.tableLibrary.codePresence[table.id]).then(function (response) {
+                      $rootScope.tableLibrary.codePresence[newTable.id] = response;
+                  });
+              }
             $rootScope.tablesMap[newTable.id] = newTable;
 
             $rootScope.codeSystems = [];

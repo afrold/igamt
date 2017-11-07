@@ -583,20 +583,20 @@
                                         {{table.numberOfCodes}}
                                     </td>
                                     <td flex="20">
-                                        <md-select ng-model="table.sourceType" ng-if="table.status=='PUBLISHED' ||table.numberOfCodes>500" disabled>
-                                            <md-option value="INTERNAL">Internally Managed</md-option>
-                                            <md-option value="EXTERNAL">Externally Managed</md-option>
-                                        </md-select>
+                                        <div ng-model="table.sourceType" ng-if="table.status=='PUBLISHED' || table.numberOfCodes>500">
+                                         {{table.sourceType}}
+                                        </div>
 
-                                        <md-select name="selectforFlavor" id="selectforFlavor" ng-model="table.sourceType" ng-if="table.scope=='USER' && table.numberOfCodes<=500">
-                                            <md-option value="INTERNAL">Internally Managed</md-option>
-                                            <md-option value="EXTERNAL">Externally Managed</md-option>
+                                        <md-select name="selectforFlavor" id="selectforFlavor" ng-model="table.sourceType" ng-if="table.scope=='USER'&&table.numberOfCodes<=500" ng-disabled="table.numberOfCodes>500">
+                                            <md-option value="INTERNAL">INTERNAL</md-option>
+                                            <md-option value="EXTERNAL">EXTERNAL</md-option>
                                         </md-select>
 
                                     </td>
                                     <td flex="10">
-                                        <md-checkbox ng-if="table.status=='PUBLISHED' ||table.numberOfCodes>500" ng-model="codesPresence[table.id]"></md-checkbox>
-                                        <md-checkbox ng-if="table.scope=='USER' && table.numberOfCodes <= 500 && table.sourceType=='INTERNAL'" ng-model="codesPresence[table.id]" ></md-checkbox>
+                                        <md-checkbox ng-if="table.status=='PUBLISHED'&& table.numberOfCodes<=500" ng-model="codesPresence[table.id]"></md-checkbox>
+                                        <div ng-if="(table.status!=='PUBLISHED'&& table.sourceType=='EXTERNAL') || table.numberOfCodes>500" > Not Included</div>
+                                        <div ng-if="table.status!=='PUBLISHED'&& table.sourceType=='INTERNAL' && table.numberOfCodes<=500">Included</div>
 
                                     </td>
                                     <td flex="10" style="text-align:center;cursor: pointer;"><a class="pointer" ng-click="deleteTable(table)">
@@ -6826,7 +6826,7 @@
 
                     <label class="input-left igamt-label"> Type </label>
                     <md-select ng-model="newTable.sourceType"  name="sourceType" id="sourceType" required >
-                        <md-option ng-repeat="opt in sourceTypes" ng-value="opt.value">{{opt.label}}</md-option>
+                        <md-option ng-repeat="opt in sourceTypes" ng-value="opt.value">{{opt.value}}</md-option>
                     </md-select>
 
                     <label class="input-left igamt-label" ng-if="newTable.sourceType=='EXTERNAL'"> External Value Set Reference URL* </label>

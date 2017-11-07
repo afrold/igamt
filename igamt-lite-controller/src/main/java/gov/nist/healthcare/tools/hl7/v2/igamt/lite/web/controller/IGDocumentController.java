@@ -2050,16 +2050,15 @@ public class IGDocumentController extends CommonController {
         Table temp = tableService.findById(t.getCreatedFrom());
 
         if (t.getSourceType().equals(SourceType.EXTERNAL)) {
-          t.setCodes(null);
+          t.setCodes(new ArrayList<Code>());
+          t.setReferenceUrl(appInfo.getProperties().get("PHINVADS") + t.getOid());
+
         } else {
-          if (wrapper.getCodesPresence().containsKey(t.getId())) {
-            if (!wrapper.getCodesPresence().get(t.getId())) {
-              t.setCodes(new ArrayList<Code>());
-            }
-          } else {
-            t.setCodes(temp.getCodes());
-          }
+
+          t.setCodes(temp.getCodes());
+
         }
+        t.setAuthorNotes("");
         tableService.save(t);
         tableLibrary.addTable(t);
         ret.add(t);

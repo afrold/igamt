@@ -71,30 +71,36 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
       newTable.libIds.push($rootScope.tableLibrary.id);
       newTable.sourceType=null;
       $scope.selectedTables.push(newTable);
-        if( newTable.numberOfCodes&& newTable.numberOfCodes>500){
-            $scope.codesPresence[ newTable.id]=false;
+
+        if(newTable.numberOfCodes && newTable.numberOfCodes>500){
+            newTable.sourceType="EXTERNAL";
+            // newTable.codes=[];
+
         }else{
-            $scope.codesPresence[ newTable.id]=true;
+            newTable.sourceType="INTERNAL";
         }
 
     };
 
-    // $scope.changeType=function (table) {
-    //     $scope.codesPresence[table.id]=false;
-    // };
+     // $scope.changeType=function (table) {
+     //     if(table.sourceType=='INTERNAL'){
+     //
+     //     }
+     //    $scope.codesPresence[table.id]=false;
+     // };
 
     $scope.getAllTables=function(){
         return _.union($rootScope.tables,$scope.selectedTables);
     };
 
-  $scope.AsIs=function (table){
+    $scope.AsIs=function (table){
       $scope.selectedTables.push(table);
       if(table.numberOfCodes&&table.numberOfCodes>500){
           $scope.codesPresence[table.id]=false;
       }else{
           $scope.codesPresence[table.id]=true;
       }
-  };
+    };
 
     $scope.save=function () {
         var reducedMap={};

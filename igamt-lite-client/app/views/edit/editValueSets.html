@@ -103,15 +103,15 @@
                                                        ng-model="table.hl7Section"/>
                                             </md-input-container>
                                             <label class="input-left igamt-label"> Type </label>
-                                            <md-select ng-model="table.sourceType"
-                                                       ng-change="confirmSwitchSourceType(table)"
-                                                       ng-if="!isNonEditableValueSet(table)">
-                                                <md-option ng-repeat="opt in sourceTypes" ng-value="opt.value">
-                                                    {{opt.label}}
-                                                </md-option>
-                                            </md-select>
+                                            <!--<md-select ng-model="table.sourceType" disabled-->
+                                                       <!--ng-change="confirmSwitchSourceType(table)"-->
+                                                       <!--ng-if="!isNonEditableValueSet(table)">-->
+                                                <!--<md-option ng-repeat="opt in sourceTypes" ng-value="opt.value">-->
+                                                    <!--{{opt.value}}-->
+                                                <!--</md-option>-->
+                                            <!--</md-select>-->
 
-                                            <div ng-if="isNonEditableValueSet(table)">
+                                            <div>
                                                 {{table.sourceType}}
                                             </div>
 
@@ -274,10 +274,10 @@
                                                             </div>
                                                             <br/>
                                                             <md-toolbar class="value-set-toolBar">Content</md-toolbar>
-                                                            <div class="codes-container md-panelContent" ng-show="table.scope!=='PHINVADS'&&table.scope!=='HL7STANDARD'">
+                                                            <div class="codes-container md-panelContent" ng-show="table.sourceType=='EXTERNAL'">
                                                                 <label class="input-left igamt-label">Reference URL</label>
 
-                                                                <md-input-container class="md-block igamt-input-block"
+                                                                <md-input-container class="md-block igamt-input-block" ng-if="table.scope!=='PHINVADS'"
                                                                                     flex-gt-sm>
                                                                     <input type="url" name="url"
                                                                            ng-disabled="isNonEditableValueSet(table)"
@@ -289,30 +289,11 @@
                                                                     </span>
                                                                 </md-input-container>
 
-                                                                    <div ng-if="table.sourceType=='EXTERNAL'">
-                                                                    <label class="input-left igamt-label"
-                                                                           ng-if="table.contentDefinition=='Intensional'">Definition
-                                                                        Text </label>
-
-                                                                    <md-input-container class="md-block igamt-input-block"
-                                                                                        flex-gt-sm
-                                                                                        ng-if="table.contentDefinition=='Intensional'">
-                                                                    <textarea id="infoForExternal" type="text"
-                                                                              name="infoForExternal"
-                                                                              ng-disabled="isNonEditableValueSet(table)"
-                                                                              ng-model="table.infoForExternal"></textarea>
-                                                                    </md-input-container>
-                                                                    </div>
-                                                            </div>
-                                                            <div class="codes-container md-panelContent">
                                                                 <div ng-if="table.scope=='PHINVADS'">
-                                                                    <label class="input-left igamt-label"> Reference URL </label>
 
                                                                     <a href="{{getPhinvadsURL(table)}}" target="_blank">{{getPhinvadsURL(table)}}</a>
                                                                 </div>
 
-
-                                                                <div ng-if="table.sourceType=='EXTERNAL'">
                                                                     <label class="input-left igamt-label"
                                                                            ng-if="table.contentDefinition=='Intensional'">Definition
                                                                         Text </label>
@@ -325,10 +306,7 @@
                                                                               ng-disabled="isNonEditableValueSet(table)"
                                                                               ng-model="table.infoForExternal"></textarea>
                                                                     </md-input-container>
-                                                                </div>
                                                             </div>
-
-
 
                                                             <div class="codes-container md-panelContent" ng-if="table.sourceType!=='EXTERNAL'||table.scope=='PHINVADS'">
                                                                 <div class="row container">
@@ -465,20 +443,6 @@
                                                                         </div>
                                                                         </div>
 
-
-
-                                                                        <!--<div layout="row" layout-align="center start" >-->
-                                                                            <!--<md-button style="background-color: #f0f0f0" ng-click="searchObject={};"> <i class="fa fa-times" aria-hidden="true"></i>Clear Filter</md-button>-->
-                                                                        <!--</div>-->
-
-
-                                                                    </div>
-
-                                                                    <div ng-if="table.codes.length >= 500"
-                                                                         style="margin-bottom: 10px">
-                                                                        <div class="alert alert-warning" role="alert">
-                                                                            IGAMT does not display more than 500 codes
-                                                                        </div>
                                                                     </div>
 
                                                                     <table ng-if="table.sourceType!=='EXTERNAL'|| table.scope=='PHINVADS'"
@@ -766,8 +730,8 @@
                                                                     <th class="col-md-2">
                                                                         <md-input-container class="normal">
                                                                         <md-select ng-model="filter.sourceType" no-dirty-check>
-                                                                            <md-option value="INTERNAL">Internally Managed</md-option>
-                                                                            <md-option value="EXTERNAL">Externally Managed</md-option>
+                                                                            <md-option value="INTERNAL">INTERNAL</md-option>
+                                                                            <md-option value="EXTERNAL">EXTERNAL</md-option>
                                                                         </md-select>
                                                                         </md-input-container>
                                                                     </th>
