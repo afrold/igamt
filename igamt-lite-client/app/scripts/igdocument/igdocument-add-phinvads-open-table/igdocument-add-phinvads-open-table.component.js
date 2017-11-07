@@ -74,23 +74,22 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
 
         if(newTable.numberOfCodes && newTable.numberOfCodes>500){
             newTable.sourceType="EXTERNAL";
-            // newTable.codes=[];
 
         }else{
             newTable.sourceType="INTERNAL";
         }
 
     };
-
-     // $scope.changeType=function (table) {
-     //     if(table.sourceType=='INTERNAL'){
-     //
-     //     }
-     //    $scope.codesPresence[table.id]=false;
-     // };
-
     $scope.getAllTables=function(){
         return _.union($rootScope.tables,$scope.selectedTables);
+    };
+    $scope.toggleFlavor=function (table) {
+        if(table.sourceType=="INTERNAL"){
+            table.sourceType="EXTERNAL";
+        }else{
+            table.sourceType="INTERNAL";
+        }
+
     };
 
     $scope.AsIs=function (table){

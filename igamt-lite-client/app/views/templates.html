@@ -536,37 +536,35 @@
                             <table ng-show="selectedTables.length > 0"  st-table="selectedTables" class="table table-striped table-condensed table-bordered">
                                 <thead>
                                 <tr>
-                                    <th flex="30">
+                                    <th flex="40">
 
                                         <md-input-container class="normal">
                                             <input ng-model="search3.bindingIdentifier">
 
                                         </md-input-container></th>
-                                    <th flex="20">
+                                    <th flex="30">
                                         <md-input-container class="normal">
                                             <input ng-model="search3.name">
 
                                         </md-input-container>
                                     </th>
                                     <th flex="10"></th>
-                                    <th flex="20"></th>
                                     <th flex="10"></th>
 
                                     <th flex="10"></th>
 
                                 </tr>
                                 <tr class="tbl-header">
-                                    <th flex="30" st-sort="bindingIdentifier">Binding Identifier</th>
-                                    <th flex="20" st-sort="name">Name</th>
+                                    <th flex="40" st-sort="bindingIdentifier">Binding Identifier</th>
+                                    <th flex="30" st-sort="name">Name</th>
                                     <th flex="10" st-sort="numberOfCodes">#Codes</th>
-                                    <th flex="20">Type</th>
                                     <th flex="10">Include Codes</th>
                                     <th flex="10"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="table in selectedTables  | filter:search3 track by $index">
-                                    <td flex="30">
+                                    <td flex="40">
                                         <div ng-if="table.scope!=='USER'" style="max-width: 200px; word-wrap: break-word;">{{table.bindingIdentifier}}</div>
                                         <md-input-container class="normal" ng-if="table.scope=='USER'" style="width: 100%" required>
                                             <input ng-model="table.bindingIdentifier" no-dirty-check>
@@ -582,21 +580,12 @@
                                     <td flex="10">
                                         {{table.numberOfCodes}}
                                     </td>
-                                    <td flex="20">
-                                        <div ng-model="table.sourceType" ng-if="table.status=='PUBLISHED' || table.numberOfCodes>500">
-                                         {{table.sourceType}}
-                                        </div>
-
-                                        <md-select name="selectforFlavor" id="selectforFlavor" ng-model="table.sourceType" ng-if="table.scope=='USER'&&table.numberOfCodes<=500" ng-disabled="table.numberOfCodes>500">
-                                            <md-option value="INTERNAL">INTERNAL</md-option>
-                                            <md-option value="EXTERNAL">EXTERNAL</md-option>
-                                        </md-select>
-
-                                    </td>
                                     <td flex="10">
-                                        <md-checkbox ng-if="table.status=='PUBLISHED'&& table.numberOfCodes<=500" ng-model="codesPresence[table.id]"></md-checkbox>
-                                        <div ng-if="(table.status!=='PUBLISHED'&& table.sourceType=='EXTERNAL') || table.numberOfCodes>500" > Not Included</div>
-                                        <div ng-if="table.status!=='PUBLISHED'&& table.sourceType=='INTERNAL' && table.numberOfCodes<=500">Included</div>
+                                        <md-checkbox ng-if="table.status=='PUBLISHED' && table.numberOfCodes<=500" ng-model="codesPresence[table.id]"></md-checkbox>
+                                        <div ng-if="table.status=='PUBLISHED' && table.numberOfCodes>500">Not Included</div>
+
+                                        <md-checkbox ng-if="table.scope=='USER' && table.numberOfCodes<=500" ng-checked="table.sourceType=='INTERNAL'" ng-click="toggleFlavor(table)"></md-checkbox>
+                                        <div ng-if="table.scope=='USER'&& table.numberOfCodes>500">Not Included</div>
 
                                     </td>
                                     <td flex="10" style="text-align:center;cursor: pointer;"><a class="pointer" ng-click="deleteTable(table)">
