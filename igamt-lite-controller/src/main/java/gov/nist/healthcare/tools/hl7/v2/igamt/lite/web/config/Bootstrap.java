@@ -316,7 +316,7 @@ public class Bootstrap implements InitializingBean {
 
     // 2.0.0-beta7
     // updateTableForNumOfCodesANDSourceType();
-     updateTableForNumOfCodesANDSourceType();
+    // updateTableForNumOfCodesANDSourceType();
 
 
   }
@@ -337,7 +337,9 @@ public class Bootstrap implements InitializingBean {
 
     for (Table t : allTables) {
       int numberOfCodes = t.getCodes().size();
-      tableService.updateAttributes(t.getId(), "numberOfCodes", numberOfCodes);
+      if (!t.getScope().equals(SCOPE.PHINVADS)) {
+        tableService.updateAttributes(t.getId(), "numberOfCodes", numberOfCodes);
+      }
       if (t.getScope().equals(SCOPE.PHINVADS) || numberOfCodes > 500) {
         tableService.updateAttributes(t.getId(), "sourceType", SourceType.EXTERNAL);
         tableService.updateAttributes(t.getId(), "managedBy", Constant.External);
@@ -382,7 +384,23 @@ public class Bootstrap implements InitializingBean {
       tableService.updateAttributes(t.getId(), "sourceType", SourceType.INTERNAL);
 
     }
-  }
+  };
+
+  private void setCodePresence() {
+    List<TableLibrary> tbls = tableLibraryService.findAll();
+    for (TableLibrary tbl : tbls) {
+      tbl.setCodePresence(new HashMap<String, Boolean>());
+      for (TableLink link : tbl.getChildren()) {
+        if (link.getId() != null) {
+          System.out.println(link);
+          tbl.getCodePresence().put(link.getId(), true);
+
+        }
+
+      }
+      tableLibraryService.save(tbl);
+    }
+  };
 
 
   private void clearUserExportConfigurations() {
