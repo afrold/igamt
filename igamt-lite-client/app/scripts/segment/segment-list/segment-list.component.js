@@ -226,8 +226,11 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         if(def.constraintType === 'valueset' && data.valueSets && data.valueSets.length > 0) {
           for (var i = 0; i < data.valueSets.length; i++) {
             if(!tablesMap[data.valueSets[i].tableId]) return 'Value Set binding is broken.';
+            else if(tablesMap[data.valueSets[i].tableId].numberOfCodes > 500 ) return 'For internally managed value sets, This value set exceeds limit of 500. It will be ignored at validation';
+            else if(tablesMap[data.valueSets[i].tableId].numberOfCodes === 0 ) return 'This value set has no codes. It will be ignored at validation';
           }
         }
+        // if(def.constraintType === 'value' && data.valueData.value.replace(/\s/g,'')  === '') return 'Missing value data';
       }
     }else {
       return null;
