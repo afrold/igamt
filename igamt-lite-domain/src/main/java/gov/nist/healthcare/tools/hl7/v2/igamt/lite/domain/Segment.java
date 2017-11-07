@@ -625,9 +625,10 @@ public class Segment extends DataModelWithConstraints
         for (ValueSetData vsd : thenData.getValueSets()) {
           if (vsd.getTableId() != null) {
             Table t = tablesMap.get(vsd.getTableId());
-            if (t == null) {
-              isValueSetValid = false;
-            }
+            if (t == null) isValueSetValid = false;
+            else if(t.getCodes() == null) isValueSetValid = false;
+            else if(t.getCodes().size() == 0) isValueSetValid = false;
+            else if(t.getCodes().size() > 500) isValueSetValid = false;
           } else {
             isValueSetValid = false;
           }
