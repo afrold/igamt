@@ -33,4 +33,14 @@ public class NotificationController extends CommonController {
     }
     return result;
   }
+  
+  
+  @RequestMapping(value = "/delnotification/{nid}/igdocument/{igid}", method = RequestMethod.GET, produces = "application/json")
+  public void deleteIGDocumentEntry(@PathVariable("nid") String nid, @PathVariable("igid") String igid) throws DataNotFoundException {
+    Notification n = notificationRepository.findOne(nid);
+    if(n != null){
+      n.removeIgId(igid);
+      notificationRepository.save(n); 
+    }
+  }
 }

@@ -68,6 +68,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NameAndPositionAndPresence;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
@@ -83,6 +84,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentAtt
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TargetType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
@@ -106,6 +108,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetDa
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ExportConfigRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.NotificationRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileStructureService;
@@ -194,6 +197,9 @@ public class Bootstrap implements InitializingBean {
 
   @Autowired
   private ExportConfigRepository exportConfigRepository;
+  
+  @Autowired
+  private NotificationRepository notificationRepository;
 
   /*
    * 
@@ -316,12 +322,29 @@ public class Bootstrap implements InitializingBean {
 
     // 2.0.0-beta7
     // updateTableForNumOfCodesANDSourceType();
-     updateTableForNumOfCodesANDSourceType();
+    // updateTableForNumOfCodesANDSourceType();
 
+    
+   
+    testNotification();
 
   }
 
 
+  private void testNotification() {
+    Notification noti = new Notification();
+    
+    noti.setByWhom("JY Woo");
+    noti.setChangedDate(new Date());
+    noti.setTargetType(TargetType.Valueset);
+    noti.setTargetId("57e43a2a84ae7eaed5fbdf76");
+    HashSet<String> igDocumentIds = new HashSet<String>();
+    igDocumentIds.add("5a034aee77c8473416def0d3");
+    noti.setIgDocumentIds(igDocumentIds);
+    
+    notificationRepository.save(noti);
+    
+  }
 
   private void updateTableForNumOfCodesANDSourceType() {
     List<Table> allTables = tableService.findAll();

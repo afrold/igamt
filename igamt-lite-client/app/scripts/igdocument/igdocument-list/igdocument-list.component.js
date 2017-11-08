@@ -557,9 +557,19 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
   $scope.openIGDocument = function (igdocument) {
 
       $rootScope.validationResult=null;
+      $rootScope.notifications = [];
 
-
+      // Find Notifications for this IGDocument
       if (igdocument != null) {
+          $http.get('api/notifications/igdocument/' + igdocument.id).then(
+              function (response) {
+                  $rootScope.notifications = response.data;
+                  console.log($rootScope.notifications);
+              },
+              function (error) {}
+          );
+
+
       // Set rootscope accountId for sharing
       $rootScope.accountId = igdocument.accountId;
       $timeout(function () {
@@ -1043,6 +1053,21 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
     } else {
       $scope.processSelectMessagesForExport(igdocument, toGVT);
     }
+  };
+
+  $scope.deleteNotification = function (noti, igid) {
+      var i = $rootScope.notifications.indexOf(noti);
+      if(i != -1) {
+          $rootScope.notifications.splice(i, 1);
+      }
+      $http.get('api/notifications/delnotification/' + noti.id + '/igdocument/' + igid).then(
+          function (response) {
+            console.log("Done!");
+          },
+          function (error) {
+              console.log(error);
+          }
+      );
   };
 
   $scope.selectCompositeProfilesForExport = function (igdocument, toGVT) {

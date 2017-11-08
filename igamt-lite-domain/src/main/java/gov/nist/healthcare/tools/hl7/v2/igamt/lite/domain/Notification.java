@@ -80,4 +80,11 @@ public class Notification {
   public boolean containIgId(String id){
     return this.igDocumentIds.contains(id);
   }
+
+  @Override
+  public String toString() {
+    return "Notification [id=" + id + ", targetType=" + targetType + ", targetId=" + targetId
+        + ", changedDate=" + changedDate + ", byWhom=" + byWhom + ", igDocumentIds=" + igDocumentIds
+        + "]";
+  }
 }
