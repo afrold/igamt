@@ -3,6 +3,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -56,7 +58,7 @@ public class SerializableCompositeProfile extends SerializableSection {
         this.locationPathMap = locationPathMap;
     }
 
-    @Override public Element serializeElement() {
+    @Override public Element serializeElement() throws SerializationException {
         Element compositeProfileElement = new Element("CompositeProfile");
         compositeProfileElement.addAttribute(new Attribute("ID", this.compositeProfile.getIdentifier() + ""));
         compositeProfileElement.addAttribute(new Attribute("Name", this.compositeProfile.getName() + ""));

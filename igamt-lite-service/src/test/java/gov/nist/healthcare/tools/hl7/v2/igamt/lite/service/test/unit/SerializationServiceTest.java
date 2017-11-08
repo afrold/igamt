@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
@@ -43,7 +44,14 @@ public class SerializationServiceTest {
     public void testSerializeCompactIGDocument(){
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         assertTrue(igDocument!=null);
-        Document document = serializationService.serializeIGDocument(igDocument, SerializationLayout.IGDOCUMENT, ExportConfig.getBasicExportConfig(true));
+        Document document = null;
+        try {
+            document =
+                serializationService.serializeIGDocument(igDocument, SerializationLayout.IGDOCUMENT, ExportConfig
+                    .getBasicExportConfig(true));
+        } catch (SerializationException e) {
+            e.printStackTrace();
+        }
         String xmlDocument = document.toXML();
         System.out.println(xmlDocument);
     }
@@ -51,7 +59,14 @@ public class SerializationServiceTest {
     public void testSerializeVerboseIGDocument(){
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         assertTrue(igDocument!=null);
-        Document document = serializationService.serializeIGDocument(igDocument, SerializationLayout.PROFILE, ExportConfig.getBasicExportConfig(true));
+        Document document = null;
+        try {
+            document =
+                serializationService.serializeIGDocument(igDocument, SerializationLayout.PROFILE, ExportConfig
+                    .getBasicExportConfig(true));
+        } catch (SerializationException e) {
+            e.printStackTrace();
+        }
         String xmlDocument = document.toXML();
         System.out.println(xmlDocument);
     }

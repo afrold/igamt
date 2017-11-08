@@ -4,6 +4,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import org.apache.commons.lang3.StringUtils;
@@ -56,7 +57,7 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
         this.isCompositeProfile = isCompositeProfile;
     }
 
-    @Override public Element serializeElement() {
+    @Override public Element serializeElement() throws ConstraintSerializationException {
         if (this.segmentRefOrGroup instanceof SegmentRef) {
             return this.serializeSegmentRefDisplay((SegmentRef) this.segmentRefOrGroup, 0);
         } else if (this.segmentRefOrGroup instanceof Group) {
@@ -65,7 +66,8 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
         return null;
     }
 
-    private Element serializeGroupDisplay(Group group, int depth) {
+    private Element serializeGroupDisplay(Group group, int depth)
+        throws ConstraintSerializationException {
         Element elementGroup = createGroupElement();
         Element elementGroupBegin = createSegmentElement();
         elementGroupBegin.addAttribute(new Attribute("IdGpe", group.getId()));

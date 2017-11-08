@@ -4,6 +4,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import org.apache.commons.lang3.StringUtils;
@@ -62,7 +63,7 @@ public class SerializableDatatype extends SerializableSection {
         this.host = host;
     }
 
-    @Override public Element serializeElement() {
+    @Override public Element serializeElement() throws ConstraintSerializationException {
         Element datatypeElement = new Element("Datatype");
         if (this.datatype != null) {
             datatypeElement.addAttribute(new Attribute("ID", datatype.getId() + ""));

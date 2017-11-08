@@ -85,7 +85,8 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override public InputStream exportDatatypeLibraryDocumentAsHtml(
-        DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig, ExportFontConfig exportFontConfig) {
+        DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig, ExportFontConfig exportFontConfig)
+        throws SerializationException {
         if (datatypeLibraryDocument != null) {
             ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,false,EXPORT_FORMAT_HTML,exportConfig, exportFontConfig);
             return exportUtil.exportAsHtmlFromXsl(serializationService
@@ -97,7 +98,8 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override public InputStream exportDatatypeLibraryDocumentAsDocx(
-        DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig, ExportFontConfig exportFontConfig) {
+        DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig, ExportFontConfig exportFontConfig)
+        throws SerializationException {
         if (datatypeLibraryDocument != null) {
             ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,true,EXPORT_FORMAT_WORD, exportConfig, exportFontConfig);
             return exportUtil.exportAsDocxFromXml(serializationService
@@ -109,7 +111,8 @@ public class ExportServiceImpl implements ExportService {
     }
 
 	@Override
-	public String exportDataModelAsHtml(Object dataModel, String title, String host) {
+	public String exportDataModelAsHtml(Object dataModel, String title, String host)
+      throws SerializationException {
 		nu.xom.Document document = serializationService.serializeDataModel(dataModel, host);
 		if(document!=null){
 			try {

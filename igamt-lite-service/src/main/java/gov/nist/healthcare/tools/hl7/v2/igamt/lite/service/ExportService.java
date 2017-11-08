@@ -31,8 +31,11 @@ public interface ExportService {
         throws SerializationException;
     InputStream exportIGDocumentAsHtml(IGDocument igDocument, SerializationLayout serializationLayout, ExportConfig exportConfig, ExportFontConfig exportFontConfig)
         throws SerializationException;
-    InputStream exportDatatypeLibraryDocumentAsHtml(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig, ExportFontConfig exportFontConfig);
-    InputStream exportDatatypeLibraryDocumentAsDocx(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig, ExportFontConfig exportFontConfig);
-	String exportDataModelAsHtml(Object dataModel, String title, String host);
+    InputStream exportDatatypeLibraryDocumentAsHtml(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig, ExportFontConfig exportFontConfig)
+        throws SerializationException;
+    InputStream exportDatatypeLibraryDocumentAsDocx(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig, ExportFontConfig exportFontConfig)
+        throws SerializationException;
+	String exportDataModelAsHtml(Object dataModel, String title, String host)
+      throws SerializationException;
 
 }

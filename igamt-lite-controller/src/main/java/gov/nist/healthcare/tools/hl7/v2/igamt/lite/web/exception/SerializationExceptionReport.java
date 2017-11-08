@@ -1,10 +1,9 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception;
 
-import java.util.List;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
-import org.springframework.stereotype.Service;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -16,18 +15,16 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified.
- * <p/>
- * Created by Maxence Lefort on 2/23/17.
+ * <p>
+ * Created by Maxence Lefort on 11/6/17.
  */
-@Service
-public interface ExportFontConfigService {
-  public List<ExportFontConfig> findOneByAccountId(Long accountId);
+public class SerializationExceptionReport extends ModelAndView {
 
-  public ExportFontConfig findOne(Long id);
-
-  public ExportFontConfig getDefaultExportFontConfig() throws Exception;
-
-  public ExportFontConfig save(ExportFontConfig exportFontConfig);
-
-  public void delete(ExportFontConfig exportFontConfig);
+    public SerializationExceptionReport(SerializationException serializationException) {
+    	super(new MappingJackson2JsonView());
+    	//this.setView(new MappingJackson2JsonView());
+    	this.addObject("Errors stack", serializationException.getErrorMessages());
+        this.addObject("Location", serializationException.getLocation());
+    }
+    
 }

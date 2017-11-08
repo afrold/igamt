@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +45,7 @@ public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrComp
     @Override
     public SerializableCompositeProfile serializeCompositeProfile(CompositeProfile compositeProfile,
         String prefix, SerializationLayout serializationLayout, String hl7Version,
-        ExportConfig exportConfig) {
+        ExportConfig exportConfig) throws SerializationException {
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
         String type = "ConformanceStatement";
         SerializableConstraints serializableConformanceStatements = super.serializeConstraints(

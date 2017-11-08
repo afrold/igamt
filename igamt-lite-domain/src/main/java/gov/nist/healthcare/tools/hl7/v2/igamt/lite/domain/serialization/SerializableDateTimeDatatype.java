@@ -1,6 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -35,7 +36,7 @@ public class SerializableDateTimeDatatype extends SerializableDatatype {
     }
 
     @Override
-    public Element serializeElement() {
+    public Element serializeElement() throws ConstraintSerializationException {
         Element element = super.serializeElement();
         Element dtmElement = new Element("DateTimeDatatype");
         DTMConstraints dtmConstraints = datatype.getDtmConstraints();

@@ -102,7 +102,7 @@ public abstract class SerializeMessageOrCompositeProfile {
                 SerializableConstraint serializableConstraint = new SerializableConstraint(constraint, name);
                 serializableConstraintList.add(serializableConstraint);
             } catch (Exception e){
-                throw new ConstraintSerializationException(e,constraint);
+                throw new ConstraintSerializationException(e,constraint,name);
             }
         }
         String id = UUID.randomUUID().toString();

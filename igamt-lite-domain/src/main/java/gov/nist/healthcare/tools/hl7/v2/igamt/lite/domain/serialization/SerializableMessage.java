@@ -6,6 +6,8 @@ import java.util.List;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -58,7 +60,7 @@ public class SerializableMessage extends SerializableSection {
         this.locationPathMap = locationPathMap;
     }
 
-    @Override public Element serializeElement() {
+    @Override public Element serializeElement() throws SerializationException {
         Element messageElement = new Element("Message");
         messageElement.addAttribute(new Attribute("ID", this.message.getId() + ""));
         messageElement.addAttribute(new Attribute("Name", this.message.getName() + ""));

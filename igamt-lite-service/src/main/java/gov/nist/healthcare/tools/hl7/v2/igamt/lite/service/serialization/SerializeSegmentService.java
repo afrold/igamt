@@ -9,6 +9,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SegmentSerializationException;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -25,8 +26,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
  */
 public interface SerializeSegmentService {
     public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix,
-        Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull);
+        Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull) throws SegmentSerializationException;
     public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix,
-        Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean duplicateOBXDataTypeWhenFlavorNull);
-	public SerializableSection serializeSegment(Segment segment, String host);
+        Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean duplicateOBXDataTypeWhenFlavorNull) throws SegmentSerializationException;
+	public SerializableSection serializeSegment(Segment segment, String host) throws SegmentSerializationException;
 }

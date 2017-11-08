@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.MessageSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SegmentSerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -152,7 +154,7 @@ public class SerializationServiceImpl implements SerializationService {
 
   @Override
   public Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument,
-      ExportConfig exportConfig){
+      ExportConfig exportConfig) throws SerializationException {
     this.exportConfig = exportConfig;
     this.unbindedTables = null;
     SerializableStructure serializableStructure = new SerializableStructure();
@@ -198,7 +200,7 @@ public class SerializationServiceImpl implements SerializationService {
   }
 
   @Override
-  public Document serializeElement(SerializableElement element) {
+  public Document serializeElement(SerializableElement element) throws SerializationException {
     SerializableStructure serializableStructure = new SerializableStructure();
     serializableStructure.addSerializableElement(element);
     return serializableStructure.serializeStructure();
@@ -207,7 +209,7 @@ public class SerializationServiceImpl implements SerializationService {
   @Override
   public Document serializeIGDocument(IGDocument igDocument,
       SerializationLayout serializationLayout, ExportConfig exportConfig) throws SerializationException {
-    this.exportConfig = exportConfig;
+	this.exportConfig = exportConfig;
     igDocumentMessages = igDocument.getProfile().getMessages();
     this.bindedDatatypes = new ArrayList<>();
     this.bindedDatatypesId = new ArrayList<>();
@@ -631,7 +633,8 @@ public class SerializationServiceImpl implements SerializationService {
   }
 
   private SerializableSection serializeCompositeProfiles(Profile profile,
-      SerializationLayout serializationLayout, String hl7Version, int position) {
+      SerializationLayout serializationLayout, String hl7Version, int position)
+      throws SerializationException {
     if (profile.getCompositeProfiles() != null
         && !profile.getCompositeProfiles().getChildren().isEmpty()) {
       String id = profile.getCompositeProfiles().getId();
@@ -846,7 +849,7 @@ public class SerializationServiceImpl implements SerializationService {
 
   private SerializableSection serializeSegments(Profile profile, UsageConfig fieldsUsageConfig,
       SerializationLayout serializationLayout, int position,
-      Boolean duplicateOBXDataTypeWhenFlavorNull) {
+      Boolean duplicateOBXDataTypeWhenFlavorNull) throws SegmentSerializationException {
     String id = profile.getSegmentLibrary().getId();
     String sectionPosition = String.valueOf(position);
     String prefix = String.valueOf(profile.getSectionPosition() + 1) + "."

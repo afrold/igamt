@@ -19,8 +19,8 @@ public class ConstraintSerializationException extends SerializationException {
 
     Constraint constraint;
 
-    public ConstraintSerializationException(Exception originalException, Constraint constraint) {
-        super(originalException);
+    public ConstraintSerializationException(Exception originalException, Constraint constraint, String location) {
+        super(originalException,location);
         this.constraint = constraint;
     }
 

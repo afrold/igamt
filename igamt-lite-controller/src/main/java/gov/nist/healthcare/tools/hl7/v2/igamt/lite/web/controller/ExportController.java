@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.ExportException;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,8 +80,14 @@ import java.io.InputStream;
         HttpServletRequest request) throws DataNotFoundException {
         Datatype datatype = datatypeService.findById(id);
         if (datatype != null) {
-            return exportService
-                .exportDataModelAsHtml(datatype, datatype.getName(), generateHost(request));
+            String result = "";
+            try {
+                result = exportService
+                    .exportDataModelAsHtml(datatype, datatype.getName(), generateHost(request));
+                return result;
+            } catch (SerializationException se){
+                return se.toJson();
+            }
         }
         return null;
     }
@@ -91,7 +98,8 @@ import java.io.InputStream;
         @ApiResponse(code = 400, message = "Bad request")
     })
     @RequestMapping(value = "/datatype", method = RequestMethod.GET, produces = "application/json")
-    public ExportableDataModel getDatatypeWithParams(@RequestParam(value="name", required=true) String name,@RequestParam(value="hl7Version", required=true) String hl7Version, HttpServletRequest request) throws DataNotFoundException {
+    public ExportableDataModel getDatatypeWithParams(@RequestParam(value="name", required=true) String name,@RequestParam(value="hl7Version", required=true) String hl7Version, HttpServletRequest request)
+        throws DataNotFoundException, SerializationException {
         if ((name != null && !name.isEmpty()) || (hl7Version != null && !hl7Version.isEmpty())) {
             if (name != null && !name.isEmpty()) {
                 if (hl7Version != null && !hl7Version.isEmpty()) {
@@ -125,7 +133,7 @@ import java.io.InputStream;
         @ApiResponse(code = 400, message = "Bad request")})
     @RequestMapping(value = "/valueSet/{id}/html", method = RequestMethod.GET, produces = "text/html")
     public String getValueSetAsHtml(@PathVariable(value = "id") String id,
-        HttpServletRequest request) throws DataNotFoundException {
+        HttpServletRequest request) throws DataNotFoundException, SerializationException {
         Table table = tableService.findById(id);
         if (table != null) {
             return exportService
@@ -140,7 +148,8 @@ import java.io.InputStream;
         @ApiResponse(code = 400, message = "Bad request")
     })
     @RequestMapping(value = "/valueSet", method = RequestMethod.GET, produces = "application/json")
-    public ExportableDataModel getValueSetWithParams(@RequestParam("scope") String scope, @RequestParam(value="bindingIdentifier", required=true) String bindingIdentifier,@RequestParam(value="hl7Version", required=false) String hl7Version, HttpServletRequest request) throws DataNotFoundException {
+    public ExportableDataModel getValueSetWithParams(@RequestParam("scope") String scope, @RequestParam(value="bindingIdentifier", required=true) String bindingIdentifier,@RequestParam(value="hl7Version", required=false) String hl7Version, HttpServletRequest request)
+        throws DataNotFoundException, SerializationException {
         if(scope.equals(Constant.SCOPE.HL7STANDARD.name()) || scope.equals(Constant.SCOPE.PHINVADS.name())){
             if((bindingIdentifier != null && !bindingIdentifier.isEmpty()) || (hl7Version != null && !hl7Version.isEmpty())){
                 if(bindingIdentifier != null && !bindingIdentifier.isEmpty()){
@@ -178,7 +187,7 @@ import java.io.InputStream;
         @ApiResponse(code = 400, message = "Bad request")})
     @RequestMapping(value = "/segment/{id}/html", method = RequestMethod.GET, produces = "text/html")
     public String getSegmentAsHtml(@PathVariable(value = "id") String id,
-        HttpServletRequest request) throws DataNotFoundException {
+        HttpServletRequest request) throws DataNotFoundException, SerializationException {
         Segment segment = segmentService.findById(id);
         if (segment != null) {
             return exportService
@@ -193,7 +202,8 @@ import java.io.InputStream;
         @ApiResponse(code = 400, message = "Bad request")
     })
     @RequestMapping(value = "/segment", method = RequestMethod.GET, produces = "application/json")
-    public ExportableDataModel getSegmentWithParams(@RequestParam(value="name", required=true) String name,@RequestParam(value="hl7Version", required=true) String hl7Version, HttpServletRequest request) throws DataNotFoundException {
+    public ExportableDataModel getSegmentWithParams(@RequestParam(value="name", required=true) String name,@RequestParam(value="hl7Version", required=true) String hl7Version, HttpServletRequest request)
+        throws DataNotFoundException, SerializationException {
         if((name != null && !name.isEmpty()) || (hl7Version != null && !hl7Version.isEmpty())){
             if(name != null && !name.isEmpty()){
                 if(hl7Version != null && !hl7Version.isEmpty()){
@@ -224,7 +234,7 @@ import java.io.InputStream;
         @ApiResponse(code = 400, message = "Bad request")})
     @RequestMapping(value = "/message/{id}/html", method = RequestMethod.GET, produces = "text/html")
     public String getMessageAsHtml(@PathVariable(value = "id") String id,
-        HttpServletRequest request) throws DataNotFoundException {
+        HttpServletRequest request) throws DataNotFoundException, SerializationException {
         Message message = messageService.findById(id);
         if (message != null) {
             return exportService
@@ -239,7 +249,8 @@ import java.io.InputStream;
         @ApiResponse(code = 400, message = "Bad request")
     })
     @RequestMapping(value = "/message", method = RequestMethod.GET, produces = "application/json")
-    public ExportableDataModel getMessageWithParams(@RequestParam(value="messageType", required=true) String messageType,@RequestParam(value="event", required=false) String event,@RequestParam(value="hl7Version", required=true) String hl7Version, HttpServletRequest request) throws DataNotFoundException {
+    public ExportableDataModel getMessageWithParams(@RequestParam(value="messageType", required=true) String messageType,@RequestParam(value="event", required=false) String event,@RequestParam(value="hl7Version", required=true) String hl7Version, HttpServletRequest request)
+        throws DataNotFoundException, SerializationException {
         if(messageType != null && !messageType.isEmpty() && hl7Version != null && !hl7Version.isEmpty()){
           
           if(messageType.equals("ACK") || (event !=null && !event.isEmpty())){
@@ -273,7 +284,8 @@ import java.io.InputStream;
     @ApiResponses({@ApiResponse(code = 200, message = "Success"),
         @ApiResponse(code = 400, message = "Bad request")})
     @RequestMapping(value = "/igDocument/{id}/html", method = RequestMethod.GET, produces = "text/html")
-    public String getIgDocumentAsHtml(@PathVariable(value = "id") String id) {
+    public String getIgDocumentAsHtml(@PathVariable(value = "id") String id)
+        throws ExportException {
         InputStream resultInputStream = null;
         String result = "";
         IGDocument igDocument = igDocumentService.findById(id);
@@ -285,6 +297,8 @@ import java.io.InputStream;
                         exportFontConfigService.getDefaultExportFontConfig());
             } catch (SerializationException e) {
                 return e.toJson();
+            } catch (Exception e) {
+                throw new ExportException("Unable to load font export configuration",e);
             }
             if(resultInputStream != null){
                 try {
@@ -312,7 +326,7 @@ import java.io.InputStream;
         @ApiResponse(code = 400, message = "Bad request")})
     @RequestMapping(value = "/profileComponent/{id}/html", method = RequestMethod.GET, produces = "text/html")
     public String getProfileComponentAsHtml(@PathVariable(value = "id") String id,
-        HttpServletRequest request) throws DataNotFoundException {
+        HttpServletRequest request) throws DataNotFoundException, SerializationException {
         ProfileComponent profileComponent = profileComponentService.findById(id);
         if (profileComponent != null) {
             return exportService.exportDataModelAsHtml(profileComponent, profileComponent.getName(),

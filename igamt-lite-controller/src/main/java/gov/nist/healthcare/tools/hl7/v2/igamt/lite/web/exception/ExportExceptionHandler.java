@@ -1,10 +1,11 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableCompositeProfile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -17,10 +18,17 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exceptio
  * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified.
  * <p>
- * Created by Maxence Lefort on 3/29/17.
+ * Created by Maxence Lefort on 11/8/17.
  */
-public interface SerializeCompositeProfileService {
-    SerializableCompositeProfile serializeCompositeProfile(CompositeProfile compositeProfile, String prefix,
-        SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig)
-        throws ConstraintSerializationException, SerializationException;
+@ControllerAdvice
+public class ExportExceptionHandler {
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ExceptionHandler(ExportException.class)
+    protected ExportExceptionReport handleExportException(
+        ExportException ex) {
+        ExportExceptionReport report = new ExportExceptionReport(ex.getMessage());
+        return report;
+    }
 }

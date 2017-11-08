@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import org.apache.commons.lang3.StringUtils;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
@@ -84,7 +86,7 @@ public class SerializableSegment extends SerializableSection {
 
 
   @Override
-  public Element serializeElement() {
+  public Element serializeElement() throws SerializationException {
     Element segmentElement = new Element("Segment");
     if (segment != null) {
       segmentElement.addAttribute(new Attribute("id", segment.getId()));

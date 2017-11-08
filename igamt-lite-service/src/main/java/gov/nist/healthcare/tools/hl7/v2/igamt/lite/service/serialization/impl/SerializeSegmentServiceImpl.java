@@ -25,13 +25,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetDa
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSegment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.CoConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SegmentSerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeConstraintService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeDatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeSegmentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeTableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
 
@@ -61,19 +61,19 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
     @Autowired SerializeConstraintService serializeConstraintService;
 
     @Override
-    public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull) {
+    public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull) throws SegmentSerializationException {
         Segment segment = segmentService.findById(segmentLink.getId());
         return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,null,null, false, duplicateOBXDataTypeWhenFlavorNull, null);
     }
 
     @Override public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix,
         Integer position, Integer headerLevel, UsageConfig segmentUsageConfig,
-        Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean duplicateOBXDataTypeWhenFlavorNull) {
+        Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean duplicateOBXDataTypeWhenFlavorNull) throws SegmentSerializationException {
         Segment segment = compositeProfileSegments.get(segmentLink.getId());
         return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,compositeProfileDatatypes,compositeProfileTables, false, duplicateOBXDataTypeWhenFlavorNull, null);
     }
 
-    private SerializableSection serializeSegment(Segment segment, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean showInnerLinks, Boolean duplicateOBXDataTypeWhenFlavorNull, String host) {
+    private SerializableSection serializeSegment(Segment segment, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean showInnerLinks, Boolean duplicateOBXDataTypeWhenFlavorNull, String host) throws SegmentSerializationException {
         if (segment != null) {
             //Create section node
             String id = segment.getId();
@@ -162,6 +162,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
             for(Field field : fieldsToBeRemoved){
                 segment.getFields().remove(field);
             }
+            try {
             if (segment.getCoConstraintsTable() != null && segment.getCoConstraintsTable().getRowSize() > 0) {
               for(int i=0;i<segment.getCoConstraintsTable().getRowSize();i++){
                 for(CoConstraintColumnDefinition coConstraintColumnDefinition : segment.getCoConstraintsTable().getThenColumnDefinitionList()){
@@ -177,6 +178,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
                       }
                       if (table != null) {
                           coConstraintValueTableMap.put(valueSetData.getTableId(), table);
+                      } else {
+                    	  throw new CoConstraintSerializationException(new Exception(),"CoConstraints Then data row "+i+1, "Unable to find table with id "+valueSetData.getTableId());
                       }
                     }
                   }
@@ -185,10 +188,15 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
                     Datatype dt = datatypeService.findById(coConstraintTHENColumnData.getDatatypeId());
                     if(dt != null){
                       coConstraintDatatypeMap.put(coConstraintTHENColumnData.getDatatypeId(), dt); 
+                    } else {
+                    	throw new CoConstraintSerializationException(new Exception(),"CoConstraints Then data row "+i+1,"Unable to find datatype with id "+coConstraintTHENColumnData.getDatatypeId());
                     }
                   }
                 }
               }
+            }
+            } catch (CoConstraintSerializationException coConstraintSerializationException){
+            	throw new SegmentSerializationException(coConstraintSerializationException, segment.getLabel());
             }
             Boolean showConfLength = serializationUtil.isShowConfLength(segment.getHl7Version());
             DynamicMappingDefinition dynamicMappingDefinition = segment.getDynamicMappingDefinition();
@@ -216,7 +224,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
     }
 
 	@Override
-	public SerializableSection serializeSegment(Segment segment, String host) {
+	public SerializableSection serializeSegment(Segment segment, String host) throws SegmentSerializationException {
 		ExportConfig defaultConfig = ExportConfig.getBasicExportConfig(true);
 		return serializeSegment(segment, String.valueOf(0), 1, 1, defaultConfig.getFieldsExport(), null, null, true, false, host);
 	}

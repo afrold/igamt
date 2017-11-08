@@ -1,5 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
  * the Federal Government in the course of their official duties. Pursuant to title 17 Section 105
@@ -17,15 +20,41 @@ public abstract class SerializationException extends Exception {
 
     private Exception originalException;
     private String message;
+    private String location;
 
-    public SerializationException(Exception originalException) {
+    public SerializationException(Exception originalException, String location) {
         this.originalException = originalException;
+        this.location = location;
     }
 
-    public SerializationException(Exception originalException, String message) {
+    public SerializationException(Exception originalException, String location, String message) {
         this.originalException = originalException;
         this.message = message;
+        this.location = location;
     }
 
     public abstract String toJson();
+
+    public String getLocation(){
+        if(this.originalException instanceof SerializationException){
+            return location + " -> " + ((SerializationException)originalException).getLocation();
+        } else {
+            return location;
+        }
+    }
+
+    public List<String> getErrorMessages(){
+    	ArrayList<String> errorMessagesStack = new ArrayList<>();
+        String errorMessage =  "["+location+"]";
+        if(message != null && !message.isEmpty()){
+            errorMessage += " - " + message;
+        }
+        errorMessagesStack.add(errorMessage);
+        if(this.originalException instanceof SerializationException){
+        	errorMessagesStack.addAll(((SerializationException) originalException).getErrorMessages());
+        } else {
+            errorMessagesStack.add("[Serialization] - Exception triggered: "+originalException.getMessage());
+        }
+        return errorMessagesStack;
+    }
 }

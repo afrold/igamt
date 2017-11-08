@@ -33,6 +33,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import org.apache.commons.codec.binary.Base64;
@@ -130,7 +131,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 	}
 
 	@Override
-	public String serializeIGDocumentToXML(IGDocument igdoc) {
+	public String serializeIGDocumentToXML(IGDocument igdoc) throws SerializationException {
 			String xml = serializationService.serializeIGDocument(igdoc, SerializationLayout.IGDOCUMENT, ExportConfig.getBasicExportConfig(false)).toXML();
 			return xml;
 	}
