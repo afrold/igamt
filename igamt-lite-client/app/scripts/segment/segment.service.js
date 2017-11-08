@@ -2,7 +2,7 @@
  * Created by haffo on 3/9/16.
  */
 'use strict';
-angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', 'ElementUtils', '$q', '$http', 'FilteringSvc', 'userInfoService','$filter', function($rootScope, ViewSettings, ElementUtils, $q, $http, FilteringSvc, userInfoService,$filter) {
+angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', 'ElementUtils', '$q', '$http', 'FilteringSvc', 'userInfoService','$filter', 'TableService', function($rootScope, ViewSettings, ElementUtils, $q, $http, FilteringSvc, userInfoService,$filter, TableService) {
     var SegmentService = {
         getNodes: function(parent, root) {
             var children = [];
@@ -373,7 +373,7 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
             $rootScope.segment = angular.copy($rootScope.segmentsMap[$rootScope.segment.id]);
             $rootScope.segment.fields = $filter('orderBy')($rootScope.segment.fields, 'position');
 
-            $rootScope.initCoConstraintsTable();
+            SegmentService.initCoConstraintsTable();
         },
 
         updateTableBinding: function(segmentUpdateParameterList) {
@@ -392,6 +392,215 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
             }, function(error) {
                 delay.reject(error);
             });
+            return delay.promise;
+        },
+        updateDynamicMappingInfo: function () {
+            var delay = $q.defer();
+            $rootScope.isDynamicMappingSegment = false;
+            var mappingStructure = _.find($rootScope.config.variesMapItems, function (item) {
+                return item.hl7Version == $rootScope.segment.hl7Version && item.segmentName == $rootScope.segment.name;
+            });
+
+            if (mappingStructure) {
+                $rootScope.isDynamicMappingSegment = true;
+                console.log("=========This is DM segment!!=========");
+
+                if ($rootScope.segment.dynamicMappingDefinition && $rootScope.segment.dynamicMappingDefinition.mappingStructure) {
+                    console.log("=========Found mapping structure!!=========");
+                    mappingStructure = $rootScope.segment.dynamicMappingDefinition.mappingStructure;
+                } else {
+                    console.log("=========Not Found mapping structure and Default setting will be used!!=========");
+                    $rootScope.segment.dynamicMappingDefinition = {};
+                    $rootScope.segment.dynamicMappingDefinition.mappingStructure = mappingStructure;
+                }
+
+                var valueSetBinding = _.find($rootScope.segment.valueSetBindings, function (vsb) {
+                    return vsb.location == mappingStructure.referenceLocation;
+                });
+
+                if (valueSetBinding) {
+                    TableService.getOne(valueSetBinding.tableId).then(function (tbl) {
+                        delay.resolve(tbl);
+                    }, function () {
+                        delay.resolve(null);
+                    });
+                } else {
+                    delay.resolve(null);
+                }
+            } else {
+                delay.resolve(null);
+            }
+
+            return delay.promise;
+        },
+        initCoConstraintsTable: function (segment) {
+            var time0 = new Date();
+            console.log("initCoConstraintsTable Start: " + time0.getHours() + ":" + time0.getMinutes() + ":" + time0.getSeconds() + ":" + time0.getMilliseconds());
+            console.log(segment);
+            var delay = $q.defer();
+            if (segment && segment.coConstraintsTable) {
+                if (segment.scope === 'USER' && segment.name === 'OBX') {
+                    if (!segment.coConstraintsTable.ifColumnDefinition || !segment.coConstraintsTable.thenColumnDefinitionList || segment.coConstraintsTable.thenColumnDefinitionList.length === 0) {
+                        var field2 = null;
+                        var field3 = null;
+                        var field5 = null;
+
+                        angular.forEach(segment.fields, function (field) {
+                            if (field.position === 2) {
+                                field2 = field;
+                            } else if (field.position === 3) {
+                                field3 = field;
+                            } else if (field.position === 5) {
+                                field5 = field;
+                            }
+                        });
+
+                        var ifColumnDefinition = {
+                            id: new ObjectId().toString(),
+                            path: "3",
+                            constraintPath: "3[1]",
+                            type: "field",
+                            constraintType: "value",
+                            name: field3.name,
+                            usage: field3.usage,
+                            dtId: field3.datatype.id,
+                            primitive: false,
+                            dMReference: false
+                        };
+
+                        var field2ColumnDefinition = {
+                            id: new ObjectId().toString(),
+                            path: "2",
+                            constraintPath: "2[1]",
+                            type: "field",
+                            constraintType: "dmr",
+                            name: field2.name,
+                            usage: field2.usage,
+                            dtId: field2.datatype.id,
+                            primitive: true,
+                            dMReference: true
+                        };
+
+                        var field5ColumnDefinition = {
+                            id: new ObjectId().toString(),
+                            path: "5",
+                            constraintPath: "5[1]",
+                            type: "field",
+                            constraintType: "valueset",
+                            name: field5.name,
+                            usage: field5.usage,
+                            dtId: field5.datatype.id,
+                            primitive: true,
+                            dMReference: false
+                        };
+                        var thenColumnDefinitionList = [];
+                        thenColumnDefinitionList.push(field2ColumnDefinition);
+                        thenColumnDefinitionList.push(field5ColumnDefinition);
+
+                        var userColumnDefinitionList = [];
+                        var userColumnDefinition = {
+                            id: new ObjectId().toString(),
+                            title: "Comments"
+                        };
+                        userColumnDefinitionList.push(userColumnDefinition);
+
+                        segment.coConstraintsTable.ifColumnDefinition = ifColumnDefinition;
+                        segment.coConstraintsTable.thenColumnDefinitionList = thenColumnDefinitionList;
+                        segment.coConstraintsTable.userColumnDefinitionList = userColumnDefinitionList;
+
+
+                        var isAdded = false;
+                        if (!segment.coConstraintsTable.ifColumnData) segment.coConstraintsTable.ifColumnData = [];
+                        if (!segment.coConstraintsTable.thenMapData) segment.coConstraintsTable.thenMapData = {};
+                        if (!segment.coConstraintsTable.userMapData) segment.coConstraintsTable.userMapData = {};
+                        if (!segment.coConstraintsTable.rowSize) segment.coConstraintsTable.rowSize = 0;
+
+                        if (segment.coConstraintsTable.ifColumnDefinition) {
+                            var newIFData = {};
+                            newIFData.valueData = {};
+                            newIFData.bindingLocation = null;
+
+                            segment.coConstraintsTable.ifColumnData.push(newIFData);
+                            isAdded = true;
+                        }
+
+                        if (segment.coConstraintsTable.thenColumnDefinitionList) {
+                            for (var i = 0, len1 = segment.coConstraintsTable.thenColumnDefinitionList.length; i < len1; i++) {
+                                var thenColumnDefinition = segment.coConstraintsTable.thenColumnDefinitionList[i];
+
+                                var newTHENData = {};
+                                newTHENData.valueData = {};
+                                newTHENData.valueSets = [];
+
+                                if (!segment.coConstraintsTable.thenMapData[thenColumnDefinition.id]) segment.coConstraintsTable.thenMapData[thenColumnDefinition.id] = [];
+
+                                segment.coConstraintsTable.thenMapData[thenColumnDefinition.id].push(newTHENData);
+                                isAdded = true;
+                            }
+                            ;
+                        }
+
+                        if (segment.coConstraintsTable.userColumnDefinitionList) {
+                            for (var i = 0, len1 = segment.coConstraintsTable.userColumnDefinitionList.length; i < len1; i++) {
+                                var userColumnDefinition = segment.coConstraintsTable.userColumnDefinitionList[i];
+
+                                var newUSERData = {};
+                                newUSERData.text = "";
+
+                                if (!segment.coConstraintsTable.userMapData[userColumnDefinition.id]) segment.coConstraintsTable.userMapData[userColumnDefinition.id] = [];
+
+                                segment.coConstraintsTable.userMapData[userColumnDefinition.id].push(newUSERData);
+                                isAdded = true;
+                            }
+                            ;
+                        }
+
+                        if (isAdded) {
+                            segment.coConstraintsTable.rowSize = segment.coConstraintsTable.rowSize + 1;
+                        }
+                    }
+                    if (segment.coConstraintsTable.thenColumnDefinitionList) {
+
+                        segment.coConstraintsTable.thenColumnDefinitionListForDisplay = [];
+                        for (var i in segment.coConstraintsTable.thenColumnDefinitionList) {
+                            var def = segment.coConstraintsTable.thenColumnDefinitionList[i];
+
+                            if (def.constraintType === 'dmr') {
+                                segment.coConstraintsTable.thenColumnDefinitionListForDisplay.push(def);
+                                var clone = angular.copy(def);
+                                clone.constraintType = 'dmf';
+                                segment.coConstraintsTable.thenColumnDefinitionListForDisplay.push(clone);
+                            } else {
+                                segment.coConstraintsTable.thenColumnDefinitionListForDisplay.push(def);
+                            }
+                        }
+                    }
+                    console.log(segment.coConstraintsTable);
+                    delay.resolve(segment.coConstraintsTable);
+                }else {
+                    delay.resolve(null);
+                }
+            }else {
+                delay.resolve(null);
+            }
+            var time1 = new Date();
+            console.log("initCoConstraintsTable End: " + time1.getHours() + ":" + time1.getMinutes() + ":" + time1.getSeconds() + ":" + time1.getMilliseconds());
+            return delay.promise;
+        },
+        initRowIndexForCocon: function(coConstraintsTable) {
+            var delay = $q.defer();
+            if(coConstraintsTable){
+                var coConRowIndexList = [];
+                for (var i = 0, len1 = coConstraintsTable.rowSize; i < len1; i++) {
+                    var rowIndexObj = {};
+                    rowIndexObj.rowIndex = i;
+                    rowIndexObj.id = new ObjectId().toString();
+                    coConRowIndexList.push(rowIndexObj);
+                }
+                delay.resolve(coConRowIndexList);
+            }else {
+                delay.resolve([]);
+            }
             return delay.promise;
         }
     };
