@@ -333,6 +333,7 @@ public class CompositeProfile extends DataModelWithConstraints
 		m.setPosition(position);
 		m.setStructID(structID);
 		m.setUsageNote(usageNote);
+		m.setName(name);
 //		m.setMessageID(messageID);
 		m.setType(type);
 		m.setPredicates(new ArrayList<Predicate>());
