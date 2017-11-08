@@ -323,10 +323,11 @@ public class Bootstrap implements InitializingBean {
     // 2.0.0-beta7
     // updateTableForNumOfCodesANDSourceType();
     // updateTableForNumOfCodesANDSourceType();
+    //TODO Do not use updateTableForNumOfCodesANDSourceType function any more. - Woo
 
     
-   
-    testNotification();
+   //This is just test.
+//    testNotification();
 
   }
 
