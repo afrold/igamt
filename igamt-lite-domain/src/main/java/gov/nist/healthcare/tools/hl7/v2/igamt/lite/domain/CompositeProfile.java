@@ -314,12 +314,12 @@ public class CompositeProfile extends DataModelWithConstraints
 			if (srog instanceof Group) {
 				Group g = (Group) srog;
 				Group clone = g.clone();
-				clone.setId(g.getId());
+				clone.setId(ObjectId.get().toString());
 				m.addSegmentRefOrGroup(clone);
 			} else if (srog instanceof SegmentRef) {
 				SegmentRef sr = (SegmentRef) srog;
 				SegmentRef clone = sr.clone();
-				clone.setId(sr.getId());
+				clone.setId(ObjectId.get().toString());
 				m.addSegmentRefOrGroup(clone);
 			}
 		}
@@ -333,6 +333,7 @@ public class CompositeProfile extends DataModelWithConstraints
 		m.setPosition(position);
 		m.setStructID(structID);
 		m.setUsageNote(usageNote);
+		m.setName(name);
 //		m.setMessageID(messageID);
 		m.setType(type);
 		m.setPredicates(new ArrayList<Predicate>());

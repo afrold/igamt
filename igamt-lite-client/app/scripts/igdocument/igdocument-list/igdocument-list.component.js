@@ -1381,100 +1381,112 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
   $scope.showSelected = function (node) {
     $scope.selectedNode = node;
   };
-    $scope.clearSegmentScope=function(){
-        delete $rootScope["datatype"];
-        delete $rootScope["message"];
-        delete $rootScope["profileComponent"];
-        delete $rootScope["messageTree"];
-        delete $rootScope["pcTree"];
-        delete $rootScope["cpTree"];
-        delete $rootScope["originalCompositeProfileStructure"];
-        delete $rootScope["compositeProfileStructure"];
-        delete $rootScope["table"];
-        delete $rootScope["codeSystems"];
-        delete $rootScope["codes"];
-        // delete $rootScope["smallCodes"];
-        delete $rootScope["section"];
-
-    };
 
 
-    $scope.selectSegment = function (segment) {
+  $scope.clearSegmentScope=function(){
+    delete $rootScope["datatype"];
+    delete $rootScope["message"];
+    delete $rootScope["profileComponent"];
+    delete $rootScope["messageTree"];
+    delete $rootScope["pcTree"];
+    delete $rootScope["cpTree"];
+    delete $rootScope["originalCompositeProfileStructure"];
+    delete $rootScope["compositeProfileStructure"];
+    delete $rootScope["table"];
+    delete $rootScope["codeSystems"];
+    delete $rootScope["codes"];
+    delete $rootScope["section"];
+  };
+
+  $scope.selectSegment = function (segment) {
+    var startTime = new Date();
     $rootScope.Activate(segment.id);
-    if (segment && segment != null) {
+    if (segment && segment !== null) {
       $scope.loadingSelection = true;
       blockUI.start();
       $timeout(
-        function () {
-          try {
-            SegmentService.get(segment.id).then(function (result) {
-              $rootScope.segment = angular.copy(result);
-              $rootScope.segment.fields = $filter('orderBy')($rootScope.segment.fields, 'position');
-              $rootScope.currentData = $rootScope.segment;
-              $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
-              $rootScope.segment["type"] = "segment";
-              $scope.loadingSelection = false;
-              console.log("edit Form");
-
-              console.log($scope.editForm);
-
+          function () {
               try {
-                if ($scope.segmentsParams)
-                  $scope.segmentsParams.refresh();
+                  SegmentService.get(segment.id).then(function (result) {
+                      $rootScope.segment = angular.copy(result);
+                      $rootScope.segment.fields = $filter('orderBy')($rootScope.segment.fields, 'position');
+                      $rootScope.currentData = $rootScope.segment;
+                      $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
+                      $rootScope.segment["type"] = "segment";
+                      $rootScope.crossRef = {};
+                      $scope.clearSegmentScope();
+                      $scope.loadingSelection = false;
+                      try {
+                          if ($scope.segmentsParams)
+                              $scope.segmentsParams.refresh();
+                      } catch (e) {
+
+                      }
+                      var crossRefPromise = SegmentService.crossRef($rootScope.segment.id,$rootScope.igdocument.id);
+                      crossRefPromise.then (function (result) {
+                          $rootScope.crossRef = result;
+                      }, function (error) {
+                          $scope.loadingSelection = false;
+                          $rootScope.msg().text = error.data.text;
+                          $rootScope.msg().type = error.data.type;
+                          $rootScope.msg().show = true;
+                          blockUI.stop();
+                      });
+
+                      if($rootScope.segment.scope === 'USER' && $rootScope.segment.name === 'OBX'){
+                          SegmentService.updateDynamicMappingInfo().then (function (dynamicMappingTable) {
+                              $rootScope.dynamicMappingTable = dynamicMappingTable;
+                              SegmentService.initCoConstraintsTable($rootScope.segment).then (function (coConstraintsTable) {
+                                  $rootScope.segment.coConstraintsTable = coConstraintsTable;
+                                  SegmentService.initRowIndexForCocon($rootScope.segment.coConstraintsTable).then (function (coConRowIndexList) {
+                                      $rootScope.coConRowIndexList = coConRowIndexList;
+                                      $q.all([crossRefPromise]).then (function (result) {
+                                          $rootScope.$emit("event:initEditArea");
+                                          $rootScope.$emit("event:initSegment");
+                                          $rootScope.subview = "EditSegments.html";
+                                          $scope.loadingSelection = false;
+                                          blockUI.stop();
+                                      }, function (error) {
+                                          $scope.loadingSelection = false;
+                                          $rootScope.msg().text = error.data.text;
+                                          $rootScope.msg().type = error.data.type;
+                                          $rootScope.msg().show = true;
+                                          blockUI.stop();
+                                      });
+                                  });
+                              });
+                          });
+                      }else {
+                          $q.all([crossRefPromise]).then (function (result) {
+                              $rootScope.$emit("event:initEditArea");
+                              $rootScope.$emit("event:initSegment");
+                              $rootScope.subview = "EditSegments.html";
+                              $scope.loadingSelection = false;
+                              blockUI.stop();
+                          }, function (error) {
+                              $scope.loadingSelection = false;
+                              $rootScope.msg().text = error.data.text;
+                              $rootScope.msg().type = error.data.type;
+                              $rootScope.msg().show = true;
+                              blockUI.stop();
+                          });
+                      }
+
+                  }, function (error) {
+                      $scope.loadingSelection = false;
+                      $rootScope.msg().text = error.data.text;
+                      $rootScope.msg().type = error.data.type;
+                      $rootScope.msg().show = true;
+                      blockUI.stop();
+                  });
               } catch (e) {
-
+                  $scope.loadingSelection = false;
+                  $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
+                  $rootScope.msg().type = "danger";
+                  $rootScope.msg().show = true;
+                  blockUI.stop();
               }
-              $rootScope.updateDynamicMappingInfo();
-              $rootScope.initCoConstraintsTable();
-              $rootScope.coConRowIndexList = [];
-
-              for (var i = 0, len1 = $rootScope.segment.coConstraintsTable.rowSize; i < len1; i++) {
-                var rowIndexObj = {};
-                rowIndexObj.rowIndex = i;
-                rowIndexObj.id = new ObjectId().toString();
-                $rootScope.coConRowIndexList.push(rowIndexObj);
-              }
-
-              $rootScope.crossRef = {};
-                $scope.clearSegmentScope();
-
-              SegmentService.crossRef($rootScope.segment.id,$rootScope.igdocument.id).then(function (result) {
-                $rootScope.crossRef = result;
-                console.log("Cross REF Found!!![" + $rootScope.segment.id + "][" + $rootScope.igdocument.id + "]");
-                console.log($rootScope.crossRef);
-
-              }, function (error) {
-                $scope.loadingSelection = false;
-                $rootScope.msg().text = error.data.text;
-                $rootScope.msg().type = error.data.type;
-                $rootScope.msg().show = true;
-              });
-              $scope.loadingSelection = false;
-              $rootScope.$emit("event:initEditArea");
-              $rootScope.$emit("event:initSegment");
-              console.log($scope.editForm);
-
-              $rootScope.subview = "EditSegments.html";
-
-              blockUI.stop();
-
-
-
-            }, function (error) {
-              $scope.loadingSelection = false;
-              $rootScope.msg().text = error.data.text;
-              $rootScope.msg().type = error.data.type;
-              $rootScope.msg().show = true;
-              blockUI.stop();
-            });
-          } catch (e) {
-            $scope.loadingSelection = false;
-            $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
-            $rootScope.msg().type = "danger";
-            $rootScope.msg().show = true;
-            blockUI.stop();
-          }
-        }, 100);
+          }, 100);
     }
   };
 
