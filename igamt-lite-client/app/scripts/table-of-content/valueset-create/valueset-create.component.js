@@ -7,7 +7,7 @@ angular.module('igl').controller('CreateValueSet', ['$rootScope', '$scope', '$md
   $scope.newTable={};
   $scope.selectedTableLibary=selectedTableLibary;
   $scope.newTable.shareParticipantIds = [];
-  //$scope.newTable.sourceType="INTERNAL";
+  $scope.newTable.sourceType=null;
   $scope.newTable.codes=[];
   $scope.newTable.scope = selectedTableLibary.scope;
   $scope.newTable.id = null;
@@ -19,6 +19,19 @@ angular.module('igl').controller('CreateValueSet', ['$rootScope', '$scope', '$md
   $scope.cancel = function () {
     $mdDialog.hide('cancel');
   };
+
+    $scope.duplicated=function(table){
+        var allTables=$rootScope.tables;
+        for(i=0; i<allTables.length; i++) {
+
+            if(allTables[i].id!==table.id&&allTables[i].bindingIdentifier==table.bindingIdentifier&&allTables[i].scope==table.scope){
+                return true;
+            }
+
+        }
+
+        return false;
+    };
 
 
   $scope.add = function () {

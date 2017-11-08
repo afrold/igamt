@@ -146,8 +146,8 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
     
     $scope.saveDisabled=function () {
         for(i=0; i<$scope.selectedTables.length; i++) {
-            var table=$scope.selectedTables[i];
-            if ($scope.duplicated(table)||!table.sourceType||table.bindingIdentifier==="") {
+            if ($scope.duplicated($scope.selectedTables[i])==true) {
+                console.log("Found Duplicated");
                 return true;
             }
         }

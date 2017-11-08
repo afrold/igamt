@@ -2058,7 +2058,7 @@ public class IGDocumentController extends CommonController {
           t.setCodes(temp.getCodes());
 
         }
-        t.setAuthorNotes("");
+        t.setAuthorNotes("<p></p>");
         tableService.save(t);
         tableLibrary.addTable(t);
         ret.add(t);

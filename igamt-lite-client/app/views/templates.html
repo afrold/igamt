@@ -6790,6 +6790,20 @@
             </md-toolbar>
             <md-dialog-content>
                 <div class="md-dialog-content" style="overflow-y: hidden">
+                        <div>
+                            <md-radio-group ng-model="newTable.sourceType">
+
+                                <md-radio-button value="INTERNAL" class="md-primary">With Codes</md-radio-button>
+                                <md-radio-button value="EXTERNAL" class="md-primary"> Reference External Value Set  </md-radio-button>
+
+
+                            </md-radio-group>
+                    <!--<label class="input-left igamt-label"> Type </label>-->
+                    <!--<md-select ng-model="newTable.sourceType"  name="sourceType" id="sourceType" required >-->
+                        <!--<md-option ng-repeat="opt in sourceTypes" ng-value="opt.value">{{opt.value}}</md-option>-->
+                    <!--</md-select>-->
+                        </div>
+                    <div ng-if="newTable.sourceType">
                     <label class="input-left igamt-label">Mapping Identifier*</label>
 
                     <md-input-container class="md-block igamt-input-block" flex-gt-sm>
@@ -6797,6 +6811,9 @@
                         <div ng-messages="newTableForm.tableIdentifier.$error">
                             <div ng-message="required">Mapping Identifier is required.</div>
                         </div>
+                        <span ng-if="duplicated(newTable)" style="color :red;">
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Binding Identifier Already exist
+                        </span>
                     </md-input-container>
 
                     <label class="input-left igamt-label">Name*</label>
@@ -6806,6 +6823,7 @@
                         <div ng-messages="newTableForm.name.$error">
                             <div ng-message="required">Name is required.</div>
                         </div>
+
                     </md-input-container>
                     <label class="input-left igamt-label">OID</label>
 
@@ -6813,10 +6831,6 @@
                         <input type="text" name="oid"  ng-model="newTable.oid">
                     </md-input-container>
 
-                    <label class="input-left igamt-label"> Type </label>
-                    <md-select ng-model="newTable.sourceType"  name="sourceType" id="sourceType" required >
-                        <md-option ng-repeat="opt in sourceTypes" ng-value="opt.value">{{opt.value}}</md-option>
-                    </md-select>
 
                     <label class="input-left igamt-label" ng-if="newTable.sourceType=='EXTERNAL'"> External Value Set Reference URL* </label>
                     <md-input-container class="md-block igamt-input-block" flex-gt-sm ng-if="newTable.sourceType=='EXTERNAL'">
@@ -6831,11 +6845,12 @@
                         <textarea froala="froalaEditorOptions" ng-model="newTable.authorNotes" name="text" id="authorNotes"></textarea>
                     </div>
                 </div>
+                </div>
 
             </md-dialog-content>
-            <md-dialog-actions layout="row">
+            <md-dialog-actions layout="row" ng-if="newTable.sourceType!=null">
 
-                <md-button class="md-primary md-raised" ng-click="add()" ng-disabled="newTableForm.$invalid"><span><i
+                <md-button class="md-primary md-raised" ng-click="add()" ng-disabled="newTableForm.$invalid||duplicated(newTable)"><span><i
                         class="fa fa-sign-out fa-fw">&nbsp; </i>Add</span>
                 </md-button>
             </md-dialog-actions>
