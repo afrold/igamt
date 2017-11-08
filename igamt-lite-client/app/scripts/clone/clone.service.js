@@ -323,7 +323,8 @@ angular.module('igl').factory(
     };
 
     svc.copyTable = function (table) {
-      TableService.getOne(table.id).then(function(newTable){
+      console.log("Copy");
+      TableService.getOneInLibrary(table.id, $rootScope.tableLibrary.id).then(function(newTable){
         newTable.shareParticipantIds = [];
         newTable.status="UNPUBLISHED";
         newTable.id = null;
@@ -357,20 +358,17 @@ angular.module('igl').factory(
           newLink.id = newTable.id;
 
           TableLibrarySvc.addChild($rootScope.tableLibrary.id, newLink).then(function (link) {
-            $rootScope.tableLibrary.children.splice(0, 0, newLink);
-            $rootScope.tables.splice(0, 0, newTable);
-            $rootScope.table = newTable;
+              $rootScope.tableLibrary.children.splice(0, 0, newLink);
+              $rootScope.tables.splice(0, 0, newTable);
+              $rootScope.table = newTable;
+              if ($rootScope.tableLibrary.codePresence[table.id]!==undefined){
+                  TableLibrarySvc.updatePresence($rootScope.tableLibrary.id, table.id, $rootScope.tableLibrary.codePresence[table.id]).then(function (response) {
+                      $rootScope.tableLibrary.codePresence[newTable.id] = response;
+                  });
+              }
             $rootScope.tablesMap[newTable.id] = newTable;
 
             $rootScope.codeSystems = [];
-
-            for (var i = 0; i < $rootScope.table.codes.length; i++) {
-              if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
-                if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
-                  $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
-                }
-              }
-            }
             $rootScope.$broadcast('event:openTable', newTable);
 
           }, function (error) {

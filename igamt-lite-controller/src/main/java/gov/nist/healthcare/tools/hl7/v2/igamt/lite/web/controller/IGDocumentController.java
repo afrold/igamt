@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.GrantedAuthority;
@@ -45,6 +44,7 @@ import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.AppInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ApplyInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfiles;
@@ -2034,31 +2034,42 @@ public class IGDocumentController extends CommonController {
 
   @RequestMapping(value = "/{libId}/addPhinvads", method = RequestMethod.POST,
       produces = "application/json")
-  public Set<Table> addPhinvads(@PathVariable("libId") String libId, @RequestBody List<Table> from)
-      throws CloneNotSupportedException {
+  public Set<Table> addPhinvads(@PathVariable("libId") String libId,
+      @RequestBody PhinvadsAddingWrapper wrapper) throws CloneNotSupportedException {
 
     TableLibrary tableLibrary = tableLibraryService.findById(libId);
-
     Set<Table> ret = new HashSet<>();
 
-    for (Table t : from) {
-      Table temp = tableService.findById(t.getId());
-      tableLibrary.addTable(temp);
-      ret.add(temp);
 
-      if (t.getSourceType().equals(SourceType.INTERNAL)) {
-        Table clone = temp.clone();
-        clone.setSourceType(SourceType.INTERNAL);
-        tableLibrary.addTable(clone);
-        clone.setScope(SCOPE.USER);
-        clone.setReferenceUrl(appInfo.getProperties().get(SCOPE.PHINVADS.name()) + t.getOid());
-        ret.add(clone);
-        tableService.save(clone);
+    for (Table t : wrapper.tables) {
+      if (t.getScope().equals(SCOPE.PHINVADS)) {
+        Table temp = tableService.findById(t.getId());
+        tableLibrary.addTable(temp);
+        ret.add(temp);
+      } else {
+        Table temp = tableService.findById(t.getCreatedFrom());
 
+        if (t.getSourceType().equals(SourceType.EXTERNAL)) {
+          t.setCodes(new ArrayList<Code>());
+          t.setReferenceUrl(appInfo.getProperties().get("PHINVADS") + t.getOid());
+
+        } else {
+
+          t.setCodes(temp.getCodes());
+
+        }
+        t.setAuthorNotes("<p></p>");
+        tableService.save(t);
+        tableLibrary.addTable(t);
+        ret.add(t);
       }
-      tableLibraryService.save(tableLibrary);
-
     }
+    for (String s : wrapper.codesPresence.keySet()) {
+      tableLibrary.getCodePresence().put(s, wrapper.codesPresence.get(s));
+    }
+    tableLibraryService.save(tableLibrary);
+
+
     return ret;
   }
 

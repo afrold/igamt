@@ -456,17 +456,18 @@
 
             <md-dialog-content>
                 <div class="md-dialog-content">
-                    <form class="form-horizontal" novalidate>
-                        <div class="form-group">
+                    <form class="form-horizontal" novalidate id="phinvadFrom" name="phinvadFrom">
+                        <div class="form-group" layout="row">
 
                             <div class="col-sm-12">
-                                <input type="text" name="searchText" ng-model="search.bindingIdentifier"  ng-change="searchPhinvads(search.bindingIdentifier);search2={}" ng-model-options="{ debounce: 1000 }" class="form-control" placeholder="Search by Binding Indentifier">
+                                <input type="text" name="searchText" ng-model="search.bindingIdentifier"  ng-change="searchPhinvads(search.bindingIdentifier);search2={}" ng-model-options="{ debounce: 1000 }" class="form-control" placeholder="Search by Binding Indentifier" no-dirty-check>
                             </div>
 
 
                         </div>
+                        <div layout="row">
 
-                        <div class="col-md-6" ng-if="searched">
+                        <div flex="50" ng-if="searched">
                             <table ng-show="phinvadsTables.length > 0" st-safe-src="phinvadsTables" st-table="phinvadsTablesTemp" class="table table-striped table-condensed table-bordered">
                                 <thead>
                                 <tr>
@@ -482,14 +483,18 @@
                                             <input ng-model="search2.name">
                                         </md-input-container>
                                     </th>
-                                    <th flex="30"></th>
+                                    <th flex="20"></th>
                                     <th flex="10"></th>
+                                    <th flex="10"></th>
+
                                 </tr>
                                 <tr class="tbl-header">
                                     <th flex="30" st-sort="bindingIdentifier">Binding Identifier</th>
                                     <th flex="30" st-sort="name">Name</th>
-                                    <th flex="30" st-sort="numberOfCodes">Number of codes</th>
-                                    <th flex="10"></th>
+                                    <th flex="20" st-sort="numberOfCodes">#codes</th>
+                                    <th flex="10"> As Is</th>
+                                    <th flex="10">As a Flavor</th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -500,17 +505,21 @@
                                     <td flex="30">
                                         {{table.name}}
                                     </td>
-                                    <td flex="30">
+                                    <td flex="20">
                                         {{table.numberOfCodes}}
                                     </td>
                                     <td flex="10" style="text-align:center">
-                                        <a class="pointer" ng-hide="isAlreadyIn(table) || isAlreadySelected(table)" ng-click="addTable(table)"><i class="fa fa-plus fa-fw"></i></a>
+                                        <a class="pointer" ng-hide="isAlreadyIn(table) || isAlreadySelected(table)" ng-click="AsIs(table)"><i class="fa fa-plus fa-fw"></i></a>
                                         <span ng-show="isAlreadyIn(table)">Added</span>
                                         <span ng-show="isAlreadySelected(table)">Selected</span>
                                     </td>
+
+                                    <td flex="10" style="text-align:center">
+                                        <a class="pointer" ng-click="AsFlavor(table)"><i class="fa fa-plus fa-fw"></i></a>
+                                    </td>
                                 </tr>
                                 </tbody>
-                                <tr style="float:center !important;" ng-if="phinvadsTables.length > 10">
+                                <tr style="float:center!important;" ng-if="phinvadsTables.length > 10">
                                     <td colspan="6" class="text-center" style="float:center !important;">
                                         <div st-pagination="" st-items-by-page="10" st-displayed-pages="7" style="float:center !important;"></div>
                                     </td>
@@ -523,17 +532,17 @@
                         </div>
 
 
-                        <div class="col-md-6" ng-if="searched">
-                            <table ng-show="selectedTables.length > 0" st-safe-src="selectedTables" st-table="selectedTablesTemp" class="table table-striped table-condensed table-bordered">
+                        <div flex="50" ng-if="searched" style="margin-left: 10px;">
+                            <table ng-show="selectedTables.length > 0"  st-table="selectedTables" class="table table-striped table-condensed table-bordered">
                                 <thead>
                                 <tr>
-                                    <th flex="30">
+                                    <th flex="40">
 
                                         <md-input-container class="normal">
                                             <input ng-model="search3.bindingIdentifier">
 
                                         </md-input-container></th>
-                                    <th flex="50">
+                                    <th flex="30">
                                         <md-input-container class="normal">
                                             <input ng-model="search3.name">
 
@@ -541,35 +550,44 @@
                                     </th>
                                     <th flex="10"></th>
                                     <th flex="10"></th>
+
+                                    <th flex="10"></th>
+
                                 </tr>
                                 <tr class="tbl-header">
-                                    <th flex="30" st-sort="bindingIdentifier">Binding Identifier</th>
-                                    <th flex="50" st-sort="name">Name</th>
-                                    <th flex="10" st-sort="numberOfCodes">Number Of Codes</th>
-                                    <!--<th flex="20">Type</th>-->
-
+                                    <th flex="40" st-sort="bindingIdentifier">Binding Identifier</th>
+                                    <th flex="30" st-sort="name">Name</th>
+                                    <th flex="10" st-sort="numberOfCodes">#Codes</th>
+                                    <th flex="10">Include Codes</th>
                                     <th flex="10"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="table in selectedTablesTemp | filter:search3">
-                                    <td flex="30">
-                                        {{table.bindingIdentifier}}
+                                <tr ng-repeat="table in selectedTables  | filter:search3 track by $index">
+                                    <td flex="40">
+                                        <div ng-if="table.scope!=='USER'" style="max-width: 200px; word-wrap: break-word;">{{table.bindingIdentifier}}</div>
+                                        <md-input-container class="normal" ng-if="table.scope=='USER'" style="width: 100%" required>
+                                            <input ng-model="table.bindingIdentifier" no-dirty-check>
+                                        </md-input-container>
+                                        <div role="alert" style="color:red" ng-show="duplicated(table)" >
+                                            <div class="my-message">Binding Identifier already used</div>
+                                        </div>
+
                                     </td>
-                                    <td flex="50">
+                                    <td flex="30">
                                         {{table.name}}
                                     </td>
                                     <td flex="10">
                                         {{table.numberOfCodes}}
                                     </td>
-                                    <!--<td flex="20">-->
-                                        <!--<md-input-container class="normal">-->
-                                            <!--<md-select ng-model="table.sourceType" no-dirty-check ng-disabled="table.numberOfCodes>=500">-->
-                                                <!--<md-option value="INTERNAL">Internally Managed</md-option>-->
-                                                <!--<md-option value="EXTERNAL">Externally Managed</md-option>-->
-                                            <!--</md-select>-->
-                                        <!--</md-input-container>-->
-                                    <!--</td>-->
+                                    <td flex="10">
+                                        <md-checkbox ng-if="table.status=='PUBLISHED' && table.numberOfCodes<=500" ng-model="codesPresence[table.id]"></md-checkbox>
+                                        <div ng-if="table.status=='PUBLISHED' && table.numberOfCodes>500">Not Included</div>
+
+                                        <md-checkbox ng-if="table.scope=='USER' && table.numberOfCodes<=500" ng-checked="table.sourceType=='INTERNAL'" ng-click="toggleFlavor(table)"></md-checkbox>
+                                        <div ng-if="table.scope=='USER'&& table.numberOfCodes>500">Not Included</div>
+
+                                    </td>
                                     <td flex="10" style="text-align:center;cursor: pointer;"><a class="pointer" ng-click="deleteTable(table)">
                                         <i class="fa fa-times fa-fw"></i></a>
                                     </td>
@@ -581,16 +599,17 @@
                                     </td>
                                 </tr>
                             </table>
-                            <div ng-show="!selectedTables || selectedTables.length === 0">
+                            <div ng-show="!selectedTables || selectedTables.length === 0" flex="50" style="margin-left:10px;">
                                 No table selected.
                             </div>
+                        </div>
                         </div>
                     </form>
                 </div>
             </md-dialog-content>
             <md-dialog-actions layout="row">
 
-                <md-button class="btn btn-raised btn-primary btn-sm" ng-if="selectedTables.length" ng-click="save()"> Add </md-button>
+                <md-button class="btn btn-raised btn-primary btn-sm" ng-disabled="saveDisabled()|| $invalid" ng-if="selectedTables.length" ng-click="save()"> Add </md-button>
             </md-dialog-actions>
         </form>
     </md-dialog>
@@ -6771,6 +6790,20 @@
             </md-toolbar>
             <md-dialog-content>
                 <div class="md-dialog-content" style="overflow-y: hidden">
+                        <div>
+                            <md-radio-group ng-model="newTable.sourceType">
+
+                                <md-radio-button value="INTERNAL" class="md-primary">With Codes</md-radio-button>
+                                <md-radio-button value="EXTERNAL" class="md-primary"> Reference External Value Set  </md-radio-button>
+
+
+                            </md-radio-group>
+                    <!--<label class="input-left igamt-label"> Type </label>-->
+                    <!--<md-select ng-model="newTable.sourceType"  name="sourceType" id="sourceType" required >-->
+                        <!--<md-option ng-repeat="opt in sourceTypes" ng-value="opt.value">{{opt.value}}</md-option>-->
+                    <!--</md-select>-->
+                        </div>
+                    <div ng-if="newTable.sourceType">
                     <label class="input-left igamt-label">Mapping Identifier*</label>
 
                     <md-input-container class="md-block igamt-input-block" flex-gt-sm>
@@ -6778,6 +6811,9 @@
                         <div ng-messages="newTableForm.tableIdentifier.$error">
                             <div ng-message="required">Mapping Identifier is required.</div>
                         </div>
+                        <span ng-if="duplicated(newTable)" style="color :red;">
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Binding Identifier Already exist
+                        </span>
                     </md-input-container>
 
                     <label class="input-left igamt-label">Name*</label>
@@ -6787,6 +6823,7 @@
                         <div ng-messages="newTableForm.name.$error">
                             <div ng-message="required">Name is required.</div>
                         </div>
+
                     </md-input-container>
                     <label class="input-left igamt-label">OID</label>
 
@@ -6794,10 +6831,6 @@
                         <input type="text" name="oid"  ng-model="newTable.oid">
                     </md-input-container>
 
-                    <label class="input-left igamt-label"> Type </label>
-                    <md-select ng-model="newTable.sourceType">
-                        <md-option ng-repeat="opt in sourceTypes" ng-value="opt.value">{{opt.label}}</md-option>
-                    </md-select>
 
                     <label class="input-left igamt-label" ng-if="newTable.sourceType=='EXTERNAL'"> External Value Set Reference URL* </label>
                     <md-input-container class="md-block igamt-input-block" flex-gt-sm ng-if="newTable.sourceType=='EXTERNAL'">
@@ -6812,11 +6845,12 @@
                         <textarea froala="froalaEditorOptions" ng-model="newTable.authorNotes" name="text" id="authorNotes"></textarea>
                     </div>
                 </div>
+                </div>
 
             </md-dialog-content>
-            <md-dialog-actions layout="row">
+            <md-dialog-actions layout="row" ng-if="newTable.sourceType!=null">
 
-                <md-button class="md-primary md-raised" ng-click="add()" ng-disabled="newTableForm.$invalid"><span><i
+                <md-button class="md-primary md-raised" ng-click="add()" ng-disabled="newTableForm.$invalid||duplicated(newTable)"><span><i
                         class="fa fa-sign-out fa-fw">&nbsp; </i>Add</span>
                 </md-button>
             </md-dialog-actions>
@@ -6847,7 +6881,7 @@
                     </md-input-container>
 
 
-                    <div ng-class="'alert alert-warning'" ng-show="igDocumentMsg.show" id="ehralert">
+                    <div ng-class="'alert alert-warning'">
                         <p>Warning: Making this value set externally managed will remove all the codes. Do you want to continue?</p>
                     </div>
 

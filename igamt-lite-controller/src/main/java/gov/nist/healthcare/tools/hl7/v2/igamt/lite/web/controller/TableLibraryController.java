@@ -183,7 +183,9 @@ public class TableLibraryController extends CommonController {
       throws TableSaveException {
     log.debug("Adding a link to the library");
     TableLibrary lib = tableLibraryService.findById(libId);
+
     lib.addTable(child);
+    lib.getCodePresence().put(child.getId(), true);
     tableLibraryService.save(lib);
     return child;
   }
@@ -207,6 +209,7 @@ public class TableLibraryController extends CommonController {
     log.debug("Deleting a link to the library");
     TableLibrary lib = tableLibraryService.findById(libId);
     TableLink found = lib.findOneTableById(id);
+    lib.getCodePresence().remove(id);
     if (found != null) {
       lib.getChildren().remove(found);
       tableLibraryService.save(lib);
@@ -214,11 +217,27 @@ public class TableLibraryController extends CommonController {
     return true;
   }
 
+  @RequestMapping(value = "/{libId}/updatePresence/{tableId}/{value}", method = RequestMethod.POST)
+  public boolean updatePresence(@PathVariable String libId, @PathVariable String tableId,
+      @PathVariable Boolean value) throws TableSaveException {
+    TableLibrary lib = tableLibraryService.findById(libId);
+    TableLink found = lib.findOneTableById(tableId);
+
+    if (found != null) {
+      lib.getCodePresence().put(tableId, value);
+      tableLibraryService.save(lib);
+    }
+    return value;
+  }
+
   @RequestMapping(value = "/{libId}/addChildren", method = RequestMethod.POST)
   public boolean addChild(@PathVariable String libId, @RequestBody Set<TableLink> tableLinks)
       throws DatatypeSaveException {
     log.debug("Adding a link to the library");
     TableLibrary lib = tableLibraryService.findById(libId);
+    for (TableLink link : tableLinks) {
+      lib.getCodePresence().put(link.getId(), true);
+    }
     lib.addTables(tableLinks);
     tableLibraryService.save(lib);
     return true;
@@ -236,6 +255,8 @@ public class TableLibraryController extends CommonController {
       tbl.setBindingIdentifier(t.getBindingIdentifier());
       tbl.setId(t.getId());
       links.add(tbl);
+      lib.getCodePresence().put(t.getId(), true);
+
     }
 
 
@@ -243,5 +264,7 @@ public class TableLibraryController extends CommonController {
     tableLibraryService.save(lib);
     return tables;
   }
+
+
 
 }

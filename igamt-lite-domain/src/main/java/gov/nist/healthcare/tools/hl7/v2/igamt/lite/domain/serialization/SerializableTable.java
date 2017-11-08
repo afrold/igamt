@@ -1,14 +1,13 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
+import java.util.List;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetMetadataConfig;
 import nu.xom.Attribute;
 import nu.xom.Element;
-
-import java.util.List;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -30,9 +29,10 @@ public class SerializableTable extends SerializableSection {
     private ValueSetMetadataConfig valueSetMetadataConfig;
     private String referenceUrl;
     private int maxCodeNumber;
+    private boolean exportCodes;
 
     public SerializableTable(String id, String prefix, String position, String headerLevel, String title, Table table,
-        String bindingIdentifier, String defPreText, String defPostText, ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber, String referenceUrl) {
+        String bindingIdentifier, String defPreText, String defPostText, ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber, boolean exportCodes, String referenceUrl) {
         super(id, prefix, position, headerLevel, title);
         this.table = table;
         this.bindingIdentifier = bindingIdentifier;
@@ -41,6 +41,7 @@ public class SerializableTable extends SerializableSection {
         this.valueSetMetadataConfig = valueSetMetadataConfig;
         this.referenceUrl = referenceUrl;
         this.maxCodeNumber = maxCodeNumber;
+        this.exportCodes = exportCodes;
     }
 
     @Override public Element serializeElement() {
@@ -66,8 +67,6 @@ public class SerializableTable extends SerializableSection {
                 	valueSetDefinitionElement.addAttribute(new Attribute("InfoForExternal",this.table.getInfoForExternal()));
                 }
             }
-            valueSetDefinitionElement.addAttribute(new Attribute("Description",
-                (this.table.getDescription() == null) ? "" : this.table.getDescription()));
             valueSetDefinitionElement.addAttribute(new Attribute("Version",
                 (this.table.getVersion() == null) ? "" : "" + this.table.getVersion()));
             valueSetDefinitionElement.addAttribute(
@@ -92,7 +91,7 @@ public class SerializableTable extends SerializableSection {
             }
             valueSetDefinitionElement.addAttribute(new Attribute("id", this.table.getId()));
 
-            if (this.table.getCodes() != null) {
+            if (this.table.getCodes() != null && this.exportCodes) {
                 List<Code> codes;
                 if(maxCodeNumber >= 0 && this.table.getCodes().size()>maxCodeNumber){
                     codes = this.table.getCodes().subList(0,maxCodeNumber);

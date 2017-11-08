@@ -12,11 +12,7 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
@@ -137,13 +133,9 @@ public class SerializationServiceImpl implements SerializationService {
   private List<String> bindedDatatypesId;
 
   private boolean doFilterValueSets = true;
-
-  @Autowired
-  private ApplicationContext applicationContext;
   
   public SerializationServiceImpl(ApplicationContext applicationContext) {
 	super();
-	this.applicationContext = applicationContext;
 	serializeCompositeProfileService = applicationContext.getBean(SerializeCompositeProfileService.class);
 	serializationUtil = applicationContext.getBean(SerializationUtil.class);
 	serializeMessageService = applicationContext.getBean(SerializeMessageService.class);
@@ -521,7 +513,7 @@ public class SerializationServiceImpl implements SerializationService {
           SerializableTable serializableTable = serializeTableService.serializeTable(tableLink,
               prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
               tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig,
-              exportConfig.getValueSetsMetadata(), exportConfig.getMaxCodeNumber());
+              exportConfig.getValueSetsMetadata(), exportConfig.getMaxCodeNumber(),tableLibrary.getCodePresence());
           valueSetsSection.addSection(serializableTable);
         }
       }
@@ -533,7 +525,7 @@ public class SerializationServiceImpl implements SerializationService {
 	        SerializableTable serializableTable = serializeTableService.serializeTable(tableLink,
 	            prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
 	            tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig,
-	            exportConfig.getValueSetsMetadata(), exportConfig.getMaxCodeNumber());
+	            exportConfig.getValueSetsMetadata(), exportConfig.getMaxCodeNumber(),tableLibrary.getCodePresence());
 	        valueSetsSection.addSection(serializableTable);
 	      }
       }
