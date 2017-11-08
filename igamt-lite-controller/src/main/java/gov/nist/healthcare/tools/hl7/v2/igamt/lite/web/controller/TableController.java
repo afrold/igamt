@@ -33,10 +33,13 @@ import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SourceType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.VersionAndUse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.VersionAndUseService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
@@ -53,6 +56,8 @@ public class TableController extends CommonController {
 
   @Autowired
   private TableService tableService;
+  @Autowired
+  private TableLibraryService tableLibraryService;
 
   @Autowired
   UserService userService;
@@ -95,6 +100,24 @@ public class TableController extends CommonController {
     return table;
   }
 
+  @RequestMapping(value = "/{libId}/{id}", method = RequestMethod.GET,
+      produces = "application/json")
+  public Table getInLibary(@PathVariable("libId") String libId, @PathVariable("id") String id)
+      throws DataNotFoundException {
+    TableLibrary lib = tableLibraryService.findById(libId);
+    Table table = null;
+    if (lib.getCodePresence().containsKey(id)) {
+      if (!lib.getCodePresence().get(id).equals(false)) {
+        table = tableService.findById(id);
+      } else {
+        table = tableService.findShortById(id);
+      }
+    } else {
+      table = tableService.findById(id);
+    }
+    return table;
+  }
+
   @RequestMapping(value = "/save", method = RequestMethod.POST)
   public Table save(@RequestBody Table table)
       throws TableSaveException, ForbiddenOperationException {
@@ -103,6 +126,9 @@ public class TableController extends CommonController {
       log.debug("table=" + table);
       log.debug("table.getId()=" + table.getId());
       log.info("Saving the " + table.getScope() + " table.");
+      if (table.getSourceType().equals(SourceType.INTERNAL)) {
+        table.setNumberOfCodes(table.getCodes().size());
+      }
       Table saved = tableService.save(table);
       log.debug("saved.getId()=" + saved.getId());
       log.debug("saved.getScope()=" + saved.getScope());
@@ -144,10 +170,16 @@ public class TableController extends CommonController {
     return tableService.findAllByIds(tableIds);
   }
 
+  @RequestMapping(value = "/findShortById", method = RequestMethod.POST)
+  public Table findShortById(@RequestBody String id) {
+    return tableService.findShortById(id);
+  }
+
   @RequestMapping(value = "/findShortAllByIds", method = RequestMethod.POST)
   public List<Table> findShortAllByIds(@RequestBody Set<String> tableIds) {
     return tableService.findShortAllByIds(tableIds);
   }
+
 
   @RequestMapping(value = "/findShortByScope", method = RequestMethod.POST)
   public List<Table> findShortByScope(@RequestBody String scope) {

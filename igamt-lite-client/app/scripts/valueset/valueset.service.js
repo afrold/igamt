@@ -20,17 +20,27 @@ angular.module('igl').factory('TableService', ['$rootScope', 'ViewSettings', 'El
         },
         getOne: function(id) {
             var delay = $q.defer();
-//            if ($rootScope.tablesMap[id] === undefined || $rootScope.tablesMap[id] === undefined) {
-//                console.log("getOne==>");
+
                 $http.get('api/tables/' + id).then(function(response) {
                     var table = angular.fromJson(response.data);
                     delay.resolve(table);
                 }, function(error) {
                     delay.reject(error);
                 });
-//            } else {
-//                delay.resolve($rootScope.tablesMap[id]);
-//            }
+
+            return delay.promise;
+        },
+
+        getOneInLibrary: function(id, libId) {
+            var delay = $q.defer();
+
+            $http.get('api/tables/'+libId+'/'+ id).then(function(response) {
+                var table = angular.fromJson(response.data);
+                delay.resolve(table);
+            }, function(error) {
+                delay.reject(error);
+            });
+
             return delay.promise;
         },
         get: function(ids) {
@@ -86,6 +96,15 @@ angular.module('igl').factory('TableService', ['$rootScope', 'ViewSettings', 'El
         findShortByScope: function(scope) {
             var delay = $q.defer();
             $http.post('api/tables/findShortByScope', scope).then(function(response) {
+                delay.resolve(angular.fromJson(response.data));
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        },
+        findShortById: function(id) {
+            var delay = $q.defer();
+            $http.post('api/tables/findShortById', id).then(function(response) {
                 delay.resolve(angular.fromJson(response.data));
             }, function(error) {
                 delay.reject(error);

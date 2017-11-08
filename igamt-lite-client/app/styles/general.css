@@ -3129,6 +3129,8 @@ md-select[disabled] .md-select-value {
     padding:5px;
     color: black !important;
     font-weight: bold;
+    font-size: medium !important;
+
 }
 .divide{
     border-bottom: 1px solid;

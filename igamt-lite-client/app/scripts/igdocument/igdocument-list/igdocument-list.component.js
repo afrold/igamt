@@ -1382,6 +1382,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
     $scope.selectedNode = node;
   };
 
+
   $scope.clearSegmentScope=function(){
     delete $rootScope["datatype"];
     delete $rootScope["message"];
@@ -2137,48 +2138,40 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 
   $scope.selectTable = function (t) {
     $rootScope.Activate(t.id);
-    var table = angular.copy(t);
     $rootScope.subview = "EditValueSets.html";
     $scope.loadingSelection = true;
     blockUI.start();
     try {
-      TableService.getOne(table.id).then(function (tbl) {
-          $rootScope.searchObject={
-          };
+          TableService.getOneInLibrary(t.id,$rootScope.tableLibrary.id).then(function (tbl) {
+              $rootScope.searchObject = {};
+              $rootScope.table = angular.copy(tbl);
+              $rootScope.$emit("event:initTable");
+              $rootScope.currentData = $rootScope.table;
+              $rootScope.codeSystems = [];
+              $rootScope.codeSystems = $rootScope.table.codeSystems;
+              $rootScope.entireTable = angular.copy($rootScope.table);
+              $scope.loadingSelection = false;
+              $rootScope.$emit("event:initEditArea");
+              blockUI.stop();
+              $scope.clearTableScope();
+              $rootScope.clearChanges();
+              TableService.crossRef($rootScope.table, $rootScope.igdocument.id).then(function (result) {
+                  $rootScope.crossRef = result;
+              }, function (error) {
+                  $scope.loadingSelection = false;
+                  $rootScope.msg().text = error.data.text;
+                  $rootScope.msg().type = error.data.type;
+                  $rootScope.msg().show = true;
+              });
 
-        $rootScope.table = tbl;
-        $rootScope.$emit("event:initTable");
-        $rootScope.currentData = $rootScope.table;
-        $rootScope.codeSystems = [];
-        console.log($rootScope.table);
-        $rootScope.codeSystems=$rootScope.table.codeSystems;
+          }, function (errr) {
+              $scope.loadingSelection = false;
+              $rootScope.msg().text = errr.data.text;
+              $rootScope.msg().type = errr.data.type;
+              $rootScope.msg().show = true;
+              blockUI.stop();
+          });
 
-        // $rootScope.table.smallCodes = [];
-        // if($rootScope.table.codes && $rootScope.table.codes.length <= 500){
-        //     $rootScope.table.smallCodes = angular.copy($rootScope.table.codes);
-        // }
-        // $rootScope.table.smallCodes.sort($scope.codeCompare);
-        $rootScope.entireTable=angular.copy($rootScope.table);
-        // $rootScope.findValueSetBindings();
-        $scope.loadingSelection = false;
-        $scope.clearTableScope();
-        TableService.crossRef($rootScope.table,$rootScope.igdocument.id).then(function (result) {
-          $rootScope.crossRef = result;
-        }, function (error) {
-          $scope.loadingSelection = false;
-          $rootScope.msg().text = error.data.text;
-          $rootScope.msg().type = error.data.type;
-          $rootScope.msg().show = true;
-        });
-        $rootScope.$emit("event:initEditArea");
-        blockUI.stop();
-      }, function (errr) {
-        $scope.loadingSelection = false;
-        $rootScope.msg().text = errr.data.text;
-        $rootScope.msg().type = errr.data.type;
-        $rootScope.msg().show = true;
-        blockUI.stop();
-      });
     } catch (e) {
       $scope.loadingSelection = false;
       $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
