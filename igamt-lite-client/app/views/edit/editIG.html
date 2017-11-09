@@ -43,17 +43,19 @@
                     </span>
                 </span>
             </div>
-            <div ng-if="notifications && notifications.length > 0" class="col-md-12">
-                <div ng-repeat="noti in notifications">
-                    <i class="fa fa-exclamation-circle" aria-hidden="true" style="color:royalblue"></i>
+            <div ng-if="notifications" class="col-md-12">
+                <i class="fa fa-exclamation-circle" aria-hidden="true" style="color:royalblue"></i> You have {{notifications.items.length}} notification(s).
+                <a class="point">
+                    <span ng-click="deleteNotification(notifications.id)">Dismiss</span>
+                </a>
+                <li ng-repeat="noti in notifications.items">
                     <strong> {{noti.targetType}}
                         <span ng-if="noti.targetType === 'Valueset'">[<display-label of="tablesMap[noti.targetId]" desc="true"></display-label>]</span>
                         <span ng-if="noti.targetType === 'Datatype'">[<display-label of="datatypesMap[noti.targetId]" desc="true"></display-label>]</span>
                         <span ng-if="noti.targetType === 'Segment'">[<display-label of="segmentsMap[noti.targetId]" desc="true"></display-label>]</span>
                     </strong>
                     <span> was changed by {{noti.byWhom}} at {{noti.changedDate | date:dateFormat}}.</span>
-                    <i class="fa fa-times" aria-hidden="true" ng-click="deleteNotification(noti)"></i>
-                </div>
+                </li>
             </div>
 
             <div class="col-md-12 ig-menu-bar">

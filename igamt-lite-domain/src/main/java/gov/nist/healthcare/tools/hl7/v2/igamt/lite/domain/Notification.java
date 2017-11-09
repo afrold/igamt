@@ -1,25 +1,20 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.Date;
-import java.util.HashSet;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "notification")
 public class Notification {
   @Id
   private String id;
-  
+
   private TargetType targetType;
-  
+
   private String targetId;
-  
+
   private Date changedDate;
-  
+
   private String byWhom;
-  
-  private String igDocumentId;
 
   public String getId() {
     return id;
@@ -59,13 +54,5 @@ public class Notification {
 
   public void setByWhom(String byWhom) {
     this.byWhom = byWhom;
-  }
-  
-  public String getIgDocumentId() {
-    return igDocumentId;
-  }
-
-  public void setIgDocumentId(String igDocumentId) {
-    this.igDocumentId = igDocumentId;
   }
 }

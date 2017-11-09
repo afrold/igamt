@@ -69,6 +69,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NameAndPositionAndPresence;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notifications;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
@@ -108,7 +109,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetDa
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ExportConfigRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.NotificationRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.NotificationsRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileStructureService;
@@ -199,7 +200,7 @@ public class Bootstrap implements InitializingBean {
   private ExportConfigRepository exportConfigRepository;
   
   @Autowired
-  private NotificationRepository notificationRepository;
+  private NotificationsRepository notificationsRepository;
 
   /*
    * 
@@ -327,20 +328,30 @@ public class Bootstrap implements InitializingBean {
 
     
    //This is just test.
-//    testNotification();
+    testNotification();
 
   }
 
 
   private void testNotification() {
-    Notification noti = new Notification();
+    Notification item = new Notification();
     
-    noti.setByWhom("JY Woo");
-    noti.setChangedDate(new Date());
-    noti.setTargetType(TargetType.Valueset);
-    noti.setTargetId("57e43a2a84ae7eaed5fbdf76");
-    noti.setIgDocumentId("5a034aee77c8473416def0d3");
-    notificationRepository.save(noti);
+    item.setByWhom("JY Woo");
+    item.setChangedDate(new Date());
+    item.setTargetType(TargetType.Valueset);
+    item.setTargetId("57e43a2a84ae7eaed5fbdf76");
+    
+    Notification item2 = new Notification();
+    item2.setByWhom("JY Woo2");
+    item2.setChangedDate(new Date());
+    item2.setTargetType(TargetType.Valueset);
+    item2.setTargetId("57e43a2a84ae7eaed5fbdf76");
+    
+    Notifications notifications = new Notifications();
+    notifications.setIgDocumentId("5a034aee77c8473416def0d3");
+    notifications.addItem(item);
+    notifications.addItem(item2);
+    notificationsRepository.save(notifications);
     
   }
 

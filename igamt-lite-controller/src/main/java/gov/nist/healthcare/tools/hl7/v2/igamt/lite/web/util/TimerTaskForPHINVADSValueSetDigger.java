@@ -38,6 +38,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notifications;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TargetType;
@@ -238,13 +239,20 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
         mongoOps.save(table);
         for(IGDocument ig : this.igDocs){
           if(ig.getProfile().getTableLibrary().findOneTableById(table.getId()) != null) {
-            Notification noti = new Notification();
-            noti.setByWhom("CDC");
-            noti.setChangedDate(new Date());
-            noti.setTargetType(TargetType.Valueset);
-            noti.setTargetId(table.getId());
-            noti.setIgDocumentId(ig.getId());
-            mongoOps.save(noti);
+            Notification item = new Notification();
+            item.setByWhom("CDC");
+            item.setChangedDate(new Date());
+            item.setTargetType(TargetType.Valueset);
+            item.setTargetId(table.getId());
+            Criteria where = Criteria.where("igDocumentId").is(ig.getId());
+            Query qry = Query.query(where);
+            Notifications notifications = mongoOps.findOne(qry, Notifications.class);
+            if(notifications == null){
+              notifications = new Notifications();
+              notifications.setIgDocumentId(ig.getId());
+              notifications.addItem(item);
+            }
+            mongoOps.save(notifications);
           }
         }
       } catch (Exception e) {

@@ -1,7 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notification;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.NotificationRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notifications;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.NotificationsRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
 
 @RestController
@@ -19,19 +17,19 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundExc
 public class NotificationController extends CommonController {
   Logger log = LoggerFactory.getLogger(NotificationController.class);
   @Autowired
-  NotificationRepository notificationRepository;
+  NotificationsRepository notificationsRepository;
 
   @RequestMapping(value = "/igdocument/{id}", method = RequestMethod.GET,
       produces = "application/json")
-  public List<Notification> findNotificationByIgId(@PathVariable("id") String id)
+  public Notifications findNotificationByIgId(@PathVariable("id") String id)
       throws DataNotFoundException {
     log.info("Fetching findNotificationByIgId..." + id);
-    return notificationRepository.findByIgDocumentId(id);
+    return notificationsRepository.findByIgDocumentId(id);
   }
 
 
   @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET, produces = "application/json")
   public void deleteNotification(@PathVariable("id") String id) throws DataNotFoundException {
-    notificationRepository.delete(id);
+    notificationsRepository.delete(id);
   }
 }
