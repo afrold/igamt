@@ -21,6 +21,7 @@ public abstract class SerializationException extends Exception {
     private Exception originalException;
     private String message;
     private String location;
+    protected String label = "Serialization";
 
     public SerializationException(Exception originalException, String location) {
         this.originalException = originalException;
@@ -45,15 +46,15 @@ public abstract class SerializationException extends Exception {
 
     public List<String> getErrorMessages(){
     	ArrayList<String> errorMessagesStack = new ArrayList<>();
-        String errorMessage =  "["+location+"]";
         if(message != null && !message.isEmpty()){
-            errorMessage += " - " + message;
+        	 errorMessagesStack.add("["+this.label+"] - "+message);
         }
-        errorMessagesStack.add(errorMessage);
         if(this.originalException instanceof SerializationException){
         	errorMessagesStack.addAll(((SerializationException) originalException).getErrorMessages());
         } else {
-            errorMessagesStack.add("[Serialization] - Exception triggered: "+originalException.getMessage());
+        	if(originalException.getMessage() != null && !originalException.getMessage().isEmpty()){
+        		errorMessagesStack.add("["+originalException.getClass().getSimpleName()+"] - "+originalException.getMessage());
+        	}
         }
         return errorMessagesStack;
     }

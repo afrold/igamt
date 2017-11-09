@@ -5,6 +5,7 @@ public class SegmentSerializationException extends SerializationException {
 	
 	public SegmentSerializationException(Exception originalException, String location) {
 		super(originalException, location);
+			this.label = "Segment";
 	}
 
 	@Override

@@ -4,6 +4,7 @@ public class CoConstraintSerializationException extends SerializationException {
 
 	public CoConstraintSerializationException(Exception originalException, String location, String message) {
 		super(originalException, location, message);
+			this.label = "Co-Constraint";
 	}
 
 	@Override

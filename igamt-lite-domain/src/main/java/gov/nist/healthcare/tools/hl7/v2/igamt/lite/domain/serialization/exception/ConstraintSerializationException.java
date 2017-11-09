@@ -22,6 +22,7 @@ public class ConstraintSerializationException extends SerializationException {
     public ConstraintSerializationException(Exception originalException, Constraint constraint, String location) {
         super(originalException,location);
         this.constraint = constraint;
+        this.label = "Constraint";
     }
 
     @Override

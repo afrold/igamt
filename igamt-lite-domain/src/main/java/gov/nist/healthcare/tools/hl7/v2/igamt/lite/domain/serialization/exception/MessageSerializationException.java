@@ -21,6 +21,7 @@ public class MessageSerializationException extends SerializationException{
     public MessageSerializationException(Exception originalException, String errorMessage, Message message) {
         super(originalException, errorMessage);
         this.message = message;
+        this.label = "Message";
     }
 
     @Override public String toJson() {
