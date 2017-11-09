@@ -28,7 +28,7 @@ public class NotificationController extends CommonController {
   }
 
 
-  @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET, produces = "application/json")
+  @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST, produces = "application/json")
   public void deleteNotification(@PathVariable("id") String id) throws DataNotFoundException {
     notificationsRepository.delete(id);
   }

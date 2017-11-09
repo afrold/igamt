@@ -1055,7 +1055,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 
   $scope.deleteNotification = function (id) {
       $scope.notifications = null;
-      $http.get('api/notifications/delete/' + id);
+      $http.post('api/notifications/delete/' + id);
   };
 
   $scope.selectCompositeProfilesForExport = function (igdocument, toGVT) {
