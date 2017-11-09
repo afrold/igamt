@@ -19,7 +19,7 @@ public class Notification {
   
   private String byWhom;
   
-  HashSet<String> igDocumentIds=new HashSet<String>();
+  private String igDocumentId;
 
   public String getId() {
     return id;
@@ -60,31 +60,12 @@ public class Notification {
   public void setByWhom(String byWhom) {
     this.byWhom = byWhom;
   }
-
-  public HashSet<String> getIgDocumentIds() {
-    return igDocumentIds;
-  }
-
-  public void setIgDocumentIds(HashSet<String> igDocumentIds) {
-    this.igDocumentIds = igDocumentIds;
-  }  
   
-  public void addIgId(String id){
-    this.igDocumentIds.add(id);
-  }
-  
-  public void removeIgId(String id){
-    this.igDocumentIds.remove(id);
-  }
-  
-  public boolean containIgId(String id){
-    return this.igDocumentIds.contains(id);
+  public String getIgDocumentId() {
+    return igDocumentId;
   }
 
-  @Override
-  public String toString() {
-    return "Notification [id=" + id + ", targetType=" + targetType + ", targetId=" + targetId
-        + ", changedDate=" + changedDate + ", byWhom=" + byWhom + ", igDocumentIds=" + igDocumentIds
-        + "]";
+  public void setIgDocumentId(String igDocumentId) {
+    this.igDocumentId = igDocumentId;
   }
 }

@@ -52,7 +52,7 @@
                         <span ng-if="noti.targetType === 'Segment'">[<display-label of="segmentsMap[noti.targetId]" desc="true"></display-label>]</span>
                     </strong>
                     <span> was changed by {{noti.byWhom}} at {{noti.changedDate | date:dateFormat}}.</span>
-                    <i class="fa fa-times" aria-hidden="true" ng-click="deleteNotification(noti,igdocument.id)"></i>
+                    <i class="fa fa-times" aria-hidden="true" ng-click="deleteNotification(noti)"></i>
                 </div>
             </div>
 

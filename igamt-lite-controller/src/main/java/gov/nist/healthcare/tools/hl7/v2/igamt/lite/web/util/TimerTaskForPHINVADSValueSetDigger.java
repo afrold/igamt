@@ -236,22 +236,17 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
       // 5. update Table on DB
       try {
         mongoOps.save(table);
-        
-        Notification noti = new Notification();
-        
-        noti.setByWhom("CDC");
-        noti.setChangedDate(new Date());
-        noti.setTargetType(TargetType.Valueset);
-        noti.setTargetId(table.getId());
-        HashSet<String> igDocumentIds = new HashSet<String>();
         for(IGDocument ig : this.igDocs){
           if(ig.getProfile().getTableLibrary().findOneTableById(table.getId()) != null) {
-           igDocumentIds.add(ig.getId());
+            Notification noti = new Notification();
+            noti.setByWhom("CDC");
+            noti.setChangedDate(new Date());
+            noti.setTargetType(TargetType.Valueset);
+            noti.setTargetId(table.getId());
+            noti.setIgDocumentId(ig.getId());
+            mongoOps.save(noti);
           }
         }
-        noti.setIgDocumentIds(igDocumentIds);
-        mongoOps.save(noti);
-        log.info(oid + " Table && Notification is updated.");
       } catch (Exception e) {
         e.printStackTrace();
         return null;

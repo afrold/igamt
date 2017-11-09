@@ -339,10 +339,7 @@ public class Bootstrap implements InitializingBean {
     noti.setChangedDate(new Date());
     noti.setTargetType(TargetType.Valueset);
     noti.setTargetId("57e43a2a84ae7eaed5fbdf76");
-    HashSet<String> igDocumentIds = new HashSet<String>();
-    igDocumentIds.add("5a034aee77c8473416def0d3");
-    noti.setIgDocumentIds(igDocumentIds);
-    
+    noti.setIgDocumentId("5a034aee77c8473416def0d3");
     notificationRepository.save(noti);
     
   }

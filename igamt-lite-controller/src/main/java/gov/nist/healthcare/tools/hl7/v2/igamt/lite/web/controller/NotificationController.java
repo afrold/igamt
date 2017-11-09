@@ -1,6 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -21,26 +20,18 @@ public class NotificationController extends CommonController {
   Logger log = LoggerFactory.getLogger(NotificationController.class);
   @Autowired
   NotificationRepository notificationRepository;
-  
-  @RequestMapping(value = "/igdocument/{id}", method = RequestMethod.GET, produces = "application/json")
-  public List<Notification> findNotificationByIgId(@PathVariable("id") String id) throws DataNotFoundException {
+
+  @RequestMapping(value = "/igdocument/{id}", method = RequestMethod.GET,
+      produces = "application/json")
+  public List<Notification> findNotificationByIgId(@PathVariable("id") String id)
+      throws DataNotFoundException {
     log.info("Fetching findNotificationByIgId..." + id);
-    List<Notification> result= new ArrayList<Notification>();
-    List<Notification> allNotifications=notificationRepository.findAll();
-    
-    for(Notification n:allNotifications){
-      if(n.containIgId(id)) result.add(n);
-    }
-    return result;
+    return notificationRepository.findByIgDocumentId(id);
   }
-  
-  
-  @RequestMapping(value = "/delnotification/{nid}/igdocument/{igid}", method = RequestMethod.GET, produces = "application/json")
-  public void deleteIGDocumentEntry(@PathVariable("nid") String nid, @PathVariable("igid") String igid) throws DataNotFoundException {
-    Notification n = notificationRepository.findOne(nid);
-    if(n != null){
-      n.removeIgId(igid);
-      notificationRepository.save(n); 
-    }
+
+
+  @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET, produces = "application/json")
+  public void deleteNotification(@PathVariable("id") String id) throws DataNotFoundException {
+    notificationRepository.delete(id);
   }
 }

@@ -563,8 +563,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
       if (igdocument != null) {
           $http.get('api/notifications/igdocument/' + igdocument.id).then(
               function (response) {
-                  $rootScope.notifications = response.data;
-                  console.log($rootScope.notifications);
+                  $scope.notifications = response.data;
               },
               function (error) {}
           );
@@ -1055,19 +1054,12 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
     }
   };
 
-  $scope.deleteNotification = function (noti, igid) {
-      var i = $rootScope.notifications.indexOf(noti);
+  $scope.deleteNotification = function (noti) {
+      var i = $scope.notifications.indexOf(noti);
       if(i != -1) {
-          $rootScope.notifications.splice(i, 1);
+          $scope.notifications.splice(i, 1);
       }
-      $http.get('api/notifications/delnotification/' + noti.id + '/igdocument/' + igid).then(
-          function (response) {
-            console.log("Done!");
-          },
-          function (error) {
-              console.log(error);
-          }
-      );
+      $http.get('api/notifications/delete/' + noti.id);
   };
 
   $scope.selectCompositeProfilesForExport = function (igdocument, toGVT) {
