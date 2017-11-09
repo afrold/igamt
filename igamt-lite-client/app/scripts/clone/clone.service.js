@@ -333,10 +333,10 @@ angular.module('igl').factory(
 
         if(table.scope=='PHINVADS'){
           newTable.referenceUrl= $rootScope.getPhinvadsURL(table);
-          if($rootScope.tableLibrary.codePresence[table.id]!==false &&table.numberOfCodes<500){
-            newTable.sourceType="INTERNAL";
-          }
         }
+        if($rootScope.tableLibrary.codePresence[table.id]){
+              newTable.sourceType="INTERNAL";
+          }
         newTable.libIds.push($rootScope.tableLibrary.id);
         if($rootScope.igdocument){
           newTable.bindingIdentifier = $rootScope.createNewFlavorName(newTable.bindingIdentifier);
