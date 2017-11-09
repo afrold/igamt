@@ -68,6 +68,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NameAndPositionAndPresence;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notifications;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
@@ -83,6 +85,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentAtt
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TargetType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
@@ -106,6 +109,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetDa
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ExportConfigRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.NotificationsRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileStructureService;
@@ -194,6 +198,9 @@ public class Bootstrap implements InitializingBean {
 
   @Autowired
   private ExportConfigRepository exportConfigRepository;
+  
+  @Autowired
+  private NotificationsRepository notificationsRepository;
 
   /*
    * 
@@ -317,11 +324,36 @@ public class Bootstrap implements InitializingBean {
     // 2.0.0-beta7
     // updateTableForNumOfCodesANDSourceType();
     // updateTableForNumOfCodesANDSourceType();
+    //TODO Do not use updateTableForNumOfCodesANDSourceType function any more. - Woo
 
+    
+   //This is just test.
+    testNotification();
 
   }
 
 
+  private void testNotification() {
+    Notification item = new Notification();
+    
+    item.setByWhom("JY Woo");
+    item.setChangedDate(new Date());
+    item.setTargetType(TargetType.Valueset);
+    item.setTargetId("57e43a2a84ae7eaed5fbdf76");
+    
+    Notification item2 = new Notification();
+    item2.setByWhom("JY Woo2");
+    item2.setChangedDate(new Date());
+    item2.setTargetType(TargetType.Valueset);
+    item2.setTargetId("57e43a2a84ae7eaed5fbdf76");
+    
+    Notifications notifications = new Notifications();
+    notifications.setIgDocumentId("5a034aee77c8473416def0d3");
+    notifications.addItem(item);
+    notifications.addItem(item2);
+    notificationsRepository.save(notifications);
+    
+  }
 
   private void updateTableForNumOfCodesANDSourceType() {
     List<Table> allTables = tableService.findAll();

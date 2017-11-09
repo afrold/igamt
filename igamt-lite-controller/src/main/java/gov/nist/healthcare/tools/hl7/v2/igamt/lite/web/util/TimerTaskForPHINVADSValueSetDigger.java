@@ -36,14 +36,19 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SourceType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notifications;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TargetType;
 
 public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
 
   Logger log = LoggerFactory.getLogger(TimerTaskForPHINVADSValueSetDigger.class);
   private VocabService service;
   private MongoOperations mongoOps;
+  private List<IGDocument> igDocs = null;
 
   public static void main(String[] args) {
     TimerTaskForPHINVADSValueSetDigger tool = new TimerTaskForPHINVADSValueSetDigger();
@@ -70,6 +75,9 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
 
   @Override
   public void run() {
+    igDocs = mongoOps.find(Query.query(Criteria.where("scope").is(Constant.SCOPE.USER)), IGDocument.class);
+    log.info("You have " + igDocs.size() + " igDocuemnts. ");
+    
     log.info("PHINVADSValueSetDigger started at " + new Date());
 
     List<ValueSet> vss = this.service.getAllValueSets().getValueSets();
@@ -123,6 +131,7 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
     table = mongoOps.findOne(
         Query.query(Criteria.where("oid").is(oid).and("scope").is(Constant.SCOPE.PHINVADS)),
         Table.class);
+    
     if (table != null) {
       log.info("Successfully got the metadata from DBe for " + oid);
       log.info(oid + " last updated date is " + table.getDate());
@@ -130,31 +139,34 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
     } else {
       log.info("Failed to get the metadata from DB for " + oid);
     }
-
+    
+    ValueSetConceptResultDto vscByVSVid = null;
+    List<ValueSetConcept> valueSetConcepts = null;
+    
     // 3. compare metadata
     boolean needUpdate = false;
-    if (vs != null) {
+    if (vs != null && vsv != null) {
       if (table != null) {
-        if (table.getDate().toString().equals(vs.getStatusDate().toString())
-            && table.getVersion().equals(vsv.getVersionNumber() + "")) {
-          if (table.getCodes().size() == 0 && table.getSourceType().equals(SourceType.INTERNAL)) {
-            needUpdate = true;
-            log.info(oid + " Table has no change! however local PHINVADS codes are missing");
-          } else {
-
-            ValueSetConceptResultDto vscByVSVid =
-                this.getService().getValueSetConceptsByValueSetVersionId(vsv.getId(), 1, 100000);
-            List<ValueSetConcept> valueSetConcepts = vscByVSVid.getValueSetConcepts();
-
-            if (valueSetConcepts.size() != table.getCodes().size()) {
+        if (table.getDate().toString().equals(vs.getStatusDate().toString()) && table.getVersion().equals(vsv.getVersionNumber() + "")) {
+          if (table.getCodes().size() == 0 && table.getNumberOfCodes() == 0) {
+            vscByVSVid = this.getService().getValueSetConceptsByValueSetVersionId(vsv.getId(), 1, 100000);
+            valueSetConcepts = vscByVSVid.getValueSetConcepts();
+            if(valueSetConcepts.size() != 0){
               needUpdate = true;
-              log.info(oid + " Table has no change! hoever local codes size are diferenct.");
-            } else {
-              needUpdate = false;
-              log.info(oid + " Table has no change! because same version number and date.");
+              log.info(oid + " Table has no change! however local PHINVADS codes may be missing"); 
             }
+          } 
+          
+//          else {
 
-          }
+//            if (valueSetConcepts.size() != table.getNumberOfCodes()) {
+//              needUpdate = true;
+//              log.info(oid + " Table has no change! however local codes size are diferenct.");
+//            } else {
+//              needUpdate = false;
+//              log.info(oid + " Table has no change! because same version number and date.");
+//            }
+//          }
         } else {
           needUpdate = true;
           log.info(oid + " Table has a change! because different version number and date.");
@@ -170,9 +182,8 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
 
     // 4. if updated, get full codes from PHINVADs web service
     if (needUpdate) {
-      ValueSetConceptResultDto vscByVSVid =
-          this.getService().getValueSetConceptsByValueSetVersionId(vsv.getId(), 1, 100000);
-      List<ValueSetConcept> valueSetConcepts = vscByVSVid.getValueSetConcepts();
+      if(vscByVSVid == null) vscByVSVid = this.getService().getValueSetConceptsByValueSetVersionId(vsv.getId(), 1, 100000);
+      if(valueSetConcepts == null) valueSetConcepts = vscByVSVid.getValueSetConcepts();
       if (table == null)
         table = new Table();
       List<ValueSetVersion> vsvByVSOid =
@@ -193,11 +204,12 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
       table.setComment(vsvByVSOid.get(0).getDescription());
       table.setDate(vs.getStatusDate().toString());
       table.setCodes(new ArrayList<Code>());
-
+      table.setNumberOfCodes(valueSetConcepts.size());
+      table.setManagedBy(Constant.External);
+      table.setSourceType(SourceType.EXTERNAL);
+      
       if (valueSetConcepts.size() > 500) {
-        table.setNumberOfCodes(valueSetConcepts.size());
-        table.setManagedBy(Constant.External);
-        table.setSourceType(SourceType.EXTERNAL);
+
       } else {
         for (ValueSetConcept pcode : valueSetConcepts) {
           Code code = new Code();
@@ -213,23 +225,36 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
           csSearchCritDto.setTable396Search(false);
           csSearchCritDto.setSearchType(1);
           csSearchCritDto.setSearchText(pcode.getCodeSystemOid());
-          CodeSystem cs =
-              this.getService().findCodeSystems(csSearchCritDto, 1, 5).getCodeSystems().get(0);
+          CodeSystem cs = this.getService().findCodeSystems(csSearchCritDto, 1, 5).getCodeSystems().get(0);
           code.setCodeSystem(cs.getHl70396Identifier());
           code.setCodeSystemVersion(cs.getVersion());
           code.setComments(pcode.getDefinitionText());
           code.setType(Constant.CODE);
           table.addCode(code);
         }
-        table.setNumberOfCodes(valueSetConcepts.size());
-        table.setManagedBy(Constant.Internal);
-        table.setSourceType(SourceType.INTERNAL);
       }
 
       // 5. update Table on DB
       try {
         mongoOps.save(table);
-        log.info(oid + " Table is updated.");
+        for(IGDocument ig : this.igDocs){
+          if(ig.getProfile().getTableLibrary().findOneTableById(table.getId()) != null) {
+            Notification item = new Notification();
+            item.setByWhom("CDC");
+            item.setChangedDate(new Date());
+            item.setTargetType(TargetType.Valueset);
+            item.setTargetId(table.getId());
+            Criteria where = Criteria.where("igDocumentId").is(ig.getId());
+            Query qry = Query.query(where);
+            Notifications notifications = mongoOps.findOne(qry, Notifications.class);
+            if(notifications == null){
+              notifications = new Notifications();
+              notifications.setIgDocumentId(ig.getId());
+              notifications.addItem(item);
+            }
+            mongoOps.save(notifications);
+          }
+        }
       } catch (Exception e) {
         e.printStackTrace();
         return null;

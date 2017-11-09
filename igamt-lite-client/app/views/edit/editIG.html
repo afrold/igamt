@@ -28,23 +28,35 @@
                 <span style="margin: 0px !important">
                     <span style="font-size: x-large;">{{igdocument.metaData.title}}</span>
                     <span class="glyphicon glyphicon-info-sign ig-info">
-                    <md-tooltip md-direction="right" style="max-height:none !important;height: 100px" layout="column">
-
-                        <span flex><i class="fa fa-calendar" aria-hidden="true"></i>
-                           <strong> Updated: </strong> {{igdocument.dateUpdated | date:dateFormat}}</span>
-
-                        <span flex> <strong>HL7 Version:</strong> {{igdocument.profile.metaData.hl7Version}}</span>
-                         <span flex ng-if="igdocument.owner" style="font-style: italic;">
-                             <span ng-if="igdocument.owner"> <strong>Author: </strong> <img style="max-width:30px !important;border-radius: 50%" src="{{generateHash(igdocument.owner.email)}}"/> {{igdocument.owner.fullname}}</span>
-                        </span>
-                    </md-tooltip>
+                        <md-tooltip md-direction="right" style="max-height:none !important;height: 100px" layout="column">
+                            <span flex>
+                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                                <strong> Updated: </strong> {{igdocument.dateUpdated | date:dateFormat}}
+                            </span>
+                            <span flex>
+                                <strong>HL7 Version:</strong> {{igdocument.profile.metaData.hl7Version}}
+                            </span>
+                            <span flex ng-if="igdocument.owner" style="font-style: italic;">
+                                <span ng-if="igdocument.owner"> <strong>Author: </strong> <img style="max-width:30px !important;border-radius: 50%" src="{{generateHash(igdocument.owner.email)}}"/> {{igdocument.owner.fullname}}</span>
+                            </span>
+                        </md-tooltip>
                     </span>
                 </span>
             </div>
-
-                    <!--<span class="pull-right" ng-click="toggleScreen()"><i ng-if="!fullscreen" class="material-icons">fullscreen</i>-->
-                        <!--<i ng-if="fullscreen" class="material-icons">fullscreen</i><md-tooltip md-direction="right"> Exit Full Screen</md-tooltip>-->
-                    <!--</span>-->
+            <div ng-if="notifications" class="col-md-12">
+                <i class="fa fa-exclamation-circle" aria-hidden="true" style="color:royalblue"></i> You have {{::notifications.items.length}} notification(s).
+                <a class="point">
+                    <span ng-click="deleteNotification(notifications.id)">Dismiss</span>
+                </a>
+                <li ng-repeat="noti in notifications.items track by $index">
+                    <strong> {{::noti.targetType}}
+                        <span ng-if="noti.targetType === 'Valueset'">[<display-label of="tablesMap[noti.targetId]" desc="true"></display-label>]</span>
+                        <span ng-if="noti.targetType === 'Datatype'">[<display-label of="datatypesMap[noti.targetId]" desc="true"></display-label>]</span>
+                        <span ng-if="noti.targetType === 'Segment'">[<display-label of="segmentsMap[noti.targetId]" desc="true"></display-label>]</span>
+                    </strong>
+                    <span> was changed by {{::noti.byWhom}} at {{::noti.changedDate | date:dateFormat}}.</span>
+                </li>
+            </div>
 
             <div class="col-md-12 ig-menu-bar">
                 <div class="col-md-1" style="width:20px">
