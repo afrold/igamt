@@ -328,31 +328,8 @@ public class Bootstrap implements InitializingBean {
 
     
    //This is just test.
-    testNotification();
-
-  }
-
-
-  private void testNotification() {
-    Notification item = new Notification();
-    
-    item.setByWhom("JY Woo");
-    item.setChangedDate(new Date());
-    item.setTargetType(TargetType.Valueset);
-    item.setTargetId("57e43a2a84ae7eaed5fbdf76");
-    
-    Notification item2 = new Notification();
-    item2.setByWhom("JY Woo2");
-    item2.setChangedDate(new Date());
-    item2.setTargetType(TargetType.Valueset);
-    item2.setTargetId("57e43a2a84ae7eaed5fbdf76");
-    
-    Notifications notifications = new Notifications();
-    notifications.setIgDocumentId("5a034aee77c8473416def0d3");
-    notifications.addItem(item);
-    notifications.addItem(item2);
-    notificationsRepository.save(notifications);
-    
+    // 2.0.0-beta10
+    makePhinvadsExternal(); 
   }
 
   private void updateTableForNumOfCodesANDSourceType() {
@@ -413,7 +390,7 @@ public class Bootstrap implements InitializingBean {
     List<Table> allPhvs = tableService.findByScope(SCOPE.PHINVADS.name());
 
     for (Table t : allPhvs) {
-      tableService.updateAttributes(t.getId(), "sourceType", SourceType.INTERNAL);
+      tableService.updateAttributes(t.getId(), "sourceType", SourceType.EXTERNAL);
 
     }
   };
