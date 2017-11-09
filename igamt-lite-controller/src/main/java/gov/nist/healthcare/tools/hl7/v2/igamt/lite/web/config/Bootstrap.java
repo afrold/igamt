@@ -317,7 +317,11 @@ public class Bootstrap implements InitializingBean {
     // 2.0.0-beta7
     // updateTableForNumOfCodesANDSourceType();
     // updateTableForNumOfCodesANDSourceType();
+    //
 
+    // 2.0.0-beta10
+
+    makePhinvadsExternal();
 
   }
 
@@ -325,66 +329,26 @@ public class Bootstrap implements InitializingBean {
 
   private void updateTableForNumOfCodesANDSourceType() {
     List<Table> allTables = tableService.findAll();
-    // String largeTableLISTCSV = "\"ID\"," + "\"Binding Identifier\"," + "\"Name\"," + "\"Code
-    // Size\"," + "\"SCOPE\"," + "\"HL7 Version\"\n";
-    // String IGUsedLargeTableLISTCSV = "\"ID\"," + "\"IG Name\"," + "\"IG Title\"," + "\"IG
-    // SubTitle\"," + "\"IG status\"," + "\"Account Id\"," + "\"User Id\"," + "\"User email\"," +
-    // "\"User FullName\"," + "\"Binding Identifier\"," + "\"VS Name\"," + "\"Code Size\"," +
-    // "\"SCOPE\"," + "\"HL7 Version\"\n";
-
-    // Map<String,Table> largeTable = new HashMap<String, Table> ();
-
 
     for (Table t : allTables) {
       int numberOfCodes = t.getCodes().size();
       if (!t.getScope().equals(SCOPE.PHINVADS)) {
         tableService.updateAttributes(t.getId(), "numberOfCodes", numberOfCodes);
-      }
-      if (t.getScope().equals(SCOPE.PHINVADS) || numberOfCodes > 500) {
+      } else if (t.getScope().equals(SCOPE.PHINVADS) || numberOfCodes > 500) {
         tableService.updateAttributes(t.getId(), "sourceType", SourceType.EXTERNAL);
-        tableService.updateAttributes(t.getId(), "managedBy", Constant.External);
-      }
-      if (numberOfCodes > 500) {
-        tableService.updateAttributes(t.getId(), "codes", new ArrayList<Code>());
       }
     }
-
-    /*
-     * List<IGDocument> allUserIGs = documentService.findAllByScope(IGDocumentScope.USER);
-     * for(IGDocument ig : allUserIGs){ TableLibrary tLib = ig.getProfile().getTableLibrary();
-     * 
-     * for(TableLink tl : tLib.getChildren()){ Table found = largeTable.get(tl.getId());
-     * 
-     * if(found != null){ Account account = accountRepository.findOne(ig.getAccountId());
-     * 
-     * if(account == null) { account = new Account(); account.setUsername("Unknown");
-     * account.setEmail("Unknown"); account.setFullName("Unknown"); }
-     * 
-     * IGUsedLargeTableLISTCSV = IGUsedLargeTableLISTCSV + "\"" + ig.getId() + "\"," + "\"" +
-     * ig.getMetaData().getName() + "\"," + "\"" + ig.getMetaData().getTitle() + "\"," + "\"" +
-     * ig.getMetaData().getSubTitle() + "\"," + "\"" + ig.getMetaData().getStatus() + "\"," +
-     * 
-     * "\"" + ig.getAccountId()+ "\"," + "\"" + account.getUsername() + "\"," + "\"" +
-     * account.getEmail() + "\"," + "\"" + account.getFullName() + "\"," +
-     * 
-     * "\"" + found.getId() + "\"," + "\"" + found.getBindingIdentifier() + "\"," + "\"" +
-     * found.getName() + "\"," + "\"" + found.getCodes().size() + "\"," + "\"" + found.getScope() +
-     * "\"," + "\"" + found.getHl7Version() + "\"\n"; } } }
-     */
-
-
-    // System.out.println(largeTableLISTCSV);
-    // System.out.println(IGUsedLargeTableLISTCSV);
   }
 
   private void makePhinvadsExternal() {
     List<Table> allPhvs = tableService.findByScope(SCOPE.PHINVADS.name());
 
     for (Table t : allPhvs) {
-      tableService.updateAttributes(t.getId(), "sourceType", SourceType.INTERNAL);
+      tableService.updateAttributes(t.getId(), "sourceType", SourceType.EXTERNAL);
 
     }
   };
+
 
   private void setCodePresence() {
     List<TableLibrary> tbls = tableLibraryService.findAll();
