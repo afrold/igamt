@@ -115,6 +115,7 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
           angular.forEach(tables, function(t){
 
             $rootScope.tables.push(t);
+            $rootScope.tablesMap[t.id]=t;
             $scope.selectedTableLibary.codePresence[t.id]= $scope.codesPresence[t.id];
             var newLink = angular.fromJson({
                 id:t.id,
