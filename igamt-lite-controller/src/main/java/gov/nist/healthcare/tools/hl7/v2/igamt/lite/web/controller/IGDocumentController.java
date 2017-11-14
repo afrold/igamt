@@ -1929,33 +1929,50 @@ public class IGDocumentController extends CommonController {
   }
 
   private void sendShareConfirmation(IGDocument doc, Account target, Account source) {
-    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
-    msg.setSubject("NIST IGAMT IG Document Sharing Notification");
-    msg.setTo(target.getEmail());
-    msg.setText("Dear " + target.getUsername() + ", \n\n" + source.getFullName() + "("
-        + source.getUsername() + ")"
-        + " wants to share the following Implementation Guide with you: \n" + "\n Title: "
-        + doc.getMetaData().getTitle() + "\n Sub Title: " + doc.getMetaData().getSubTitle()
-        + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:"
-        + doc.getProfile().getMetaData().getHl7Version()
-        + "\n If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Implementation Guides' tab"
-        + "\n\n" + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
+    try {
+      SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+      msg.setSubject("NIST IGAMT IG Document Sharing Notification");
+      msg.setTo(target.getEmail());
+      msg.setText("Dear " + target.getUsername() + ", \n\n" + source.getFullName() + "("
+          + source.getUsername() + ")"
+          + " wants to share the following Implementation Guide with you: \n" + "\n Title: "
+          + doc.getMetaData().getTitle() + "\n Sub Title: " + doc.getMetaData().getSubTitle()
+          + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:"
+          + doc.getProfile().getMetaData().getHl7Version()
+          + "\n If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Implementation Guides' tab"
+          + "\n\n" + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
 
-    this.mailSender.send(msg);
+      this.mailSender.send(msg);
+    } catch (RuntimeException e) {
+      log.error("Failed to send Email", e);
+
+
+    } catch (Exception e) {
+      log.error("Failed to send Email", e);
+
+    }
+
 
   }
 
   private void sendUnshareEmail(IGDocument doc, Account target, Account source) {
-    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
-    msg.setSubject("NIST IGAMT IGDocument  Unsharing Notification");
-    msg.setTo(target.getEmail());
-    msg.setText("Dear " + target.getUsername() + " \n\n" + source.getFullName() + "("
-        + source.getUsername() + ") has stopped sharing the following Implementation Guide \n"
-        + "\n Title: " + doc.getMetaData().getTitle() + "\n Sub Title: "
-        + doc.getMetaData().getSubTitle() + "\n Description:" + doc.getMetaData().getDescription()
-        + "\n HL7 Version:" + doc.getProfile().getMetaData().getHl7Version() + "\n\n"
-        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
-    this.mailSender.send(msg);
+    try {
+      SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+      msg.setSubject("NIST IGAMT IGDocument  Unsharing Notification");
+      msg.setTo(target.getEmail());
+      msg.setText("Dear " + target.getUsername() + " \n\n" + source.getFullName() + "("
+          + source.getUsername() + ") has stopped sharing the following Implementation Guide \n"
+          + "\n Title: " + doc.getMetaData().getTitle() + "\n Sub Title: "
+          + doc.getMetaData().getSubTitle() + "\n Description:" + doc.getMetaData().getDescription()
+          + "\n HL7 Version:" + doc.getProfile().getMetaData().getHl7Version() + "\n\n"
+          + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
+      this.mailSender.send(msg);
+    } catch (RuntimeException e) {
+      log.error("Failed to send Email", e);
+    } catch (Exception e) {
+      log.error("Failed to send Email", e);
+    }
+
   }
 
   /**
