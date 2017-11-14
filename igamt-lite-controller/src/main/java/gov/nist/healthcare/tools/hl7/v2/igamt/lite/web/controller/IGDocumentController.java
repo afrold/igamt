@@ -881,7 +881,7 @@ public class IGDocumentController extends CommonController {
         throw new UserAccountNotFoundException();
       log.info("Delete IGDocument with id=" + id);
       IGDocument d = findIGDocument(id);
-      if (d.getAccountId() == account.getId()) {
+      if (d.getAccountId().equals(account.getId())) {
         d.setScope(IGDocumentScope.ARCHIVED);
         deleteSegmentLibrary(d.getProfile().getSegmentLibrary());
         deleteTableLibrary(d.getProfile().getTableLibrary());

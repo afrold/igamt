@@ -28,10 +28,6 @@ angular.module('igl').controller('ConfirmIGDocumentDeleteCtrl', function ($scope
       $rootScope.msg().text = "igDeleteFailed";
       $rootScope.msg().type = "danger";
       $rootScope.msg().show = true;
-      //            $modalInstance.dismiss('cancel');
-
-
-      // waitingDialog.hide();
     });
   };
 
