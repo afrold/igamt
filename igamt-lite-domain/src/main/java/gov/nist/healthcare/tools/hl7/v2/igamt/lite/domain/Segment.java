@@ -472,7 +472,7 @@ public class Segment extends DataModelWithConstraints
   }
 
   private String generateTHENDescirptionForValue(CoConstraintColumnDefinition definitionThen, CoConstraintTHENColumnData thenData) {
-    return "then the value of " + this.getName() + "-" + definitionThen.getConstraintPath() + " (" + definitionThen.getName() + ") should be '" + thenData.getValueData().getValue() + "'.";
+    return "then the value of " + this.getName() + "-" + definitionThen.getConstraintPath() + " (" + definitionThen.getName() + ") SHALL be '" + thenData.getValueData().getValue() + "'.";
   }
 
   private String generateTHENAssertionForValue(CoConstraintColumnDefinition definitionThen, CoConstraintTHENColumnData thenData) {
@@ -504,7 +504,7 @@ public class Segment extends DataModelWithConstraints
   }
 
   private String generateTHENDescirptionForValueSet(CoConstraintColumnDefinition definitionThen, CoConstraintTHENColumnData thenData, Map<String, Table> tablesMap) {
-    String thenDescription = "then the value of " + this.getName() + "-" + definitionThen.getConstraintPath() + " (" + definitionThen.getName() + ") should be one of codes in ";
+    String thenDescription = "then the value of " + this.getName() + "-" + definitionThen.getConstraintPath() + " (" + definitionThen.getName() + ") SHALL be one of codes in ";
     for (ValueSetData vs : thenData.getValueSets()) {
       Table t = tablesMap.get(vs.getTableId());
       if (t.getHl7Version() == null) {
