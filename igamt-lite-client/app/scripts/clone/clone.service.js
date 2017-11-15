@@ -334,7 +334,9 @@ angular.module('igl').factory(
         if(table.scope=='PHINVADS'){
           newTable.referenceUrl= $rootScope.getPhinvadsURL(table);
         }
-        if($rootScope.tableLibrary.codePresence[table.id]){
+        console.log($rootScope.tableLibrary);
+        console.log(table);
+        if($rootScope.tableLibrary.codePresence[table.id] !==false){
               newTable.sourceType="INTERNAL";
           }
         newTable.libIds.push($rootScope.tableLibrary.id);
