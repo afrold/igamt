@@ -1133,7 +1133,7 @@
 
                             <md-input-container class="md-block igamt-input-block" flex-gt-sm layout="row" layout-align="center center">
                                 <md-select ng-model="newSegment.position" ng-change="selectPos()" class="point" required  id="inputPosition" name="inputPosition">
-                                    <md-option  ng-repeat="child in segmentParent.children track by $index" ng-value="{{$index+1}}"> {{$index+1}}</md-option>
+                                    <md-option  ng-repeat="child in segmentParent.children track by $index" ng-value="$index+1"> {{$index+1}}</md-option>
                                     <!--<md-option ng-show="segmentParent.obj && segmentParent.obj.type==='group'" ng-repeat="child in segmentParent.children" ng-value="{{child.obj.position}}"> {{child.obj.position}}</md-option>-->
                                     <md-option ng-value="{{segmentParent.children.length+1}}">{{segmentParent.children.length+1}}</md-option>
                                 </md-select>
