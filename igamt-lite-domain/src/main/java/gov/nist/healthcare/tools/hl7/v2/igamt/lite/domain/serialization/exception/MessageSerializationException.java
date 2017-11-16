@@ -16,13 +16,16 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
  * Created by Maxence Lefort on 10/30/17.
  */
 public class MessageSerializationException extends SerializationException{
-    private Message message;
 
     private String label = "Message";
 
-    public MessageSerializationException(Exception originalException, String errorMessage, Message message) {
-        super(originalException, errorMessage);
-        this.message = message;
+    public MessageSerializationException(Exception originalException, String location) {
+        super(originalException, location);
+    }
+
+    public MessageSerializationException(Exception originalException, String location,
+        String message) {
+        super(originalException, location, message);
     }
 
     @Override public String getLabel() {

@@ -239,7 +239,7 @@ public class SerializableSegment extends SerializableSection {
     return segmentElement;
   }
 
-  private Element generateDynamicMappingElement() throws DynamicMappingException {
+  private Element generateDynamicMappingElement() throws DynamicMappingSerializationException {
     try {
       DynamicMappingDefinition dynamicMappingDefinition = segment.getDynamicMappingDefinition();
       Element dynamicMappingElement = new Element("DynamicMapping");
@@ -267,7 +267,7 @@ public class SerializableSegment extends SerializableSection {
               dynamicMappingItemElement.addAttribute(new Attribute("FirstReferenceValue",
                   dynamicMappingItem.getFirstReferenceValue()));
             } else {
-              throw new DynamicMappingItemException(new Exception(), "DynamicMappingItem[" + dynamicMappingDefinition.getDynamicMappingItems()
+              throw new DynamicMappingItemSerializationException(new Exception(), "DynamicMappingItem[" + dynamicMappingDefinition.getDynamicMappingItems()
                   .indexOf(dynamicMappingItem) + "]","Missing first reference value");
             }
             if (dynamicMappingItem.getSecondReferenceValue() != null && !dynamicMappingItem
@@ -275,7 +275,7 @@ public class SerializableSegment extends SerializableSection {
               dynamicMappingItemElement.addAttribute(new Attribute("SecondReferenceValue",
                   dynamicMappingItem.getSecondReferenceValue()));
             } else {
-              throw new DynamicMappingItemException(new Exception(), "DynamicMappingItem[" + dynamicMappingDefinition.getDynamicMappingItems()
+              throw new DynamicMappingItemSerializationException(new Exception(), "DynamicMappingItem[" + dynamicMappingDefinition.getDynamicMappingItems()
                   .indexOf(dynamicMappingItem) + "]","Missing second reference value");
             }
             Datatype datatype = this.dynamicMappingDatatypeMap.get(dynamicMappingItem.getDatatypeId());
@@ -285,7 +285,7 @@ public class SerializableSegment extends SerializableSection {
               throw new DatatypeNotFoundException(dynamicMappingItem.getDatatypeId());
             }
           } catch (Exception e) {
-            throw new DynamicMappingItemException(e, "DynamicMappingItem[" + dynamicMappingDefinition.getDynamicMappingItems()
+            throw new DynamicMappingItemSerializationException(e, "DynamicMappingItem[" + dynamicMappingDefinition.getDynamicMappingItems()
                 .indexOf(dynamicMappingItem) + "]");
           }
           dynamicMappingElement.appendChild(dynamicMappingItemElement);
@@ -293,7 +293,7 @@ public class SerializableSegment extends SerializableSection {
       }
       return dynamicMappingElement;
     } catch (Exception e){
-      throw new DynamicMappingException(e,"DynamicMapping");
+      throw new DynamicMappingSerializationException(e,"DynamicMapping");
     }
   }
 

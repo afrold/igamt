@@ -1,6 +1,6 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -13,16 +13,20 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
  * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified.
  * <p>
- * Created by Maxence Lefort on 10/30/17.
+ * Created by Maxence Lefort on 11/16/17.
  */
-public class ConstraintSerializationException extends SerializationException {
+public class GroupSerializationException extends SerializationException {
 
-    private String label = "Constraint";
+    private static final String label = "Group";
 
-    public ConstraintSerializationException(Exception originalException, String location) {
-        super(originalException,location);
+    public GroupSerializationException(Exception originalException, String location) {
+        super(originalException, location);
     }
 
+    public GroupSerializationException(Exception originalException, String location,
+        String message) {
+        super(originalException, location, message);
+    }
 
     @Override public String getLabel() {
         return label;

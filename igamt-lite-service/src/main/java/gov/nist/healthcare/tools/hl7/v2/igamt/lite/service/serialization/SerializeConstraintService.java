@@ -4,6 +4,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModelWithConstrain
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
 
 import java.util.List;
 
@@ -22,5 +23,6 @@ import java.util.List;
  */
 public interface SerializeConstraintService {
     public List<SerializableConstraint> serializeConstraints(
-        DataModelWithConstraints dataModelWithConstraints, String location);
+        DataModelWithConstraints dataModelWithConstraints, String location)
+        throws ConstraintSerializationException;
 }

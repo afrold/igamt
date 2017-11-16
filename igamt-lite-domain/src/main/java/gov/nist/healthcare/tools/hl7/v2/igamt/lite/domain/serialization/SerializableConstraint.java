@@ -63,7 +63,7 @@ public class SerializableConstraint extends SerializableElement{
             }
             return elmConstraint;
         } catch (Exception e){
-            throw new ConstraintSerializationException(e,constraint,locationName);
+            throw new ConstraintSerializationException(e,locationName);
         }
     }
 }

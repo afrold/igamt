@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.exception.TableNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
@@ -144,11 +145,12 @@ public class SerializableSection extends SerializableElement {
         return commentListElement;
     }
 
-    protected Element createValueSetBindingListElement(List<ValueSetOrSingleCodeBinding> valueSetOrSingleCodeBindings, List<Table> tables,String locationPrefix){
+    protected Element createValueSetBindingListElement(List<ValueSetOrSingleCodeBinding> valueSetOrSingleCodeBindings, List<Table> tables,String locationPrefix) throws TableNotFoundException {
         return createValueSetBindingListElement(valueSetOrSingleCodeBindings, tables, locationPrefix,new HashMap<String,String>());
     }
     
-    protected Element createValueSetBindingListElement(List<ValueSetOrSingleCodeBinding> valueSetOrSingleCodeBindings, List<Table> tables,String locationPrefix, HashMap<String,String> locationPathMap){
+    protected Element createValueSetBindingListElement(List<ValueSetOrSingleCodeBinding> valueSetOrSingleCodeBindings, List<Table> tables,String locationPrefix, HashMap<String,String> locationPathMap) throws
+        TableNotFoundException {
         Element valueSetBindingListElement = new Element("ValueSetBindingList");
         for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : valueSetOrSingleCodeBindings){
             if(valueSetOrSingleCodeBinding!=null) {
@@ -200,13 +202,15 @@ public class SerializableSection extends SerializableElement {
                         }
                     }
                     valueSetBindingListElement.appendChild(valueSetBindingElement);
+                } else {
+                    throw new TableNotFoundException(valueSetOrSingleCodeBinding.getTableId());
                 }
             }
         }
         return valueSetBindingListElement;
     }
 
-    protected Table findTable(List<Table> tables, String tableId){
+    protected Table findTable(List<Table> tables, String tableId) throws TableNotFoundException{
         if(tableId!=null && !tableId.isEmpty()) {
             for (Table table : tables) {
                 if (table != null && table.getId() != null && table.getId().equals(tableId)) {
@@ -214,7 +218,7 @@ public class SerializableSection extends SerializableElement {
                 }
             }
         }
-        return null;
+        throw new TableNotFoundException(tableId);
     }
 
     public String findComments(Integer position, List<Comment> comments) {

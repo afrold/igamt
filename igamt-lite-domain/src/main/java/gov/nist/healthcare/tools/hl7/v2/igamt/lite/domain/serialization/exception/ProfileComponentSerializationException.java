@@ -11,21 +11,22 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.excepti
  * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified.
  * <p>
- * Created by Maxence Lefort on 11/14/17.
+ * Created by Maxence Lefort on 11/16/17.
  */
-public class DynamicMappingItemException extends SerializationException{
+public class ProfileComponentSerializationException extends SerializationException{
 
-    private static String label = "Dynamic Mapping Item";
+    private final static String label = "Profile Component";
 
-    public DynamicMappingItemException(Exception originalException, String location) {
+    public ProfileComponentSerializationException(Exception originalException, String location) {
         super(originalException, location);
     }
 
-    public DynamicMappingItemException(Exception originalException, String location, String message) {
+    public ProfileComponentSerializationException(Exception originalException, String location,
+        String message) {
         super(originalException, location, message);
     }
 
     @Override public String getLabel() {
-        return this.label;
+        return label;
     }
 }
