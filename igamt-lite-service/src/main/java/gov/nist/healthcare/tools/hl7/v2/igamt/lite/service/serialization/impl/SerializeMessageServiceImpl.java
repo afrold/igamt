@@ -124,8 +124,8 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
                 serializableMessage.addSection(messageSegments);
             }
             return serializableMessage;
-        } catch (ConstraintSerializationException cse){
-            throw new MessageSerializationException(cse, "Error while serializing message",message);
+        } catch (Exception e){
+            throw new MessageSerializationException(e, message.getName());
         }
     }
 

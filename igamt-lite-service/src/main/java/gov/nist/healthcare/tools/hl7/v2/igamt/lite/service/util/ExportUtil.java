@@ -184,7 +184,7 @@ public class ExportUtil {
 	}
 
 	public InputStream exportAsHtmlFromXsl(String xmlString, String xslPath, ExportParameters exportParameters,
-			MetaData metaData) {
+			MetaData metaData){
 
 		try {
 			// generate cover picture

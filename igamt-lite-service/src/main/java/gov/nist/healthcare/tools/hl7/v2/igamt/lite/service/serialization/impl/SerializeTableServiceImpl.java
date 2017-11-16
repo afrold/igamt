@@ -8,7 +8,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetMetadataConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.exception.TableNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableTable;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.TableSerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeTableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
@@ -45,9 +47,13 @@ public class SerializeTableServiceImpl implements SerializeTableService {
     private AppInfo appInfo;
 
     @Override public SerializableTable serializeTable(TableLink tableLink, String prefix,
-        Integer position, CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber) {
+        Integer position, CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber)
+			throws TableSerializationException {
         if(tableLink!=null && tableLink.getId()!=null) {
           Table table = tableService.findById(tableLink.getId());
+          if(table == null){
+          	throw new TableSerializationException(new TableNotFoundException(tableLink.getId()),tableLink.getBindingIdentifier());
+					}
           return this.serializeTable(tableLink, table, prefix, position, valueSetCodesUsageConfig, valueSetMetadataConfig,maxCodeNumber);
         }
         return null;
@@ -56,28 +62,27 @@ public class SerializeTableServiceImpl implements SerializeTableService {
     @Override
     public SerializableTable serializeTable(TableLink tableLink, Table table, String prefix,
         Integer position, CodeUsageConfig valueSetCodesUsageConfig,
-        ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber) {
+        ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber)
+			throws TableSerializationException {
       return serializeTable(table, String.valueOf(3),prefix, position, valueSetCodesUsageConfig, valueSetMetadataConfig,maxCodeNumber);
     }
 
 	@Override
-	public SerializableTable serializeTable(Table table) {
+	public SerializableTable serializeTable(Table table) throws TableSerializationException {
 		ExportConfig defaultConfig = ExportConfig.getBasicExportConfig(true);
 		return serializeTable(table,String.valueOf(0),String.valueOf(1),1,defaultConfig.getCodesExport(),defaultConfig.getValueSetsMetadata(),defaultConfig.getMaxCodeNumber());
 	}
 	
 	private SerializableTable serializeTable(Table table, String headerLevel, String prefix,
 	        Integer position, CodeUsageConfig valueSetCodesUsageConfig,
-	        ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber){
+	        ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber) throws TableSerializationException {
 		if (table != null) {
-			String id = table.getId();
-			String title = "ID not found: " + table.getId();
-			String defPreText, defPostText;
-			defPreText = defPostText = "";
-			SerializableTable serializedTable = null;
-			if (table != null) {
-				id = table.getId();
-				title = table.getBindingIdentifier();
+			try {
+				String id = table.getId();
+				String defPreText, defPostText;
+				defPreText = defPostText = "";
+				SerializableTable serializedTable = null;
+				String title = table.getBindingIdentifier();
 				if (table.getName() != null && !table.getName().isEmpty()) {
 					title += " - " + table.getName();
 				}
@@ -97,18 +102,22 @@ public class SerializeTableServiceImpl implements SerializeTableService {
 				String referenceUrl = "";
 				if (table.getScope().equals(SCOPE.PHINVADS)) {
 					String phinvads = appInfo.getProperties().get("PHINVADS");
-					if (phinvads!=null && table.getOid()!=null && !table.getOid().isEmpty()) {
-						referenceUrl = phinvads+table.getOid();
+					if (phinvads != null && table.getOid() != null && !table.getOid().isEmpty()) {
+						referenceUrl = phinvads + table.getOid();
 					}
 				} else {
-					if (table.getReferenceUrl() !=null) {
+					if (table.getReferenceUrl() != null) {
 						referenceUrl = table.getReferenceUrl();
 					}
 				}
-				serializedTable = new SerializableTable(id, prefix, String.valueOf(position), headerLevel, title, table,
-						table.getBindingIdentifier(), defPreText, defPostText, valueSetMetadataConfig,maxCodeNumber,referenceUrl);
+				serializedTable =
+					new SerializableTable(id, prefix, String.valueOf(position), headerLevel, title, table,
+						table.getBindingIdentifier(), defPreText, defPostText, valueSetMetadataConfig,
+						maxCodeNumber, referenceUrl);
+				return serializedTable;
+			} catch (Exception e){
+				throw new TableSerializationException(e,table.getBindingIdentifier());
 			}
-			return serializedTable;
 		}
 		return null;
 	}
