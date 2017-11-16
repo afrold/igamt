@@ -1,7 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.DateTimeDatatypeSerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -36,44 +36,61 @@ public class SerializableDateTimeDatatype extends SerializableDatatype {
     }
 
     @Override
-    public Element serializeElement() throws ConstraintSerializationException {
-        Element element = super.serializeElement();
-        Element dtmElement = new Element("DateTimeDatatype");
-        DTMConstraints dtmConstraints = datatype.getDtmConstraints();
-        if(dtmConstraints!=null){
-            for(DTMComponentDefinition dtmComponentDefinition : dtmConstraints.getDtmComponentDefinitions()){
-                if(dtmComponentDefinition!=null){
-                    Element dtmDefinitionElement = new Element("DateTimeDatatypeDefinition");
-                    if(dtmComponentDefinition.getName()!=null && !dtmComponentDefinition.getName().isEmpty()){
-                        dtmDefinitionElement.addAttribute(new Attribute("Name",dtmComponentDefinition.getName()));
-                    }
-                    if(dtmComponentDefinition.getPosition()!=null){
-                        dtmDefinitionElement.addAttribute(new Attribute("Position",String.valueOf(
-                            dtmComponentDefinition.getPosition())));
-                    }
-                    if(dtmComponentDefinition.getUsage()!=null && !dtmComponentDefinition.getUsage().value().isEmpty()){
-                        String usage = dtmComponentDefinition.getUsage().value();
-                        if(usage.equals(Usage.C.value())){
-                            if(dtmComponentDefinition.getDtmPredicate()!=null) {
-                                String trueUsage,falseUsage;
-                                if (dtmComponentDefinition.getDtmPredicate().getTrueUsage() != null && !dtmComponentDefinition.getDtmPredicate().getTrueUsage().value()
-                                    .isEmpty() && dtmComponentDefinition.getDtmPredicate().getFalseUsage() != null && !dtmComponentDefinition.getDtmPredicate().getFalseUsage().value().isEmpty()) {
-                                    trueUsage = dtmComponentDefinition.getDtmPredicate().getTrueUsage().value();
-                                    falseUsage = dtmComponentDefinition.getDtmPredicate().getFalseUsage().value();
-                                    usage = usage.concat("("+trueUsage+"/"+falseUsage+")");
-                                }
-                                if (dtmComponentDefinition.getDtmPredicate().getPredicateDescription() != null && !dtmComponentDefinition.getDtmPredicate().getPredicateDescription().isEmpty()) {
-                                    dtmDefinitionElement.addAttribute(new Attribute("Predicate", dtmComponentDefinition.getDtmPredicate().getPredicateDescription()));
+    public Element serializeElement() throws DateTimeDatatypeSerializationException {
+        try {
+            Element element = super.serializeElement();
+            Element dtmElement = new Element("DateTimeDatatype");
+            DTMConstraints dtmConstraints = datatype.getDtmConstraints();
+            if (dtmConstraints != null) {
+                for (DTMComponentDefinition dtmComponentDefinition : dtmConstraints
+                    .getDtmComponentDefinitions()) {
+                    if (dtmComponentDefinition != null) {
+                        Element dtmDefinitionElement = new Element("DateTimeDatatypeDefinition");
+                        if (dtmComponentDefinition.getName() != null && !dtmComponentDefinition
+                            .getName().isEmpty()) {
+                            dtmDefinitionElement.addAttribute(
+                                new Attribute("Name", dtmComponentDefinition.getName()));
+                        }
+                        if (dtmComponentDefinition.getPosition() != null) {
+                            dtmDefinitionElement.addAttribute(new Attribute("Position", String.valueOf(dtmComponentDefinition.getPosition())));
+                        }
+                        if (dtmComponentDefinition.getUsage() != null && !dtmComponentDefinition
+                            .getUsage().value().isEmpty()) {
+                            String usage = dtmComponentDefinition.getUsage().value();
+                            if (usage.equals(Usage.C.value())) {
+                                if (dtmComponentDefinition.getDtmPredicate() != null) {
+                                    String trueUsage, falseUsage;
+                                    if (dtmComponentDefinition.getDtmPredicate().getTrueUsage() != null && !dtmComponentDefinition.getDtmPredicate()
+                                        .getTrueUsage().value().isEmpty()
+                                        && dtmComponentDefinition.getDtmPredicate().getFalseUsage()
+                                        != null && !dtmComponentDefinition.getDtmPredicate()
+                                        .getFalseUsage().value().isEmpty()) {
+                                        trueUsage = dtmComponentDefinition.getDtmPredicate().getTrueUsage()
+                                            .value();
+                                        falseUsage = dtmComponentDefinition.getDtmPredicate().getFalseUsage()
+                                            .value();
+                                        usage =
+                                            usage.concat("(" + trueUsage + "/" + falseUsage + ")");
+                                    }
+                                    if (dtmComponentDefinition.getDtmPredicate()
+                                        .getPredicateDescription() != null && !dtmComponentDefinition.getDtmPredicate()
+                                        .getPredicateDescription().isEmpty()) {
+                                        dtmDefinitionElement.addAttribute(new Attribute("Predicate",
+                                            dtmComponentDefinition.getDtmPredicate()
+                                                .getPredicateDescription()));
+                                    }
                                 }
                             }
+                            dtmDefinitionElement.addAttribute(new Attribute("Usage", usage));
                         }
-                        dtmDefinitionElement.addAttribute(new Attribute("Usage",usage));
+                        dtmElement.appendChild(dtmDefinitionElement);
                     }
-                    dtmElement.appendChild(dtmDefinitionElement);
                 }
             }
+            element.getFirstChildElement("Datatype").appendChild(dtmElement);
+            return element;
+        } catch (Exception e){
+            throw new DateTimeDatatypeSerializationException(e,datatype.getLabel()!=null?datatype.getLabel():"");
         }
-        element.getFirstChildElement("Datatype").appendChild(dtmElement);
-        return element;
     }
 }

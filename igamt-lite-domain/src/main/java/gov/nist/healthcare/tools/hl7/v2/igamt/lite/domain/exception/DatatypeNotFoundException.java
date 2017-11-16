@@ -1,6 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.exception;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -13,18 +11,15 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
  * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified.
  * <p>
- * Created by Maxence Lefort on 10/30/17.
+ * Created by Maxence Lefort on 11/14/17.
  */
-public class ConstraintSerializationException extends SerializationException {
+public class DatatypeNotFoundException extends Exception{
 
-    private String label = "Constraint";
-
-    public ConstraintSerializationException(Exception originalException, String location) {
-        super(originalException,location);
+    public DatatypeNotFoundException(String datatypeId) {
+        super("Datatype not found for ID "+datatypeId);
     }
 
-
-    @Override public String getLabel() {
-        return null;
+    public DatatypeNotFoundException(String datatypeId, String label) {
+        super("Datatype "+label+" not found for ID "+datatypeId);
     }
 }

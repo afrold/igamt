@@ -5,6 +5,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetMetadataConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.TableSerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -43,85 +44,87 @@ public class SerializableTable extends SerializableSection {
         this.maxCodeNumber = maxCodeNumber;
     }
 
-    @Override public Element serializeElement() {
+    @Override public Element serializeElement() throws TableSerializationException{
         Element valueSetDefinitionElement = new Element("ValueSetDefinition");
         if (this.table != null) {
-            valueSetDefinitionElement.addAttribute(new Attribute("Id",
-                (this.table.getBindingIdentifier() == null) ?
-                    "" :
-                    this.table.getBindingIdentifier()));
-            valueSetDefinitionElement.addAttribute(new Attribute("BindingIdentifier",
-                (this.bindingIdentifier == null) ? "" : table.getBindingIdentifier()));
-            if((this.table.getName() != null && !this.table.getName().isEmpty())){
-              valueSetDefinitionElement.addAttribute(new Attribute("Name", this.table.getName()));
-            }
-            if(this.table.getSourceType()!=null){
-            	
-        		valueSetDefinitionElement.addAttribute(new Attribute("SourceType",table.getSourceType().value));
-            	
-        		if(this.referenceUrl != null && !this.referenceUrl.isEmpty()){
-        			valueSetDefinitionElement.addAttribute(new Attribute("ReferenceUrl",this.referenceUrl));
-        		}
-        		if(this.table.getContentDefinition() != null && this.table.getContentDefinition().equals(ContentDefinition.Intensional) && this.table.getInfoForExternal() != null && !this.table.getInfoForExternal().isEmpty()){
-                	valueSetDefinitionElement.addAttribute(new Attribute("InfoForExternal",this.table.getInfoForExternal()));
+            try {
+                valueSetDefinitionElement.addAttribute(new Attribute("Id",
+                    (this.table.getBindingIdentifier() == null) ? "" : this.table.getBindingIdentifier()));
+                valueSetDefinitionElement.addAttribute(new Attribute("BindingIdentifier",
+                    (this.bindingIdentifier == null) ? "" : table.getBindingIdentifier()));
+                if ((this.table.getName() != null && !this.table.getName().isEmpty())) {
+                    valueSetDefinitionElement
+                        .addAttribute(new Attribute("Name", this.table.getName()));
                 }
-            }
-            valueSetDefinitionElement.addAttribute(new Attribute("Description",
-                (this.table.getDescription() == null) ? "" : this.table.getDescription()));
-            valueSetDefinitionElement.addAttribute(new Attribute("Version",
-                (this.table.getVersion() == null) ? "" : "" + this.table.getVersion()));
-            valueSetDefinitionElement.addAttribute(
-                new Attribute("Oid", (this.table.getOid() == null) ? "" : this.table.getOid()));
-            if(this.valueSetMetadataConfig!=null){
-	            if(valueSetMetadataConfig.isStability()){
-	            	valueSetDefinitionElement.addAttribute(new Attribute("Stability",
-		                (this.table.getStability() == null) ? "" : this.table.getStability().value));
-	            }
-	            if(valueSetMetadataConfig.isExtensibility()){
-		            valueSetDefinitionElement.addAttribute(new Attribute("Extensibility",
-		                (this.table.getExtensibility() == null) ?
-		                    "" :
-		                    this.table.getExtensibility().value));
-	            }
-	            if(valueSetMetadataConfig.isContentDefinition()){
-		            valueSetDefinitionElement.addAttribute(new Attribute("ContentDefinition",
-		                (this.table.getContentDefinition() == null) ?
-		                    "" :
-		                    this.table.getContentDefinition().value));
-	            }
-            }
-            valueSetDefinitionElement.addAttribute(new Attribute("id", this.table.getId()));
+                if (this.table.getSourceType() != null) {
 
-            if (this.table.getCodes() != null) {
-                List<Code> codes;
-                if(maxCodeNumber >= 0 && this.table.getCodes().size()>maxCodeNumber){
-                    codes = this.table.getCodes().subList(0,maxCodeNumber);
-                } else {
-                    codes = this.table.getCodes();
-                }
-                if(codes != null && !codes.isEmpty()) {
-                    for (Code c : codes) {
-                        Element valueElement = new Element("ValueElement");
-                        valueElement.addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
-                        valueElement.addAttribute(new Attribute("Label", (c.getLabel() == null) ? "" : c.getLabel()));
-                        valueElement.addAttribute(new Attribute("CodeSystem",
-                            (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
-                        valueElement.addAttribute(new Attribute("Usage",
-                            (c.getCodeUsage() == null) || c.getValue() == null || ""
-                                .equals(c.getValue()) || "...".equals(c.getValue()) ? "" : c.getCodeUsage()));
-                        valueElement.addAttribute(new Attribute("Comment",
-                            (c.getComments() == null) ? "" : c.getComments()));
-                        valueSetDefinitionElement.appendChild(valueElement);
+                    valueSetDefinitionElement
+                        .addAttribute(new Attribute("SourceType", table.getSourceType().value));
+
+                    if (this.referenceUrl != null && !this.referenceUrl.isEmpty()) {
+                        valueSetDefinitionElement
+                            .addAttribute(new Attribute("ReferenceUrl", this.referenceUrl));
+                    }
+                    if (this.table.getContentDefinition() != null && this.table
+                        .getContentDefinition().equals(ContentDefinition.Intensional) && this.table.getInfoForExternal() != null && !this.table
+                        .getInfoForExternal().isEmpty()) {
+                        valueSetDefinitionElement.addAttribute(new Attribute("InfoForExternal", this.table.getInfoForExternal()));
                     }
                 }
-            }
-            if (this.defPreText != null && !this.defPreText.isEmpty()) {
-                valueSetDefinitionElement
-                    .appendChild(this.createTextElement("DefPreText", this.defPreText));
-            }
-            if (this.defPostText != null && !this.defPostText.isEmpty()) {
-                valueSetDefinitionElement.appendChild(
-                    this.createTextElement("DefPostText", this.defPostText));
+                valueSetDefinitionElement.addAttribute(new Attribute("Description",
+                    (this.table.getDescription() == null) ? "" : this.table.getDescription()));
+                valueSetDefinitionElement.addAttribute(new Attribute("Version",
+                    (this.table.getVersion() == null) ? "" : "" + this.table.getVersion()));
+                valueSetDefinitionElement.addAttribute(new Attribute("Oid", (this.table.getOid() == null) ? "" : this.table.getOid()));
+                if (this.valueSetMetadataConfig != null) {
+                    if (valueSetMetadataConfig.isStability()) {
+                        valueSetDefinitionElement.addAttribute(new Attribute("Stability",
+                            (this.table.getStability() == null) ? "" : this.table.getStability().value));
+                    }
+                    if (valueSetMetadataConfig.isExtensibility()) {
+                        valueSetDefinitionElement.addAttribute(new Attribute("Extensibility",
+                            (this.table.getExtensibility() == null) ? "" : this.table.getExtensibility().value));
+                    }
+                    if (valueSetMetadataConfig.isContentDefinition()) {
+                        valueSetDefinitionElement.addAttribute(new Attribute("ContentDefinition",
+                            (this.table.getContentDefinition() == null) ? "" : this.table.getContentDefinition().value));
+                    }
+                }
+                valueSetDefinitionElement.addAttribute(new Attribute("id", this.table.getId()));
+
+                if (this.table.getCodes() != null) {
+                    List<Code> codes;
+                    if (maxCodeNumber >= 0 && this.table.getCodes().size() > maxCodeNumber) {
+                        codes = this.table.getCodes().subList(0, maxCodeNumber);
+                    } else {
+                        codes = this.table.getCodes();
+                    }
+                    if (codes != null && !codes.isEmpty()) {
+                        for (Code c : codes) {
+                            Element valueElement = new Element("ValueElement");
+                            valueElement.addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
+                            valueElement.addAttribute(new Attribute("Label", (c.getLabel() == null) ? "" : c.getLabel()));
+                            valueElement.addAttribute(new Attribute("CodeSystem",
+                                (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
+                            valueElement.addAttribute(new Attribute("Usage",
+                                (c.getCodeUsage() == null) || c.getValue() == null || ""
+                                    .equals(c.getValue()) || "...".equals(c.getValue()) ? "" : c.getCodeUsage()));
+                            valueElement.addAttribute(new Attribute("Comment",
+                                (c.getComments() == null) ? "" : c.getComments()));
+                            valueSetDefinitionElement.appendChild(valueElement);
+                        }
+                    }
+                }
+                if (this.defPreText != null && !this.defPreText.isEmpty()) {
+                    valueSetDefinitionElement
+                        .appendChild(this.createTextElement("DefPreText", this.defPreText));
+                }
+                if (this.defPostText != null && !this.defPostText.isEmpty()) {
+                    valueSetDefinitionElement
+                        .appendChild(this.createTextElement("DefPostText", this.defPostText));
+                }
+            } catch (Exception e) {
+                throw new TableSerializationException(e,this.bindingIdentifier);
             }
         }
         Element sectionElement = super.getSectionElement();

@@ -2,15 +2,18 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.excepti
 
 public class CoConstraintSerializationException extends SerializationException {
 
-	public CoConstraintSerializationException(Exception originalException, String location, String message) {
-		super(originalException, location, message);
-			this.label = "Co-Constraint";
-	}
+		private final static String label = "Co-Constraint";
 
-	@Override
-	public String toJson() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		public CoConstraintSerializationException(Exception originalException, String location, String message) {
+			super(originalException, location, message);
+		}
+
+    public CoConstraintSerializationException(Exception originalException, String location) {
+        super(originalException, location);
+    }
+
+    @Override public String getLabel() {
+				return this.label;
+		}
 
 }

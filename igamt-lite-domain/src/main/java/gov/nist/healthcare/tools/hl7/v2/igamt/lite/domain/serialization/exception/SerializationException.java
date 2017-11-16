@@ -21,7 +21,6 @@ public abstract class SerializationException extends Exception {
     private Exception originalException;
     private String message;
     private String location;
-    protected String label = "Serialization";
 
     public SerializationException(Exception originalException, String location) {
         this.originalException = originalException;
@@ -30,11 +29,13 @@ public abstract class SerializationException extends Exception {
 
     public SerializationException(Exception originalException, String location, String message) {
         this.originalException = originalException;
-        this.message = message;
+        if(message != null && !message.isEmpty()) {
+            this.message = message;
+        }
         this.location = location;
     }
 
-    public abstract String toJson();
+    public abstract String getLabel();
 
     public String getLocation(){
         if(this.originalException instanceof SerializationException){
@@ -47,7 +48,7 @@ public abstract class SerializationException extends Exception {
     public List<String> getErrorMessages(){
     	ArrayList<String> errorMessagesStack = new ArrayList<>();
         if(message != null && !message.isEmpty()){
-        	 errorMessagesStack.add("["+this.label+"] - "+message);
+        	 errorMessagesStack.add("["+this.getLabel()+"] - "+message);
         }
         if(this.originalException instanceof SerializationException){
         	errorMessagesStack.addAll(((SerializationException) originalException).getErrorMessages());

@@ -18,13 +18,14 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 public class MessageSerializationException extends SerializationException{
     private Message message;
 
+    private String label = "Message";
+
     public MessageSerializationException(Exception originalException, String errorMessage, Message message) {
         super(originalException, errorMessage);
         this.message = message;
-        this.label = "Message";
     }
 
-    @Override public String toJson() {
-        return "Error while serializing message "+message.getName();
+    @Override public String getLabel() {
+        return this.label;
     }
 }
