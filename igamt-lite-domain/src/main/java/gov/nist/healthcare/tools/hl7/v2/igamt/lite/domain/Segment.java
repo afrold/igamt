@@ -477,27 +477,27 @@ public class Segment extends DataModelWithConstraints
 
   private String generateTHENAssertionForValue(CoConstraintColumnDefinition definitionThen, CoConstraintTHENColumnData thenData) {
     if (definitionThen.isPrimitive()) {
-      return "<AND><Presence Path=\"" + definitionThen.getConstraintPath() + "\"/><PlainText Path=\"" + definitionThen.getConstraintPath() + "\" Text=\"" + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>";
+      return "<OR><NOT><Presence Path=\"" + definitionThen.getConstraintPath() + "\"/></NOT><PlainText Path=\"" + definitionThen.getConstraintPath() + "\" Text=\"" + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></OR>";
     } else {
       if (thenData.getValueData().getBindingLocation() == null) {
-        return "<AND><Presence Path=\"" + definitionThen.getConstraintPath() + ".1[1]" + "\"/><PlainText Path=\"" + definitionThen.getConstraintPath() + ".1[1]" + "\" Text=\"" + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>";
+        return "<OR><NOT><Presence Path=\"" + definitionThen.getConstraintPath() + ".1[1]" + "\"/></NOT><PlainText Path=\"" + definitionThen.getConstraintPath() + ".1[1]" + "\" Text=\"" + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></OR>";
       } else {
         // "1 or 4", "1 or 4 or 10"
         if (thenData.getValueData().getBindingLocation().equals("1 or 4")) {
           return "<OR>" 
-              + "<AND><Presence Path=\"" + definitionThen.getConstraintPath() + ".1[1]" + "\"/><PlainText Path=\"" + definitionThen.getConstraintPath() + ".1[1]" + "\" Text=\"" + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>"
-              + "<AND><Presence Path=\"" + definitionThen.getConstraintPath() + ".4[1]" + "\"/><PlainText Path=\"" + definitionThen.getConstraintPath() + ".4[1]" + "\" Text=\"" + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>" 
+              + "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".1[1]" + "\" Text=\"" + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
+              + "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".4[1]" + "\" Text=\"" + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>" 
               + "</OR>";
         } else if (thenData.getValueData().getBindingLocation().equals("1 or 4 or 10")) {
           return "<OR>" 
               + "<OR>" 
-              + "<AND><Presence Path=\"" + definitionThen.getConstraintPath() + ".1[1]" + "\"/><PlainText Path=\"" + definitionThen.getConstraintPath() + ".1[1]" + "\" Text=\"" + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>"
-              + "<AND><Presence Path=\"" + definitionThen.getConstraintPath() + ".4[1]" + "\"/><PlainText Path=\"" + definitionThen.getConstraintPath() + ".4[1]" + "\" Text=\"" + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>" 
+              + "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".1[1]" + "\" Text=\"" + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
+              + "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".4[1]" + "\" Text=\"" + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>" 
               + "</OR>"
-              + "<AND><Presence Path=\"" + definitionThen.getConstraintPath() + ".10[1]" + "\"/><PlainText Path=\"" + definitionThen.getConstraintPath() + ".10[1]" + "\" Text=\"" + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>" 
+              + "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".10[1]" + "\" Text=\"" + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>" 
               + "</OR>";
         } else {
-          return "<AND><Presence Path=\"" + definitionThen.getConstraintPath() + "." + thenData.getValueData().getBindingLocation() + "[1]" + "\"/><PlainText Path=\"" + definitionThen.getConstraintPath() + "." + thenData.getValueData().getBindingLocation() + "[1]" + "\" Text=\"" + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>";
+          return "<OR><NOT><Presence Path=\"" + definitionThen.getConstraintPath() + "." + thenData.getValueData().getBindingLocation() + "[1]" + "\"/></NOT><PlainText Path=\"" + definitionThen.getConstraintPath() + "." + thenData.getValueData().getBindingLocation() + "[1]" + "\" Text=\"" + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></OR>";
         }
       }
     }
@@ -549,15 +549,15 @@ public class Segment extends DataModelWithConstraints
     }
     
     if (thenData.getValueSets().get(0).getBindingLocation() == null) {
-      thenAssertion = "<AND><Presence Path=\"" + definitionThen.getConstraintPath() + "\"/>" + thenAssertion + "</AND>";
+      thenAssertion = "<OR><NOT><Presence Path=\"" + definitionThen.getConstraintPath() + ".1[1]\"/></NOT>" + thenAssertion + "</OR>";
     } else {
       // "1 or 4", "1 or 4 or 10"
       if (thenData.getValueSets().get(0).getBindingLocation().equals("1 or 4")) {
-        thenAssertion = "<AND><OR><Presence Path=\"" + definitionThen.getConstraintPath() + ".1[1]" + "\"/><Presence Path=\"" + definitionThen.getConstraintPath() + ".4[1]" + "\"/></OR>" + thenAssertion + "</AND>";
+        thenAssertion = "<OR><AND><NOT><Presence Path=\"" + definitionThen.getConstraintPath() + ".1[1]" + "\"/></NOT><NOT><Presence Path=\"" + definitionThen.getConstraintPath() + ".4[1]" + "\"/></NOT></AND>" + thenAssertion + "</OR>";
       } else if (thenData.getValueSets().get(0).getBindingLocation().equals("1 or 4 or 10")) {
-        thenAssertion = "<AND><OR><OR><Presence Path=\"" + definitionThen.getConstraintPath() + ".1[1]" + "\"/><Presence Path=\"" + definitionThen.getConstraintPath() + ".4[1]" + "\"/></OR><Presence Path=\"" + definitionThen.getConstraintPath() + ".10[1]" + "\"/></OR>" + thenAssertion + "</AND>";
+        thenAssertion = "<OR><AND><AND><NOT><Presence Path=\"" + definitionThen.getConstraintPath() + ".1[1]" + "\"/></NOT><NOT><Presence Path=\"" + definitionThen.getConstraintPath() + ".4[1]" + "\"/></NOT></AND><NOT><Presence Path=\"" + definitionThen.getConstraintPath() + ".10[1]" + "\"/></NOT></AND>" + thenAssertion + "</OR>";
       } else {
-        thenAssertion = "<AND><Presence Path=\"" + definitionThen.getConstraintPath() + "." + thenData.getValueSets().get(0).getBindingLocation() + "[1]" + "\"/>" + thenAssertion + "</AND>";
+        thenAssertion = "<OR<NOT><Presence Path=\"" + definitionThen.getConstraintPath() + "." + thenData.getValueSets().get(0).getBindingLocation() + "[1]" + "\"/></NOT>" + thenAssertion + "</OR>";
       }
     }
     return thenAssertion;
