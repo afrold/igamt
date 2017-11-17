@@ -289,7 +289,7 @@ public class SerializableSegment extends SerializableSection {
 	            }
             } else {
             	throw new DynamicMappingItemSerializationException(new Exception(),dynamicMappingDefinition.getDynamicMappingItems()
-                .indexOf(dynamicMappingItem)+1,"Missing second reference value");
+                .indexOf(dynamicMappingItem)+1,"Missing datatype");
             }
           } catch (Exception e) {
         	  if(e instanceof DynamicMappingItemSerializationException){

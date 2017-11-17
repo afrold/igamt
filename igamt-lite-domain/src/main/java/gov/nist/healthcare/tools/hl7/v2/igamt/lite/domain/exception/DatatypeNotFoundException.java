@@ -16,10 +16,10 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.exception;
 public class DatatypeNotFoundException extends Exception{
 
     public DatatypeNotFoundException(String datatypeId) {
-        super("Datatype not found for ID "+datatypeId);
+        super("Datatype not found with ID "+datatypeId);
     }
 
     public DatatypeNotFoundException(String datatypeId, String label) {
-        super("Datatype "+label+" not found for ID "+datatypeId);
+        super("Datatype "+label+" not found with ID "+datatypeId);
     }
 }

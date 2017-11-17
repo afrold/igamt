@@ -22,7 +22,7 @@ public class DynamicMappingItemSerializationException extends SerializationExcep
     }
 
     public DynamicMappingItemSerializationException(Exception originalException, int row, String message) {
-        super(originalException, label+"[Row "+row+"]", message);
+        super(originalException, label+" (Row "+row+")", message);
     }
 
     @Override public String getLabel() {

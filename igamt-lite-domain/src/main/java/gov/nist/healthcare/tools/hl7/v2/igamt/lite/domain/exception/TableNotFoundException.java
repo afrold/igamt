@@ -15,6 +15,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.exception;
  */
 public class TableNotFoundException extends Exception {
     public TableNotFoundException(String tableId) {
-        super("Table not found for ID "+tableId);
+        super("Table not found with ID "+tableId);
     }
 }
