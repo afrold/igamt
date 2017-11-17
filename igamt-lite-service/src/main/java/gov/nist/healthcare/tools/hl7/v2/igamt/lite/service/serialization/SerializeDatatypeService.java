@@ -4,6 +4,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableDatatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.DatatypeSerializationException;
 
 import java.util.Map;
 
@@ -23,10 +24,12 @@ import java.util.Map;
 public interface SerializeDatatypeService {
 
     public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix,
-        Integer position, UsageConfig datatypeUsageConfig);
+        Integer position, UsageConfig datatypeUsageConfig) throws DatatypeSerializationException;
 
     public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix,
-        Integer position, UsageConfig datatypeUsageConfig, Map<String,Datatype> componentProfileDatatypes);
+        Integer position, UsageConfig datatypeUsageConfig, Map<String,Datatype> componentProfileDatatypes)
+        throws DatatypeSerializationException;
 
-    public SerializableDatatype serializeDatatype(Datatype datatype, String host);
+    public SerializableDatatype serializeDatatype(Datatype datatype, String host)
+        throws DatatypeSerializationException;
 }

@@ -3,6 +3,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableCompositeProfile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -19,5 +21,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
  */
 public interface SerializeCompositeProfileService {
     SerializableCompositeProfile serializeCompositeProfile(CompositeProfile compositeProfile, String prefix,
-        SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig);
+        SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig)
+        throws ConstraintSerializationException, SerializationException;
 }

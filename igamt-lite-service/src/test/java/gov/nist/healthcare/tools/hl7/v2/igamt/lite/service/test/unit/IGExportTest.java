@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -127,6 +128,8 @@ public class IGExportTest {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (SerializationException e) {
+				e.printStackTrace();
 		}
 	}
 
@@ -207,6 +210,8 @@ public class IGExportTest {
 			logger.debug("Export done");
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (SerializationException e) {
+				e.printStackTrace();
 		}
 	}
 
@@ -365,6 +370,8 @@ public class IGExportTest {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (SerializationException e) {
+				e.printStackTrace();
 		}
 	}
 

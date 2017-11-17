@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ProfileComponentSerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import org.apache.commons.lang3.StringUtils;
@@ -46,7 +47,7 @@ public class SerializableProfileComponent extends SerializableSection {
         this.host = host;
     }
 
-    @Override public Element serializeElement() {
+    @Override public Element serializeElement() throws ProfileComponentSerializationException {
         Element profileComponentElement = new Element("ProfileComponent");
         profileComponentElement.addAttribute(new Attribute("ID", this.profileComponent.getId() + ""));
         profileComponentElement.addAttribute(new Attribute("Name", this.profileComponent.getName() + ""));

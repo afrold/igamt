@@ -61,6 +61,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSegment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableTable;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.DatatypeLibrarySerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.DatatypeSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.IGDocumentSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.MessageSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SegmentSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.TableSerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
@@ -152,53 +159,56 @@ public class SerializationServiceImpl implements SerializationService {
 
 @Override
   public Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument,
-      ExportConfig exportConfig) {
-    this.exportConfig = exportConfig;
-    this.unbindedTables = null;
-    SerializableStructure serializableStructure = new SerializableStructure();
-    datatypeLibraryDocument.getMetaData().setHl7Version("");
-    datatypeLibraryDocument.getDatatypeLibrary().setSectionTitle("Data Types");
-    datatypeLibraryDocument.getDatatypeLibrary().setSectionContents("");
-    datatypeLibraryDocument.getTableLibrary().setSectionContents("");
-    datatypeLibraryDocument.getTableLibrary().setSectionTitle("Value Sets");
-    SerializableMetadata serializableMetadata = new SerializableMetadata(
-        datatypeLibraryDocument.getMetaData(), datatypeLibraryDocument.getDateUpdated());
-    serializableStructure.addSerializableElement(serializableMetadata);
-    SerializableSections serializableSections = new SerializableSections();
-    this.bindedDatatypes =
-        new ArrayList<>(datatypeLibraryDocument.getDatatypeLibrary().getChildren());
-    this.bindedTables = new HashSet<>();
-    for (TableLink tableLink : datatypeLibraryDocument.getTableLibrary().getChildren()) {
-      doBindTable(tableLink.getId());
-    }
+      ExportConfig exportConfig) throws SerializationException {
+    try {
+      this.exportConfig = exportConfig;
+      this.unbindedTables = null;
+      SerializableStructure serializableStructure = new SerializableStructure();
+      datatypeLibraryDocument.getMetaData().setHl7Version("");
+      datatypeLibraryDocument.getDatatypeLibrary().setSectionTitle("Data Types");
+      datatypeLibraryDocument.getDatatypeLibrary().setSectionContents("");
+      datatypeLibraryDocument.getTableLibrary().setSectionContents("");
+      datatypeLibraryDocument.getTableLibrary().setSectionTitle("Value Sets");
+      SerializableMetadata serializableMetadata =
+          new SerializableMetadata(datatypeLibraryDocument.getMetaData(), datatypeLibraryDocument.getDateUpdated());
+      serializableStructure.addSerializableElement(serializableMetadata);
+      SerializableSections serializableSections = new SerializableSections();
+      this.bindedDatatypes = new ArrayList<>(datatypeLibraryDocument.getDatatypeLibrary().getChildren());
+      this.bindedTables = new HashSet<>();
+      for (TableLink tableLink : datatypeLibraryDocument.getTableLibrary().getChildren()) {
+        doBindTable(tableLink.getId());
+      }
 
-    int datatypeSectionPosition = 1;
-    if (datatypeLibraryDocument.getMetaData().getDescription() != null
-        && !datatypeLibraryDocument.getMetaData().getDescription().trim().isEmpty()) {
-      SerializableSection descriptionSection =
-          new SerializableSection("descriptionSection", "1", "1", "1", "Description");
-      descriptionSection.addSectionContent(datatypeLibraryDocument.getMetaData().getDescription());
-      serializableSections.addSection(descriptionSection);
-      datatypeSectionPosition++;
+      int datatypeSectionPosition = 1;
+      if (datatypeLibraryDocument.getMetaData().getDescription() != null && !datatypeLibraryDocument
+          .getMetaData().getDescription().trim().isEmpty()) {
+        SerializableSection descriptionSection =
+            new SerializableSection("descriptionSection", "1", "1", "1", "Description");
+        descriptionSection.addSectionContent(datatypeLibraryDocument.getMetaData().getDescription());
+        serializableSections.addSection(descriptionSection);
+        datatypeSectionPosition++;
+      }
+      SerializableSection datatypeLibrarySection =
+          new SerializableSection("datatypeLibrarySection", String.valueOf(datatypeSectionPosition),
+              String.valueOf(datatypeSectionPosition), "1", "Datatype Library");
+      SerializableSection datatypeSection =
+          this.serializeDatatypes(datatypeLibraryDocument.getDatatypeLibrary(), 1, true);
+      // datatypeSection.setTitle("Data Types");
+      // SerializableSection valueSetsSection =
+      // this.serializeValueSets(datatypeLibraryDocument.getTableLibrary(),2);
+      // valueSetsSection.setTitle("Value Sets");
+      datatypeLibrarySection.addSection(datatypeSection);
+      // datatypeLibrarySection.addSection(valueSetsSection);
+      serializableSections.addSection(datatypeLibrarySection);
+      serializableStructure.addSerializableElement(serializableSections);
+      return serializableStructure.serializeStructure();
+    } catch (Exception e){
+      throw new DatatypeLibrarySerializationException(e,datatypeLibraryDocument.getId());
     }
-    SerializableSection datatypeLibrarySection =
-        new SerializableSection("datatypeLibrarySection", String.valueOf(datatypeSectionPosition),
-            String.valueOf(datatypeSectionPosition), "1", "Datatype Library");
-    SerializableSection datatypeSection =
-        this.serializeDatatypes(datatypeLibraryDocument.getDatatypeLibrary(), 1, true);
-    // datatypeSection.setTitle("Data Types");
-    // SerializableSection valueSetsSection =
-    // this.serializeValueSets(datatypeLibraryDocument.getTableLibrary(),2);
-    // valueSetsSection.setTitle("Value Sets");
-    datatypeLibrarySection.addSection(datatypeSection);
-    // datatypeLibrarySection.addSection(valueSetsSection);
-    serializableSections.addSection(datatypeLibrarySection);
-    serializableStructure.addSerializableElement(serializableSections);
-    return serializableStructure.serializeStructure();
   }
 
   @Override
-  public Document serializeElement(SerializableElement element) {
+  public Document serializeElement(SerializableElement element) throws SerializationException {
     SerializableStructure serializableStructure = new SerializableStructure();
     serializableStructure.addSerializableElement(element);
     return serializableStructure.serializeStructure();
@@ -206,171 +216,165 @@ public class SerializationServiceImpl implements SerializationService {
 
   @Override
   public Document serializeIGDocument(IGDocument igDocument,
-      SerializationLayout serializationLayout, ExportConfig exportConfig) {
-    this.exportConfig = exportConfig;
-    igDocumentMessages = igDocument.getProfile().getMessages();
-    this.bindedDatatypes = new ArrayList<>();
-    this.bindedDatatypesId = new ArrayList<>();
-    if (igDocument.getProfile().getTableLibrary().getExportConfig() != null
-        && igDocument.getProfile().getTableLibrary().getExportConfig().getInclude() != null) {
-      this.bindedTables = igDocument.getProfile().getTableLibrary().getExportConfig().getInclude();
-      this.doFilterValueSets = false;
-    } else {
-      bindedTables = new HashSet<>();
-      this.doFilterValueSets = true;
-    }
-
-
-    this.bindedSegments = new ArrayList<>();
-    this.unbindedTables = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
-    this.compositeProfiles = new ArrayList<>();
-    if (igDocument.getProfile().getCompositeProfiles() != null
-        && !igDocument.getProfile().getCompositeProfiles().getChildren().isEmpty()) {
-      for (CompositeProfileStructure compositeProfileStructure : igDocument.getProfile()
-          .getCompositeProfiles().getChildren()) {
-        CompositeProfile compositeProfile = null;
-        try {
-          compositeProfile =
-              compositeProfileService.buildCompositeProfile(compositeProfileStructure);
-        } catch (Exception e) {
-          logger.error("Unable to build the composite profile from the structure "
-              + compositeProfileStructure.getName());
-        }
-        if (compositeProfile != null) {
-          compositeProfiles.add(compositeProfile);
-          for (SegmentRefOrGroup segmentRefOrGroup : compositeProfile.getChildren()) {
-            if (ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),
-                this.exportConfig.getSegmentORGroupsCompositeProfileExport())) {
-              identifyBindedItemsFromSegmentOrGroup(segmentRefOrGroup, compositeProfile);
-            } else {
-              identifyUnbindedValueSetsFromSegmentOrGroup(segmentRefOrGroup, compositeProfile);
+      SerializationLayout serializationLayout, ExportConfig exportConfig) throws SerializationException {
+    try {
+      this.exportConfig = exportConfig;
+      igDocumentMessages = igDocument.getProfile().getMessages();
+      this.bindedDatatypes = new ArrayList<>();
+      this.bindedDatatypesId = new ArrayList<>();
+      if (igDocument.getProfile().getTableLibrary().getExportConfig() != null
+          && igDocument.getProfile().getTableLibrary().getExportConfig().getInclude() != null) {
+        this.bindedTables = igDocument.getProfile().getTableLibrary().getExportConfig().getInclude();
+        this.doFilterValueSets = false;
+      } else {
+        bindedTables = new HashSet<>();
+      }
+      this.bindedSegments = new ArrayList<>();
+      this.unbindedTables = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
+      this.compositeProfiles = new ArrayList<>();
+      if (igDocument.getProfile().getCompositeProfiles() != null && !igDocument.getProfile().getCompositeProfiles().getChildren().isEmpty()) {
+        for (CompositeProfileStructure compositeProfileStructure : igDocument.getProfile().getCompositeProfiles().getChildren()) {
+          CompositeProfile compositeProfile = null;
+          try {
+            compositeProfile = compositeProfileService.buildCompositeProfile(compositeProfileStructure);
+          } catch (Exception e) {
+            logger.error("Unable to build the composite profile from the structure " + compositeProfileStructure.getName());
+          }
+          if (compositeProfile != null) {
+            compositeProfiles.add(compositeProfile);
+            for (SegmentRefOrGroup segmentRefOrGroup : compositeProfile.getChildren()) {
+              if (ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(), this.exportConfig.getSegmentORGroupsCompositeProfileExport())) {
+                identifyBindedItemsFromSegmentOrGroup(segmentRefOrGroup, compositeProfile);
+              } else {
+                identifyUnbindedValueSetsFromSegmentOrGroup(segmentRefOrGroup, compositeProfile);
+              }
             }
           }
         }
       }
-    }
-    for (Message message : igDocument.getProfile().getMessages().getChildren()) {
-      for (SegmentRefOrGroup segmentRefOrGroup : message.getChildren()) {
-        if (ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),
-            this.exportConfig.getSegmentORGroupsMessageExport())) {
-          identifyBindedItemsFromSegmentOrGroup(segmentRefOrGroup);
-        } else {
-          identifyUnbindedValueSetsFromSegmentOrGroup(segmentRefOrGroup, null);
+      for (Message message : igDocument.getProfile().getMessages().getChildren()) {
+        for (SegmentRefOrGroup segmentRefOrGroup : message.getChildren()) {
+          if (ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(), this.exportConfig.getSegmentORGroupsMessageExport())) {
+            identifyBindedItemsFromSegmentOrGroup(segmentRefOrGroup);
+          } else {
+            identifyUnbindedValueSetsFromSegmentOrGroup(segmentRefOrGroup, null);
+          }
         }
       }
-    }
-    // IGDocument igDocument = filterIgDocumentMessages(originIgDocument, exportConfig);
-    SerializableStructure serializableStructure = new SerializableStructure();
-    igDocument.getMetaData().setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
-    SerializableMetadata serializableMetadata =
-        new SerializableMetadata(igDocument.getMetaData(), igDocument.getDateUpdated());
-    serializableStructure.addSerializableElement(serializableMetadata);
-    SerializableSections serializableSections = new SerializableSections();
-    String prefix = "";
-    Integer depth = 1;
-    if (!serializationLayout.equals(SerializationLayout.TABLES)) {
-      serializationUtil.setSectionsPrefixes(igDocument.getChildSections(), prefix, depth,
-          serializableSections.getRootSections());
-    }
-    Profile profile = igDocument.getProfile();
-    // Create base section node for the profile serialization
-    String id = profile.getId();
-    String position = String.valueOf(igDocument.getChildSections().size() + 1);
-    // String position = String.valueOf(profile.getSectionPosition());
-    prefix = String.valueOf(profile.getSectionPosition() + 1);
-    String headerLevel = String.valueOf(1);
-    String title = "";
-    if (profile.getMessages().getSectionTitle() != null) {
-      title = profile.getSectionTitle();
-    }
-    SerializableSection profileSection =
-        new SerializableSection(id, prefix, position, headerLevel, title);
-    if (profile.getSectionContents() != null && !profile.getSectionContents().isEmpty()) {
-      profileSection
-          .addSectionContent(serializationUtil.cleanRichtext(profile.getSectionContents()));
-    }
-    if (profile.getUsageNote() != null && !profile.getUsageNote().isEmpty()) {
-      nu.xom.Element textElement = new nu.xom.Element("Text");
-      if (profile.getUsageNote() != null && !profile.getUsageNote().equals("")) {
-        nu.xom.Element usageNoteElement = new nu.xom.Element("UsageNote");
-        usageNoteElement.appendChild(serializationUtil.cleanRichtext(profile.getUsageNote()));
-        textElement.appendChild(usageNoteElement);
+      // IGDocument igDocument = filterIgDocumentMessages(originIgDocument, exportConfig);
+      SerializableStructure serializableStructure = new SerializableStructure();
+      igDocument.getMetaData().setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
+      SerializableMetadata serializableMetadata =
+          new SerializableMetadata(igDocument.getMetaData(), igDocument.getDateUpdated());
+      serializableStructure.addSerializableElement(serializableMetadata);
+      SerializableSections serializableSections = new SerializableSections();
+      String prefix = "";
+      Integer depth = 1;
+      if (!serializationLayout.equals(SerializationLayout.TABLES)) {
+        serializationUtil.setSectionsPrefixes(igDocument.getChildSections(), prefix, depth,
+            serializableSections.getRootSections());
       }
-      serializableSections.getRootSections().appendChild(textElement);
-    }
-    int currentPosition = 1;
-    // Profile Component serialization
-    if (exportConfig.isIncludeProfileComponentTable()) {
-      SerializableSection profileComponentSection =
-          this.serializeProfileComponent(profile.getProfileComponentLibrary(), currentPosition);
-      if (profileComponentSection != null) {
-        profileSection.addSection(profileComponentSection);
+      Profile profile = igDocument.getProfile();
+      // Create base section node for the profile serialization
+      String id = profile.getId();
+      String position = String.valueOf(igDocument.getChildSections().size() + 1);
+      // String position = String.valueOf(profile.getSectionPosition());
+      prefix = String.valueOf(profile.getSectionPosition() + 1);
+      String headerLevel = String.valueOf(1);
+      String title = "";
+      if (profile.getMessages().getSectionTitle() != null) {
+        title = profile.getSectionTitle();
+      }
+      SerializableSection profileSection =
+          new SerializableSection(id, prefix, position, headerLevel, title);
+      if (profile.getSectionContents() != null && !profile.getSectionContents().isEmpty()) {
+        profileSection.addSectionContent(serializationUtil.cleanRichtext(profile.getSectionContents()));
+      }
+      if (profile.getUsageNote() != null && !profile.getUsageNote().isEmpty()) {
+        nu.xom.Element textElement = new nu.xom.Element("Text");
+        if (profile.getUsageNote() != null && !profile.getUsageNote().equals("")) {
+          nu.xom.Element usageNoteElement = new nu.xom.Element("UsageNote");
+          usageNoteElement.appendChild(serializationUtil.cleanRichtext(profile.getUsageNote()));
+          textElement.appendChild(usageNoteElement);
+        }
+        serializableSections.getRootSections().appendChild(textElement);
+      }
+      int currentPosition = 1;
+      // Profile Component serialization
+      if (exportConfig.isIncludeProfileComponentTable()) {
+        SerializableSection profileComponentSection =
+            this.serializeProfileComponent(profile.getProfileComponentLibrary(), currentPosition);
+        if (profileComponentSection != null) {
+          profileSection.addSection(profileComponentSection);
+          currentPosition++;
+        }
+      }
+
+      // Message Serialization
+      SerializableSection messageSection = this.serializeMessages(profile, serializationLayout,
+          igDocument.getMetaData().getHl7Version(), currentPosition);
+      if (exportConfig.isIncludeMessageTable() && messageSection != null) {
+        profileSection.addSection(messageSection);
         currentPosition++;
       }
-    }
 
-    // Message Serialization
-    SerializableSection messageSection = this.serializeMessages(profile, serializationLayout,
-        igDocument.getMetaData().getHl7Version(), currentPosition);
-    if (exportConfig.isIncludeMessageTable() && messageSection != null) {
-      profileSection.addSection(messageSection);
-      currentPosition++;
-    }
+      // Composite profiles serialization
+      SerializableSection compositeProfilesSection =
+          this.serializeCompositeProfiles(profile, serializationLayout, igDocument.getMetaData().getHl7Version(), currentPosition);
+      if (exportConfig.isIncludeCompositeProfileTable() && compositeProfilesSection != null) {
+        profileSection.addSection(compositeProfilesSection);
+        currentPosition++;
+      }
 
-    // Composite profiles serialization
-    SerializableSection compositeProfilesSection = this.serializeCompositeProfiles(profile,
-        serializationLayout, igDocument.getMetaData().getHl7Version(), currentPosition);
-    if (exportConfig.isIncludeCompositeProfileTable() && compositeProfilesSection != null) {
-      profileSection.addSection(compositeProfilesSection);
-      currentPosition++;
-    }
+      // Segments serialization
+      UsageConfig fieldsUsageConfig = exportConfig.getFieldsExport();
+      SerializableSection segmentsSection =
+          this.serializeSegments(profile, fieldsUsageConfig, serializationLayout, currentPosition,
+              exportConfig.isDuplicateOBXDataTypeWhenFlavorNull());
+      if (exportConfig.isIncludeSegmentTable() && !serializationLayout.equals(SerializationLayout.PROFILE) && segmentsSection != null) {
+        profileSection.addSection(segmentsSection);
+        currentPosition++;
+      }
 
-    // Segments serialization
-    UsageConfig fieldsUsageConfig = exportConfig.getFieldsExport();
-    SerializableSection segmentsSection = this.serializeSegments(profile, fieldsUsageConfig,
-        serializationLayout, currentPosition, exportConfig.isDuplicateOBXDataTypeWhenFlavorNull());
-    if (exportConfig.isIncludeSegmentTable()
-        && !serializationLayout.equals(SerializationLayout.PROFILE) && segmentsSection != null) {
-      profileSection.addSection(segmentsSection);
-      currentPosition++;
-    }
+      // Datatypes serialization
+      boolean serializeMaster = true;
+      if (serializationLayout.equals(SerializationLayout.PROFILE)) {
+        serializeMaster = false;
+      }
+      SerializableSection datatypeSection =
+          this.serializeDatatypes(profile.getDatatypeLibrary(), currentPosition, serializeMaster);
+      if (exportConfig.isIncludeDatatypeTable() && datatypeSection != null) {
+        profileSection.addSection(datatypeSection);
+        currentPosition++;
+      }
 
-    // Datatypes serialization
-    boolean serializeMaster = true;
-    if (serializationLayout.equals(SerializationLayout.PROFILE)) {
-      serializeMaster = false;
-    }
-    SerializableSection datatypeSection =
-        this.serializeDatatypes(profile.getDatatypeLibrary(), currentPosition, serializeMaster);
-    if (exportConfig.isIncludeDatatypeTable() && datatypeSection != null) {
-      profileSection.addSection(datatypeSection);
-      currentPosition++;
-    }
-
-    // Value sets serialization
-    SerializableSection valueSetsSection =
-        this.serializeValueSets(profile.getTableLibrary(), currentPosition);
-    if (exportConfig.isIncludeValueSetsTable() && valueSetsSection != null) {
-      profileSection.addSection(valueSetsSection);
-      currentPosition++;
-    }
-    List<SerializableSection> compositeProfileSections = null;
-    if (compositeProfilesSection != null) {
-      compositeProfileSections = compositeProfilesSection.getSerializableSectionList();
-    }
-    SerializableSection constraintInformationSection =
-        this.serializeConstraints(profile, messageSection.getSerializableSectionList(),
-            compositeProfileSections, segmentsSection.getSerializableSectionList(),
-            datatypeSection.getSerializableSectionList(), currentPosition);
-    if (constraintInformationSection != null) {
-      profileSection.addSection(constraintInformationSection);
-      currentPosition++;
-    }
+      // Value sets serialization
+      SerializableSection valueSetsSection =
+          this.serializeValueSets(profile.getTableLibrary(), currentPosition);
+      if (exportConfig.isIncludeValueSetsTable() && valueSetsSection != null) {
+        profileSection.addSection(valueSetsSection);
+        currentPosition++;
+      }
+      List<SerializableSection> compositeProfileSections = null;
+      if (compositeProfilesSection != null) {
+        compositeProfileSections = compositeProfilesSection.getSerializableSectionList();
+      }
+      SerializableSection constraintInformationSection =
+          this.serializeConstraints(profile, messageSection.getSerializableSectionList(),
+              compositeProfileSections, segmentsSection.getSerializableSectionList(),
+              datatypeSection.getSerializableSectionList(), currentPosition);
+      if (constraintInformationSection != null) {
+        profileSection.addSection(constraintInformationSection);
+        currentPosition++;
+      }
 
 
-    serializableSections.addSection(profileSection);
-    serializableStructure.addSerializableElement(serializableSections);
-    return serializableStructure.serializeStructure();
+      serializableSections.addSection(profileSection);
+      serializableStructure.addSerializableElement(serializableSections);
+      return serializableStructure.serializeStructure();
+    } catch (Exception e){
+      throw new IGDocumentSerializationException(e,igDocument.getId());
+    }
   }
 
   private SerializableSection serializeProfileComponent(
@@ -482,7 +486,7 @@ public class SerializationServiceImpl implements SerializationService {
   }
 
   private SerializableSection serializeValueSets(TableLibrary tableLibrary,
-      Integer sectionPosition) {
+      Integer sectionPosition) throws TableSerializationException {
     String id = tableLibrary.getId();
     String position, prefix;
     if (tableLibrary.getSectionPosition() != null) {
@@ -545,7 +549,7 @@ public class SerializationServiceImpl implements SerializationService {
   }
 
   private SerializableSection serializeDatatypes(DatatypeLibrary datatypeLibrary,
-      int sectionPosition, boolean serializeMaster) {
+      int sectionPosition, boolean serializeMaster) throws DatatypeSerializationException {
     String id = datatypeLibrary.getId();
     String position, prefix;
     if (datatypeLibrary.getSectionPosition() != null) {
@@ -606,7 +610,8 @@ public class SerializationServiceImpl implements SerializationService {
 
 
   private SerializableSection serializeMessages(Profile profile,
-      SerializationLayout serializationLayout, String hl7Version, int position) {
+      SerializationLayout serializationLayout, String hl7Version, int position) throws
+      MessageSerializationException {
     String id = profile.getMessages().getId();
     String sectionPosition = String.valueOf(position);
     String prefix = String.valueOf(profile.getSectionPosition() + 1) + "."
@@ -632,7 +637,8 @@ public class SerializationServiceImpl implements SerializationService {
   }
 
   private SerializableSection serializeCompositeProfiles(Profile profile,
-      SerializationLayout serializationLayout, String hl7Version, int position) {
+      SerializationLayout serializationLayout, String hl7Version, int position)
+      throws SerializationException {
     if (profile.getCompositeProfiles() != null
         && !profile.getCompositeProfiles().getChildren().isEmpty()) {
       String id = profile.getCompositeProfiles().getId();
@@ -847,7 +853,7 @@ public class SerializationServiceImpl implements SerializationService {
 
   private SerializableSection serializeSegments(Profile profile, UsageConfig fieldsUsageConfig,
       SerializationLayout serializationLayout, int position,
-      Boolean duplicateOBXDataTypeWhenFlavorNull) {
+      Boolean duplicateOBXDataTypeWhenFlavorNull) throws SegmentSerializationException {
     String id = profile.getSegmentLibrary().getId();
     String sectionPosition = String.valueOf(position);
     String prefix = String.valueOf(profile.getSectionPosition() + 1) + "."
@@ -1267,7 +1273,8 @@ public class SerializationServiceImpl implements SerializationService {
   }
 
   @Override
-  public Document serializeDataModel(Object dataModel, String host) {
+  public Document serializeDataModel(Object dataModel, String host)
+      throws SerializationException {
     SerializableStructure serializableStructure = new SerializableStructure();
     SerializableElement serializableElement = null;
     if (dataModel instanceof Datatype) {

@@ -17,6 +17,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1148,7 +1149,8 @@ public class IGDocumentController extends CommonController {
   @RequestMapping(value = "/{id}/export/pdf", method = RequestMethod.POST,
       produces = "application/pdf", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
   public void exportPdfFromXsl(@PathVariable("id") String id, HttpServletRequest request,
-      HttpServletResponse response) throws IOException, IGDocumentNotFoundException {
+      HttpServletResponse response)
+      throws IOException, IGDocumentNotFoundException, SerializationException {
     log.info("Exporting as pdf file profile with id=" + id);
     IGDocument d = findIGDocument(id);
     InputStream content = null;

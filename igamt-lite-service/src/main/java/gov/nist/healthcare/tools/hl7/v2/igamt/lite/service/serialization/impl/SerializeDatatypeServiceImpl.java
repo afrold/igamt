@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.exception.DatatypeNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.DatatypeComponentSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.DatatypeSerializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,9 +54,12 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
 
     @Override
     public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix,
-        Integer position, UsageConfig datatypeUsageConfig) {
+        Integer position, UsageConfig datatypeUsageConfig) throws DatatypeSerializationException {
         if(datatypeLink!=null && datatypeLink.getId()!=null) {
             Datatype datatype = datatypeService.findById(datatypeLink.getId());
+            if(datatype == null){
+                throw new DatatypeSerializationException(new DatatypeNotFoundException(datatypeLink.getId()),datatypeLink.getLabel());
+            }
             String headerLevel = String.valueOf(3);
             return serializeDatatype(datatype,headerLevel,prefix,position,datatypeUsageConfig, false,null);
         }
@@ -63,91 +69,106 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
     @Override
     public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix,
         Integer position, UsageConfig datatypeUsageConfig,
-        Map<String, Datatype> componentProfileDatatypes) {
+        Map<String, Datatype> componentProfileDatatypes) throws DatatypeSerializationException {
         if(datatypeLink!=null && datatypeLink.getId()!=null) {
             Datatype datatype = componentProfileDatatypes.get(datatypeLink.getId());
+            if(datatype == null){
+                throw new DatatypeSerializationException(new DatatypeNotFoundException(datatypeLink.getId()),datatypeLink.getLabel());
+            }
             String headerLevel = String.valueOf(3);
             return serializeDatatype(datatype,headerLevel,prefix,position,datatypeUsageConfig, false,null);
         }
         return null;
     }
 
-    private SerializableDatatype serializeDatatype(Datatype datatype, String headerLevel, String prefix, Integer position, UsageConfig datatypeUsageConfig, Boolean showInnerLinks, String host){
+    private SerializableDatatype serializeDatatype(Datatype datatype, String headerLevel, String prefix, Integer position, UsageConfig datatypeUsageConfig, Boolean showInnerLinks, String host) throws
+        DatatypeSerializationException {
         if (datatype !=null && datatype.getId() !=null) {
-            String id = datatype.getId();
-            String title = datatype.getLabel() + " - " + datatype.getDescription();
-            List<ConformanceStatement> generatedConformanceStatements = datatype.retrieveAllConformanceStatements();
-            datatype.setConformanceStatements(generatedConformanceStatements);
-            List<SerializableConstraint> constraintsList =
-                serializeConstraintService.serializeConstraints(datatype, datatype.getName());
-            String defPreText, defPostText, usageNote;
-            defPreText = defPostText = usageNote = "";
-            if (datatype.getDefPreText() != null && !datatype.getDefPreText().isEmpty()) {
-                defPreText = serializationUtil.cleanRichtext(datatype.getDefPreText());
-            }
-            if (datatype.getDefPostText() != null && !datatype.getDefPostText().isEmpty()) {
-                defPostText = serializationUtil.cleanRichtext(datatype.getDefPostText());
-            }
-            if (datatype.getUsageNote() != null && !datatype.getUsageNote().isEmpty()) {
-                usageNote = serializationUtil.cleanRichtext(datatype.getDefPreText());
-            }
-            Map<Component, Datatype> componentDatatypeMap = new HashMap<>();
-            Map<Component, List<ValueSetOrSingleCodeBinding>> componentValueSetBindingsMap = new HashMap<>();
-            List<Table> tables = new ArrayList<>();
-            Map<Component, String> componentTextMap = new HashMap<>();
-            ArrayList<Component> toBeRemovedComponents = new ArrayList<>();
-            for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : datatype.getValueSetBindings()){
-                if(valueSetOrSingleCodeBinding.getTableId()!=null && !valueSetOrSingleCodeBinding.getTableId().isEmpty()){
-                    Table table = tableService.findById(valueSetOrSingleCodeBinding.getTableId());
-                    if(table!=null){
-                        tables.add(table);
+            try {
+                String id = datatype.getId();
+                String title = datatype.getLabel() + " - " + datatype.getDescription();
+                List<ConformanceStatement> generatedConformanceStatements = datatype.retrieveAllConformanceStatements();
+                datatype.setConformanceStatements(generatedConformanceStatements);
+                List<SerializableConstraint> constraintsList =
+                    serializeConstraintService.serializeConstraints(datatype, datatype.getName());
+                String defPreText, defPostText, usageNote;
+                defPreText = defPostText = usageNote = "";
+                if (datatype.getDefPreText() != null && !datatype.getDefPreText().isEmpty()) {
+                    defPreText = serializationUtil.cleanRichtext(datatype.getDefPreText());
+                }
+                if (datatype.getDefPostText() != null && !datatype.getDefPostText().isEmpty()) {
+                    defPostText = serializationUtil.cleanRichtext(datatype.getDefPostText());
+                }
+                if (datatype.getUsageNote() != null && !datatype.getUsageNote().isEmpty()) {
+                    usageNote = serializationUtil.cleanRichtext(datatype.getDefPreText());
+                }
+                Map<Component, Datatype> componentDatatypeMap = new HashMap<>();
+                Map<Component, List<ValueSetOrSingleCodeBinding>> componentValueSetBindingsMap = new HashMap<>();
+                List<Table> tables = new ArrayList<>();
+                Map<Component, String> componentTextMap = new HashMap<>();
+                ArrayList<Component> toBeRemovedComponents = new ArrayList<>();
+                for (ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : datatype
+                    .getValueSetBindings()) {
+                    if (valueSetOrSingleCodeBinding.getTableId() != null && !valueSetOrSingleCodeBinding.getTableId().isEmpty()) {
+                        Table table = tableService.findById(valueSetOrSingleCodeBinding.getTableId());
+                        if (table != null) {
+                            tables.add(table);
+                        }
                     }
                 }
-            }
-            if (hasComponentsToBeExported(datatype, datatypeUsageConfig)) {
-                for (Component component : datatype.getComponents()) {
-                    if (ExportUtil.diplayUsage(component.getUsage(), datatypeUsageConfig)) {
-                        if (component.getDatatype() != null && !component.getDatatype().getId()
-                            .isEmpty()) {
-                            Datatype componentDatatype =
-                                datatypeService.findById(component.getDatatype().getId());
-                            componentDatatypeMap.put(component, componentDatatype);
-                            List<ValueSetOrSingleCodeBinding> componentValueSetBindings = new ArrayList<>();
-                            for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : datatype.getValueSetBindings()){
-                                if(valueSetOrSingleCodeBinding.getLocation().equals(String.valueOf(component.getPosition()))){
-                                    componentValueSetBindings.add(valueSetOrSingleCodeBinding);
+                if (hasComponentsToBeExported(datatype, datatypeUsageConfig)) {
+                    for (Component component : datatype.getComponents()) {
+                        try {
+                            if (ExportUtil.diplayUsage(component.getUsage(), datatypeUsageConfig)) {
+                                if (component.getDatatype() != null && !component.getDatatype().getId().isEmpty()) {
+                                    Datatype componentDatatype =
+                                        datatypeService.findById(component.getDatatype().getId());
+                                    componentDatatypeMap.put(component, componentDatatype);
+                                    List<ValueSetOrSingleCodeBinding> componentValueSetBindings =
+                                        new ArrayList<>();
+                                    for (ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : datatype
+                                        .getValueSetBindings()) {
+                                        if (valueSetOrSingleCodeBinding.getLocation().equals(String.valueOf(component.getPosition()))) {
+                                            componentValueSetBindings.add(valueSetOrSingleCodeBinding);
+                                        }
+                                    }
+                                    componentValueSetBindingsMap
+                                        .put(component, componentValueSetBindings);
                                 }
-                            }
-                            componentValueSetBindingsMap.put(component,componentValueSetBindings);
-                        }
 
-                        if (component.getText() != null && !component.getText().isEmpty()) {
-                            String text = serializationUtil.cleanRichtext(component.getText());
-                            componentTextMap.put(component, text);
+                                if (component.getText() != null && !component.getText().isEmpty()) {
+                                    String text = serializationUtil.cleanRichtext(component.getText());
+                                    componentTextMap.put(component, text);
+                                }
+                            } else {
+                                toBeRemovedComponents.add(component);
+                            }
+                        } catch (Exception e) {
+                            throw new DatatypeComponentSerializationException(e,component.getName());
                         }
-                    } else {
-                        toBeRemovedComponents.add(component);
+                    }
+                    for (Component component : toBeRemovedComponents) {
+                        datatype.getComponents().remove(component);
                     }
                 }
-                for (Component component : toBeRemovedComponents) {
-                    datatype.getComponents().remove(component);
-                }
-            }
-            Boolean showConfLength = serializationUtil.isShowConfLength(datatype.getHl7Version());
-            SerializableDatatype serializedDatatype = null;
-            if (datatype.getName().equals("DTM")) {
-                serializedDatatype =
-                    new SerializableDateTimeDatatype(id, prefix, String.valueOf(position),
+                Boolean showConfLength = serializationUtil.isShowConfLength(datatype.getHl7Version());
+                SerializableDatatype serializedDatatype = null;
+                if (datatype.getName().equals("DTM")) {
+                    serializedDatatype = new SerializableDateTimeDatatype(id, prefix, String.valueOf(position),
                         headerLevel, title, datatype, defPreText, defPostText, usageNote,
                         constraintsList, componentDatatypeMap, componentValueSetBindingsMap, tables, componentTextMap,
                         showConfLength, showInnerLinks, host);
-            } else {
-                serializedDatatype =
-                    new SerializableDatatype(id, prefix, String.valueOf(position), headerLevel,
-                        title, datatype, defPreText, defPostText, usageNote, constraintsList,
-                        componentDatatypeMap, componentValueSetBindingsMap, tables, componentTextMap, showConfLength, showInnerLinks,host);
+                } else {
+                    serializedDatatype =
+                        new SerializableDatatype(id, prefix, String.valueOf(position), headerLevel,
+                            title, datatype, defPreText, defPostText, usageNote, constraintsList,
+                            componentDatatypeMap, componentValueSetBindingsMap, tables,
+                            componentTextMap, showConfLength, showInnerLinks, host);
+                }
+                return serializedDatatype;
+            } catch (Exception e){
+                throw new DatatypeSerializationException(e,datatype.getLabel());
             }
-            return serializedDatatype;
         }
         return null;
     }
@@ -171,7 +192,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
     }
 
 	@Override
-	public SerializableDatatype serializeDatatype(Datatype datatype, String host) {
+	public SerializableDatatype serializeDatatype(Datatype datatype, String host)
+      throws DatatypeSerializationException {
 		return serializeDatatype(datatype,String.valueOf(0), "1", 1, ExportConfig.getBasicExportConfig(true).getDatatypesExport(), true, host);
 	}
 }
