@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -47,14 +48,14 @@ public class SerializeTableServiceImpl implements SerializeTableService {
     private AppInfo appInfo;
 
     @Override public SerializableTable serializeTable(TableLink tableLink, String prefix,
-        Integer position, CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber)
+        Integer position, CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber, HashMap<String, Boolean> codePresence)
 			throws TableSerializationException {
         if(tableLink!=null && tableLink.getId()!=null) {
           Table table = tableService.findById(tableLink.getId());
           if(table == null){
           	throw new TableSerializationException(new TableNotFoundException(tableLink.getId()),tableLink.getBindingIdentifier());
 					}
-          return this.serializeTable(tableLink, table, prefix, position, valueSetCodesUsageConfig, valueSetMetadataConfig,maxCodeNumber);
+          return this.serializeTable(tableLink, table, prefix, position, valueSetCodesUsageConfig, valueSetMetadataConfig,maxCodeNumber,codePresence);
         }
         return null;
     }
@@ -62,20 +63,20 @@ public class SerializeTableServiceImpl implements SerializeTableService {
     @Override
     public SerializableTable serializeTable(TableLink tableLink, Table table, String prefix,
         Integer position, CodeUsageConfig valueSetCodesUsageConfig,
-        ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber)
+        ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber, HashMap<String, Boolean> codePresence)
 			throws TableSerializationException {
-      return serializeTable(table, String.valueOf(3),prefix, position, valueSetCodesUsageConfig, valueSetMetadataConfig,maxCodeNumber);
+      return serializeTable(table, String.valueOf(3),prefix, position, valueSetCodesUsageConfig, valueSetMetadataConfig,maxCodeNumber,codePresence);
     }
 
 	@Override
 	public SerializableTable serializeTable(Table table) throws TableSerializationException {
 		ExportConfig defaultConfig = ExportConfig.getBasicExportConfig(true);
-		return serializeTable(table,String.valueOf(0),String.valueOf(1),1,defaultConfig.getCodesExport(),defaultConfig.getValueSetsMetadata(),defaultConfig.getMaxCodeNumber());
+		return serializeTable(table,String.valueOf(0),String.valueOf(1),1,defaultConfig.getCodesExport(),defaultConfig.getValueSetsMetadata(),defaultConfig.getMaxCodeNumber(),new HashMap<String, Boolean>());
 	}
 	
 	private SerializableTable serializeTable(Table table, String headerLevel, String prefix,
 	        Integer position, CodeUsageConfig valueSetCodesUsageConfig,
-	        ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber) throws TableSerializationException {
+	        ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber, HashMap<String, Boolean> codePresence) throws TableSerializationException {
 		if (table != null) {
 			try {
 				String id = table.getId();
@@ -110,10 +111,17 @@ public class SerializeTableServiceImpl implements SerializeTableService {
 						referenceUrl = table.getReferenceUrl();
 					}
 				}
+				boolean exportCodes = true;
+				if(codePresence!=null && codePresence.containsKey(table.getId())){
+					Boolean tableCodePresence = codePresence.get(table.getId());
+					if(tableCodePresence != null && !tableCodePresence.booleanValue()){
+						exportCodes = false;
+					}
+				}
 				serializedTable =
 					new SerializableTable(id, prefix, String.valueOf(position), headerLevel, title, table,
 						table.getBindingIdentifier(), defPreText, defPostText, valueSetMetadataConfig,
-						maxCodeNumber, referenceUrl);
+						maxCodeNumber, exportCodes, referenceUrl);
 				return serializedTable;
 			} catch (Exception e){
 				throw new TableSerializationException(e,table.getBindingIdentifier());

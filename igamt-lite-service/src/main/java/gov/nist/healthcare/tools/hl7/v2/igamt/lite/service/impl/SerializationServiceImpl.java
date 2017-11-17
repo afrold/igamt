@@ -12,8 +12,7 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.context.ApplicationContext;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
@@ -98,40 +97,28 @@ import nu.xom.Document;
  * <p>
  * Created by Maxence Lefort on 12/7/16.
  */
-@Service
 public class SerializationServiceImpl implements SerializationService {
 
-  @Autowired
   SerializationUtil serializationUtil;
 
-  @Autowired
   SerializeMessageService serializeMessageService;
 
-  @Autowired
   SerializeSegmentService serializeSegmentService;
 
-  @Autowired
   SerializeDatatypeService serializeDatatypeService;
 
-  @Autowired
   SerializeCompositeProfileService serializeCompositeProfileService;
 
-  @Autowired
   SerializeProfileComponentService serializeProfileComponentService;
 
-  @Autowired
   SerializeTableService serializeTableService;
 
-  @Autowired
   SegmentService segmentService;
 
-  @Autowired
   CompositeProfileService compositeProfileService;
 
-  @Autowired
   TableService tableService;
 
-  @Autowired
   DatatypeService datatypeService;
 
   private ExportConfig exportConfig;
@@ -153,9 +140,24 @@ public class SerializationServiceImpl implements SerializationService {
   private List<String> bindedDatatypesId;
 
   private boolean doFilterValueSets = true;
+  
+  public SerializationServiceImpl(ApplicationContext applicationContext) {
+	super();
+	serializeCompositeProfileService = applicationContext.getBean(SerializeCompositeProfileService.class);
+	serializationUtil = applicationContext.getBean(SerializationUtil.class);
+	serializeMessageService = applicationContext.getBean(SerializeMessageService.class);
+	serializeSegmentService = applicationContext.getBean(SerializeSegmentService.class);
+	serializeDatatypeService = applicationContext.getBean(SerializeDatatypeService.class);
+	serializeCompositeProfileService = applicationContext.getBean(SerializeCompositeProfileService.class);
+	serializeProfileComponentService = applicationContext.getBean(SerializeProfileComponentService.class);
+	serializeTableService = applicationContext.getBean(SerializeTableService.class);
+	segmentService = applicationContext.getBean(SegmentService.class);
+	compositeProfileService = applicationContext.getBean(CompositeProfileService.class);
+	tableService = applicationContext.getBean(TableService.class);
+	datatypeService = applicationContext.getBean(DatatypeService.class);
+  }
 
-
-  @Override
+@Override
   public Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument,
       ExportConfig exportConfig) throws SerializationException {
     try {
@@ -227,7 +229,6 @@ public class SerializationServiceImpl implements SerializationService {
       } else {
         bindedTables = new HashSet<>();
       }
-
       this.bindedSegments = new ArrayList<>();
       this.unbindedTables = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
       this.compositeProfiles = new ArrayList<>();
@@ -516,7 +517,7 @@ public class SerializationServiceImpl implements SerializationService {
           SerializableTable serializableTable = serializeTableService.serializeTable(tableLink,
               prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
               tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig,
-              exportConfig.getValueSetsMetadata(), exportConfig.getMaxCodeNumber());
+              exportConfig.getValueSetsMetadata(), exportConfig.getMaxCodeNumber(),tableLibrary.getCodePresence());
           valueSetsSection.addSection(serializableTable);
         }
       }
@@ -528,7 +529,7 @@ public class SerializationServiceImpl implements SerializationService {
 	        SerializableTable serializableTable = serializeTableService.serializeTable(tableLink,
 	            prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
 	            tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig,
-	            exportConfig.getValueSetsMetadata(), exportConfig.getMaxCodeNumber());
+	            exportConfig.getValueSetsMetadata(), exportConfig.getMaxCodeNumber(),tableLibrary.getCodePresence());
 	        valueSetsSection.addSection(serializableTable);
 	      }
       }
@@ -1293,4 +1294,9 @@ public class SerializationServiceImpl implements SerializationService {
     }
     return serializableStructure.serializeStructure();
   }
+  
+  
+  
+  
+  
 }

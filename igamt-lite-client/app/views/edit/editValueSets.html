@@ -103,16 +103,8 @@
                                                        ng-model="table.hl7Section"/>
                                             </md-input-container>
                                             <label class="input-left igamt-label"> Type </label>
-                                            <md-select ng-model="table.sourceType"
-                                                       ng-change="confirmSwitchSourceType(table)"
-                                                       ng-if="!isNonEditableValueSet(table)">
-                                                <md-option ng-repeat="opt in sourceTypes" ng-value="opt.value">
-                                                    {{opt.label}}
-                                                </md-option>
-                                            </md-select>
-
-                                            <div ng-if="isNonEditableValueSet(table)">
-                                                {{table.sourceType}}
+                                            <div>
+                                              {{table.sourceType}}
                                             </div>
 
                                             <label class="input-left igamt-label">Internal IGAMT URL </label>
@@ -194,7 +186,7 @@
                                                                                     ng-disabled="isNonEditableValueSet(table)"
                                                                                     ng-model="table.extensibility">
                                                                                 <md-option
-                                                                                        ng-repeat="extensibility in config.tableExtensibilities"
+                                                                                        ng-repeat="extensibility in config.tableExtensibilities track by $index"
                                                                                         ng-value="extensibility">
                                                                                     {{getAttributeSelectLabel(extensibility)}}
                                                                                 </md-option>
@@ -209,7 +201,7 @@
                                                                                     ng-disabled="isNonEditableValueSet(table)"
                                                                                     ng-model="table.stability">
                                                                                 <md-option
-                                                                                        ng-repeat="stability in config.tableStabilities"
+                                                                                        ng-repeat="stability in config.tableStabilities track by $index"
                                                                                         ng-value="stability">
                                                                                     {{getAttributeSelectLabel(stability)}}
                                                                                 </md-option>
@@ -225,7 +217,7 @@
                                                                                     ng-disabled="isNonEditableValueSet(table)"
                                                                                     ng-model="table.contentDefinition">
                                                                                 <md-option
-                                                                                        ng-repeat="contentDefinition in config.tableContentDefinitions"
+                                                                                        ng-repeat="contentDefinition in config.tableContentDefinitions track by $index"
                                                                                         ng-value="contentDefinition">
                                                                                     {{getAttributeSelectLabel(contentDefinition)}}
                                                                                 </md-option>
@@ -274,10 +266,10 @@
                                                             </div>
                                                             <br/>
                                                             <md-toolbar class="value-set-toolBar">Content</md-toolbar>
-                                                            <div class="codes-container md-panelContent" ng-if="table.scope!=='PHINVADS'">
+                                                            <div class="codes-container md-panelContent" ng-show="table.sourceType=='EXTERNAL'">
                                                                 <label class="input-left igamt-label">Reference URL</label>
 
-                                                                <md-input-container class="md-block igamt-input-block"
+                                                                <md-input-container class="md-block igamt-input-block" ng-if="table.scope!=='PHINVADS'"
                                                                                     flex-gt-sm>
                                                                     <input type="url" name="url"
                                                                            ng-disabled="isNonEditableValueSet(table)"
@@ -289,31 +281,11 @@
                                                                     </span>
                                                                 </md-input-container>
 
-                                                                    <div ng-if="table.sourceType=='EXTERNAL'">
-                                                                    <label class="input-left igamt-label"
-                                                                           ng-if="table.contentDefinition=='Intensional'">Definition
-                                                                        Text </label>
-
-                                                                    <md-input-container class="md-block igamt-input-block"
-                                                                                        flex-gt-sm
-                                                                                        ng-if="table.contentDefinition=='Intensional'">
-                                                                    <textarea id="infoForExternal" type="text"
-                                                                              name="infoForExternal"
-                                                                              ng-disabled="isNonEditableValueSet(table)"
-                                                                              ng-model="table.infoForExternal"></textarea>
-                                                                    </md-input-container>
-                                                                    </div>
-                                                            </div>
-                                                            <div class="codes-container md-panelContent">
                                                                 <div ng-if="table.scope=='PHINVADS'">
-                                                                    <label class="input-left igamt-label"> Reference
-                                                                        URL </label>
 
                                                                     <a href="{{getPhinvadsURL(table)}}" target="_blank">{{getPhinvadsURL(table)}}</a>
                                                                 </div>
 
-
-                                                                <div ng-if="table.sourceType=='EXTERNAL'">
                                                                     <label class="input-left igamt-label"
                                                                            ng-if="table.contentDefinition=='Intensional'">Definition
                                                                         Text </label>
@@ -326,12 +298,9 @@
                                                                               ng-disabled="isNonEditableValueSet(table)"
                                                                               ng-model="table.infoForExternal"></textarea>
                                                                     </md-input-container>
-                                                                </div>
                                                             </div>
 
-
-
-                                                            <div class="codes-container md-panelContent">
+                                                            <div class="codes-container md-panelContent" ng-if="table.sourceType!=='EXTERNAL'||table.scope=='PHINVADS'">
                                                                 <div class="row container">
                                                                 <span class="pull-left" ng-if="table.codes.length>0">
                                                                     <span>Codes Per Page : </span>
@@ -352,7 +321,7 @@
                                                                                 ng-model="codeSystemToApply.label"
                                                                                 ng-if="selectedCodes.length>0">
                                                                             <md-option
-                                                                                    ng-repeat="cs in table.codeSystems"
+                                                                                    ng-repeat="cs in table.codeSystems track by $index"
                                                                                     ng-click="applyAllCodeSys(cs)"
                                                                                     ng-value="cs">{{cs}}</md-option>
                                                                         </md-select>
@@ -367,7 +336,7 @@
                                                                                    placeholder="Apply Code System For Selected Codes"
                                                                                    ng-model="codeSystemToApply.label">
                                                                             <md-option
-                                                                                    ng-repeat="cs in table.codeSystems"
+                                                                                    ng-repeat="cs in table.codeSystems track by $index"
                                                                                     ng-click="applyAllCodeSys(cs)"
                                                                                     ng-value="cs">{{cs}}</md-option>
                                                                         </md-select>
@@ -402,12 +371,12 @@
                                                                     </button>
                                                                     <button title="Add New Code" type="button"
                                                                             class="btn btn-raised btn-sm btn-info"
-                                                                            ng-click="addValue();">
+                                                                            ng-click="addValue();" ng-disabled="table.codes.length==500">
                                                                         <i class="fa fa-plus fa-fw"></i>Add Code
                                                                     </button>
                                                                 </span>
                                                             </div>
-                                                                <div ng-if="table.codes.length>0">
+                                                                <div ng-if="table.codes.length>0 && (table.sourceType!=='EXTERNAL'|| table.scope=='PHINVADS')">
                                                                     <md-toolbar class="filter-toolBar" style="height: 32px !important;min-height: 30px !important;">
                                                                         <div class="md-toolbar-tools" style="height: 32px !important;min-height: 30px !important;">
                                                                         <label>Filter</label>
@@ -437,7 +406,7 @@
 
                                                                         <md-input-container class="normal">
                                                                             <label></label>
-                                                                            <input class="normal-input" no-dirty-check type="search" placeholder="By Description"
+                                                                            <input class="normal-input" no-dirty-check type="search" placeholder="By Description" no-dirty-check
                                                                                    ng-model="searchObject.label">
                                                                         </md-input-container>
                                                                         </div>
@@ -455,9 +424,9 @@
                                                                             <md-input-container class="normal">
                                                                                 <label></label>
                                                                                 <md-select placeholder="By Usage"
-                                                                                    ng-model="searchObject.codeUsage">
+                                                                                    ng-model="searchObject.codeUsage" no-dirty-check>
                                                                                 <md-option
-                                                                                        ng-repeat="codeUsage in config.codeUsages"
+                                                                                        ng-repeat="codeUsage in config.codeUsages track by $index"
                                                                                         ng-value="codeUsage">
                                                                                     {{::codeUsage}}
                                                                                 </md-option>
@@ -466,23 +435,9 @@
                                                                         </div>
                                                                         </div>
 
-
-
-                                                                        <!--<div layout="row" layout-align="center start" >-->
-                                                                            <!--<md-button style="background-color: #f0f0f0" ng-click="searchObject={};"> <i class="fa fa-times" aria-hidden="true"></i>Clear Filter</md-button>-->
-                                                                        <!--</div>-->
-
-
                                                                     </div>
 
-                                                                    <div ng-if="table.codes.length >= 500"
-                                                                         style="margin-bottom: 10px">
-                                                                        <div class="alert alert-warning" role="alert">
-                                                                            IGAMT does not display more than 500 codes
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <table ng-if="table.codes.length < 500"
+                                                                    <table ng-if="table.sourceType!=='EXTERNAL'|| table.scope=='PHINVADS'"
                                                                            st-safe-src="table.codes"
                                                                            st-table="displayCollection"
                                                                            class="table table-striped table-condensed table-bordered">
@@ -532,7 +487,7 @@
                                                                                 <div layout="row">
                                                                                     <md-input-container flex="100"
                                                                                                         class="normal">
-                                                                                        <input ng-model="c.value"
+                                                                                        <input ng-model="c.value" no-dirty-check
                                                                                                type="text"
                                                                                                ng-change="setDirty()"
                                                                                                ng-disabled="isNonEditableValueSet(table)"/>
@@ -549,7 +504,7 @@
                                                                                 <div layout="row">
                                                                                     <md-input-container flex="100"
                                                                                                         class="normal">
-                                                                                        <input ng-model="c.label"
+                                                                                        <input ng-model="c.label" no-dirty-check
                                                                                                ng-disabled="isNonEditableValueSet(table)"
                                                                                                type="text"/>
                                                                                     </md-input-container>
@@ -563,10 +518,10 @@
                                                                                                 placeholder="Select CodeSystem"
                                                                                                 style="margin-top: 20px;"
                                                                                                 ng-disabled="isNonEditableValueSet(table)"
-                                                                                                ng-change="setDirty()"
+                                                                                                no-dirty-check
                                                                                                 ng-model="c.codeSystem">
                                                                                             <md-option
-                                                                                                    ng-repeat="cs in table.codeSystems"
+                                                                                                    ng-repeat="cs in table.codeSystems track by $index"
                                                                                                     ng-value="cs">
                                                                                                 {{cs}}
                                                                                             </md-option>
@@ -582,11 +537,11 @@
                                                                                                         class="normal">
                                                                                         <md-select
                                                                                                 placeholder="Select CodeUsage"
-                                                                                                style="margin-top: 20px;"
+                                                                                                style="margin-top: 20px;" no-dirty-check
                                                                                                 ng-disabled="isNonEditableValueSet(table)"
                                                                                                 ng-model="c.codeUsage">
                                                                                             <md-option
-                                                                                                    ng-repeat="codeUsage in config.codeUsages"
+                                                                                                    ng-repeat="codeUsage in config.codeUsages track by $index"
                                                                                                     ng-value="codeUsage">
                                                                                                 {{::codeUsage}}
                                                                                             </md-option>
@@ -601,7 +556,6 @@
                                                                                     <textarea ng-model="c.comments"
                                                                                               ng-disabled="isNonEditableValueSet(table)"
                                                                                               style="margin-top: 5px;"
-                                                                                              rows="1"
                                                                                               md-select-on-focus></textarea>
                                                                                     </md-input-container>
                                                                                 </div>
@@ -713,7 +667,7 @@
                                                             <div flex>
                                                             <label class="input-left igamt-label">Scope</label>
                                                                         <md-select ng-model="scope" no-dirty-check>
-                                                                            <md-option ng-repeat="scope in scopes" ng-value="scope.name"> {{scope.alias}}</md-option>
+                                                                            <md-option ng-repeat="scope in scopes track by $index" ng-value="scope.name"> {{scope.alias}}</md-option>
                                                                         </md-select>
 
                                                             </div>
@@ -722,7 +676,7 @@
                                                             <label class="input-left igamt-label">Version</label>
 
                                                                         <md-select ng-model="version" no-dirty-check ng-disabled="!scope ||scope==='PHINVADS'">
-                                                                            <md-option ng-repeat="vr in versions" ng-value="vr">{{vr}}</md-option>
+                                                                            <md-option ng-repeat="vr in versions track by $index" ng-value="vr">{{vr}}</md-option>
                                                                             <md-option ng-if="scope!=='HL7STANDARD'" value="NV"> No Version</md-option>
                                                                         </md-select>
                                                             </div>
@@ -750,7 +704,7 @@
                                                                     </th>
                                                                     <th class="col-md-1">
                                                                         <md-select ng-model="filter.scope" no-dirty-check>
-                                                                            <md-option ng-repeat="scope in scopes" ng-value="scope.name"> {{scope.alias}}</md-option>
+                                                                            <md-option ng-repeat="scope in scopes track by $index" ng-value="scope.name"> {{scope.alias}}</md-option>
                                                                         </md-select>
                                                                     </th>
                                                                     <th class="col-md-4">
@@ -768,8 +722,8 @@
                                                                     <th class="col-md-2">
                                                                         <md-input-container class="normal">
                                                                         <md-select ng-model="filter.sourceType" no-dirty-check>
-                                                                            <md-option value="INTERNAL">Internally Managed</md-option>
-                                                                            <md-option value="EXTERNAL">Externally Managed</md-option>
+                                                                            <md-option value="INTERNAL">INTERNAL</md-option>
+                                                                            <md-option value="EXTERNAL">EXTERNAL</md-option>
                                                                         </md-select>
                                                                         </md-input-container>
                                                                     </th>
@@ -787,7 +741,7 @@
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody class="fixed-header" style="max-height: 500px">
-                                                                    <tr ng-repeat="row in tablesToCompare|filter:filter" class="fixed-header">
+                                                                    <tr ng-repeat="row in tablesToCompare|filter:filter track by $index" class="fixed-header">
                                                                     <td class="col-md-1">
                                                                         <md-checkbox  ng-click="selectTableForDelta(row)"  ng-checked="isSelectedForDelta(row)">
                                                                     </td>
@@ -872,7 +826,7 @@
 
                                                         </tr>
                                                         <tbody style="max-height: 500px; overflow: auto">
-                                                        <tr layout="row" ng-repeat="row in compareCodeResult |orderBy: 'c1.value'" class="fixed-header">
+                                                        <tr layout="row" ng-repeat="row in compareCodeResult |orderBy: 'c1.value' track by $index" class="fixed-header">
                                                             <td flex="20" layout="column" layout-align="center center ">
                                                                     {{row.c1.value}}
                                                             </td>
@@ -1276,731 +1230,6 @@
         </div>
     </div>
 </script>
-<!--<script type="text/ng-template" id="ReadValueSets.html">-->
-    <!--<div ng-controller="TableListCtrl" ng-init="init()" class="container">-->
-        <!--<div ng-show="loadingSelection" style="text-align: center; padding-top:20px">-->
-            <!--<i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>-->
-        <!--</div>-->
-        <!--<div ng-show="!loadingSelection">-->
-            <!--<div ng-show="table !== null" id="executionPanel">-->
-                <!--<div class="container">-->
-                    <!--<div class="page-header">-->
-                        <!--<span class="header4">Value Set: {{table.bindingIdentifier}}</span> <span-->
-                            <!--class="version-badge-label" ng-if="versionAndUseMap[table.id].publicationVersion">v{{versionAndUseMap[table.id].publicationVersion}}</span></span>-->
-
-                        <!--<span class="pull-right" ng-if="!typeOfSharing">-->
-                            <!--<div class="btn-group" ng-hide="table.scope !== 'USER'" style="margin-bottom: 0px;">-->
-                                <!--<button type="button" class="btn btn-raised btn-primary btn-sm" ng-class=""-->
-                                        <!--ng-click="shareModal(table)">-->
-                                    <!--<i class="fa fa-share-alt" aria-hidden="true"></i> Share-->
-                                    <!--<span class="badge" ng-bind="table.shareParticipantIds.length"-->
-                                          <!--style="margin-right:5px;"></span>-->
-                                <!--</button>-->
-                                <!--<button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle"-->
-                                        <!--data-toggle="dropdown" aria-expanded="false"> <span class="caret"></span> <span-->
-                                        <!--class="sr-only">Toggle Dropdown</span> </button>-->
-                                <!--<ul class="dropdown-menu igl-menu" role="menu">-->
-                                    <!--<li ng-repeat="participant in table.shareParticipantIds"><a><i class="fa fa-user"-->
-                                                                                                   <!--aria-hidden="true"></i> {{participant.username}} <span-->
-                                            <!--ng-if="participant.pendingApproval">(Pending...)</span></a></li>-->
-                                <!--</ul>-->
-                            <!--</div>-->
-                        <!--</span>-->
-
-                        <!--<span class="pull-right" ng-if="typeOfSharing && table.owner" style="font-style: italic;">-->
-                          <!--(Owner: {{table.owner}})-->
-                        <!--</span>-->
-
-                        <!--<div class="static_info" style="margin-top: 10px">-->
-                            <!--<i class="fa fa-calendar" aria-hidden="true"></i>Updated :{{table.dateUpdated |-->
-                            <!--date:dateFormat}}-->
-                            <!--<span ng-if="table.owner" style="font-style: italic;"><i class="fa fa-user"-->
-                                                                                     <!--aria-hidden="true"></i>{{table.owner}}</span>-->
-                            <!--<span>HL7 Version: {{table.hl7Version}}</span>-->
-                            <!--<span ng-if="table.publicationVersion">Version: {{table.publicationVersion}}</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-
-                    <!--<div class="">-->
-                        <!--<md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">-->
-                            <!--<md-tab>-->
-                                <!--<md-tab-label>-->
-                                    <!--<i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>MetaData-->
-                                <!--</md-tab-label>-->
-                                <!--<md-tab-body>-->
-                                    <!--<div style="margin-top: 20px" ng-cloak class="md-inline-form metadata-scroll"-->
-                                         <!--layout="column">-->
-                                        <!--<md-content layout-padding>-->
-                                            <!--<label class="input-left igamt-label">Mapping Identifier*</label>-->
-
-                                            <!--<md-input-container class="md-block igamt-input-block" flex-gt-sm>-->
-                                                <!--<input disabled type="text" name="tableIdentifier"-->
-                                                       <!--ng-model="table.bindingIdentifier" required-->
-                                                       <!--ng-change="setDirty()" disabled>-->
-                                                <!--<div ng-messages="editForm.tableIdentifier.$error">-->
-                                                    <!--<div ng-message="required">Mapping Identifier is required.</div>-->
-                                                <!--</div>-->
-                                            <!--</md-input-container>-->
-                                            <!--<label class="input-left igamt-label">Name*</label>-->
-
-                                            <!--<md-input-container class="md-block igamt-input-block" flex-gt-sm>-->
-                                                <!--<input type="text" disabled name="name" ng-model="table.name" required>-->
-                                                <!--<div ng-messages="editForm.name.$error">-->
-                                                    <!--<div ng-message="required">Name is required.</div>-->
-                                                <!--</div>-->
-                                            <!--</md-input-container>-->
-                                            <!--<label class="input-left igamt-label">Description*</label>-->
-
-                                            <!--<md-input-container class="md-block igamt-input-block" flex-gt-sm>-->
-                                                <!--<input type="text" name="description" disabled-->
-                                                       <!--ng-model="table.description">-->
-                                                <!--<div ng-messages="editForm.description.$error">-->
-                                                    <!--<div ng-message="required">description is required.</div>-->
-                                                <!--</div>-->
-                                            <!--</md-input-container>-->
-                                            <!--<div layout-gt-sm="row">-->
-                                                <!--<label ng-if="table.publicationVersion" class="input-left igamt-label">Publication-->
-                                                    <!--version*</label>-->
-
-                                                <!--<md-input-container class="md-block igamt-input-block" flex-gt-sm-->
-                                                                    <!--ng-if="table.publicationVersion">-->
-                                                    <!--<input type="text" name="publicationVersion" disabled-->
-                                                           <!--ng-model="table.publicationVersion">-->
-                                                    <!--<div ng-messages="editForm.publicationVersion.$error">-->
-                                                        <!--<div ng-message="required">Publication version is required.-->
-                                                        <!--</div>-->
-                                                    <!--</div>-->
-                                                <!--</md-input-container>-->
-                                                <!--<label class="input-left igamt-label" ng-if="table.publicationDate">Publication-->
-                                                    <!--date</label>-->
-
-                                                <!--<md-input-container class="md-block igamt-input-block" flex-gt-sm-->
-                                                                    <!--ng-if="table.publicationDate">-->
-                                                    <!--<input type="text" name="publicationDate" disabled-->
-                                                           <!--ng-model="table.publicationDate">-->
-                                                    <!--<div ng-messages="editForm.publicationDate.$error">-->
-                                                        <!--<div ng-message="required">Publication date is required.</div>-->
-                                                    <!--</div>-->
-                                                <!--</md-input-container>-->
-                                            <!--</div>-->
-                                            <!--<label class="input-left igamt-label">OID*</label>-->
-
-                                            <!--<md-input-container class="md-block igamt-input-block" flex-gt-sm>-->
-                                                <!--<input type="text" name="oid" disabled ng-model="table.oid"-->
-                                                       <!--ng-change="setDirty()">-->
-                                                <!--<div ng-messages="editForm.oid.$error">-->
-                                                    <!--<div ng-message="required">OID is required.</div>-->
-                                                <!--</div>-->
-                                            <!--</md-input-container>-->
-
-                                            <!--<label class="input-left igamt-label"-->
-                                                   <!--ng-show="table.version">Version*</label>-->
-
-                                            <!--<md-input-container class="md-block igamt-input-block" flex-gt-sm-->
-                                                                <!--ng-show="table.version">-->
-                                                <!--<input type="text" name="version" disabled ng-model="table.version"-->
-                                                       <!--ng-change="setDirty()">-->
-                                                <!--<div ng-messages="editForm.version.$error">-->
-                                                    <!--<div ng-message="required">Version is required.</div>-->
-                                                <!--</div>-->
-                                            <!--</md-input-container>-->
-
-                                            <!--<label class="input-left igamt-label"-->
-                                                   <!--ng-show="table.scope === 'HL7STANDARD' && table.hl7Section != null && table.hl7Section != '' && table.hl7Section != undefined">Comment</label>-->
-
-                                            <!--<md-input-container class="md-block igamt-input-block" flex-gt-sm>-->
-                                                <!--<textarea rows="3" disabled md-select-on-focus disabled-->
-                                                          <!--name="comment" id="comment" class="form-control"-->
-                                                          <!--ng-model="table.comment"/>-->
-                                            <!--</md-input-container>-->
-                                            <!--<md-input-container class="md-block igamt-input-block" flex-gt-sm-->
-                                                                <!--ng-show="table.scope === 'HL7STANDARD' && table.hl7Section != null && table.hl7Section != '' && table.hl7Section != undefined">-->
-                                                <!--<label class="input-left igamt-label">HL7 Section</label>-->
-                                                <!--<input type="text" disabled-->
-                                                       <!--name="hl7Section"-->
-                                                       <!--id="hl7Section"-->
-                                                       <!--ng-model="table.hl7Section">-->
-                                            <!--</md-input-container>-->
-
-                                        <!--</md-content>-->
-                                    <!--</div>-->
-                                <!--</md-tab-body>-->
-                            <!--</md-tab>-->
-                            <!--<md-tab md-on-select="setDeltaToF()">-->
-                                <!--<md-tab-label>-->
-                                    <!--<i class="fa fa-table fa-fw" aria-hidden="true"></i>Definition-->
-                                <!--</md-tab-label>-->
-                                <!--<md-tab-body>-->
-                                    <!--<div class="el-def igl-def-table-container">-->
-
-                                        <!--<md-tabs md-dynamic-height md-border-bottom md-selected="defTabStatus.active">-->
-                                            <!--<md-tab>-->
-                                                <!--<md-tab-label>-->
-                                                    <!--Pre-Text-->
-                                                <!--</md-tab-label>-->
-                                                <!--<md-tab-body>-->
-                                                    <!--<div class="panel-primary">-->
-                                                        <!--<div class="panel-body">-->
-                                                            <!--<div ng-if="!viewSettings.tableReadonly && table.status==='UNPUBLISHED'">-->
-                                                                <!--<textarea froala="froalaEditorOptions"-->
-                                                                          <!--ng-model="table.defPreText" name="text"-->
-                                                                          <!--id="defPreText"-->
-                                                                          <!--ng-change="setDirty()"></textarea>-->
-                                                            <!--</div>-->
-                                                            <!--<div ng-if="viewSettings.tableReadonly || (table.scope === 'HL7STANDARD' || table.status==='PUBLISHED')">-->
-                                                                <!--<div class="fr-view">-->
-                                                                    <!--<div froala-view="table.defPreText"></div>-->
-                                                                <!--</div>-->
-                                                            <!--</div>-->
-                                                        <!--</div>-->
-                                                    <!--</div>-->
-
-                                                <!--</md-tab-body>-->
-                                            <!--</md-tab>-->
-                                            <!--<md-tab>-->
-                                                <!--<md-tab-label>-->
-                                                    <!--Structure-->
-                                                <!--</md-tab-label>-->
-                                                <!--<md-tab-body>-->
-                                                    <!--<div class="el-def metadata-scroll" style="margin-top: 20px">-->
-                                                        <!--<div class="inside-metadata" layout-gt-sm="row">-->
-                                                                    <!--<label class="input-left igamt-label">Extensibility</label>-->
-
-                                                                    <!--<md-input-container-->
-                                                                            <!--class="md-block igamt-input-block igamt-vs-meta-input"-->
-                                                                            <!--flex-gt-sm>-->
-                                                                        <!--<md-select ng-model="table.extensibility">-->
-                                                                            <!--<md-option-->
-                                                                                    <!--ng-repeat="extensibility in config.tableExtensibilities"-->
-                                                                                    <!--ng-value="extensibility">-->
-                                                                                <!--{{getAttributeSelectLabel(extensibility)}}-->
-                                                                            <!--</md-option>-->
-                                                                        <!--</md-select>-->
-                                                                    <!--</md-input-container>-->
-                                                                    <!--<label class="input-left igamt-label">Stability</label>-->
-
-                                                                    <!--<md-input-container-->
-                                                                            <!--class="md-block igamt-input-block igamt-vs-meta-input"-->
-                                                                            <!--flex-gt-sm>-->
-                                                                        <!--<md-select ng-model="table.stability">-->
-                                                                            <!--<md-option-->
-                                                                                    <!--ng-repeat="stability in config.tableStabilities"-->
-                                                                                    <!--ng-value="stability">-->
-                                                                                <!--{{getAttributeSelectLabel(stability)}}-->
-                                                                            <!--</md-option>-->
-                                                                        <!--</md-select>-->
-                                                                    <!--</md-input-container>-->
-
-                                                                    <!--<label class="input-left igamt-label">Content-->
-                                                                        <!--Definition</label>-->
-
-                                                                    <!--<md-input-container-->
-                                                                            <!--class="md-block igamt-input-block igamt-vs-meta-input"-->
-                                                                            <!--flex-gt-sm>-->
-                                                                        <!--<md-select ng-model="table.contentDefinition">-->
-                                                                            <!--<md-option-->
-                                                                                    <!--ng-repeat="contentDefinition in config.tableContentDefinitions"-->
-                                                                                    <!--ng-value="contentDefinition">-->
-                                                                                <!--{{getAttributeSelectLabel(contentDefinition)}}-->
-                                                                            <!--</md-option>-->
-                                                                        <!--</md-select>-->
-                                                                    <!--</md-input-container>-->
-
-
-                                                                    <!--<label class="input-left igamt-label">Code-->
-                                                                        <!--Systems</label>-->
-
-                                                                    <!--<md-input-container-->
-                                                                            <!--class="md-block igamt-input-block"-->
-                                                                            <!--flex-gt-sm>-->
-                                                                        <!--<span ng-repeat="cs in codeSystems">-->
-													                    <!--<span ng-hide="codeSysEditMode">{{cs}}</span>-->
-                                                                            <!--<span ng-hide="$last">,</span>-->
-                                                                        <!--</span>-->
-                                                                    <!--</md-input-container>-->
-                                                                <!--</div>-->
-                                                        <!--<span class="pull-left" style="margin-bottom: 10px">-->
-                                                    <!--<span>Values # of Page : </span>-->
-                                                    <!--<md-input-container class="normal">-->
-                                                        <!--<label></label>-->
-                                                        <!--<input type="number" ng-model="itemsByPage" no-dirty-check/>-->
-                                                    <!--</md-input-container>-->
-
-                                                <!--</span>-->
-                                                            <!--</div>-->
-                                                            <!--<div layout="row">-->
-
-                                                                <!--<md-input-container>-->
-
-                                                                    <!--<input type="search" ng-model="searchObject.value"-->
-                                                                           <!--placeholder="search codes by value">-->
-                                                                <!--</md-input-container>-->
-
-                                                                <!--<md-input-container flex>-->
-                                                                    <!--<input type="search" ng-model="searchObject.label"-->
-                                                                           <!--placeholder="search codes by label">-->
-                                                                <!--</md-input-container>-->
-                                                                <!--<md-input-container>-->
-                                                                    <!--<input type="search"-->
-                                                                           <!--ng-model="searchObject.codeSystem"-->
-                                                                           <!--placeholder="search codes by codeSystem">-->
-                                                                <!--</md-input-container>-->
-
-                                                            <!--</div>-->
-
-
-                                                            <!--<div ng-if="table.codes.length > 1000"-->
-                                                                 <!--style="margin-bottom: 10px">-->
-                                                                <!--<div class="alert alert-warning" role="alert">-->
-                                                                    <!--Due to the large size of the codes, only the first-->
-                                                                    <!--1000 of {{table.codes.length}} codes will be-->
-                                                                    <!--displayed.-->
-                                                                <!--</div>-->
-                                                            <!--</div>-->
-
-
-                                                            <!--<table st-safe-src="table.codes"-->
-                                                                   <!--st-table="displayCollection"-->
-                                                                   <!--class="table table-striped table-condensed table-bordered">-->
-                                                                <!--<thead>-->
-                                                                <!--<tr class="tbl-header">-->
-                                                                    <!--<th st-sort="value" class="col-md-2">Value</th>-->
-                                                                    <!--<th st-sort="label" class="col-md-3">Description-->
-                                                                    <!--</th>-->
-                                                                    <!--<th class="col-md-2">CodeSystem</th>-->
-                                                                    <!--<th class="col-md-1">Usage</th>-->
-                                                                    <!--<th class="col-md-3">Comments</th>-->
-                                                                <!--</tr>-->
-
-                                                                <!--</thead>-->
-
-                                                                <!--<tbody>-->
-                                                                <!--<tr ng-repeat="c in displayCollection |filter:searchObject">-->
-                                                                    <!--<td class="col-md-2">-->
-                                                                        <!--<span>{{c.value}}</span>-->
-                                                                    <!--</td>-->
-
-                                                                    <!--<td class="col-md-3">-->
-                                                                        <!--<span>{{c.label}}</span>-->
-                                                                    <!--</td>-->
-
-                                                                    <!--<td class="col-md-2">-->
-                                                                        <!--<span>{{c.codeSystem}}</span>-->
-                                                                    <!--</td>-->
-                                                                    <!--<td class="col-md-1">-->
-                                                                        <!--<span>{{c.codeUsage}}</span>-->
-                                                                    <!--</td>-->
-                                                                    <!--<td class="col-md-3">-->
-                                                                        <!--<span>{{c.comments}}</span>-->
-                                                                    <!--</td>-->
-                                                                <!--</tr>-->
-                                                                <!--</tbody>-->
-                                                                <!--<tr style="float:center !important;"-->
-                                                                    <!--ng-if="table.codes.length > itemsByPage">-->
-                                                                    <!--<td colspan="6" class="text-center"-->
-                                                                        <!--style="float:center !important;">-->
-                                                                        <!--<div st-pagination=""-->
-                                                                             <!--st-items-by-page="itemsByPage"-->
-                                                                             <!--st-displayed-pages="7"-->
-                                                                             <!--style="float:center !important;"></div>-->
-                                                                    <!--</td>-->
-                                                                <!--</tr>-->
-
-                                                            <!--</table>-->
-
-                                                        <!--</div>-->
-                                                    <!--</div>-->
-
-                                    <!--</div>-->
-                                <!--</md-tab-body>-->
-
-                            <!--</md-tab>-->
-                            <!--<md-tab>-->
-                                <!--<md-tab-label>-->
-                                    <!--Post-Text-->
-                                <!--</md-tab-label>-->
-                                <!--<md-tab-body>-->
-                                    <!--<div class="panel-primary">-->
-                                        <!--<div class="panel-body">-->
-                                            <!--<div ng-if="!viewSettings.tableReadonly && table.status==='UNPUBLISHED'">-->
-                                                <!--<textarea froala="froalaEditorOptions" ng-model="table.defPostText"-->
-                                                          <!--name="text" id="defPostText"-->
-                                                          <!--ng-change="setDirty()"></textarea>-->
-                                            <!--</div>-->
-                                            <!--<div ng-if="viewSettings.tableReadonly || (table.scope === 'HL7STANDARD' || table.status==='PUBLISHED')">-->
-                                                <!--<div class="fr-view">-->
-                                                    <!--<div froala-view="table.defPostText"></div>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</md-tab-body>-->
-                            <!--</md-tab>-->
-                        <!--</md-tabs>-->
-                    <!--</div>-->
-                    <!--</md-tab-body>-->
-                    <!--</md-tab>-->
-                    <!--<md-tab>-->
-                        <!--<md-tab-label>-->
-                            <!--<i class="fa fa-link" aria-hidden="true"></i>Cross-References-->
-                        <!--</md-tab-label>-->
-                        <!--<md-tab-body>-->
-                            <!--<div class="el-def metadata-scroll" style="margin-top:20px">-->
-                                <!--<div ng-if="crossRef.messageValueSetBindingfounds.length">-->
-                                    <!--<h4> Message Binding</h4>-->
-                                    <!--<table class="table table-striped table-bordered table-condensed">-->
-                                        <!--<thead>-->
-                                        <!--<tr class="tbl-header">-->
-                                            <!--<td st-ratio="5">#</td>-->
-                                            <!--<th st-ratio="25">Name</th>-->
-                                            <!--<th st-ratio="30">Identifier</th>-->
-                                            <!--<th st-ratio="30">Description</th>-->
-
-                                            <!--<th st-ratio="10">Binding Location</th>-->
-                                        <!--</tr>-->
-
-                                        <!--</thead>-->
-
-                                        <!--<tbody>-->
-                                        <!--<tr ng-repeat="ref in crossRef.messageValueSetBindingfounds track by $index">-->
-                                            <!--<td st-ratio="5">{{$index + 1}}-->
-                                            <!--</td>-->
-                                            <!--<td st-ratio="25">-->
-                                                <!--<span ng-bind="ref.messageFound.name"></span>-->
-                                            <!--</td>-->
-                                            <!--<td st-ratio="30">-->
-                                                <!--<span ng-bind="ref.messageFound.identifier"></span>-->
-                                            <!--</td>-->
-                                            <!--<td st-ratio="30">-->
-                                                <!--{{::ref.messageFound.description}}-->
-                                            <!--</td>-->
-                                            <!--<td st-ratio="10">-->
-                                                <!--{{::ref.binding.location}}-->
-                                            <!--</td>-->
-
-
-                                        <!--</tr>-->
-                                        <!--</tbody>-->
-
-                                    <!--</table>-->
-
-                                <!--</div>-->
-                                <!--<div ng-if="crossRef.segmentValueSetBindingfounds.length">-->
-                                    <!--<h4> Segment Binding</h4>-->
-                                    <!--<table class="table table-striped table-bordered table-condensed">-->
-                                        <!--<thead>-->
-                                        <!--<tr class="tbl-header">-->
-                                            <!--<th>Segment</th>-->
-
-                                            <!--<th>Binding Location</th>-->
-                                        <!--</tr>-->
-
-                                        <!--</thead>-->
-
-                                        <!--<tbody>-->
-                                        <!--<tr ng-repeat="ref in crossRef.segmentValueSetBindingfounds track by $index">-->
-                                            <!--<td>-->
-                                                <!--<display-label of="segmentsMap[ref.segmentFound.id]"-->
-                                                               <!--desc="true"></display-label>-->
-                                            <!--</td>-->
-                                            <!--<td>-->
-                                                <!--{{::ref.binding.location}}-->
-                                            <!--</td>-->
-
-
-                                        <!--</tr>-->
-                                        <!--</tbody>-->
-
-                                    <!--</table>-->
-
-
-                                <!--</div>-->
-                                <!--<div ng-if="crossRef.datatypeValueSetBindingfounds.length">-->
-                                    <!--<h4> Data Type Binding</h4>-->
-                                    <!--<table class="table table-striped table-bordered table-condensed">-->
-                                        <!--<thead>-->
-                                        <!--<tr class="tbl-header">-->
-                                            <!--<th>Data Type</th>-->
-
-                                            <!--<th>Binding Location</th>-->
-                                        <!--</tr>-->
-
-                                        <!--</thead>-->
-
-                                        <!--<tbody>-->
-                                        <!--<tr ng-repeat="ref in crossRef.datatypeValueSetBindingfounds track by $index">-->
-                                            <!--<td>-->
-                                                <!--<display-label of="datatypesMap[ref.datatypeFound.id]"-->
-                                                               <!--desc="true"></display-label>-->
-                                            <!--</td>-->
-                                            <!--<td>-->
-                                                <!--{{::ref.binding.location}}-->
-                                            <!--</td>-->
-
-
-                                        <!--</tr>-->
-                                        <!--</tbody>-->
-
-                                    <!--</table>-->
-
-                                <!--</div>-->
-                                <!--<div ng-if="crossRef.coConstraintFounds.length">-->
-                                    <!--<div ng-show="crossRef.coConstraintFounds != null && crossRef.coConstraintFounds.length > 0">-->
-                                        <!--<h4> Segments Co-Constraints</h4>-->
-                                        <!--<display-label ng-repeat="ref in crossRef.coConstraintFounds track by $index"-->
-                                                       <!--of="segmentsMap[ref.segmentFound.id]"-->
-                                                       <!--desc="true"></display-label>-->
-                                        <!--<br/>-->
-
-
-                                    <!--</div>-->
-
-                                <!--</div>-->
-                                <!--<div ng-if="crossRef.messageConformanceStatmentFounds.length">-->
-                                    <!--<h4> Messages Conformance Statements </h4>-->
-                                    <!--<table class="table table-striped table-bordered table-condensed">-->
-                                        <!--<thead>-->
-                                        <!--<tr class="tbl-header">-->
-                                            <!--<td st-ratio="5">#</td>-->
-                                            <!--<th st-ratio="25">Name</th>-->
-                                            <!--<th st-ratio="30">Identifier</th>-->
-                                            <!--<th st-ratio="30">Description</th>-->
-
-                                            <!--<th st-ratio="10">Constraint Id</th>-->
-                                        <!--</tr>-->
-
-                                        <!--</thead>-->
-
-                                        <!--<tbody>-->
-                                        <!--<tr ng-repeat="ref in crossRef.messageConformanceStatmentFounds track by $index">-->
-                                            <!--<td st-ratio="5">{{$index + 1}}-->
-                                            <!--</td>-->
-                                            <!--<td st-ratio="25">-->
-                                                <!--<span ng-bind="ref.messageFound.name"></span>-->
-                                            <!--</td>-->
-                                            <!--<td st-ratio="30">-->
-                                                <!--<span ng-bind="ref.messageFound.description"></span>-->
-                                            <!--</td>-->
-                                            <!--<td st-ratio="30">-->
-                                                <!--{{::ref.messageFound.targetPosition}}-->
-                                            <!--</td>-->
-                                            <!--<td st-ratio="10">-->
-                                                <!--{{::ref.conformanceStatement.constraintId}}-->
-                                            <!--</td>-->
-
-
-                                        <!--</tr>-->
-                                        <!--</tbody>-->
-
-                                    <!--</table>-->
-                                <!--</div>-->
-                                <!--<div ng-if="crossRef.segmentConformanceStatmentFounds.length">-->
-                                    <!--<h4> Segments Conformance Statements </h4>-->
-                                    <!--<table class="table table-striped table-bordered table-condensed">-->
-                                        <!--<thead>-->
-                                        <!--<tr class="tbl-header">-->
-                                            <!--<th>Segment</th>-->
-
-                                            <!--<th>Constraint Id</th>-->
-                                        <!--</tr>-->
-
-                                        <!--</thead>-->
-
-                                        <!--<tbody>-->
-                                        <!--<tr ng-repeat="ref in crossRef.segmentConformanceStatmentFounds track by $index">-->
-                                            <!--<td>-->
-                                                <!--<display-label of="segmentsMap[ref.segmentFound.id]"-->
-                                                               <!--desc="true"></display-label>-->
-                                            <!--</td>-->
-                                            <!--<td>-->
-                                                <!--{{::ref.conformanceStatement.constraintId}}-->
-                                            <!--</td>-->
-
-
-                                        <!--</tr>-->
-                                        <!--</tbody>-->
-
-                                    <!--</table>-->
-
-                                <!--</div>-->
-                                <!--<div ng-if="crossRef.datatypeConformanceStatmentFounds.length">-->
-                                    <!--<h4> Data Type Conformance Statements </h4>-->
-                                    <!--<table class="table table-striped table-bordered table-condensed">-->
-                                        <!--<thead>-->
-                                        <!--<tr class="tbl-header">-->
-                                            <!--<th>Datatype</th>-->
-
-                                            <!--<th>Constraint Id</th>-->
-                                        <!--</tr>-->
-
-                                        <!--</thead>-->
-
-                                        <!--<tbody>-->
-                                        <!--<tr ng-repeat="ref in crossRef.datatypeConformanceStatmentFounds track by $index">-->
-                                            <!--<td>-->
-                                                <!--<display-label of="datatypesMap[ref.datatypeFound.id]"-->
-                                                               <!--desc="true"></display-label>-->
-                                            <!--</td>-->
-                                            <!--<td>-->
-                                                <!--{{::ref.conformanceStatement.constraintId}}-->
-                                            <!--</td>-->
-
-
-                                        <!--</tr>-->
-                                        <!--</tbody>-->
-
-                                    <!--</table>-->
-
-                                <!--</div>-->
-                                <!--<div ng-if="crossRef.messagePredicateFounds.length">-->
-                                    <!--<h4> Message Predicate </h4>-->
-                                    <!--<table class="table table-striped table-bordered table-condensed">-->
-                                        <!--<thead>-->
-                                        <!--<tr class="tbl-header">-->
-                                            <!--<td st-ratio="5">#</td>-->
-                                            <!--<th st-ratio="25">Name</th>-->
-                                            <!--<th st-ratio="30">Identifier</th>-->
-                                            <!--<th st-ratio="30">Description</th>-->
-
-                                            <!--<th st-ratio="10">Constraint Id</th>-->
-                                        <!--</tr>-->
-
-                                        <!--</thead>-->
-
-                                        <!--<tbody>-->
-                                        <!--<tr ng-repeat="ref in crossRef.messagePredicateFounds track by $index">-->
-                                            <!--<td st-ratio="5">{{$index + 1}}-->
-                                            <!--</td>-->
-                                            <!--<td st-ratio="25">-->
-                                                <!--<span ng-bind="ref.messageFound.name"></span>-->
-                                            <!--</td>-->
-                                            <!--<td st-ratio="30">-->
-                                                <!--<span ng-bind="ref.messageFound.description"></span>-->
-                                            <!--</td>-->
-                                            <!--<td st-ratio="30">-->
-                                                <!--{{::ref.messageFound.targetPosition}}-->
-                                            <!--</td>-->
-                                            <!--<td st-ratio="10">-->
-                                                <!--{{::ref.conformanceStatement.constraintId}}-->
-                                            <!--</td>-->
-
-
-                                        <!--</tr>-->
-                                        <!--</tbody>-->
-
-                                    <!--</table>-->
-
-                                <!--</div>-->
-
-
-                                <!--<div ng-if="crossRef.segmentPredicateFounds.length">-->
-                                    <!--<h4> Segment Predicate </h4>-->
-                                    <!--<table class="table table-striped table-bordered table-condensed">-->
-                                        <!--<thead>-->
-                                        <!--<tr class="tbl-header">-->
-                                            <!--<th>Segment</th>-->
-
-                                            <!--<th>Constraint Id</th>-->
-                                        <!--</tr>-->
-
-                                        <!--</thead>-->
-
-                                        <!--<tbody>-->
-                                        <!--<tr ng-repeat="ref in crossRef.segmentPredicateFounds track by $index">-->
-                                            <!--<td>-->
-                                                <!--<display-label of="segmentsMap[ref.segmentFound.id]"-->
-                                                               <!--desc="true"></display-label>-->
-                                            <!--</td>-->
-                                            <!--<td>-->
-                                                <!--{{::ref.predicate.constraintId}}-->
-                                            <!--</td>-->
-
-
-                                        <!--</tr>-->
-                                        <!--</tbody>-->
-
-                                    <!--</table>-->
-
-                                <!--</div>-->
-
-                                <!--<div ng-if="crossRef.datatypePredicateFounds.length">-->
-                                    <!--<h4> Data Type Predicate </h4>-->
-                                    <!--<table class="table table-striped table-bordered table-condensed">-->
-                                        <!--<thead>-->
-                                        <!--<tr class="tbl-header">-->
-                                            <!--<th>Datatype</th>-->
-
-                                            <!--<th>Constraint Id</th>-->
-                                        <!--</tr>-->
-
-                                        <!--</thead>-->
-
-                                        <!--<tbody>-->
-                                        <!--<tr ng-repeat="ref in crossRef.datatypePredicateFounds track by $index">-->
-                                            <!--<td>-->
-                                                <!--<display-label of="datatypesMap[ref.datatypeFound.id]"-->
-                                                               <!--desc="true"></display-label>-->
-                                            <!--</td>-->
-                                            <!--<td>-->
-                                                <!--{{::ref.predicate.constraintId}}-->
-                                            <!--</td>-->
-
-
-                                        <!--</tr>-->
-                                        <!--</tbody>-->
-
-                                    <!--</table>-->
-
-                                <!--</div>-->
-                                <!--<div ng-if="crossRef.profileComponentFound.length">-->
-                                    <!--<h4> Profile Components</h4>-->
-                                    <!--<table class="table table-striped table-bordered table-condensed">-->
-                                        <!--<thead>-->
-                                        <!--<tr class="tbl-header">-->
-                                            <!--<td st-ratio="5">#</td>-->
-                                            <!--<th st-ratio="25">Name</th>-->
-                                            <!--<th st-ratio="40">Description</th>-->
-                                            <!--<th st-ratio="10">Target Position</th>-->
-                                            <!--<th st-ratio="20">Where</th>-->
-                                        <!--</tr>-->
-
-                                        <!--</thead>-->
-
-                                        <!--<tbody>-->
-                                        <!--<tr ng-repeat="ref in crossRef.profileComponentFound track by $index">-->
-                                            <!--<td st-ratio="5">{{$index + 1}}-->
-                                            <!--</td>-->
-                                            <!--<td st-ratio="25">-->
-                                                <!--<span ng-bind="ref.name"></span>-->
-                                            <!--</td>-->
-                                            <!--<td st-ratio="40">-->
-                                                <!--<span ng-bind="ref.description"></span>-->
-                                            <!--</td>-->
-                                            <!--<td st-ratio="10">-->
-                                                <!--{{::ref.targetPosition}}-->
-                                            <!--</td>-->
-                                            <!--<td st-ratio="20">-->
-                                                <!--{{::ref.where}}-->
-                                            <!--</td>-->
-
-
-                                        <!--</tr>-->
-                                        <!--</tbody>-->
-
-                                    <!--</table>-->
-                                <!--</div>-->
-
-
-                            <!--</div>-->
-                        <!--</md-tab-body>-->
-                    <!--</md-tab>-->
-                    <!--</md-tabs>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-<!--</script>-->
 <script type="text/ng-template" id="valueSet_node">
     <tr tt-node is-branch="node.codes!==undefined">
         <td class="col-md-2">
@@ -2130,7 +1359,7 @@
                     <td class="col-md-6">
                         <select ng-show='selectedSegmentForBinding != null' ng-model='selectedFieldForBinding'
                                 class="form-control">
-                            <option ng-repeat="f in selectedSegmentForBinding.fields | orderBy:'+position'"
+                            <option ng-repeat="f in selectedSegmentForBinding.fields | orderBy:'+position' track by $index"
                                     value="{{f}}"
                                     ng-disabled="checkDuplicated(getSegmentLabel(selectedSegmentForBinding) + '-' + f.position)">
                                 {{::f.position}}. {{::f.name}}
@@ -2156,7 +1385,7 @@
                         <select class="form-control" ng-model="selectedDatatypeForBinding"
                                 ng-change="selectDatatype(selectedDatatypeForBinding);">
                             {{selectedDatatypeForBinding}}
-                            <option ng-repeat="dt in datatypes | filter:{ status : 'UNPUBLISHED'}" value="{{dt}}"
+                            <option ng-repeat="dt in datatypes | filter:{ status : 'UNPUBLISHED'} track by $index" value="{{dt}}"
                                     ng-show="dt.components.length">
                                 {{dt.name}}_{{dt.ext}}
                             </option>
@@ -2165,7 +1394,7 @@
                     <td class="col-md-6">
                         <select ng-show='selectedDatatypeForBinding !== null' ng-model="selectedComponentForBinding"
                                 class="form-control" ng-change="selectComponent(selectedComponentForBinding)">
-                            <option ng-repeat="c in componentsToSelect | orderBy:'+position'" value="{{c}}"
+                            <option ng-repeat="c in componentsToSelect | orderBy:'+position' track by $index" value="{{c}}"
                                     ng-disabled="checkDuplicated(getDatatypeLabel(selectedDatatypeForBinding) + '.' + c.position)">
                                 {{c.position}}.{{c.name}}
                             </option>

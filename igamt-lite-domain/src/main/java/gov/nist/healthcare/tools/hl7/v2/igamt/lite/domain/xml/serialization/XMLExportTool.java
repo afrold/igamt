@@ -230,11 +230,13 @@ public class XMLExportTool {
     elmValueSetDefinitionsHL7Other.addAttribute(new Attribute("Order", "4"));
 
     for (String key : tablesMap.keySet()) {
+      HashMap<String, Boolean> codePresenceMap = profile.getTableLibrary().getCodePresence();
       Table t = tablesMap.get(key);
 
       if (t != null) {
         if (t.getCodes() == null || t.getCodes().size() == 0 || t.getCodes().size() > 500
-            || (t.getCodes().size() == 1 && t.getCodes().get(0).getValue().equals("..."))) {
+            || (t.getCodes().size() == 1 && t.getCodes().get(0).getValue().equals("..."))
+            || (codePresenceMap.containsKey(t.getId()) && !(codePresenceMap.get(t.getId())))) {
           Element elmBindingIdentifier = new Element("BindingIdentifier");
           if (t.getHl7Version() != null && !t.getHl7Version().equals("")) {
             if (t.getBindingIdentifier().startsWith("0396")
@@ -273,25 +275,31 @@ public class XMLExportTool {
           elmValueSetDefinition.addAttribute(new Attribute("Version", this.str(t.getVersion())));
         if (t.getOid() != null && !t.getOid().equals(""))
           elmValueSetDefinition.addAttribute(new Attribute("Oid", this.str(t.getOid())));
-        if (t.getStability() != null && !t.getStability().equals("")){
-          if(t.getStability().equals(Stability.Undefined)) {
-            elmValueSetDefinition.addAttribute(new Attribute("Stability", this.str(Stability.Static.name())));
-          }else {
-            elmValueSetDefinition.addAttribute(new Attribute("Stability", this.str(t.getStability().name())));
+        if (t.getStability() != null && !t.getStability().equals("")) {
+          if (t.getStability().equals(Stability.Undefined)) {
+            elmValueSetDefinition
+                .addAttribute(new Attribute("Stability", this.str(Stability.Static.name())));
+          } else {
+            elmValueSetDefinition
+                .addAttribute(new Attribute("Stability", this.str(t.getStability().name())));
           }
         }
-        if (t.getExtensibility() != null && !t.getExtensibility().equals("")){
-          if(t.getExtensibility().equals(Extensibility.Undefined)) {
-            elmValueSetDefinition.addAttribute(new Attribute("Extensibility", this.str(Extensibility.Closed.name())));
-          }else {
-            elmValueSetDefinition.addAttribute(new Attribute("Extensibility", this.str(t.getExtensibility().name())));
+        if (t.getExtensibility() != null && !t.getExtensibility().equals("")) {
+          if (t.getExtensibility().equals(Extensibility.Undefined)) {
+            elmValueSetDefinition.addAttribute(
+                new Attribute("Extensibility", this.str(Extensibility.Closed.name())));
+          } else {
+            elmValueSetDefinition.addAttribute(
+                new Attribute("Extensibility", this.str(t.getExtensibility().name())));
           }
         }
-        if (t.getContentDefinition() != null && !t.getContentDefinition().equals("")){
-          if(t.getContentDefinition().equals(ContentDefinition.Undefined)) {
-            elmValueSetDefinition.addAttribute(new Attribute("ContentDefinition", this.str(ContentDefinition.Extensional.name())));
-          }else {
-            elmValueSetDefinition.addAttribute(new Attribute("ContentDefinition", this.str(t.getContentDefinition().name())));
+        if (t.getContentDefinition() != null && !t.getContentDefinition().equals("")) {
+          if (t.getContentDefinition().equals(ContentDefinition.Undefined)) {
+            elmValueSetDefinition.addAttribute(
+                new Attribute("ContentDefinition", this.str(ContentDefinition.Extensional.name())));
+          } else {
+            elmValueSetDefinition.addAttribute(
+                new Attribute("ContentDefinition", this.str(t.getContentDefinition().name())));
           }
         }
         if (t.getScope().equals(SCOPE.HL7STANDARD)) {

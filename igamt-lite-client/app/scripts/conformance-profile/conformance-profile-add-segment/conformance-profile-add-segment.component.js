@@ -70,22 +70,6 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, s
       $scope.newSegment.ref.ext = $scope.newSeg.ext;
       $scope.newSegment.ref.id = $scope.newSeg.id;
       $scope.newSegment.ref.name = $scope.newSeg.name;
-
-      // if (place.type === "message") {
-      //
-      //     $scope.newSegment.position = place.children[place.children.length - 1].position + 1;
-      // } else if (place.obj && place.obj.type === "group") {
-      //     if (place.children.length !== 0) {
-      //
-      //         $scope.newSegment.position = place.children[place.children.length - 1].obj.position + 1;
-      //         console.log("position");
-      //         console.log($scope.newSegment.position);
-      //
-      //     } else {
-      //         $scope.newSegment.position = 1;
-      //     }
-      $scope.newSegment.position=place.children.length+1;
-      //}
     }
 
   }, true);
@@ -144,7 +128,6 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, s
 
 
   $scope.addSegment = function() {
-    console.log($scope.newSegment);
     blockUI.start();
     if (place.type === "message") {
       // $rootScope.message.children.push($scope.newSegment);
@@ -152,26 +135,14 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, s
       for(i=0;i<$rootScope.message.children.length; i++){
         $rootScope.message.children[i].position=i+1;
       }
-
-      // MessageService.updatePosition(place.children, $scope.newSegment.position - 1, $scope.position - 1);
-      //
     } else if (place.obj && place.obj.type === "group") {
 
-      var path = place.path.replace(/\[[0-9]+\]/g, '');
-      path = path.split(".");
-      $scope.insertInPath(path,$rootScope.message,$scope.newSegment);
-
-      //MessageService.addSegToPath($scope.path, $rootScope.message, $scope.newSegment, $scope.newSegment.position - 1, $scope.position - 1);
+        var path = place.path.replace(/\[[0-9]+\]/g, '');
+        path = path.split(".");
+        $scope.insertInPath(path, $rootScope.message, $scope.newSegment);
     }
-
-
-
-
     $rootScope.messageTree = null;
     $rootScope.processMessageTree($rootScope.message);
-    //console.log($rootScope.messageTree);
-
-
     blockUI.stop();
     $mdDialog.hide();
 

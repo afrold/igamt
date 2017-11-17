@@ -555,11 +555,19 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
   };
 
   $scope.openIGDocument = function (igdocument) {
-
       $rootScope.validationResult=null;
+      $scope.notifications = [];
 
-
+      // Find Notifications for this IGDocument
       if (igdocument != null) {
+          $http.get('api/notifications/igdocument/' + igdocument.id).then(
+              function (response) {
+                  $scope.notifications = response.data;
+              },
+              function (error) {}
+          );
+
+
       // Set rootscope accountId for sharing
       $rootScope.accountId = igdocument.accountId;
       $timeout(function () {
@@ -1045,6 +1053,11 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
     }
   };
 
+  $scope.deleteNotification = function (id) {
+      $scope.notifications = null;
+      $http.post('api/notifications/delete/' + id);
+  };
+
   $scope.selectCompositeProfilesForExport = function (igdocument, toGVT) {
     if ($rootScope.hasChanges()) {
       $rootScope.openConfirmLeaveDlg().result.then(function (result) {
@@ -1381,101 +1394,112 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
   $scope.showSelected = function (node) {
     $scope.selectedNode = node;
   };
-    $scope.clearSegmentScope=function(){
-        delete $rootScope["datatype"];
-        delete $rootScope["message"];
-        delete $rootScope["profileComponent"];
-        delete $rootScope["messageTree"];
-        delete $rootScope["pcTree"];
-        delete $rootScope["cpTree"];
-        delete $rootScope["originalCompositeProfileStructure"];
-        delete $rootScope["compositeProfileStructure"];
-        delete $rootScope["table"];
-        delete $rootScope["codeSystems"];
-        delete $rootScope["codes"];
-        // delete $rootScope["smallCodes"];
-        delete $rootScope["section"];
-
-    };
 
 
-    $scope.selectSegment = function (segment) {
-    console.log($rootScope);
+  $scope.clearSegmentScope=function(){
+    delete $rootScope["datatype"];
+    delete $rootScope["message"];
+    delete $rootScope["profileComponent"];
+    delete $rootScope["messageTree"];
+    delete $rootScope["pcTree"];
+    delete $rootScope["cpTree"];
+    delete $rootScope["originalCompositeProfileStructure"];
+    delete $rootScope["compositeProfileStructure"];
+    delete $rootScope["table"];
+    delete $rootScope["codeSystems"];
+    delete $rootScope["codes"];
+    delete $rootScope["section"];
+  };
+
+  $scope.selectSegment = function (segment) {
+    var startTime = new Date();
     $rootScope.Activate(segment.id);
-    if (segment && segment != null) {
+    if (segment && segment !== null) {
       $scope.loadingSelection = true;
       blockUI.start();
       $timeout(
-        function () {
-          try {
-            SegmentService.get(segment.id).then(function (result) {
-              $rootScope.segment = angular.copy(result);
-              $rootScope.segment.fields = $filter('orderBy')($rootScope.segment.fields, 'position');
-              $rootScope.currentData = $rootScope.segment;
-              $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
-              $rootScope.segment["type"] = "segment";
-              $scope.loadingSelection = false;
-              console.log("edit Form");
-
-              console.log($scope.editForm);
-
+          function () {
               try {
-                if ($scope.segmentsParams)
-                  $scope.segmentsParams.refresh();
+                  SegmentService.get(segment.id).then(function (result) {
+                      $rootScope.segment = angular.copy(result);
+                      $rootScope.segment.fields = $filter('orderBy')($rootScope.segment.fields, 'position');
+                      $rootScope.currentData = $rootScope.segment;
+                      $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
+                      $rootScope.segment["type"] = "segment";
+                      $rootScope.crossRef = {};
+                      $scope.clearSegmentScope();
+                      $scope.loadingSelection = false;
+                      try {
+                          if ($scope.segmentsParams)
+                              $scope.segmentsParams.refresh();
+                      } catch (e) {
+
+                      }
+                      var crossRefPromise = SegmentService.crossRef($rootScope.segment.id,$rootScope.igdocument.id);
+                      crossRefPromise.then (function (result) {
+                          $rootScope.crossRef = result;
+                      }, function (error) {
+                          $scope.loadingSelection = false;
+                          $rootScope.msg().text = error.data.text;
+                          $rootScope.msg().type = error.data.type;
+                          $rootScope.msg().show = true;
+                          blockUI.stop();
+                      });
+
+                      if($rootScope.segment.scope === 'USER' && $rootScope.segment.name === 'OBX'){
+                          SegmentService.updateDynamicMappingInfo().then (function (dynamicMappingTable) {
+                              $rootScope.dynamicMappingTable = dynamicMappingTable;
+                              SegmentService.initCoConstraintsTable($rootScope.segment).then (function (coConstraintsTable) {
+                                  $rootScope.segment.coConstraintsTable = coConstraintsTable;
+                                  SegmentService.initRowIndexForCocon($rootScope.segment.coConstraintsTable).then (function (coConRowIndexList) {
+                                      $rootScope.coConRowIndexList = coConRowIndexList;
+                                      $q.all([crossRefPromise]).then (function (result) {
+                                          $rootScope.$emit("event:initEditArea");
+                                          $rootScope.$emit("event:initSegment");
+                                          $rootScope.subview = "EditSegments.html";
+                                          $scope.loadingSelection = false;
+                                          blockUI.stop();
+                                      }, function (error) {
+                                          $scope.loadingSelection = false;
+                                          $rootScope.msg().text = error.data.text;
+                                          $rootScope.msg().type = error.data.type;
+                                          $rootScope.msg().show = true;
+                                          blockUI.stop();
+                                      });
+                                  });
+                              });
+                          });
+                      }else {
+                          $q.all([crossRefPromise]).then (function (result) {
+                              $rootScope.$emit("event:initEditArea");
+                              $rootScope.$emit("event:initSegment");
+                              $rootScope.subview = "EditSegments.html";
+                              $scope.loadingSelection = false;
+                              blockUI.stop();
+                          }, function (error) {
+                              $scope.loadingSelection = false;
+                              $rootScope.msg().text = error.data.text;
+                              $rootScope.msg().type = error.data.type;
+                              $rootScope.msg().show = true;
+                              blockUI.stop();
+                          });
+                      }
+
+                  }, function (error) {
+                      $scope.loadingSelection = false;
+                      $rootScope.msg().text = error.data.text;
+                      $rootScope.msg().type = error.data.type;
+                      $rootScope.msg().show = true;
+                      blockUI.stop();
+                  });
               } catch (e) {
-
+                  $scope.loadingSelection = false;
+                  $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
+                  $rootScope.msg().type = "danger";
+                  $rootScope.msg().show = true;
+                  blockUI.stop();
               }
-              $rootScope.updateDynamicMappingInfo();
-              $rootScope.initCoConstraintsTable();
-              $rootScope.coConRowIndexList = [];
-
-              for (var i = 0, len1 = $rootScope.segment.coConstraintsTable.rowSize; i < len1; i++) {
-                var rowIndexObj = {};
-                rowIndexObj.rowIndex = i;
-                rowIndexObj.id = new ObjectId().toString();
-                $rootScope.coConRowIndexList.push(rowIndexObj);
-              }
-
-              $rootScope.crossRef = {};
-                $scope.clearSegmentScope();
-
-              SegmentService.crossRef($rootScope.segment.id,$rootScope.igdocument.id).then(function (result) {
-                $rootScope.crossRef = result;
-                console.log("Cross REF Found!!![" + $rootScope.segment.id + "][" + $rootScope.igdocument.id + "]");
-                console.log($rootScope.crossRef);
-
-              }, function (error) {
-                $scope.loadingSelection = false;
-                $rootScope.msg().text = error.data.text;
-                $rootScope.msg().type = error.data.type;
-                $rootScope.msg().show = true;
-              });
-              $scope.loadingSelection = false;
-              $rootScope.$emit("event:initEditArea");
-              $rootScope.$emit("event:initSegment");
-              console.log($scope.editForm);
-
-              $rootScope.subview = "EditSegments.html";
-
-              blockUI.stop();
-
-
-
-            }, function (error) {
-              $scope.loadingSelection = false;
-              $rootScope.msg().text = error.data.text;
-              $rootScope.msg().type = error.data.type;
-              $rootScope.msg().show = true;
-              blockUI.stop();
-            });
-          } catch (e) {
-            $scope.loadingSelection = false;
-            $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
-            $rootScope.msg().type = "danger";
-            $rootScope.msg().show = true;
-            blockUI.stop();
-          }
-        }, 100);
+          }, 100);
     }
   };
 
@@ -2127,48 +2151,40 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 
   $scope.selectTable = function (t) {
     $rootScope.Activate(t.id);
-    var table = angular.copy(t);
     $rootScope.subview = "EditValueSets.html";
     $scope.loadingSelection = true;
     blockUI.start();
     try {
-      TableService.getOne(table.id).then(function (tbl) {
-          $rootScope.searchObject={
-          };
+          TableService.getOneInLibrary(t.id,$rootScope.tableLibrary.id).then(function (tbl) {
+              $rootScope.searchObject = {};
+              $rootScope.table = angular.copy(tbl);
+              $rootScope.$emit("event:initTable");
+              $rootScope.currentData = $rootScope.table;
+              $rootScope.codeSystems = [];
+              $rootScope.codeSystems = $rootScope.table.codeSystems;
+              $rootScope.entireTable = angular.copy($rootScope.table);
+              $scope.loadingSelection = false;
+              $rootScope.$emit("event:initEditArea");
+              blockUI.stop();
+              $scope.clearTableScope();
+              $rootScope.clearChanges();
+              TableService.crossRef($rootScope.table, $rootScope.igdocument.id).then(function (result) {
+                  $rootScope.crossRef = result;
+              }, function (error) {
+                  $scope.loadingSelection = false;
+                  $rootScope.msg().text = error.data.text;
+                  $rootScope.msg().type = error.data.type;
+                  $rootScope.msg().show = true;
+              });
 
-        $rootScope.table = tbl;
-        $rootScope.$emit("event:initTable");
-        $rootScope.currentData = $rootScope.table;
-        $rootScope.codeSystems = [];
-        console.log($rootScope.table);
-        $rootScope.codeSystems=$rootScope.table.codeSystems;
+          }, function (errr) {
+              $scope.loadingSelection = false;
+              $rootScope.msg().text = errr.data.text;
+              $rootScope.msg().type = errr.data.type;
+              $rootScope.msg().show = true;
+              blockUI.stop();
+          });
 
-        // $rootScope.table.smallCodes = [];
-        // if($rootScope.table.codes && $rootScope.table.codes.length <= 500){
-        //     $rootScope.table.smallCodes = angular.copy($rootScope.table.codes);
-        // }
-        // $rootScope.table.smallCodes.sort($scope.codeCompare);
-        $rootScope.entireTable=angular.copy($rootScope.table);
-        // $rootScope.findValueSetBindings();
-        $scope.loadingSelection = false;
-        $scope.clearTableScope();
-        TableService.crossRef($rootScope.table,$rootScope.igdocument.id).then(function (result) {
-          $rootScope.crossRef = result;
-        }, function (error) {
-          $scope.loadingSelection = false;
-          $rootScope.msg().text = error.data.text;
-          $rootScope.msg().type = error.data.type;
-          $rootScope.msg().show = true;
-        });
-        $rootScope.$emit("event:initEditArea");
-        blockUI.stop();
-      }, function (errr) {
-        $scope.loadingSelection = false;
-        $rootScope.msg().text = errr.data.text;
-        $rootScope.msg().type = errr.data.type;
-        $rootScope.msg().show = true;
-        blockUI.stop();
-      });
     } catch (e) {
       $scope.loadingSelection = false;
       $rootScope.msg().text = "An error occured. DEBUG: \n" + e;

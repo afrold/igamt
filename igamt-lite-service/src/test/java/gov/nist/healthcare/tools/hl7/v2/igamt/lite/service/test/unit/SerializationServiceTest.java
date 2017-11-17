@@ -5,6 +5,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.SerializationServiceImpl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.IntegrationTestApplicationConfig;
 import nu.xom.Document;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -35,38 +37,26 @@ public class SerializationServiceTest {
     private static final String IG_DOCUMENT_TEST_ID = "57c8371a84ae6827fcec5488";
 
     @Autowired
-    SerializationService serializationService;
+    private ApplicationContext applicationContext;
 
     @Autowired
     IGDocumentService igDocumentService;
 
     @Test
-    public void testSerializeCompactIGDocument(){
+    public void testSerializeCompactIGDocument() throws SerializationException {
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         assertTrue(igDocument!=null);
-        Document document = null;
-        try {
-            document =
-                serializationService.serializeIGDocument(igDocument, SerializationLayout.IGDOCUMENT, ExportConfig
-                    .getBasicExportConfig(true));
-        } catch (SerializationException e) {
-            e.printStackTrace();
-        }
+        SerializationService serializationService = new SerializationServiceImpl(applicationContext);
+        Document document = serializationService.serializeIGDocument(igDocument, SerializationLayout.IGDOCUMENT, ExportConfig.getBasicExportConfig(true));
         String xmlDocument = document.toXML();
         System.out.println(xmlDocument);
     }
     @Test
-    public void testSerializeVerboseIGDocument(){
+    public void testSerializeVerboseIGDocument() throws SerializationException {
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         assertTrue(igDocument!=null);
-        Document document = null;
-        try {
-            document =
-                serializationService.serializeIGDocument(igDocument, SerializationLayout.PROFILE, ExportConfig
-                    .getBasicExportConfig(true));
-        } catch (SerializationException e) {
-            e.printStackTrace();
-        }
+        SerializationService serializationService = new SerializationServiceImpl(applicationContext);
+        Document document = serializationService.serializeIGDocument(igDocument, SerializationLayout.PROFILE, ExportConfig.getBasicExportConfig(true));
         String xmlDocument = document.toXML();
         System.out.println(xmlDocument);
     }

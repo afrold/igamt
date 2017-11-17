@@ -29,6 +29,7 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function ($scope, $mdDia
       $scope.importedTable.scope = 'USER';
       $scope.importedTable.codes = [];
       $scope.importedTable.libIds = [];
+      $scope.importedTable.sourceType=='INTERNAL';
       var duplicatedCodeSystems = [];
       angular.forEach($scope.data.data, function (row) {
         index = index + 1;
@@ -73,7 +74,9 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function ($scope, $mdDia
           code.codeUsage = row[3];
           code.comments = row[4];
           duplicatedCodeSystems.push(code.codeSystem);
-          if (code.value != null && code.value != "") $scope.importedTable.codes.push(code);
+          if (code.value != null && code.value != "") {
+            $scope.importedTable.codes.push(code);
+          }
         }
       });
 
@@ -82,6 +85,7 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function ($scope, $mdDia
         if($.inArray(el, uniqueCodeSystems) === -1) uniqueCodeSystems.push(el);
       });
       $scope.importedTable.codeSystems = duplicatedCodeSystems;
+      if($scope.importedTable.codes) $scope.importedTable.numberOfCodes = $scope.importedTable.codes.length ;
 
       if ($scope.importedTable.bindingIdentifier == null || $scope.importedTable.bindingIdentifier == '') {
         $scope.isInValild = true;
@@ -93,14 +97,19 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function ($scope, $mdDia
         $scope.erorrMessages.push('No Name');
       }
 
+      if($scope.importedTable.codes && $scope.importedTable.codes.length > 500) {
+        $scope.isInValild = true;
+        $scope.erorrMessages.push('For internally managed value sets, IGAMT imposes a maximum limit of 500”. Please see alternative methods to reference large external value sets');
+      }
+
       var errorElm = $("#errorMessageForCSV");
       var csvSaveButton = $("#csvSaveButton");
       errorElm.empty();
 
       if ($scope.isInValild) {
-        errorElm.append('<span>' + files[0].name + ' is invalid!</span>');
+        errorElm.append('<span style=\"color:red;\">' + files[0].name + ' is invalid!</span>');
         angular.forEach($scope.erorrMessages, function (e) {
-          errorElm.append("<li>" + e + "</li>");
+          errorElm.append("<li style=\"color:red;\">" + e + "</li>");
           csvSaveButton.prop('disabled', true);
         });
       } else {

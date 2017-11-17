@@ -374,6 +374,8 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
   }
 
   public Set<ShareParticipantPermission> getShareParticipantIds() {
+    if (shareParticipantIds == null)
+      shareParticipantIds = new HashSet<ShareParticipantPermission>();
     return shareParticipantIds;
   }
 
@@ -399,6 +401,9 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
    * @return the realUsers
    */
   public List<ShareParticipant> getRealUsers() {
+    if (realUsers == null) {
+      realUsers = new ArrayList<ShareParticipant>();
+    }
     return realUsers;
   }
 
