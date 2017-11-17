@@ -267,33 +267,44 @@ public class SerializableSegment extends SerializableSection {
               dynamicMappingItemElement.addAttribute(new Attribute("FirstReferenceValue",
                   dynamicMappingItem.getFirstReferenceValue()));
             } else {
-              throw new DynamicMappingItemSerializationException(new Exception(), "DynamicMappingItem[" + dynamicMappingDefinition.getDynamicMappingItems()
-                  .indexOf(dynamicMappingItem) + "]","Missing first reference value");
+              throw new DynamicMappingItemSerializationException(new Exception(),dynamicMappingDefinition.getDynamicMappingItems()
+                  .indexOf(dynamicMappingItem)+1,"Missing first reference value");
             }
             if (dynamicMappingItem.getSecondReferenceValue() != null && !dynamicMappingItem
                 .getSecondReferenceValue().isEmpty()) {
               dynamicMappingItemElement.addAttribute(new Attribute("SecondReferenceValue",
                   dynamicMappingItem.getSecondReferenceValue()));
-            } else {
+            }
+            /*Second reference value isn't required
+             * else {
               throw new DynamicMappingItemSerializationException(new Exception(), "DynamicMappingItem[" + dynamicMappingDefinition.getDynamicMappingItems()
                   .indexOf(dynamicMappingItem) + "]","Missing second reference value");
-            }
-            Datatype datatype = this.dynamicMappingDatatypeMap.get(dynamicMappingItem.getDatatypeId());
-            if (datatype != null) {
-              dynamicMappingItemElement.addAttribute(new Attribute("Datatype", datatype.getLabel()));
+            }*/
+            if(dynamicMappingItem.getDatatypeId() != null && !dynamicMappingItem.getDatatypeId().isEmpty()){
+	            Datatype datatype = this.dynamicMappingDatatypeMap.get(dynamicMappingItem.getDatatypeId());
+	            if (datatype != null) {
+	              dynamicMappingItemElement.addAttribute(new Attribute("Datatype", datatype.getLabel()));
+	            } else {
+	              throw new DatatypeNotFoundException(dynamicMappingItem.getDatatypeId());
+	            }
             } else {
-              throw new DatatypeNotFoundException(dynamicMappingItem.getDatatypeId());
+            	throw new DynamicMappingItemSerializationException(new Exception(),dynamicMappingDefinition.getDynamicMappingItems()
+                .indexOf(dynamicMappingItem)+1,"Missing second reference value");
             }
           } catch (Exception e) {
-            throw new DynamicMappingItemSerializationException(e, "DynamicMappingItem[" + dynamicMappingDefinition.getDynamicMappingItems()
-                .indexOf(dynamicMappingItem) + "]");
+        	  if(e instanceof DynamicMappingItemSerializationException){
+        		  throw e;
+        	  } else {
+        		  throw new DynamicMappingItemSerializationException(e, dynamicMappingDefinition.getDynamicMappingItems()
+        		  	.indexOf(dynamicMappingItem) + 1);
+        	  }
           }
           dynamicMappingElement.appendChild(dynamicMappingItemElement);
         }
       }
       return dynamicMappingElement;
     } catch (Exception e){
-      throw new DynamicMappingSerializationException(e,"DynamicMapping");
+      throw new DynamicMappingSerializationException(e,"Dynamic Mapping table");
     }
   }
 
@@ -446,17 +457,17 @@ public class SerializableSegment extends SerializableSection {
               }
               tbody.appendChild(tr);
             } else {
-              throw new CoConstraintDataSerializationException("THEN",i,"Empty THEN column data");
+              throw new CoConstraintDataSerializationException("THEN",i+1,"Empty THEN column data");
             }
           } else {
-            throw new CoConstraintDataSerializationException("IF",i,"Missing IF column data");
+            throw new CoConstraintDataSerializationException("IF",i+1,"Missing IF column data");
           }
         }
         tableElement.appendChild(tbody);
         coConstraintsElement.appendChild(tableElement);
         return coConstraintsElement;
       } catch (Exception e){
-        throw new CoConstraintSerializationException(e,"Co-Constraints");
+        throw new CoConstraintSerializationException(e,"Co-Constraints table");
       }
     }
     return null;

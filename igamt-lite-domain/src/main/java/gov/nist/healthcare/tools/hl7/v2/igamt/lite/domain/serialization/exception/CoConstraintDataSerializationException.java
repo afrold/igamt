@@ -17,7 +17,7 @@ public class CoConstraintDataSerializationException extends CoConstraintSerializ
 
     public CoConstraintDataSerializationException(String column, int row,
         String message) {
-        super(new Exception(message), "Column "+column+", Row "+row, message);
+        super(new Exception(message), "Column "+column+", Row "+row);
     }
 
     public CoConstraintDataSerializationException(String column, int row) {

@@ -21,12 +21,12 @@ public class IGDocumentSerializationException extends SerializationException {
         return label;
     }
 
-    public IGDocumentSerializationException(Exception originalException, String location) {
-        super(originalException, location);
+    public IGDocumentSerializationException(Exception originalException, String igDocumentId) {
+        this(originalException,igDocumentId,null);
     }
 
-    public IGDocumentSerializationException(Exception originalException, String location,
+    public IGDocumentSerializationException(Exception originalException, String igDocumentId,
         String message) {
-        super(originalException, location, message);
+        super(originalException, igDocumentId, message);
     }
 }

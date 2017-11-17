@@ -237,8 +237,7 @@ import javax.xml.crypto.Data;
                                 }
                             } catch (Exception e) {
                                 throw new DynamicMappingItemSerializationException(e,
-                                    "DynamicMappingItem[" + dynamicMappingDefinition.getDynamicMappingItems().indexOf(dynamicMappingItem)
-                                        + "]");
+                                    dynamicMappingDefinition.getDynamicMappingItems().indexOf(dynamicMappingItem)+1);
                             }
                         }
                     } catch (Exception e) {

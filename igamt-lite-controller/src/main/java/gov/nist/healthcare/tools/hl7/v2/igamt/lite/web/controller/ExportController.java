@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.ExportException;
 import org.apache.commons.io.IOUtils;
@@ -14,15 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportableDataModel;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontConfigService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
@@ -77,17 +69,13 @@ import java.io.InputStream;
         @ApiResponse(code = 400, message = "Bad request")})
     @RequestMapping(value = "/datatype/{id}/html", method = RequestMethod.GET, produces = "text/html")
     public String getDatatypeAsHtml(@PathVariable(value = "id") String id,
-        HttpServletRequest request) throws DataNotFoundException {
+        HttpServletRequest request) throws DataNotFoundException,SerializationException {
         Datatype datatype = datatypeService.findById(id);
         if (datatype != null) {
             String result = "";
-            try {
-                result = exportService
-                    .exportDataModelAsHtml(datatype, datatype.getName(), generateHost(request));
-                return result;
-            } catch (SerializationException se){
-                return se.toJson();
-            }
+            result = exportService
+                .exportDataModelAsHtml(datatype, datatype.getName(), generateHost(request));
+            return result;
         }
         return null;
     }
@@ -285,21 +273,21 @@ import java.io.InputStream;
         @ApiResponse(code = 400, message = "Bad request")})
     @RequestMapping(value = "/igDocument/{id}/html", method = RequestMethod.GET, produces = "text/html")
     public String getIgDocumentAsHtml(@PathVariable(value = "id") String id)
-        throws ExportException {
+        throws ExportException, SerializationException {
         InputStream resultInputStream = null;
         String result = "";
         IGDocument igDocument = igDocumentService.findById(id);
         if (igDocument != null) {
+            ExportFontConfig exportFontConfig;
             try {
-                resultInputStream = exportService
-                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.IGDOCUMENT,
-                        ExportConfig.getBasicExportConfig(true),
-                        exportFontConfigService.getDefaultExportFontConfig());
-            } catch (SerializationException e) {
-                return e.toJson();
-            } catch (Exception e) {
+                exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
+            } catch (Exception e){
                 throw new ExportException("Unable to load font export configuration",e);
             }
+            resultInputStream = exportService
+                .exportIGDocumentAsHtml(igDocument, SerializationLayout.IGDOCUMENT,
+                    ExportConfig.getBasicExportConfig(true),exportFontConfig
+                    );
             if(resultInputStream != null){
                 try {
                     result = IOUtils.toString(resultInputStream);

@@ -39,10 +39,14 @@ public abstract class SerializationException extends Exception {
 
     public String getLocation(){
         if(this.originalException instanceof SerializationException){
-            return location + " -> " + ((SerializationException)originalException).getLocation();
+            return getFullLocation() + " -> " + ((SerializationException)originalException).getLocation();
         } else {
-            return location;
+            return getFullLocation();
         }
+    }
+    
+    private String getFullLocation(){
+    	return "["+this.getLabel()+"] "+this.location;
     }
 
     public List<String> getErrorMessages(){

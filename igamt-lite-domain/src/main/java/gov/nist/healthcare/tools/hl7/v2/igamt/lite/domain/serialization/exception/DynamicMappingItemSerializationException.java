@@ -17,12 +17,12 @@ public class DynamicMappingItemSerializationException extends SerializationExcep
 
     private static String label = "Dynamic Mapping Item";
 
-    public DynamicMappingItemSerializationException(Exception originalException, String location) {
-        super(originalException, location);
+    public DynamicMappingItemSerializationException(Exception originalException, int row) {
+        this(originalException, row,null);
     }
 
-    public DynamicMappingItemSerializationException(Exception originalException, String location, String message) {
-        super(originalException, location, message);
+    public DynamicMappingItemSerializationException(Exception originalException, int row, String message) {
+        super(originalException, label+"[Row "+row+"]", message);
     }
 
     @Override public String getLabel() {
