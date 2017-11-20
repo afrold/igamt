@@ -1,3 +1,23 @@
-<div style="background-color: #f4f4f4; min-height: 700px; height: 100%; border-right: 1px solid #b9b9b9;">
 
-</div>
+
+
+  <p-tree [value]="treeData" [draggableNodes]="true" [droppableNodes]="true">
+    <ng-template let-node  pTemplate="default">
+
+        <div        [pDraggable]="true"
+                    [pDroppable]="true"
+                    (onDragStart)="onDragStart($event, node)"
+                    (onDragEnd)="onDragEnd($event, node)"
+                    (onDrop)="onDrop($event, node)"
+                    (onDragEnter)="onDragEnter($event, node)"
+                    (onDragLeave)="onDragLeave($event, node)">
+        <span (click)="print(node)" *ngIf="node.data.type=='section'">{{getPath(node)+"."+node.data.sectionTitle}}</span>
+        <span (click)="print(node)" *ngIf="node.data.type!=='section'">{{node.data.sectionTitle}}</span>
+        </div>
+
+
+    </ng-template>
+
+  </p-tree>
+
+
