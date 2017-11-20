@@ -74,7 +74,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.xml.serialization.XMLExportTool;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.xml.XMLExportTool;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ConstraintsSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -757,7 +758,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
   
   @Override
   public InputStream serializeProfileToZip(Profile original, String[] ids,
-      DocumentMetaData metadata) throws IOException, CloneNotSupportedException {
+      DocumentMetaData metadata) throws IOException, CloneNotSupportedException, SerializationException {
     Profile filteredProfile = new Profile();
 
     HashMap<String, Segment> segmentsMap = new HashMap<String, Segment>();

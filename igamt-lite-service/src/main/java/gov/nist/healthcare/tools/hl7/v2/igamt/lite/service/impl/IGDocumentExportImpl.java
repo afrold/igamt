@@ -187,7 +187,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
   @Override
   public InputStream exportAsValidationForSelectedMessages(IGDocument d, String[] mids)
-      throws IOException, CloneNotSupportedException {
+      throws IOException, CloneNotSupportedException, SerializationException {
     if (d != null) {
       return profileSerializationService.serializeProfileToZip(d.getProfile(), mids,
           d.getMetaData());

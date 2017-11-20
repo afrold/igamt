@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.xml.serialization;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

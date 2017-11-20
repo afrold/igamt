@@ -18,6 +18,7 @@ import java.io.InputStream;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import nu.xom.Document;
 
 public interface ProfileSerialization {
@@ -25,7 +26,7 @@ public interface ProfileSerialization {
 
 	Profile deserializeXMLToProfile(Document docProfile, Document docValueSet, Document docConstraints);
 
-	InputStream serializeProfileToZip(Profile profile, String[] ids, DocumentMetaData metadata) throws IOException, CloneNotSupportedException;
+	InputStream serializeProfileToZip(Profile profile, String[] ids, DocumentMetaData metadata) throws IOException, CloneNotSupportedException, SerializationException;
 
 	InputStream serializeProfileDisplayToZip(Profile profile, String[] ids, DocumentMetaData metadata) throws IOException, CloneNotSupportedException;
 

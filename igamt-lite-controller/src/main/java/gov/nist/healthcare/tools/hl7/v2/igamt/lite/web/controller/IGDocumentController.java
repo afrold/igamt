@@ -1074,7 +1074,7 @@ public class IGDocumentController extends CommonController {
   public void exportValidationXMLByMessages(@PathVariable("id") String id,
       @PathVariable("mIds") String[] messageIds, HttpServletRequest request,
       HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
+      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException, SerializationException {
     IGDocument d = findIGDocument(id);
     InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d, messageIds);
     response.setContentType("application/zip");
