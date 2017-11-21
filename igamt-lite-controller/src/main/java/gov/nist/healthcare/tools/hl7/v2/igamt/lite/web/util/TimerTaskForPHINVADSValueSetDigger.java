@@ -6,8 +6,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +43,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SourceType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notification;
@@ -50,9 +59,30 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
   private MongoOperations mongoOps;
   private List<IGDocument> igDocs = null;
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws UnknownHostException {
     TimerTaskForPHINVADSValueSetDigger tool = new TimerTaskForPHINVADSValueSetDigger();
     tool.run();
+    
+    /*
+    MongoOperations mongoOps  = new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "igamt"));
+    String tableId = "57ee310484ae2aadc10efcca";
+    List<IGDocument> igDocs = mongoOps.find(Query.query(Criteria.where("scope").is(Constant.SCOPE.USER)), IGDocument.class);
+    for(IGDocument ig : igDocs){
+      if(ig.getProfile().getTableLibrary().findOneTableById(tableId) != null) {
+        Notification item = new Notification();
+        item.setByWhom("CDC");
+        item.setChangedDate(new Date());
+        item.setTargetType(TargetType.Valueset);
+        item.setTargetId(tableId);
+
+        Notifications notifications = new Notifications();
+        notifications.setIgDocumentId(ig.getId());
+        notifications.addItem(item);
+
+        notificationEmail(notifications, ig, mongoOps);        
+      }
+    }
+    */
   }
 
   public TimerTaskForPHINVADSValueSetDigger() {
@@ -241,6 +271,7 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
               notifications.addItem(item);
             }
             mongoOps.save(notifications);
+            notificationEmail(notifications, ig, mongoOps);
           }
         }
       } catch (Exception e) {
@@ -250,6 +281,32 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
       return table;
     }
     return null;
+  }
+
+  private static void notificationEmail(Notifications notifications, IGDocument ig, MongoOperations mongoOps) {
+    Criteria where = Criteria.where("accountId").is(ig.getAccountId());
+    Query qry = Query.query(where);
+    ExportConfig config = mongoOps.findOne(qry, ExportConfig.class);
+    if(config != null && config.isPhinvadsUpdateEmailNotification() && config.getEmail() != null){
+      Properties props = new Properties();
+      props.put("mail.smtp.auth", "false");
+      props.put("mail.smtp.starttls.enable", "true");
+      props.put("mail.smtp.host", "smtp.nist.gov");
+      props.put("mail.smtp.port", "25");
+      Session session = Session.getInstance(props);
+      try {
+          Message message = new MimeMessage(session);
+          message.setFrom(new InternetAddress("igamt@nist.gov"));
+          message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(config.getEmail()));
+          message.setSubject("PHINVADS Value Set Updated Notification");
+          message.setText("Dear IGAMT user, \n\n" + "You have " + notifications.getItems().size()
+          + " notification(s) of PHINVADS value sets updated for the IG Document: " + ig.getMetaData().getTitle()
+          + "\n\n" + "P.S: If you need help, contact us at 'rsnelick@nist.gov'");
+          Transport.send(message);
+      } catch (MessagingException e) {
+          throw new RuntimeException(e);
+      } 
+    }
   }
 
   public VocabService getService() {

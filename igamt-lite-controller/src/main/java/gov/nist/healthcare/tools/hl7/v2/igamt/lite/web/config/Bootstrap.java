@@ -328,8 +328,32 @@ public class Bootstrap implements InitializingBean {
 
     
    //This is just test.
+//    testNotification();
     // 2.0.0-beta10
     makePhinvadsExternal(); 
+  }
+  
+  
+  private void testNotification() {
+    Notification item = new Notification();
+    
+    item.setByWhom("JY Woo");
+    item.setChangedDate(new Date());
+    item.setTargetType(TargetType.Valueset);
+    item.setTargetId("57ee310484ae2aadc10efcca");
+    
+    Notification item2 = new Notification();
+    item2.setByWhom("JY Woo2");
+    item2.setChangedDate(new Date());
+    item2.setTargetType(TargetType.Valueset);
+    item2.setTargetId("57f0e74684ae7a55c2410d22");
+    
+    Notifications notifications = new Notifications();
+    notifications.setIgDocumentId("5a149844512c91633456205e");
+    notifications.addItem(item);
+    notifications.addItem(item2);
+    notificationsRepository.save(notifications);
+    
   }
 
   private void updateTableForNumOfCodesANDSourceType() {

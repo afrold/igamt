@@ -53,6 +53,7 @@ public class ExportConfig {
   private UsageConfig valueSetsExport;
   private CodeUsageConfig codesExport;
   private boolean phinvadsUpdateEmailNotification;
+  private String email;
 
   private UsageConfig datatypesExport;
   private UsageConfig componentExport;
@@ -107,7 +108,7 @@ public class ExportConfig {
 
     defaultConfiguration.setCodesExport(codeUsageExport);
     defaultConfiguration.setPhinvadsUpdateEmailNotification(false);
-
+    defaultConfiguration.setEmail(null);
     defaultConfiguration.setDatatypesExport(displaySelectives);
     defaultConfiguration.setSegmentsExport(displaySelectives);
 
@@ -443,6 +444,14 @@ public class ExportConfig {
 
   public void setPhinvadsUpdateEmailNotification(boolean phinvadsUpdateEmailNotification) {
     this.phinvadsUpdateEmailNotification = phinvadsUpdateEmailNotification;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
   }
 
 
