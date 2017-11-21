@@ -251,8 +251,8 @@ angular.module('igl').controller(
         var newSegmentsLink = _.difference($rootScope.usedSegsLink, $rootScope.igdocument.profile.segmentLibrary.children);
 
         SegmentLibrarySvc.addChildren($rootScope.igdocument.profile.segmentLibrary.id, newSegmentsLink).then(function() {
-
-          SegmentService.findByIds(usedSegsId).then(function(segments) {
+            $rootScope.igdocument.profile.segmentLibrary.children=_.union(newSegmentsLink,$rootScope.igdocument.profile.segmentLibrary.children);
+            SegmentService.findByIds(usedSegsId).then(function(segments) {
             for (var j = 0; j < segments.length; j++) {
               if (!$rootScope.segmentsMap[segments[j].id]) {
                 $rootScope.fillMaps(segments[j]);
@@ -274,8 +274,10 @@ angular.module('igl').controller(
               });
               var newDatatypesLink = _.difference($rootScope.usedDtLink, $rootScope.igdocument.profile.datatypeLibrary.children);
 
+
               DatatypeLibrarySvc.addChildren($rootScope.igdocument.profile.datatypeLibrary.id, newDatatypesLink).then(function() {
-                DatatypeService.get(usedDtId1).then(function(datatypes) {
+                  $rootScope.igdocument.profile.datatypeLibrary.children=_.union($rootScope.igdocument.profile.datatypeLibrary.children,newDatatypesLink);
+                  DatatypeService.get(usedDtId1).then(function(datatypes) {
                   for (var j = 0; j < datatypes.length; j++) {
                     if (!$rootScope.datatypesMap[datatypes[j].id]) {
                       $rootScope.datatypesMap[datatypes[j].id] = datatypes[j];
@@ -289,6 +291,7 @@ angular.module('igl').controller(
                   });
                   var newTablesLink = _.difference($rootScope.usedVsLink, $rootScope.igdocument.profile.tableLibrary.children);
                   TableLibrarySvc.addChildren($rootScope.igdocument.profile.tableLibrary.id, newTablesLink).then(function() {
+                      $rootScope.igdocument.profile.tableLibrary.children=_.union( $rootScope.igdocument.profile.tableLibrary.children,newTablesLink);
                     TableService.get(usedVsId).then(function(tables) {
                       for (var j = 0; j < tables.length; j++) {
                         if (!$rootScope.tablesMap[tables[j].id]) {
@@ -296,8 +299,6 @@ angular.module('igl').controller(
                           $rootScope.tables.push(tables[j]);
                         }
                       }
-
-
                       for (var i = 0; i < result.length; i++) {
                         console.log("=+++++result");
                         console.log(result);
@@ -305,25 +306,13 @@ angular.module('igl').controller(
 
                         $mdDialog.hide($rootScope.igdocument);
                       }
-
                     });
                   });
-
-
                 });
               });
             });
-
-
-
-
           });
         });
-        console.log($rootScope.igdocument.profile.messages);
-        console.log("$rootScope.segmentsMap");
-
-
-
       }, function(response) {
         $rootScope.msg().text = response.data;
         $rootScope.msg().type = "danger";
