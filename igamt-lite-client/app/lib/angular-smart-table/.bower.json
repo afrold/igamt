@@ -1,0 +1,14 @@
+{
+  "name": "angular-smart-table",
+  "homepage": "https://github.com/lorenzofox3/Smart-Table",
+  "version": "2.1.9",
+  "_release": "2.1.9",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.1.9",
+    "commit": "cef2026d4ef6cdeaf2b1bfa9e8d78a760a37ff04"
+  },
+  "_source": "https://github.com/lorenzofox3/Smart-Table.git",
+  "_target": "^2.1.9",
+  "_originalSource": "angular-smart-table"
+}

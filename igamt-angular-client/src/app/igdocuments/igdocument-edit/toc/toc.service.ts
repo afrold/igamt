@@ -14,12 +14,16 @@ export  class TocService{
   buildTreeFromIgDocument=function (igdocument) {
     var treeData= [];
 
+
+
     console.log(igdocument);
 
     var narratives= this.convertNarratives(igdocument.childSections);
     var profileSctions=this.processProfile(igdocument.profile);
+    var children=narratives.concat(profileSctions);
 
-    return narratives.concat(profileSctions);
+
+    return children;
 
   }
 

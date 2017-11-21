@@ -1,7 +1,4 @@
-
-
-
-  <p-tree [value]="treeData" [draggableNodes]="true" [droppableNodes]="true">
+<p-tree [value]="treeData" [draggableNodes]="true" [droppableNodes]="true">
     <ng-template let-node  pTemplate="default">
 
         <div        [pDraggable]="true"
@@ -11,13 +8,13 @@
                     (onDrop)="onDrop($event, node)"
                     (onDragEnter)="onDragEnter($event, node)"
                     (onDragLeave)="onDragLeave($event, node)">
-        <span (click)="print(node)" *ngIf="node.data.type=='section'">{{getPath(node)+"."+node.data.sectionTitle}}</span>
-        <span (click)="print(node)" *ngIf="node.data.type!=='section'">{{node.data.sectionTitle}}</span>
+        <!--<span (click)="print(node)" *ngIf="node.data.type=='section'">{{getPath(node)+"."+node.data.sectionTitle}}</span>-->
+        <span (click)="print(node)">{{node.data.sectionTitle}}</span>
         </div>
 
 
     </ng-template>
 
-  </p-tree>
+</p-tree>
 
 
