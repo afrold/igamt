@@ -6,12 +6,12 @@
   </md-toolbar>
 
   <div layout="row" layout-align="center start" style="width: 100%">
-        <!-- Usages and metadata cards -->
+      <!-- Usages and metadata cards -->
       <div flex style="min-width:60%">
-            <!-- Usages card -->
-        <md-content>
-          <md-card>
-                    <md-card-content>
+          <!-- Usages card -->
+          <md-content>
+              <md-card>
+                  <md-card-content>
                         <h4>Usages</h4>
                         <hr/>
                         <p>Value Sets to Export:</p>
@@ -91,13 +91,13 @@
                       </div>
 
                     </md-card-content>
-          </md-card>
-        </md-content>
+              </md-card>
+          </md-content>
 
-            <!-- Metadata card -->
-            <md-content>
-                <md-card>
-                    <md-card-content>
+          <!-- Metadata card -->
+          <md-content>
+              <md-card>
+                  <md-card-content>
                         <h4>Metadata</h4>
                         <hr/>
                         <div layout="column">
@@ -133,26 +133,40 @@
                             </div>
                         </div>
                     </md-card-content>
-                </md-card>
-            </md-content>
-        </div>
-        <!-- Columns card-->
-        <div flex>
-            <md-content>
-                <md-card>
-                    <md-card-content>
-                        <h4>Columns</h4>
-                        <hr/>
-                        <div layout="column" style="width: 100%">
-                            <div class="config-checkbox" ng-repeat="column in config.valueSetColumn.columns">
-                                <md-checkbox class="md-primary" ng-model="column.present" ng-disabled="column.disabled" ng-change="setChanged()">
-                                    <label style="color: black">{{column.name}} </label>
-                                </md-checkbox>
-                            </div>
-                        </div>
-                    </md-card-content>
-                </md-card>
-            </md-content>
-        </div>
-    </div>
+              </md-card>
+          </md-content>
+      </div>
+      <div flex>
+          <!-- Columns card-->
+          <md-content>
+              <md-card>
+                  <md-card-content>
+                      <h4>Columns</h4>
+                      <hr/>
+                      <div layout="column" style="width: 100%">
+                          <div class="config-checkbox" ng-repeat="column in config.valueSetColumn.columns">
+                              <md-checkbox class="md-primary" ng-model="column.present" ng-disabled="column.disabled" ng-change="setChanged()">
+                                  <label style="color: black">{{column.name}} </label>
+                              </md-checkbox>
+                          </div>
+                      </div>
+                  </md-card-content>
+              </md-card>
+          </md-content>
+          <!-- PHINVADS card-->
+          <md-content>
+              <md-card>
+                  <md-card-content>
+                      <h4>PHINVADS email Notification</h4>
+                      <hr/>
+                      <div layout="column" style="width: 100%">
+                          <md-checkbox class="md-primary" ng-model="config.phinvadsUpdateEmailNotification" ng-change="setChanged()">
+                              <label style="color: black">Subscribe</label>
+                          </md-checkbox>
+                      </div>
+                  </md-card-content>
+              </md-card>
+          </md-content>
+      </div>
+  </div>
 </md-card-content>

@@ -58,7 +58,6 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
   public TimerTaskForPHINVADSValueSetDigger() {
 
     String serviceUrl = "https://phinvads.cdc.gov/vocabService/v2";
-    // String serviceUrl = http://phinvads.cdc.gov/vocabService/v2
 
     HessianProxyFactory factory = new HessianProxyFactory();
     try {
@@ -155,18 +154,7 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
               needUpdate = true;
               log.info(oid + " Table has no change! however local PHINVADS codes may be missing"); 
             }
-          } 
-          
-//          else {
-
-//            if (valueSetConcepts.size() != table.getNumberOfCodes()) {
-//              needUpdate = true;
-//              log.info(oid + " Table has no change! however local codes size are diferenct.");
-//            } else {
-//              needUpdate = false;
-//              log.info(oid + " Table has no change! because same version number and date.");
-//            }
-//          }
+          }
         } else {
           needUpdate = true;
           log.info(oid + " Table has a change! because different version number and date.");
