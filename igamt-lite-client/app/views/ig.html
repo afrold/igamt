@@ -173,7 +173,7 @@
                                                             style="display: inline-flex; margin-top:10px" required>
 
                                                 <md-radio-button ng-repeat="vr in hl7Versions"
-                                                                 ng-disabled="loading || igdocument"
+                                                                 ng-disabled="loading || compareWith(igdocument.profile.metaData.hl7Version, vr)"
                                                                  ng-value="vr" class="md-primary"
                                                                  style="margin-left:25px;">{{vr}}
                                                 </md-radio-button>

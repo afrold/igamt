@@ -201,20 +201,18 @@ angular.module('igl').controller(
       $rootScope.usedSegsLink = [];
       $rootScope.usedDtLink = [];
       $rootScope.usedVsLink = [];
-      console.log("msgEvts");
-      console.log(msgEvts);
+
 
       var events = [];
 
       var scope = "HL7STANDARD";
-      var version = $rootScope.igdocument.profile.metaData.hl7Version;
+      var version = $scope.hl7Version;
       console.log($rootScope.igdocument);
 
 
       console.log("update Ig called");
       console.log(msgEvts);
       for (var i = 0; i < msgEvts.length; i++) {
-        //events.push(msgEvts[i].children[0]);
         events.push({
           name: msgEvts[i].children[0].name,
           parentStructId: msgEvts[i].children[0].parentStructId,
@@ -227,8 +225,8 @@ angular.module('igl').controller(
       console.log(events);
 
       IgDocumentService.findAndAddMessages($rootScope.igdocument.id, events).then(function(result) {
-        console.log("result==========");
-        console.log(result);
+        console.log(events);
+
         var msgsId = [];
         for (var i = 0; i < result.length; i++) {
           if (result[i].id) {

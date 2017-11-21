@@ -36,15 +36,12 @@
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/emoticons.min.css" />
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/file.min.css" />
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/fullscreen.min.css" />
-    <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/help.min.css" />
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/image_manager.min.css" />
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/image.min.css" />
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/line_breaker.min.css" />
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/quick_insert.min.css" />
-    <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/special_characters.min.css" />
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/table.min.css" />
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/video.min.css" />
-    <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/third_party/spell_checker.min.css" />
     <link rel="stylesheet" href="bower_components/ng-notifications-bar/dist/ngNotificationsBar.min.css" />
     <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.css" />
     <link rel="stylesheet" href="bower_components/angular-block-ui/dist/angular-block-ui.css" />
@@ -153,7 +150,6 @@
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/json3/lib/json3.js"></script>
@@ -177,7 +173,6 @@
     <script src="bower_components/froala-wysiwyg-editor/js/plugins/font_family.min.js"></script>
     <script src="bower_components/froala-wysiwyg-editor/js/plugins/font_size.min.js"></script>
     <script src="bower_components/froala-wysiwyg-editor/js/plugins/fullscreen.min.js"></script>
-    <script src="bower_components/froala-wysiwyg-editor/js/plugins/help.min.js"></script>
     <script src="bower_components/froala-wysiwyg-editor/js/plugins/image.min.js"></script>
     <script src="bower_components/froala-wysiwyg-editor/js/plugins/image_manager.min.js"></script>
     <script src="bower_components/froala-wysiwyg-editor/js/plugins/inline_style.min.js"></script>
@@ -186,17 +181,12 @@
     <script src="bower_components/froala-wysiwyg-editor/js/plugins/lists.min.js"></script>
     <script src="bower_components/froala-wysiwyg-editor/js/plugins/paragraph_format.min.js"></script>
     <script src="bower_components/froala-wysiwyg-editor/js/plugins/paragraph_style.min.js"></script>
-    <script src="bower_components/froala-wysiwyg-editor/js/plugins/print.min.js"></script>
     <script src="bower_components/froala-wysiwyg-editor/js/plugins/quick_insert.min.js"></script>
     <script src="bower_components/froala-wysiwyg-editor/js/plugins/quote.min.js"></script>
     <script src="bower_components/froala-wysiwyg-editor/js/plugins/save.min.js"></script>
-    <script src="bower_components/froala-wysiwyg-editor/js/plugins/special_characters.min.js"></script>
     <script src="bower_components/froala-wysiwyg-editor/js/plugins/table.min.js"></script>
     <script src="bower_components/froala-wysiwyg-editor/js/plugins/url.min.js"></script>
     <script src="bower_components/froala-wysiwyg-editor/js/plugins/video.min.js"></script>
-    <script src="bower_components/froala-wysiwyg-editor/js/plugins/word_paste.min.js"></script>
-    <script src="bower_components/froala-wysiwyg-editor/js/third_party/image_aviary.min.js"></script>
-    <script src="bower_components/froala-wysiwyg-editor/js/third_party/spell_checker.min.js"></script>
     <script src="bower_components/angular-froala/src/angular-froala.js"></script>
     <script src="bower_components/ng-notifications-bar/dist/ngNotificationsBar.min.js"></script>
     <script src="bower_components/jquery-ui/jquery-ui.js"></script>
@@ -223,8 +213,11 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="lib/Objectid.js"></script>
+    <script src="lib/angular-smart-table/dist/smart-table.js"></script>
+
     <script src="lib/PapaParse/papaparse.min.js"></script>
     <script src="lib/angular-pageslide-directive/dist/angular-pageslide-directive.min.js"></script>
     <script src="lib/angular-treetable/angular-treetable.js"></script>
@@ -518,5 +511,6 @@
     <script src="scripts/valueset/valueset-section/valueset-section.component.js"></script>
 
     <!-- endbuild -->
+  </div>
 </body>
 </html>
