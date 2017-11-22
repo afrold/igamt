@@ -33,7 +33,7 @@
 	 	
 	<sec:http pattern="/api/igdocuments/config" security="none" />
 	<sec:http pattern="/api/datatype-library/config" security="none" />
- 
+ 	<sec:http pattern="/api/notifications/phinvadsEmailNotification/**" security="none" />
 	<sec:http pattern="/api/appInfo" security="none" />
 	<sec:http pattern="/api/uploaded_files/file" security="none" />
 	<sec:http pattern="/api/documentations/findAll" security="none" />

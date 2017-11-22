@@ -70,9 +70,6 @@ public class ExportConfigurationController {
         if (null != currentConfig) {
           exportConfigService.delete(currentConfig);
         }
-        if(exportConfig.isPhinvadsUpdateEmailNotification()) {
-          exportConfig.setEmail(account.getEmail());
-        }
         exportConfig.setAccountId(account.getId());
         exportConfigService.save(exportConfig);
       }
