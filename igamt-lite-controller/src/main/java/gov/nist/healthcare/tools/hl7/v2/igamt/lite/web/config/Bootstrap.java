@@ -329,7 +329,7 @@ public class Bootstrap implements InitializingBean {
     
    //This is just test.
     // 2.0.0-beta10
-    makePhinvadsExternal(); 
+    //makePhinvadsExternal(); 
   }
 
   private void updateTableForNumOfCodesANDSourceType() {
