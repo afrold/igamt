@@ -19,10 +19,13 @@ import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notifications;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.NotificationsRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
 
 @RestController
@@ -41,6 +44,9 @@ public class NotificationController extends CommonController {
 
   @Autowired
   private ExportConfigService exportConfigService;
+  
+  @Autowired
+  private TableService tableService;
 
   @Value("${server.email}")
   private String SERVER_EMAIL;
@@ -68,7 +74,7 @@ public class NotificationController extends CommonController {
     notificationsRepository.delete(id);
   }
 
-  @RequestMapping(value = "/phinvadsEmailNotification/{id}", method = RequestMethod.GET,
+  @RequestMapping(value = "/sendEmail/{id}", method = RequestMethod.GET,
       produces = "application/json")
   public @ResponseBody boolean notifyEmailForPHINVADS(@PathVariable("id") String id)
       throws Exception {
@@ -87,14 +93,24 @@ public class NotificationController extends CommonController {
   }
 
   private void sendNotificationPhinvadsUpdateEmail(IGDocument doc, Notifications notis) {
+    String notificationitemString = "";
+    for(Notification item: notis.getItems()) {
+      Table t = tableService.findById(item.getTargetId());
+      if(t != null) {
+        notificationitemString = notificationitemString + "\n * " + t.getBindingIdentifier();
+      }
+      
+    }
+    
     SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
     Account targetAccount = accountRepository.findOne(doc.getAccountId());
     msg.setSubject("NIST IGAMT IGDocument Share");
     msg.setTo(targetAccount.getEmail());
     msg.setText(
-        "Dear " + targetAccount.getUsername() + " \n\n" + "You have " + notis.getItems().size()
-            + " notification(s) of PHINVADS value sets updated for the IG Document: "
-            + doc.getMetaData().getTitle() + "\n\n" + "P.S: If you need help, contact us at '"
+        "Dear " + targetAccount.getUsername() 
+            + " \n\n" + "The following phinvads valuesets have been updated in your IG Document: " + doc.getMetaData().getTitle() 
+            + notificationitemString
+            + "\n\n" + "P.S: If you need help, contact us at '"
             + ADMIN_EMAIL + "'");
     try {
       this.mailSender.send(msg);
