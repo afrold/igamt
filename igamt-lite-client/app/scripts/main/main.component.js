@@ -4264,11 +4264,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
 
   $rootScope.displayNullView = function() {
-    //console.log("before");
-    //console.log($rootScope.subview);
     $rootScope.subview = 'Blank.html';
-    //console.log("after");
-    //console.log($rootScope.subview);
   }
 
   $rootScope.Activate = function(param) {
