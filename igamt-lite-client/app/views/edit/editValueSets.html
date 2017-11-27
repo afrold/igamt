@@ -229,6 +229,15 @@
                                                                         Code Systems</label>
 
                                                                     <md-chips
+                                                                            ng-if="table.sourceType==='EXTERNAL'"
+                                                                            ng-model="table.codeSystems"
+                                                                            readonly="true"
+                                                                            md-removable="false"
+                                                                            placeholder="Add Code">
+                                                                    </md-chips>
+
+                                                                    <md-chips
+                                                                            ng-if="table.sourceType!=='EXTERNAL'"
                                                                             ng-model="table.codeSystems"
                                                                             readonly="false"
                                                                             md-removable="true"
@@ -236,7 +245,8 @@
                                                                             placeholder="Type and hit <Enter>"
                                                                             delete-button-label="Remove code system"
                                                                             delete-hint="Press Delete to remove code system"
-                                                                            secondary-placeholder="Type and hit <Enter>"></md-chips>
+                                                                            secondary-placeholder="Type and hit <Enter>">
+                                                                    </md-chips>
                                                                 </div>
                                                             </div>
                                                             <div ng-if="isNonEditableValueSet(table)">
@@ -255,12 +265,12 @@
                                                                         <span class="inputLabel">{{getAttributeSelectLabel(table.contentDefinition)}}</span>
                                                                     </div>
                                                                     <label class="input-left igamt-label valueset-ext-label">Source
-                                                                        Code System</label>
+                                                                        Code Systems</label>
                                                                     <md-chips
                                                                             ng-model="table.codeSystems"
                                                                             readonly="true"
                                                                             md-removable="false"
-                                                                            placeholder="Add Code"></md-chips>
+                                                                            placeholder="Add Code">
                                                                     </md-chips>
                                                                 </div>
                                                             </div>
