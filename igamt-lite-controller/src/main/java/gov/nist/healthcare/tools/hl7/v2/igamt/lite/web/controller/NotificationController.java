@@ -1,5 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import java.util.Base64;
+
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -68,26 +70,28 @@ public class NotificationController extends CommonController {
     return notificationsRepository.findByIgDocumentId(id);
   }
 
-  @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST,
+  @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST,
       produces = "application/json")
   public void deleteNotification(@PathVariable("id") String id) throws DataNotFoundException {
     notificationsRepository.delete(id);
   }
 
-  @RequestMapping(value = "/sendEmail/{id}", method = RequestMethod.GET,
-      produces = "application/json")
+  @RequestMapping(value = "/{id}/sendEmail", method = RequestMethod.GET, produces = "application/json")
   public @ResponseBody boolean notifyEmailForPHINVADS(@PathVariable("id") String id)
       throws Exception {
-    Notifications notifications = notificationsRepository.findOne(id);
-    if (notifications != null) {
-      IGDocument igDoc = igDocumentService.findById(notifications.getIgDocumentId());
-      if (igDoc != null) {
-        ExportConfig config = exportConfigService.findOneByAccountId(igDoc.getAccountId());
-        if(config != null && config.isPhinvadsUpdateEmailNotification()){
-          sendNotificationPhinvadsUpdateEmail(igDoc, notifications);
-          return true;
+    if(id != null){
+      String decodedId = new String(Base64.getDecoder().decode(id));
+      Notifications notifications = notificationsRepository.findOne(decodedId);
+      if (notifications != null) {
+        IGDocument igDoc = igDocumentService.findById(notifications.getIgDocumentId());
+        if (igDoc != null) {
+          ExportConfig config = exportConfigService.findOneByAccountId(igDoc.getAccountId());
+          if(config != null && config.isPhinvadsUpdateEmailNotification()){
+            sendNotificationPhinvadsUpdateEmail(igDoc, notifications);
+            return true;
+          }
         }
-      }
+      }      
     }
     return false;
   }

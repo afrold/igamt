@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -57,27 +58,27 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
     TimerTaskForPHINVADSValueSetDigger tool = new TimerTaskForPHINVADSValueSetDigger();
     tool.run();
 
-    // MongoOperations mongoOps =
-    // new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "igamt"));
-    // String tableId = "57ee310484ae2aadc10efcca";
-    // List<IGDocument> igDocs = mongoOps
-    // .find(Query.query(Criteria.where("scope").is(Constant.SCOPE.USER)), IGDocument.class);
-    // for (IGDocument ig : igDocs) {
-    // if (ig.getProfile().getTableLibrary().findOneTableById(tableId) != null) {
-    // Notification item = new Notification();
-    // item.setByWhom("CDC");
-    // item.setChangedDate(new Date());
-    // item.setTargetType(TargetType.Valueset);
-    // item.setTargetId(tableId);
-    //
-    // Notifications notifications = new Notifications();
-    // notifications.setIgDocumentId(ig.getId());
-    // notifications.addItem(item);
-    // mongoOps.save(notifications);
-    //
-    // notificationEmail(notifications.getId());
-    // }
-    // }
+//     MongoOperations mongoOps =
+//     new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "igamt"));
+//     String tableId = "57ee310484ae2aadc10efcca";
+//     List<IGDocument> igDocs = mongoOps
+//     .find(Query.query(Criteria.where("scope").is(Constant.SCOPE.USER)), IGDocument.class);
+//     for (IGDocument ig : igDocs) {
+//     if (ig.getProfile().getTableLibrary().findOneTableById(tableId) != null) {
+//     Notification item = new Notification();
+//     item.setByWhom("CDC");
+//     item.setChangedDate(new Date());
+//     item.setTargetType(TargetType.Valueset);
+//     item.setTargetId(tableId);
+//    
+//     Notifications notifications = new Notifications();
+//     notifications.setIgDocumentId(ig.getId());
+//     notifications.addItem(item);
+//     mongoOps.save(notifications);
+//    
+//     notificationEmail(notifications.getId());
+//     }
+//     }
   }
 
   public TimerTaskForPHINVADSValueSetDigger() {
@@ -289,8 +290,9 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
     if (notificationsId != null) {
       String endpoint = System.getProperty("IGAMT_URL");
       if (endpoint != null) {
-        endpoint = endpoint + "/api/notifications/phinvadsEmailNotification/" + notificationsId;
-
+        String encodedNotificationsId = Base64.getEncoder().encodeToString(notificationsId.getBytes());
+        endpoint = endpoint + "/api/notifications/" + encodedNotificationsId + "/sendEmail";
+        
         URL url = new URL(endpoint);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
