@@ -31,9 +31,10 @@ public class Constant {
   public final static String COMPONENT = "component";
   public final static String SUBCOMPONENT = "subcomponent";
   public final static String GROUP = "group";
-  public final static String MESSAGE = "message";
+  public final static String MESSAGES = "messages";
   public final static String COMPOSITEMESSAGE = "compositemessage";
   public final static String COMPOSITEPROFILE = "compositeprofile";
+  public final static String COMPOSITEPROFILES = "compositeprofiles";
   public final static String DATATYPES = "datatypes";
   public final static String DATATYPELIBRARY = "datatypelibrary";
   public final static String DATATYPE = "datatype";

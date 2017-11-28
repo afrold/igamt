@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.persistence.Transient;
 
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -36,6 +37,7 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
   private IGDocumentScope scope;
 
   private int position;
+  @JsonProperty("children")
   private Set<Section> childSections = new HashSet<Section>();
 
   private Set<ShareParticipantPermission> shareParticipantIds =
@@ -161,6 +163,10 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
     p.getTableLibrary().setSectionTitle("Value Sets");
     p.getTableLibrary().setType("tables");
     p.getTableLibrary().setSectionContents("xsx");
+    
+    
+    
+    this.childSections.add(p);
 
     this.setProfile(p);
   }
@@ -274,14 +280,14 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
     p.getTableLibrary().setSectionPosition(3);
     p.getTableLibrary().setSectionTitle("Value Sets");
     p.getTableLibrary().setType("tables");
-    this.setProfile(p);
+    //this.setProfile(p);
   }
 
   @Override
   public IGDocument clone() throws CloneNotSupportedException {
     IGDocument clonedDocument = new IGDocument();
     clonedDocument.setMetaData(metaData.clone());
-    clonedDocument.setProfile(profile.clone());
+    //clonedDocument.setProfile(profile.clone());
     clonedDocument.setChildSections(new HashSet<Section>());
     for (Section section : this.childSections) {
       clonedDocument.addSection(section.clone());

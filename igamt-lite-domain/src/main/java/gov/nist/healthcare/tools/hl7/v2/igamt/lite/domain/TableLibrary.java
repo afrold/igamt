@@ -41,6 +41,7 @@ public class TableLibrary extends Library implements java.io.Serializable, Clone
   public TableLibrary() {
     super();
     type = Constant.TABLELIBRARY;
+    sectionPosition=6;
   }
 
   private Set<TableLink> children = new HashSet<TableLink>();

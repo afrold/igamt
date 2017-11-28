@@ -22,6 +22,8 @@ public class TableLink extends AbstractLink implements Cloneable, Comparable<Tab
   private String bindingStrength;
 
   private String bindingLocation;
+  
+  private String  name;
 
   public TableLink() {
     super();
@@ -125,6 +127,16 @@ public class TableLink extends AbstractLink implements Cloneable, Comparable<Tab
     return "TableLink [bindingIdentifier=" + bindingIdentifier + ", bindingStrength="
         + bindingStrength + ", bindingLocation=" + bindingLocation + ", id=" + id + "]";
   }
+
+
+public String getName() {
+	return name;
+}
+
+
+public void setName(String name) {
+	this.name = name;
+}
 
 
 

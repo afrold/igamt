@@ -1,7 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.bson.types.ObjectId;
 
@@ -29,13 +32,15 @@ public class Section extends TextbasedSectionModel
     this.sectionTitle = title;
   }
 
-  private String id;
+  protected String id;
   @JsonProperty("children")
   protected Set<Section> childSections = new HashSet<Section>();
 
   public String getId() {
     return id;
   }
+
+
 
   public void setId(String id) {
     this.id = id;

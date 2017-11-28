@@ -14,18 +14,24 @@ export  class TocService{
   buildTreeFromIgDocument=function (igdocument) {
     var treeData= [];
 
-
+    var toc={};
+    toc["label"]= "Table of Content";
+    toc["data"]={sectionTitle: "IG Document",type:"root"};
+    toc["expanded"]=true;
 
     console.log(igdocument);
 
     var narratives= this.convertNarratives(igdocument.childSections);
-    var profileSctions=this.processProfile(igdocument.profile);
-    var children=narratives.concat(profileSctions);
+   // var profileSctions=this.processProfile(igdocument.profile);
+    var children=narratives;
+    toc["children"]=children;
+
+    treeData.push(toc);
+    return treeData;
+
+  };
 
 
-    return children;
-
-  }
 
   convertNarratives= function (narratives) {
     var ret = [];
@@ -40,10 +46,10 @@ export  class TocService{
     var ret={};
     ret["label"]=section.sectionPosition+"."+section.sectionTitle;
     ret["data"]={id: section.id,sectionContent:section.sectionContent, sectionTitle:section.sectionTitle, sectionPosition:section.sectionPosition, path:path+"."+section.sectionPosition, type:section.type};
-    if(section.childSections&&section.childSections.length>0){
+    if(section.children&&section.children.length>0&&section.type!=='message'){
       ret["children"]=[];
-      for(let j =0 ; j<section.childSections.length; j++){
-        ret["children"].push(this.processSection(section.childSections[j], ret["data"].path));
+      for(let j =0 ; j<section.children.length; j++){
+        ret["children"].push(this.processSection(section.children[j], ret["data"].path));
       }
     }
     return ret;

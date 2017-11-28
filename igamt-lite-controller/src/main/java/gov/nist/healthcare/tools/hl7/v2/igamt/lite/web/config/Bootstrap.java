@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 import org.bson.types.ObjectId;
+import org.docx4j.docProps.core.dc.terms.DDC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -120,6 +121,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
@@ -171,6 +173,9 @@ public class Bootstrap implements InitializingBean {
   DatatypeLibraryService datatypeLibraryService;
   @Autowired
   TableLibraryService tableLibraryService;
+  
+  @Autowired
+  SegmentLibraryService segmentLibraryService;
 
   @Autowired
   TableService tableService;
@@ -317,11 +322,42 @@ public class Bootstrap implements InitializingBean {
     // 2.0.0-beta7
     // updateTableForNumOfCodesANDSourceType();
 
+	  //angular 
+	 // addInfoToLinks();
+	  
+	  //addProfileToSection();
   }
 
 
 
-  private void updateTableForNumOfCodesANDSourceType() {
+  private void addProfileToSection() throws IGDocumentException {
+	  
+	    List<IGDocument> allIGs = documentService.findAll();	
+	    for(IGDocument d : allIGs){
+	    		d.getProfile().addSection(d.getProfile().getProfileComponentLibrary());
+	    		d.getProfile().addSection(d.getProfile().getMessages());
+	    		d.getProfile().addSection(d.getProfile().getCompositeProfiles());
+	    		d.getProfile().addSection(d.getProfile().getSegmentLibrary());
+	    		d.getProfile().addSection(d.getProfile().getDatatypeLibrary());
+	    		d.getProfile().addSection(d.getProfile().getTableLibrary());
+	    		
+	    		
+	    		d.getProfile().setSectionPosition(d.getChildSections().size()+1);
+	    		d.getChildSections().add(d.getProfile());
+	    	
+	    		documentService.save(d);
+	    	
+
+	    		
+
+	    }
+	    	
+	    
+}
+
+
+
+private void updateTableForNumOfCodesANDSourceType() {
     List<Table> allTables = tableService.findAll();
     // String largeTableLISTCSV = "\"ID\"," + "\"Binding Identifier\"," + "\"Name\"," + "\"Code
     // Size\"," + "\"SCOPE\"," + "\"HL7 Version\"\n";
@@ -389,6 +425,73 @@ public class Bootstrap implements InitializingBean {
   private void clearUserExportConfigurations() {
     exportConfigRepository.deleteAll();
   }
+  
+  
+  
+  private void addInfoToLinks(){
+	    List<IGDocument> allIGs = documentService.findAll();	  
+	    for(IGDocument d : allIGs){
+	    	AddInfoToDataTypeLinks(d.getProfile().getDatatypeLibrary());
+	    	AddInfoToSegmentLinks(d.getProfile().getSegmentLibrary());
+	    	AddInfoToTablesLinks(d.getProfile().getTableLibrary());
+	    }
+  };
+  
+  private void  AddInfoToDataTypeLinks(DatatypeLibrary lib){
+	  
+	  for(DatatypeLink link: lib.getChildren()){
+		  if(link.getId()!=null){
+		  Datatype temp= datatypeService.findById(link.getId());
+		  if(temp !=null){
+			  link.setExt(temp.getExt());
+			  link.setDescription(temp.getDescription());
+			  link.setHl7Version(temp.getHl7Version());
+			  link.setHl7versions(temp.getHl7versions());
+			  link.setName(temp.getName());
+			  link.setScope(temp.getScope());
+			  link.setNumberOfChilren(temp.getComponents().size());
+			  link.setPublicationVersion(temp.getPublicationVersion());
+			  link.setStatus(temp.getStatus());
+		  }
+	  }}
+	  datatypeLibraryService.save(lib);
+  }
+  private void  AddInfoToSegmentLinks(SegmentLibrary lib){
+	  for(SegmentLink link: lib.getChildren()){
+		  if(link.getId()!=null){
+
+		  Segment temp= segmentService.findById(link.getId());
+		  if(temp !=null){
+			  link.setExt(temp.getExt());
+			  link.setDescription(temp.getDescription());
+			  link.setHl7Version(temp.getHl7Version());
+			  link.setName(temp.getName());
+			  link.setScope(temp.getScope());
+			  link.setNumberOfChilren(temp.getFields().size());
+			  link.setPublicationVersion(temp.getPublicationVersion());
+			  link.setStatus(temp.getStatus());
+		  }
+	  }}
+	  segmentLibraryService.save(lib);
+  }
+  private void  AddInfoToTablesLinks(TableLibrary lib){
+	  
+	  for(TableLink link: lib.getChildren()){
+		  if(link.getId()!=null){
+
+		  Table temp= tableService.findById(link.getId());
+		  if(temp !=null){
+			  link.setName(temp.getName());
+			  link.setHl7Version(temp.getHl7Version());
+			  link.setScope(temp.getScope());
+			  link.setNumberOfChilren(temp.getNumberOfCodes());
+			  link.setPublicationVersion(temp.getPublicationVersion());
+			  link.setStatus(temp.getStatus());
+		  }
+	  }}
+	  tableLibraryService.save(lib);
+  }
+  
 
 
   private void fixCoConstraintsDTVS() {

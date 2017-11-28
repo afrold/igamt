@@ -20,6 +20,7 @@ public class DatatypeLink extends AbstractLink implements Cloneable, Comparable<
   private String name;
 
   private String ext;
+  
 
   public DatatypeLink() {
     super();

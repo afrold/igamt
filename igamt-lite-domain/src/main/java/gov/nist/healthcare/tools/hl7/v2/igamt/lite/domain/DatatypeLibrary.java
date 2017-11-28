@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "datatype-library")
-public class DatatypeLibrary extends TextbasedSectionModel
+public class DatatypeLibrary extends Library
     implements java.io.Serializable, Cloneable {
 
   private static final long serialVersionUID = 1L;
@@ -30,6 +30,7 @@ public class DatatypeLibrary extends TextbasedSectionModel
     super();
     this.children = new HashSet<DatatypeLink>();
     type = Constant.DATATYPELIBRARY;
+    sectionPosition=5;
   }
 
   private Set<DatatypeLink> children = new HashSet<DatatypeLink>();

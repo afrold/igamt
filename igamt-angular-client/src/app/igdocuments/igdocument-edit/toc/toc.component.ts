@@ -17,13 +17,16 @@ import {falseIfMissing} from "protractor/built/util";
 export class TocComponent {
   @ViewChild(Tree) toc :Tree;
 
+
+
+
   _ig : any;
 
   treeData: any;
   parentSource:any;
   parentDest:any;
 
-  constructor(private _ws : WorkspaceService, private  tocService:TocService, private dnd:TreeDragDropService){
+  constructor(private _ws : WorkspaceService, private  tocService:TocService){
 
   }
 
@@ -39,8 +42,9 @@ export class TocComponent {
 
 
     this.treeData=this.tocService.buildTreeFromIgDocument(this._ig);
-    console.log(this.toc);
-
+    this.toc.allowDrop=this.allow;
+    this.toc.draggableNodes=true;
+    this.toc.droppableNodes=true;
   }
 
   print =function (obj) {
@@ -50,7 +54,7 @@ export class TocComponent {
 
   getPath =function (node) {
     if(node.data.sectionPosition){
-      if(node.parent){
+      if(node.parent.data.type=="root"){
         return node.data.sectionPosition;
       }else{
         return this.getPath(node.parent)+"."+node.data.sectionPosition;
@@ -60,54 +64,25 @@ export class TocComponent {
 
   }
 
-  onDragStart(event, node) {
-    console.log("Start Drag");
-    this.parentSource=node.data;
 
-    };
+
+
+  onDragStart(event, node) {
+
+    console.log("Drag Start");
+  };
   onDragEnd(event, node) {
-    //console.log("Drag is Ended");
+    console.log("DRAG END ")
 
   };
   onDrop(event, node) {
-   // console.log("Drop is Ended ============");
-
-
+    console.log("Performed");
   };
   onDragEnter(event, node) {
+    console.log()
 
   };
   onDragLeave(event, node) {
-
-
-    if(this.parentSource.type==='section'&&(!node.parent||node.data.type=='section')){
-      this.toc.allowDrop=this.allow;
-
-      return ;
-    }
-    else if(this.parentSource.type==='profile'){
-      if(node.parent){
-        this.toc.allowDrop=this.prevent;
-
-        event.preventDefault();
-
-        this.dnd.stopDrag(this.parentSource);
-
-
-      }else{
-        this.toc.allowDrop=this.allow;
-
-        return;
-      }
-    }else {
-      this.toc.allowDrop=this.prevent;
-
-      event.preventDefault();
-
-      this.dnd.stopDrag(this.parentSource);
-
-
-    }
   };
 
   prevent(dragNode: TreeNode, dropNode: TreeNode, dragNodeScope: any) {
@@ -116,8 +91,17 @@ export class TocComponent {
   };
 
   allow(dragNode: TreeNode, dropNode: TreeNode, dragNodeScope: any) {
-    console.log("allowed");
-    return true;
+    if(dropNode&&dropNode.parent&&dropNode.parent.data) {
+
+      if (dragNode.data.type == 'profile') {
+        return dropNode.parent.data.type == 'root';
+      } else if (dragNode.data.type == 'section') {
+        return dropNode.parent.data.type=='root'|| dropNode.parent.data.type=='section';
+
+      }
+    }else {
+      return false;
+    }
   };
 
 
