@@ -2045,71 +2045,75 @@ public class XMLExportTool {
     for (int i = 1; i < fields.size() + 1; i++) {
 
       Field f = fields.get(i);
-      Datatype d = datatypesMap.get(f.getDatatype().getId());
-      Element elmField = new Element("Field");
-      elmField.addAttribute(new Attribute("Name", this.str(f.getName())));
-      elmField.addAttribute(new Attribute("Usage", this.str(f.getUsage().toString())));
-      elmField.addAttribute(new Attribute("Datatype",
-          this.str(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"))));
-      elmField.addAttribute(new Attribute("MinLength", this.str(f.getMinLength())));
-      elmField.addAttribute(new Attribute("MaxLength", this.str(f.getMaxLength())));
-      elmField.addAttribute(new Attribute("ConfLength", this.str(f.getConfLength())));
 
-      if (f.getConfLength() != null && !f.getConfLength().equals(""))
+      if (f != null) {
+        Datatype d = datatypesMap.get(f.getDatatype().getId());
+        Element elmField = new Element("Field");
+        elmField.addAttribute(new Attribute("Name", this.str(f.getName())));
+        elmField.addAttribute(new Attribute("Usage", this.str(f.getUsage().toString())));
+        elmField.addAttribute(new Attribute("Datatype",
+            this.str(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"))));
+        elmField.addAttribute(new Attribute("MinLength", this.str(f.getMinLength())));
+        elmField.addAttribute(new Attribute("MaxLength", this.str(f.getMaxLength())));
         elmField.addAttribute(new Attribute("ConfLength", this.str(f.getConfLength())));
 
-      List<ValueSetBinding> bindings = findBinding(s.getValueSetBindings(), f.getPosition());
-      if (bindings.size() > 0) {
-        String bindingString = "";
-        String bindingStrength = null;
-        String bindingLocation = null;
+        if (f.getConfLength() != null && !f.getConfLength().equals(""))
+          elmField.addAttribute(new Attribute("ConfLength", this.str(f.getConfLength())));
 
-        for (ValueSetBinding binding : bindings) {
-          Table table = tablesMap.get(binding.getTableId());
-          bindingStrength = binding.getBindingStrength().toString();
-          bindingLocation = binding.getBindingLocation();
-          if (table != null && table.getBindingIdentifier() != null
-              && !table.getBindingIdentifier().equals("")) {
-            if (table.getHl7Version() != null && !table.getHl7Version().equals("")) {
-              if (table.getBindingIdentifier().startsWith("0396")
-                  || table.getBindingIdentifier().startsWith("HL70396")) {
-                bindingString = bindingString + table.getBindingIdentifier() + ":";
+        List<ValueSetBinding> bindings = findBinding(s.getValueSetBindings(), f.getPosition());
+        if (bindings.size() > 0) {
+          String bindingString = "";
+          String bindingStrength = null;
+          String bindingLocation = null;
+
+          for (ValueSetBinding binding : bindings) {
+            Table table = tablesMap.get(binding.getTableId());
+            bindingStrength = binding.getBindingStrength().toString();
+            bindingLocation = binding.getBindingLocation();
+            if (table != null && table.getBindingIdentifier() != null
+                && !table.getBindingIdentifier().equals("")) {
+              if (table.getHl7Version() != null && !table.getHl7Version().equals("")) {
+                if (table.getBindingIdentifier().startsWith("0396")
+                    || table.getBindingIdentifier().startsWith("HL70396")) {
+                  bindingString = bindingString + table.getBindingIdentifier() + ":";
+                } else {
+                  bindingString = bindingString + table.getBindingIdentifier() + "_"
+                      + table.getHl7Version().replaceAll("\\.", "-") + ":";
+                }
               } else {
-                bindingString = bindingString + table.getBindingIdentifier() + "_"
-                    + table.getHl7Version().replaceAll("\\.", "-") + ":";
+                bindingString = bindingString + table.getBindingIdentifier() + ":";
               }
-            } else {
-              bindingString = bindingString + table.getBindingIdentifier() + ":";
+            }
+          }
+
+          IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
+          if (config.getValueSetAllowedDTs().contains(d.getName())) {
+            if (!bindingString.equals(""))
+              elmField.addAttribute(
+                  new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
+            if (bindingStrength != null)
+              elmField.addAttribute(new Attribute("BindingStrength", bindingStrength));
+
+            if (d != null && d.getComponents() != null && d.getComponents().size() > 0) {
+              if (bindingLocation != null && !bindingLocation.equals("")) {
+                bindingLocation = bindingLocation.replaceAll("\\s+", "").replaceAll("or", ":");
+                elmField.addAttribute(new Attribute("BindingLocation", bindingLocation));
+              } else {
+                elmField.addAttribute(new Attribute("BindingLocation", "1"));
+              }
             }
           }
         }
 
-        IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
-        if (config.getValueSetAllowedDTs().contains(d.getName())) {
-          if (!bindingString.equals(""))
-            elmField.addAttribute(
-                new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
-          if (bindingStrength != null)
-            elmField.addAttribute(new Attribute("BindingStrength", bindingStrength));
-
-          if (d != null && d.getComponents() != null && d.getComponents().size() > 0) {
-            if (bindingLocation != null && !bindingLocation.equals("")) {
-              bindingLocation = bindingLocation.replaceAll("\\s+", "").replaceAll("or", ":");
-              elmField.addAttribute(new Attribute("BindingLocation", bindingLocation));
-            } else {
-              elmField.addAttribute(new Attribute("BindingLocation", "1"));
-            }
-          }
-        }
+        if (f.isHide())
+          elmField.addAttribute(new Attribute("Hide", "true"));
+        elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
+        elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
+        if (f.getItemNo() != null && !f.getItemNo().equals(""))
+          elmField.addAttribute(new Attribute("ItemNo", this.str(f.getItemNo())));
+        elmSegment.appendChild(elmField);
       }
 
-      if (f.isHide())
-        elmField.addAttribute(new Attribute("Hide", "true"));
-      elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
-      elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
-      if (f.getItemNo() != null && !f.getItemNo().equals(""))
-        elmField.addAttribute(new Attribute("ItemNo", this.str(f.getItemNo())));
-      elmSegment.appendChild(elmField);
     }
 
     return elmSegment;
