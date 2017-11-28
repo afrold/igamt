@@ -1,8 +1,12 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -50,15 +54,36 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
   private MongoOperations mongoOps;
   private List<IGDocument> igDocs = null;
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     TimerTaskForPHINVADSValueSetDigger tool = new TimerTaskForPHINVADSValueSetDigger();
     tool.run();
+
+//     MongoOperations mongoOps =
+//     new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "igamt"));
+//     String tableId = "57ee310484ae2aadc10efcca";
+//     List<IGDocument> igDocs = mongoOps
+//     .find(Query.query(Criteria.where("scope").is(Constant.SCOPE.USER)), IGDocument.class);
+//     for (IGDocument ig : igDocs) {
+//     if (ig.getProfile().getTableLibrary().findOneTableById(tableId) != null) {
+//     Notification item = new Notification();
+//     item.setByWhom("CDC");
+//     item.setChangedDate(new Date());
+//     item.setTargetType(TargetType.Valueset);
+//     item.setTargetId(tableId);
+//    
+//     Notifications notifications = new Notifications();
+//     notifications.setIgDocumentId(ig.getId());
+//     notifications.addItem(item);
+//     mongoOps.save(notifications);
+//    
+//     notificationEmail(notifications.getId());
+//     }
+//     }
   }
 
   public TimerTaskForPHINVADSValueSetDigger() {
 
     String serviceUrl = "https://phinvads.cdc.gov/vocabService/v2";
-    // String serviceUrl = http://phinvads.cdc.gov/vocabService/v2
 
     HessianProxyFactory factory = new HessianProxyFactory();
     try {
@@ -75,9 +100,10 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
 
   @Override
   public void run() {
-    igDocs = mongoOps.find(Query.query(Criteria.where("scope").is(Constant.SCOPE.USER)), IGDocument.class);
+    igDocs = mongoOps.find(Query.query(Criteria.where("scope").is(Constant.SCOPE.USER)),
+        IGDocument.class);
     log.info("You have " + igDocs.size() + " igDocuemnts. ");
-    
+
     log.info("PHINVADSValueSetDigger started at " + new Date());
 
     List<ValueSet> vss = this.service.getAllValueSets().getValueSets();
@@ -131,7 +157,7 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
     table = mongoOps.findOne(
         Query.query(Criteria.where("oid").is(oid).and("scope").is(Constant.SCOPE.PHINVADS)),
         Table.class);
-    
+
     if (table != null) {
       log.info("Successfully got the metadata from DBe for " + oid);
       log.info(oid + " last updated date is " + table.getDate());
@@ -139,34 +165,25 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
     } else {
       log.info("Failed to get the metadata from DB for " + oid);
     }
-    
+
     ValueSetConceptResultDto vscByVSVid = null;
     List<ValueSetConcept> valueSetConcepts = null;
-    
+
     // 3. compare metadata
     boolean needUpdate = false;
     if (vs != null && vsv != null) {
       if (table != null) {
-        if (table.getDate().toString().equals(vs.getStatusDate().toString()) && table.getVersion().equals(vsv.getVersionNumber() + "")) {
+        if (table.getDate().toString().equals(vs.getStatusDate().toString())
+            && table.getVersion().equals(vsv.getVersionNumber() + "")) {
           if (table.getCodes().size() == 0 && table.getNumberOfCodes() == 0) {
-            vscByVSVid = this.getService().getValueSetConceptsByValueSetVersionId(vsv.getId(), 1, 100000);
+            vscByVSVid =
+                this.getService().getValueSetConceptsByValueSetVersionId(vsv.getId(), 1, 100000);
             valueSetConcepts = vscByVSVid.getValueSetConcepts();
-            if(valueSetConcepts.size() != 0){
+            if (valueSetConcepts.size() != 0) {
               needUpdate = true;
-              log.info(oid + " Table has no change! however local PHINVADS codes may be missing"); 
+              log.info(oid + " Table has no change! however local PHINVADS codes may be missing");
             }
-          } 
-          
-//          else {
-
-//            if (valueSetConcepts.size() != table.getNumberOfCodes()) {
-//              needUpdate = true;
-//              log.info(oid + " Table has no change! however local codes size are diferenct.");
-//            } else {
-//              needUpdate = false;
-//              log.info(oid + " Table has no change! because same version number and date.");
-//            }
-//          }
+          }
         } else {
           needUpdate = true;
           log.info(oid + " Table has a change! because different version number and date.");
@@ -182,8 +199,11 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
 
     // 4. if updated, get full codes from PHINVADs web service
     if (needUpdate) {
-      if(vscByVSVid == null) vscByVSVid = this.getService().getValueSetConceptsByValueSetVersionId(vsv.getId(), 1, 100000);
-      if(valueSetConcepts == null) valueSetConcepts = vscByVSVid.getValueSetConcepts();
+      if (vscByVSVid == null)
+        vscByVSVid =
+            this.getService().getValueSetConceptsByValueSetVersionId(vsv.getId(), 1, 100000);
+      if (valueSetConcepts == null)
+        valueSetConcepts = vscByVSVid.getValueSetConcepts();
       if (table == null)
         table = new Table();
       List<ValueSetVersion> vsvByVSOid =
@@ -207,7 +227,7 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
       table.setNumberOfCodes(valueSetConcepts.size());
       table.setManagedBy(Constant.External);
       table.setSourceType(SourceType.EXTERNAL);
-      
+
       if (valueSetConcepts.size() > 500) {
 
       } else {
@@ -225,7 +245,8 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
           csSearchCritDto.setTable396Search(false);
           csSearchCritDto.setSearchType(1);
           csSearchCritDto.setSearchText(pcode.getCodeSystemOid());
-          CodeSystem cs = this.getService().findCodeSystems(csSearchCritDto, 1, 5).getCodeSystems().get(0);
+          CodeSystem cs =
+              this.getService().findCodeSystems(csSearchCritDto, 1, 5).getCodeSystems().get(0);
           code.setCodeSystem(cs.getHl70396Identifier());
           code.setCodeSystemVersion(cs.getVersion());
           code.setComments(pcode.getDefinitionText());
@@ -237,8 +258,8 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
       // 5. update Table on DB
       try {
         mongoOps.save(table);
-        for(IGDocument ig : this.igDocs){
-          if(ig.getProfile().getTableLibrary().findOneTableById(table.getId()) != null) {
+        for (IGDocument ig : this.igDocs) {
+          if (ig.getProfile().getTableLibrary().findOneTableById(table.getId()) != null) {
             Notification item = new Notification();
             item.setByWhom("CDC");
             item.setChangedDate(new Date());
@@ -247,12 +268,13 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
             Criteria where = Criteria.where("igDocumentId").is(ig.getId());
             Query qry = Query.query(where);
             Notifications notifications = mongoOps.findOne(qry, Notifications.class);
-            if(notifications == null){
+            if (notifications == null) {
               notifications = new Notifications();
               notifications.setIgDocumentId(ig.getId());
               notifications.addItem(item);
             }
             mongoOps.save(notifications);
+            notificationEmail(notifications.getId());
           }
         }
       } catch (Exception e) {
@@ -262,6 +284,25 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
       return table;
     }
     return null;
+  }
+
+  private static void notificationEmail(String notificationsId) throws IOException {
+    if (notificationsId != null) {
+      String endpoint = System.getProperty("IGAMT_URL");
+      if (endpoint != null) {
+        String encodedNotificationsId = Base64.getEncoder().encodeToString(notificationsId.getBytes());
+        endpoint = endpoint + "/api/notifications/" + encodedNotificationsId + "/sendEmail";
+        
+        URL url = new URL(endpoint);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Accept", "application/json");
+        if (conn.getResponseCode() != 200) {
+          throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+        }
+        conn.disconnect();
+      }
+    }
   }
 
   public VocabService getService() {
