@@ -78,6 +78,13 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
 
   $scope.goNext = function() {
     $scope.dialogStep = $scope.dialogStep + 1;
+    if($scope.dialogStep === 1){
+        $scope.contextKey = null;
+        $scope.selectedContextNode = null;
+        $scope.initPredicate();
+        $scope.initComplexPredicate();
+        $scope.treeDataForContext=[];
+    }
   };
 
   $scope.goBack = function () {
@@ -131,12 +138,11 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
       $scope.selectedContextNode = selectedContextNode;
       $scope.selectedContextNode.contextKey = $scope.contextKey;
       $scope.selectedContextNode.pathInfoSet = [];
-      $scope.generatePathInfo($scope.selectedContextNode, ".", ".", "1", false, null);
+      $scope.generatePathInfo($scope.selectedContextNode, '.', '.', '1', false, null);
       $scope.initPredicate();
       $scope.initComplexPredicate();
       $scope.treeDataForContext=[];
       $scope.treeDataForContext.push($scope.selectedContextNode);
-      console.log("Selected:::" + $scope.contextKey);
     }
   };
 
@@ -438,7 +444,7 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
   $scope.initPredicate();
   $scope.initComplexPredicate();
   $scope.findAllGlobalPredicates();
-  $scope.generatePathInfo($scope.selectedMessage, ".", ".", "1", false, null, 'default');
+  $scope.generatePathInfo($scope.selectedMessage, '.', '.', '1', false, null, 'default');
   $scope.selectedMessage.childrenVisible = true;
 
   if(!$scope.existingPredicate) $scope.dialogStep = 1;

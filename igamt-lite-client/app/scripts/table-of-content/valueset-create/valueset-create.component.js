@@ -7,7 +7,8 @@ angular.module('igl').controller('CreateValueSet', ['$rootScope', '$scope', '$md
   $scope.newTable={};
   $scope.selectedTableLibary=selectedTableLibary;
   $scope.newTable.shareParticipantIds = [];
-  $scope.newTable.sourceType="INTERNAL";
+  $scope.newTable.sourceType=null;
+  $scope.newTable.codes=[];
   $scope.newTable.scope = selectedTableLibary.scope;
   $scope.newTable.id = null;
   $scope.newTable.libIds = [];
@@ -18,6 +19,19 @@ angular.module('igl').controller('CreateValueSet', ['$rootScope', '$scope', '$md
   $scope.cancel = function () {
     $mdDialog.hide('cancel');
   };
+
+    $scope.duplicated=function(table){
+        var allTables=$rootScope.tables;
+        for(i=0; i<allTables.length; i++) {
+
+            if(allTables[i].id!==table.id&&allTables[i].bindingIdentifier==table.bindingIdentifier&&allTables[i].scope==table.scope){
+                return true;
+            }
+
+        }
+
+        return false;
+    };
 
 
   $scope.add = function () {
@@ -40,11 +54,6 @@ angular.module('igl').controller('CreateValueSet', ['$rootScope', '$scope', '$md
         $rootScope.tables.splice(0, 0, newTable);
         $rootScope.table = newTable;
         $rootScope.tablesMap[newTable.id] = newTable;
-
-        if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
-          $rootScope.filteredTablesList.push(newTable);
-          $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
-        }
         $mdDialog.hide(result);
         $rootScope.$broadcast('event:openTable', newTable);
       }, function (error) {

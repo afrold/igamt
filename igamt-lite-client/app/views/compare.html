@@ -464,7 +464,7 @@
                     </td>
                 </tr>
             </table>
-            <table class=" table-borderless" ng-show="(node.label.element1 && node.label.element2)|| (node.description.element1 && node.description.element2)">
+            <table class="table-borderless" ng-show="(node.label.element1 && node.label.element2)|| (node.description.element1 && node.description.element2)">
                 <tr style="background-color:#B5F7EC">
                     <td class="col-sm-1">
                         <span ng-bind="node.label.element"></span>
@@ -506,6 +506,44 @@
             </div>
         </td>
         <td class="col-xs-1" ng-show="!node.contentDefinition">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-xs-1" ng-show="node.extensibility">
+            <div align="center">
+                <table class=" table-borderless">
+                    <tr>
+                        <td class="col-md-1" style="background-color:#B5F7EC">
+                            <div align="center"> <span ng-bind="node.extensibility.element1"></span></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-1" style="background-color:#EDE1AF">
+                            <div align="center"> <span ng-bind="node.extensibility.element2"></span></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+        <td class="col-xs-1" ng-show="!node.extensibility">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-xs-1" ng-show="node.stability">
+            <div align="center">
+                <table class=" table-borderless">
+                    <tr>
+                        <td class="col-md-1" style="background-color:#B5F7EC">
+                            <div align="center"> <span ng-bind="node.stability.element1"></span></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-1" style="background-color:#EDE1AF">
+                            <div align="center"> <span ng-bind="node.stability.element2"></span></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+        <td class="col-xs-1" ng-show="!node.stability">
             <div align="center"> - </div>
         </td>
         <td class="col-xs-1" ng-show="node.codeSystem">

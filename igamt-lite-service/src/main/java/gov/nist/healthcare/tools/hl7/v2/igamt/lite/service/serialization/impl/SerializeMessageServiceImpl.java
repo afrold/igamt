@@ -1,8 +1,13 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.MessageSerializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,70 +44,95 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
 @Service
 public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProfile implements SerializeMessageService {
 
+	static final Logger logger = LoggerFactory.getLogger(SerializeMessageService.class);
+	
     @Autowired
     SerializationUtil serializationUtil;
 
     @Autowired TableService tableService;
 
-    @Override public SerializableMessage serializeMessage(Message message, String prefix, String headerLevel, SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig) {
+    @Override public SerializableMessage serializeMessage(Message message, String prefix, String headerLevel, SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig)  throws
+        MessageSerializationException {
       return serializeMessage(message, prefix, headerLevel, serializationLayout, hl7Version, exportConfig, false, null);
     }
 
     
-    private SerializableMessage serializeMessage(Message message, String prefix, String headerLevel, SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig, Boolean showInnerLinks, String host) {
-        List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
-        String type = "ConformanceStatement";
-        List<ConformanceStatement> generatedConformanceStatements = message.retrieveAllConformanceStatements();
-        SerializableConstraints serializableConformanceStatements = serializeConstraints(generatedConformanceStatements,message.getName(),message.getPosition(),type);
-        type = "ConditionPredicate";
-        SerializableConstraints serializablePredicates = serializeConstraints(message.getPredicates(),message.getName(),message.getPosition(),type);
-        int segmentSectionPosition = 1;
-        String usageNote, defPreText, defPostText;
-        usageNote = defPreText = defPostText = "";
-        if(message.getUsageNote()!=null&&!message.getUsageNote().isEmpty()){
-            usageNote = serializationUtil.cleanRichtext(message.getUsageNote());
-            segmentSectionPosition++;
-        }
-        if(message.getDefPreText()!=null&&!message.getDefPreText().isEmpty()){
-            defPreText = serializationUtil.cleanRichtext(message.getDefPreText());
-            segmentSectionPosition++;
-        }
-        if(message.getDefPostText()!=null&&!message.getDefPostText().isEmpty()){
-            defPostText = serializationUtil.cleanRichtext(message.getDefPostText());
-        }
-        Boolean showConfLength = serializationUtil.isShowConfLength(hl7Version);
-        List<Table> tables = new ArrayList<>();
-        for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : message.getValueSetBindings()){
-            if(valueSetOrSingleCodeBinding.getTableId()!=null && !valueSetOrSingleCodeBinding.getTableId().isEmpty()){
-                Table table = tableService.findById(valueSetOrSingleCodeBinding.getTableId());
-                if(table!=null){
-                    tables.add(table);
+    private SerializableMessage serializeMessage(Message message, String prefix, String headerLevel, SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig, Boolean showInnerLinks, String host)  throws
+        MessageSerializationException {
+        try {
+            List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
+            String type = "ConformanceStatement";
+            List<ConformanceStatement> generatedConformanceStatements = message.retrieveAllConformanceStatements();
+            SerializableConstraints serializableConformanceStatements =
+                serializeConstraints(generatedConformanceStatements, message.getName(), message.getPosition(),
+                    type);
+            type = "ConditionPredicate";
+            SerializableConstraints serializablePredicates =
+                serializeConstraints(message.getPredicates(), message.getName(), message.getPosition(),
+                    type);
+            int segmentSectionPosition = 1;
+            String usageNote, defPreText, defPostText;
+            usageNote = defPreText = defPostText = "";
+            if (message.getUsageNote() != null && !message.getUsageNote().isEmpty()) {
+                usageNote = serializationUtil.cleanRichtext(message.getUsageNote());
+                segmentSectionPosition++;
+            }
+            if (message.getDefPreText() != null && !message.getDefPreText().isEmpty()) {
+                defPreText = serializationUtil.cleanRichtext(message.getDefPreText());
+                segmentSectionPosition++;
+            }
+            if (message.getDefPostText() != null && !message.getDefPostText().isEmpty()) {
+                defPostText = serializationUtil.cleanRichtext(message.getDefPostText());
+            }
+            Boolean showConfLength = serializationUtil.isShowConfLength(hl7Version);
+            List<Table> tables = new ArrayList<>();
+            for (ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : message
+                .getValueSetBindings()) {
+                if (valueSetOrSingleCodeBinding.getTableId() != null && !valueSetOrSingleCodeBinding
+                    .getTableId().isEmpty()) {
+                    Table table = tableService.findById(valueSetOrSingleCodeBinding.getTableId());
+                    if (table != null) {
+                        tables.add(table);
+                    }
                 }
             }
-        }
-        SerializableMessage serializableMessage = new SerializableMessage(message,prefix,headerLevel,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText,tables,showConfLength);
-        SerializableSection messageSegments = new SerializableSection(message.getId()+"_segments",prefix+"."+String.valueOf(message.getPosition())+"."+segmentSectionPosition,"1","4","Segment definitions");
-        this.messageSegmentsNameList = new ArrayList<>();
-        this.segmentPosition = 1;
-        UsageConfig fieldsUsageConfig = exportConfig.getFieldsExport();
-        UsageConfig segmentUsageConfig = exportConfig.getSegmentsExport();
-        UsageConfig segmentOrGroupUsageConfig = exportConfig.getSegmentORGroupsMessageExport();
-        for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
-            SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup,segmentOrGroupUsageConfig,fieldsUsageConfig, null, showInnerLinks, host);
-            serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
-            if(serializationLayout.equals(SerializationLayout.PROFILE)){
-                serializeSegment(segmentRefOrGroup,
-                    messageSegments.getPrefix() + ".", messageSegments, segmentUsageConfig, fieldsUsageConfig,exportConfig.isDuplicateOBXDataTypeWhenFlavorNull());
+            HashMap<String, String> positionNameSegOrGroupMap = super.retrieveComponentsPaths(message);
+            SerializableMessage serializableMessage =
+                new SerializableMessage(message, prefix, headerLevel, serializableSegmentRefOrGroups,
+                    serializableConformanceStatements, serializablePredicates, usageNote, defPreText,
+                    defPostText, tables, positionNameSegOrGroupMap, showConfLength);
+            SerializableSection messageSegments =
+                new SerializableSection(message.getId() + "_segments",
+                    prefix + "." + String.valueOf(message.getPosition()) + "."
+                        + segmentSectionPosition, "1", "4", "Segment definitions");
+            this.messageSegmentsNameList = new ArrayList<>();
+            this.segmentPosition = 1;
+            UsageConfig fieldsUsageConfig = exportConfig.getFieldsExport();
+            UsageConfig segmentUsageConfig = exportConfig.getSegmentsExport();
+            UsageConfig segmentOrGroupUsageConfig = exportConfig.getSegmentORGroupsMessageExport();
+            for (SegmentRefOrGroup segmentRefOrGroup : message.getChildren()) {
+                SerializableSegmentRefOrGroup serializableSegmentRefOrGroup =
+                    serializeSegmentRefOrGroup(segmentRefOrGroup, segmentOrGroupUsageConfig,
+                        fieldsUsageConfig, null, showInnerLinks, host);
+                serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
+                if (serializationLayout.equals(SerializationLayout.PROFILE)) {
+                    serializeSegment(segmentRefOrGroup, messageSegments.getPrefix() + ".",
+                        messageSegments, segmentUsageConfig, fieldsUsageConfig, exportConfig.isDuplicateOBXDataTypeWhenFlavorNull());
+                }
             }
+            if (!messageSegments.getSerializableSectionList().isEmpty()) {
+                serializableMessage.addSection(messageSegments);
+            }
+            return serializableMessage;
+        } catch (Exception e){
+            throw new MessageSerializationException(e, message.getName());
         }
-        if(!messageSegments.getSerializableSectionList().isEmpty()){
-            serializableMessage.addSection(messageSegments);
-        }
-        return serializableMessage;
     }
 
+
 	@Override
-	public SerializableElement serializeMessage(Message message, String host) {
+	public SerializableElement serializeMessage(Message message, String host)  throws
+      MessageSerializationException {
 		return serializeMessage(message, String.valueOf(0), String.valueOf(1),SerializationLayout.IGDOCUMENT, message.getHl7Version(), ExportConfig.getBasicExportConfig(true), true, host);
 	}
 

@@ -495,10 +495,8 @@ public class Message extends DataModelWithConstraints implements java.io.Seriali
 			path = path.substring(1);
 
 			String constraintId = constant.location;
-			String description = this.getName() + "." + constant.getLocation() + "(" + constant.getName()
-					+ ") SHALL contain the constant value '" + constant.getValue() + "'.";
-			String assertion = "<Assertion><PlainText Path=\"" + path + "\" Text=\"" + constant.getValue()
-					+ "\" IgnoreCase=\"false\"/></Assertion>";
+			String description = this.getName() + "." + constant.getLocation() + "(" + constant.getName() + ") SHALL contain the constant value '" + constant.getValue() + "'.";
+			String assertion = "<Assertion><AND><Presence Path=\"" + path + "\"/><PlainText Path=\"" + path + "\" Text=\"" + constant.getValue() + "\" IgnoreCase=\"false\"/></AND></Assertion>";
 			ConformanceStatement cs = new ConformanceStatement();
 			cs.setId(ObjectId.get().toString());
 			cs.setConstraintId(constraintId);
@@ -529,8 +527,17 @@ public class Message extends DataModelWithConstraints implements java.io.Seriali
 				String description = this.getName() + "." + scb.getLocation() + " SHALL contain the constant value '"
 						+ scb.getCode().getValue() + "' drawn from the code system '" + scb.getCode().getCodeSystem()
 						+ "'.";
-				String assertion = "<Assertion><PlainText Path=\"" + path + "\" Text=\"" + scb.getCode().getValue()
-						+ "\" IgnoreCase=\"false\"/></Assertion>";
+				String assertion = "";
+				if(scb.isCodedElement()){
+		          assertion = "<Assertion>" 
+		                              + "<AND>" 
+		                              + "<AND><Presence Path=\"" + path + ".1[1]" + "\"/><PlainText Path=\"" + path + ".1[1]" + "\" Text=\"" + scb.getCode().getValue() + "\" IgnoreCase=\"false\"/></AND>" 
+		                              + "<AND><Presence Path=\"" + path + ".3[1]" + "\"/><PlainText Path=\"" + path + ".3[1]" + "\" Text=\"" + scb.getCode().getCodeSystem() + "\" IgnoreCase=\"false\"/></AND>" 
+		                              + "</AND>"
+		                              + "</Assertion>";
+		        }else {
+		          assertion = "<Assertion><AND><Presence Path=\"" + path + "\"/><PlainText Path=\"" + path + "\" Text=\"" + scb.getCode().getValue() + "\" IgnoreCase=\"false\"/></AND></Assertion>";          
+		        }
 				ConformanceStatement cs = new ConformanceStatement();
 				cs.setId(ObjectId.get().toString());
 				cs.setConstraintId(constraintId);

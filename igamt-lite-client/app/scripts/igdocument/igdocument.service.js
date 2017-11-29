@@ -81,12 +81,6 @@ angular.module('igl').factory('IgDocumentService', function($rootScope, ViewSett
         },
         findAndAddMessages: function(igId, event) {
             var delay = $q.defer();
-            // var namesAndscopeAndVersion = {
-            //     "name": event.name,
-            //     "parentStructId": event.parentStructId,
-            //     "scope": event.scope,
-            //     "hl7Version": event.hl7Version
-            // };
             $http.post('api/igdocuments/' + igId + '/findAndAddMessages', angular.toJson(event)).then(function(response) {
                 var msgs = angular.fromJson(response.data);
                 delay.resolve(msgs);

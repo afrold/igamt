@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
@@ -26,6 +28,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentDeleteException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
@@ -39,6 +42,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.GVTLoginExcepti
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.SegmentDeleteException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.SegmentSaveException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.SerializationExceptionReport;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.TableSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UploadImageFileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
@@ -147,6 +151,8 @@ public class JsonExceptionHandler implements HandlerExceptionResolver {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         mapper.writeValue(response.getWriter(),
             new ResponseMessage(ResponseMessage.Type.danger, "gvtLoginFailed"));
+      } else if(ex instanceof SerializationException){
+    	  return new SerializationExceptionReport((SerializationException) ex);
       } else {
         logger.error("ERROR: " + ex.getMessage(), ex);
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

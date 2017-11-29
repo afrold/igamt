@@ -114,7 +114,6 @@
     <div ng-include="'views/templates.html'"></div>
     <div ng-include="'views/materialDialogs.html'"></div>
     <div ng-include="'views/edit/editDatatypes.html'"></div>
-    <div ng-include="'views/edit/editDatatypeInLibrary.html'"></div>
 
     <ng-include src="'views/edit/editDocument.html'"></ng-include>
     <ng-include src="'views/edit/editProfileComponent.html'"></ng-include>
@@ -151,7 +150,6 @@
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/json3/lib/json3.js"></script>
@@ -215,8 +213,11 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="lib/Objectid.js"></script>
+    <script src="lib/angular-smart-table/dist/smart-table.js"></script>
+
     <script src="lib/PapaParse/papaparse.min.js"></script>
     <script src="lib/angular-pageslide-directive/dist/angular-pageslide-directive.min.js"></script>
     <script src="lib/angular-treetable/angular-treetable.js"></script>
@@ -322,6 +323,8 @@
     <script src="core/st-ratio/st-radio.directive.js"></script>
     <script src="core/valid-label/valid-label.directive.js"></script>
     <script src="core/valid-trust-document/valid-trust-document.directive.js"></script>
+    <script src="core/usage/read-component-usage.directive.js"></script>
+    <script src="core/predicate/read-component-predicate.directive.js"></script>
     <script src="scripts/composite-profile/co-constraint/co-constraint.component.js"></script>
     <script src="scripts/composite-profile/conf-statement/conf-statement.component.js"></script>
     <script src="scripts/composite-profile/dynamic-mapping/dynamic-mapping.component.js"></script>
@@ -508,5 +511,6 @@
     <script src="scripts/valueset/valueset-section/valueset-section.component.js"></script>
 
     <!-- endbuild -->
+  </div>
 </body>
 </html>

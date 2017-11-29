@@ -173,7 +173,7 @@
                                                             style="display: inline-flex; margin-top:10px" required>
 
                                                 <md-radio-button ng-repeat="vr in hl7Versions"
-                                                                 ng-disabled="loading || igdocument"
+                                                                 ng-disabled="loading"
                                                                  ng-value="vr" class="md-primary"
                                                                  style="margin-left:25px;">{{vr}}
                                                 </md-radio-button>
@@ -1793,7 +1793,7 @@
 
                                 <md-list class="fixedRows" ng-if="igdocumentSelected.realUsers">
                                     <!--<md-subheader class="md-no-sticky">List of Participants</md-subheader>-->
-                                    <h5>List of Participants</h5>
+                                    <h5>Current Participants</h5>
                                     <hr />
                                     <md-list-item class="md-2-line contact-item" ng-repeat="contact in igdocumentSelected.realUsers">
                                         <img ng-src="{{generateHash(contact.email)}}" class="md-avatar" alt="{{contact.fullname}}" />

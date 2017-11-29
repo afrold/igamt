@@ -56,10 +56,11 @@ public class XMLConfig {
     // CE, CF, CWE, CNE, CSU
     // HD, AUI, CK, CN, CNN, CX, EI, ERL, ELD, PLN, PPN, XCN
 
-    config.setValueSetAllowedDTs(toSet(new String[] {"ID", "IS", "CE", "CF", "CWE", "CNE", "CSU",
-        "HD", "AUI", "CK", "CN", "CNN", "CX", "EI", "ERL", "ELD", "PLN", "PPN", "XCN"}));
+    config.setValueSetAllowedDTs(toSet(new String[] {"ID", "IS", "CE", "CF", "CWE", "CNE", "CSU","HD"}));
+    
+    //"AUI", "CK", "CN", "CNN", "CX", "EI", "ERL", "ELD", "PLN", "PPN", "XCN"  ==> go to valueSetAllowedComponents
     config.setCodedElementDTs(toSet(new String[] {"CE", "CF", "CWE", "CNE", "CSU"}));
-    config.setSingleValueSetDTs(toSet(new String[] {"ID", "IS", "ST", "NM"})); // ST and NM are
+    config.setSingleValueSetDTs(toSet(new String[] {"ID", "IS", "ST", "NM", "CE", "CF", "CWE", "CNE", "CSU"})); // ST and NM are
                                                                                // partial
     Set<DTComponent> valueSetAllowedComponents = new HashSet<DTComponent>();
     valueSetAllowedComponents.add(new DTComponent("AD", 3));
@@ -80,6 +81,20 @@ public class XMLConfig {
     valueSetAllowedComponents.add(new DTComponent("XAD", 5));
     valueSetAllowedComponents.add(new DTComponent("XON", 3));
     valueSetAllowedComponents.add(new DTComponent("XON", 10));
+    
+    valueSetAllowedComponents.add(new DTComponent("AUI", 1));
+    valueSetAllowedComponents.add(new DTComponent("CK", 1));
+    valueSetAllowedComponents.add(new DTComponent("CN", 1));
+    valueSetAllowedComponents.add(new DTComponent("CNN", 1));
+    valueSetAllowedComponents.add(new DTComponent("CX", 1));
+    valueSetAllowedComponents.add(new DTComponent("EI", 1));
+    valueSetAllowedComponents.add(new DTComponent("ERL", 1));
+    valueSetAllowedComponents.add(new DTComponent("ELD", 1));
+    valueSetAllowedComponents.add(new DTComponent("PLN", 1));
+    valueSetAllowedComponents.add(new DTComponent("PPN", 1));
+    valueSetAllowedComponents.add(new DTComponent("XCN", 1));
+    
+    
     config.setValueSetAllowedComponents(valueSetAllowedComponents);
     HashMap<String, Set<String>> bindingLocationListByHL7Version =
         new HashMap<String, Set<String>>();

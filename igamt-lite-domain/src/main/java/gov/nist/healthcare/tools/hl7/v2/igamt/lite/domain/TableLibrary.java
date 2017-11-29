@@ -38,9 +38,12 @@ public class TableLibrary extends Library implements java.io.Serializable, Clone
 
   private Constant.SCOPE scope;
 
+  private HashMap<String, Boolean> codePresence = new HashMap<String, Boolean>();
+
   public TableLibrary() {
     super();
     type = Constant.TABLELIBRARY;
+    codePresence = new HashMap<String, Boolean>();
   }
 
   private Set<TableLink> children = new HashSet<TableLink>();
@@ -252,6 +255,7 @@ public class TableLibrary extends Library implements java.io.Serializable, Clone
     clone.setSectionTitle(this.getSectionTitle());
     clone.setType(this.getType());
     clone.setExportConfig(this.exportConfig);
+    clone.setCodePresence(codePresence);
     return clone;
   }
 
@@ -261,6 +265,20 @@ public class TableLibrary extends Library implements java.io.Serializable, Clone
 
   public void addTables(Set<TableLink> dtls) {
     children.addAll(dtls);
+  }
+
+  /**
+   * @return the codePresence
+   */
+  public HashMap<String, Boolean> getCodePresence() {
+    return codePresence;
+  }
+
+  /**
+   * @param codePresence the codePresence to set
+   */
+  public void setCodePresence(HashMap<String, Boolean> codePresence) {
+    this.codePresence = codePresence;
   }
 
 }

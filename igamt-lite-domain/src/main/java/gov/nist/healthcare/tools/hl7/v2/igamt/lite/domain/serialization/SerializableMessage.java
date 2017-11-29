@@ -1,13 +1,16 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
+import java.util.HashMap;
+import java.util.List;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.MessageSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -33,10 +36,11 @@ public class SerializableMessage extends SerializableSection {
     private String defPostText;
     private List<Table> tables;
     private boolean showConfLength;
+    private HashMap<String,String> locationPathMap;
     
     public SerializableMessage(Message message, String prefix, String headerLevel, List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups,
         SerializableConstraints serializableConformanceStatements, SerializableConstraints serializablePredicates, String usageNote,
-        String defPreText, String defPostText, List<Table> tables, Boolean showConfLength) {
+        String defPreText, String defPostText, List<Table> tables, HashMap<String,String> locationPathMap, Boolean showConfLength) {
         super(message.getId(),
             prefix + "." + String.valueOf(message.getPosition()),
             String.valueOf(message.getPosition() + 1),
@@ -54,74 +58,81 @@ public class SerializableMessage extends SerializableSection {
         this.defPostText = defPostText;
         this.tables = tables;
         this.showConfLength = showConfLength;
+        this.locationPathMap = locationPathMap;
     }
 
-    @Override public Element serializeElement() {
-        Element messageElement = new Element("Message");
-        messageElement.addAttribute(new Attribute("ID", this.message.getId() + ""));
-        messageElement.addAttribute(new Attribute("Name", this.message.getName() + ""));
-        messageElement.addAttribute(new Attribute("Type", this.message.getMessageType()));
-        messageElement.addAttribute(new Attribute("Event", this.message.getEvent()));
-        messageElement.addAttribute(new Attribute("StructID", this.message.getStructID()));
-        messageElement.addAttribute(new Attribute("ShowConfLength",String.valueOf(showConfLength)));
-        messageElement.addAttribute(new Attribute("position", this.message.getPosition() + ""));
-        if (this.message.getDescription() != null && !this.message.getDescription().equals(""))
-            messageElement.addAttribute(new Attribute("Description", this.message.getDescription()));
-        if (this.message.getComment() != null && !this.message.getComment().isEmpty()) {
-            messageElement.addAttribute(new Attribute("Comment", this.message.getComment()));
-        }
-        if (this.usageNote != null && !this.usageNote.isEmpty()) {
-            messageElement.appendChild(super.createTextElement("UsageNote", this.usageNote));
-        }
-
-        if ((this.message != null && !this.defPreText.isEmpty()) || (this.message != null && !this.defPostText.isEmpty())) {
-            if (this.defPreText != null && !this.defPreText.isEmpty()) {
-                messageElement.appendChild(super.createTextElement("DefPreText",
-                    this.defPreText));
+    @Override public Element serializeElement() throws MessageSerializationException {
+        try {
+            Element messageElement = new Element("Message");
+            messageElement.addAttribute(new Attribute("ID", this.message.getId() + ""));
+            messageElement.addAttribute(new Attribute("Name", this.message.getName() + ""));
+            messageElement.addAttribute(new Attribute("Type", this.message.getMessageType()));
+            messageElement.addAttribute(new Attribute("Event", this.message.getEvent()));
+            messageElement.addAttribute(new Attribute("StructID", this.message.getStructID()));
+            messageElement.addAttribute(new Attribute("ShowConfLength", String.valueOf(showConfLength)));
+            messageElement.addAttribute(new Attribute("position", this.message.getPosition() + ""));
+            if (this.message.getDescription() != null && !this.message.getDescription().equals(""))
+                messageElement.addAttribute(new Attribute("Description", this.message.getDescription()));
+            if (this.message.getComment() != null && !this.message.getComment().isEmpty()) {
+                messageElement.addAttribute(new Attribute("Comment", this.message.getComment()));
             }
-            if (this.defPostText != null && !this.defPostText.isEmpty()) {
-                messageElement.appendChild(super.createTextElement("DefPostText",
-                    this.defPostText));
+            if (this.usageNote != null && !this.usageNote.isEmpty()) {
+                messageElement.appendChild(super.createTextElement("UsageNote", this.usageNote));
             }
-        }
 
-        for (SerializableSegmentRefOrGroup serializableSegmentRefOrGroup : this.serializableSegmentRefOrGroups) {
-            if(serializableSegmentRefOrGroup!=null) {
-                if(message.getComments()!=null && !message.getComments().isEmpty()) {
-                    this.addComments(serializableSegmentRefOrGroup);
+            if ((this.message != null && !this.defPreText.isEmpty()) || (this.message != null && !this.defPostText.isEmpty())) {
+                if (this.defPreText != null && !this.defPreText.isEmpty()) {
+                    messageElement.appendChild(super.createTextElement("DefPreText", this.defPreText));
                 }
-                messageElement.appendChild(serializableSegmentRefOrGroup.serializeElement());
+                if (this.defPostText != null && !this.defPostText.isEmpty()) {
+                    messageElement.appendChild(super.createTextElement("DefPostText", this.defPostText));
+                }
             }
-        }
-        if(serializableConformanceStatements!=null) {
-            messageElement.appendChild(serializableConformanceStatements.serializeElement());
-        }
-        if(serializablePredicates!=null) {
-            messageElement.appendChild(serializablePredicates.serializeElement());
-        }
-        List<SerializableSection> segmentsSections = super.getSerializableSectionList();
-        if(!segmentsSections.isEmpty()){
-            for(SerializableSection segmentSection : segmentsSections){
-                messageElement.appendChild(segmentSection.serializeElement());
+
+            for (SerializableSegmentRefOrGroup serializableSegmentRefOrGroup : this.serializableSegmentRefOrGroups) {
+                if (serializableSegmentRefOrGroup != null) {
+                    if (message.getComments() != null && !message.getComments().isEmpty()) {
+                        this.addComments(serializableSegmentRefOrGroup);
+                    }
+                    messageElement.appendChild(serializableSegmentRefOrGroup.serializeElement());
+                }
             }
-        }
-        if(message.getValueSetBindings()!=null && !message.getValueSetBindings().isEmpty()) {
-            Element valueSetBindingListElement = super
-                .createValueSetBindingListElement(message.getValueSetBindings(), tables,
-                    message.getName());
-            if (valueSetBindingListElement != null) {
-                messageElement.appendChild(valueSetBindingListElement);
+            if (serializableConformanceStatements != null) {
+                messageElement.appendChild(serializableConformanceStatements.serializeElement());
             }
-        }
-        if(message.getComments()!=null && !message.getComments().isEmpty()) {
-            Element commentListElement = super.createCommentListElement(message.getComments(),message.getName());
-            if (commentListElement != null) {
-                messageElement.appendChild(commentListElement);
+            if (serializablePredicates != null) {
+                messageElement.appendChild(serializablePredicates.serializeElement());
             }
+            List<SerializableSection> segmentsSections = super.getSerializableSectionList();
+            if (!segmentsSections.isEmpty()) {
+                for (SerializableSection segmentSection : segmentsSections) {
+                    messageElement.appendChild(segmentSection.serializeElement());
+                }
+            }
+            if (message.getValueSetBindings() != null && !message.getValueSetBindings().isEmpty()) {
+                Element valueSetBindingListElement = super
+                    .createValueSetBindingListElement(message.getValueSetBindings(), tables, message.getName(),
+                        locationPathMap);
+                if (valueSetBindingListElement != null) {
+                    messageElement.appendChild(valueSetBindingListElement);
+                }
+            }
+            if (message.getComments() != null && !message.getComments().isEmpty()) {
+                Element commentListElement = super
+                    .createCommentListElement(message.getComments(), message.getName(),
+                        locationPathMap);
+                if (commentListElement != null) {
+                    messageElement.appendChild(commentListElement);
+                }
+            }
+            super.sectionElement.appendChild(messageElement);
+            return super.sectionElement;
+        } catch (Exception e){
+            throw new MessageSerializationException(e,message!=null?message.getName():"");
         }
-        super.sectionElement.appendChild(messageElement);
-        return super.sectionElement;
     }
+    
+    
 
     private void addComments(SerializableSegmentRefOrGroup serializableSegmentRefOrGroup) {
         String comments = "";

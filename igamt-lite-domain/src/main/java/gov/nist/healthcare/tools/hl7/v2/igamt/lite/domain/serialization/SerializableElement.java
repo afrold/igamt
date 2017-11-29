@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -33,7 +34,7 @@ public abstract class SerializableElement {
     private static final String FORMAT = "yyyy/MM/dd HH:mm:ss";
 
 
-    public abstract Element serializeElement();
+    public abstract Element serializeElement() throws SerializationException;
 
     public String getPrefix() {
         return prefix;

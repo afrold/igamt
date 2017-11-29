@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -33,27 +34,36 @@ public class SerializableConstraint extends SerializableElement{
         return constraint;
     }
 
-    @Override public Element serializeElement() {
-        Element elmConstraint = new Element("Constraint");
-        elmConstraint.addAttribute(
-            new Attribute("Id", constraint.getConstraintId() == null ? "" : constraint.getConstraintId()));
-        if(null!=constraint.getConstraintTarget()&&constraint.getConstraintTarget().length()>"[".length()&&constraint.getConstraintTarget().contains("[")) {
-            elmConstraint.addAttribute(new Attribute("Location", constraint.getConstraintTarget()
-                .substring(0, constraint.getConstraintTarget().indexOf('['))));
-        } else {
-            elmConstraint.addAttribute(new Attribute("Location",""));
+    @Override public Element serializeElement() throws ConstraintSerializationException {
+        try {
+            Element elmConstraint = new Element("Constraint");
+            elmConstraint.addAttribute(new Attribute("Id",
+                constraint.getConstraintId() == null ? "" : constraint.getConstraintId()));
+            if (null != constraint.getConstraintTarget()
+                && constraint.getConstraintTarget().length() > "[".length() && constraint
+                .getConstraintTarget().contains("[")) {
+                elmConstraint.addAttribute(new Attribute("Location", constraint.getConstraintTarget()
+                    .substring(0, constraint.getConstraintTarget().indexOf('['))));
+            } else {
+                elmConstraint.addAttribute(new Attribute("Location", ""));
+            }
+            elmConstraint.addAttribute(
+                new Attribute("LocationName", locationName == null ? "" : locationName));
+            elmConstraint.appendChild(
+                constraint.getDescription() == null ? "" : constraint.getDescription());
+            if (constraint instanceof Predicate) {
+                elmConstraint.addAttribute(new Attribute("Type", "pre"));
+                elmConstraint.addAttribute(new Attribute("Usage",
+                    "C(" + ((Predicate) constraint).getTrueUsage() + "/" + ((Predicate) constraint)
+                        .getFalseUsage() + ")"));
+            } else if (constraint instanceof ConformanceStatement) {
+                elmConstraint.addAttribute(new Attribute("Type", "cs"));
+                elmConstraint.addAttribute(new Attribute("Classification",
+                    constraint.getConstraintClassification() == null ? "" : constraint.getConstraintClassification()));
+            }
+            return elmConstraint;
+        } catch (Exception e){
+            throw new ConstraintSerializationException(e,locationName);
         }
-        elmConstraint.addAttribute(new Attribute("LocationName", locationName));
-        elmConstraint.appendChild(constraint.getDescription());
-        if (constraint instanceof Predicate) {
-            elmConstraint.addAttribute(new Attribute("Type", "pre"));
-            elmConstraint.addAttribute(new Attribute("Usage", "C(" + ((Predicate) constraint).getTrueUsage() + "/"
-                + ((Predicate) constraint).getFalseUsage() + ")"));
-        } else if (constraint instanceof ConformanceStatement) {
-            elmConstraint.addAttribute(new Attribute("Type", "cs"));
-            elmConstraint.addAttribute(new Attribute("Classification",
-                constraint.getConstraintClassification() == null ? "" : constraint.getConstraintClassification()));
-        }
-        return elmConstraint;
     }
 }

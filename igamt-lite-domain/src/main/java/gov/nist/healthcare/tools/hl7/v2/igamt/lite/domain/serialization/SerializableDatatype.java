@@ -4,6 +4,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.exception.DatatypeNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.exception.TableNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.DatatypeComponentSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.DatatypeSerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import org.apache.commons.lang3.StringUtils;
@@ -62,140 +67,158 @@ public class SerializableDatatype extends SerializableSection {
         this.host = host;
     }
 
-    @Override public Element serializeElement() {
+    @Override public Element serializeElement() throws DatatypeSerializationException {
         Element datatypeElement = new Element("Datatype");
         if (this.datatype != null) {
-            datatypeElement.addAttribute(new Attribute("ID", datatype.getId() + ""));
-            datatypeElement.addAttribute(new Attribute("Name", datatype.getName()));
-            datatypeElement.addAttribute(new Attribute("Label", datatype.getLabel()));
-            datatypeElement.addAttribute(new Attribute("Description", datatype.getDescription()));
-            datatypeElement.addAttribute(new Attribute("ShowConfLength",String.valueOf(showConfLength)));
-            datatypeElement
-                .addAttribute(new Attribute("PurposeAndUse", datatype.getPurposeAndUse()));
-            datatypeElement.addAttribute(new Attribute("Comment", datatype.getComment()));
-            datatypeElement.addAttribute(new Attribute("Hl7Version",
-                datatype.getHl7Version() == null ? "" : datatype.getHl7Version()));
-            datatypeElement.addAttribute(new Attribute("id", datatype.getId()));
-            for(SerializableConstraint constraint : constraints){
-                datatypeElement.appendChild(constraint.serializeElement());
-            }
-            if(datatype.getValueSetBindings()!=null && !datatype.getValueSetBindings().isEmpty()) {
-                Element valueSetBindingListElement = super.createValueSetBindingListElement(datatype.getValueSetBindings(), this.tables, datatype.getLabel());
-                if(valueSetBindingListElement!=null){
-                    datatypeElement.appendChild(valueSetBindingListElement);
+            try {
+                datatypeElement.addAttribute(new Attribute("ID", datatype.getId() + ""));
+                datatypeElement.addAttribute(new Attribute("Name", datatype.getName()));
+                datatypeElement.addAttribute(new Attribute("Label", datatype.getLabel()));
+                datatypeElement
+                    .addAttribute(new Attribute("Description", datatype.getDescription()));
+                datatypeElement
+                    .addAttribute(new Attribute("ShowConfLength", String.valueOf(showConfLength)));
+                datatypeElement
+                    .addAttribute(new Attribute("PurposeAndUse", datatype.getPurposeAndUse()));
+                datatypeElement.addAttribute(new Attribute("Comment", datatype.getComment()));
+                datatypeElement.addAttribute(new Attribute("Hl7Version",
+                    datatype.getHl7Version() == null ? "" : datatype.getHl7Version()));
+                datatypeElement.addAttribute(new Attribute("id", datatype.getId()));
+                for (SerializableConstraint constraint : constraints) {
+                    datatypeElement.appendChild(constraint.serializeElement());
                 }
-            }
-            if(datatype.getComments()!=null && !datatype.getComments().isEmpty()){
-                Element commentListElement = super.createCommentListElement(datatype.getComments(),
-                    datatype.getLabel());
-                if(commentListElement!=null){
-                    datatypeElement.appendChild(commentListElement);
-                }
-            }
-            if (datatype.getComponents() != null) {
-                for (int i = 0; i < datatype.getComponents().size(); i++) {
-                    Component component = datatype.getComponents().get(i);
-                    Element componentElement = new Element("Component");
-                    componentElement.addAttribute(new Attribute("Name", component.getName()));
-                    componentElement.addAttribute(new Attribute("Usage", getFullUsage(datatype, i)));
-                    boolean isComplex = false;
-                    if (component.getDatatype() != null) {
-                        Datatype datatype = componentDatatypeMap.get(component);
-                        if(datatype!=null) {
-                            componentElement.addAttribute(new Attribute("Datatype",
-                                datatype.getLabel()));
-                            if(this.showInnerLinks){
-                              String link = this.generateInnerLink(datatype,host);
-                              if(!"".equals(link)){
-                                componentElement.addAttribute(new Attribute("InnerLink",link));
-                              }
-                            }
-                        }
-                    } else {
-                        componentElement.addAttribute(new Attribute("Datatype",
-                            component.getDatatype() != null ?
-                                "! DEBUG: COULD NOT FIND datatype " + component.getDatatype().getLabel() :
-                                "! DEBUG: COULD NOT FIND datatype with null id"));
+                if (datatype.getValueSetBindings() != null && !datatype.getValueSetBindings()
+                    .isEmpty()) {
+                    Element valueSetBindingListElement = super
+                        .createValueSetBindingListElement(datatype.getValueSetBindings(),
+                            this.tables, datatype.getLabel());
+                    if (valueSetBindingListElement != null) {
+                        datatypeElement.appendChild(valueSetBindingListElement);
                     }
-                    if (component.getDatatype() != null) {
-                        Datatype datatype = componentDatatypeMap.get(component);
-                        if(datatype!=null) {
-                            if (datatype.getComponents().size() == 0) {
-                                componentElement.addAttribute(
-                                    new Attribute("MinLength", "" + component.getMinLength()));
-                                if (component.getMaxLength() != null && !component.getMaxLength().equals(""))
-                                    componentElement
-                                        .addAttribute(new Attribute("MaxLength", component.getMaxLength()));
-                                if (component.getConfLength() != null && !component.getConfLength().equals(""))
+                }
+                if (datatype.getComments() != null && !datatype.getComments().isEmpty()) {
+                    Element commentListElement =
+                        super.createCommentListElement(datatype.getComments(), datatype.getLabel());
+                    if (commentListElement != null) {
+                        datatypeElement.appendChild(commentListElement);
+                    }
+                }
+                if (datatype.getComponents() != null) {
+                    for (int i = 0; i < datatype.getComponents().size(); i++) {
+                        Component component = datatype.getComponents().get(i);
+                        try {
+                            Element componentElement = new Element("Component");
+                            componentElement
+                                .addAttribute(new Attribute("Name", component.getName()));
+                            componentElement
+                                .addAttribute(new Attribute("Usage", getFullUsage(datatype, i)));
+                            boolean isComplex = false;
+                            if (component.getDatatype() != null) {
+                                Datatype datatype = componentDatatypeMap.get(component);
+                                if (datatype != null) {
                                     componentElement.addAttribute(
-                                        new Attribute("ConfLength", component.getConfLength()));
-                            } else {
-                                isComplex = true;
-                                componentElement.addAttribute(new Attribute("MinLength", ""));
-                                componentElement.addAttribute(new Attribute("MaxLength", ""));
-                                componentElement.addAttribute(new Attribute("ConfLength", ""));
+                                        new Attribute("Datatype", datatype.getLabel()));
+                                    if (this.showInnerLinks) {
+                                        String link = this.generateInnerLink(datatype, host);
+                                        if (!"".equals(link)) {
+                                            componentElement
+                                                .addAttribute(new Attribute("InnerLink", link));
+                                        }
+                                    }
+                                    if (datatype.getComponents().size() == 0) {
+                                        componentElement.addAttribute(new Attribute("MinLength",
+                                            "" + component.getMinLength()));
+                                        if (component.getMaxLength() != null && !component
+                                            .getMaxLength().equals(""))
+                                            componentElement.addAttribute(new Attribute("MaxLength",
+                                                component.getMaxLength()));
+                                        if (component.getConfLength() != null && !component
+                                            .getConfLength().equals(""))
+                                            componentElement.addAttribute(
+                                                new Attribute("ConfLength", component.getConfLength()));
+                                    } else {
+                                        isComplex = true;
+                                        componentElement
+                                            .addAttribute(new Attribute("MinLength", ""));
+                                        componentElement
+                                            .addAttribute(new Attribute("MaxLength", ""));
+                                        componentElement
+                                            .addAttribute(new Attribute("ConfLength", ""));
+                                    }
+                                } else {
+                                    throw new DatatypeNotFoundException(component.getDatatype().getId(),component.getDatatype().getLabel());
+                                }
                             }
-                        }
-                    }
-                    if(this.componentValueSetBindingsMap.containsKey(component)){
-                        List<ValueSetOrSingleCodeBinding> valueSetBindings = this.componentValueSetBindingsMap.get(component);
-                        if(valueSetBindings!=null && !valueSetBindings.isEmpty()){
-                            List<String> bindingIdentifierList = new ArrayList<>();
-                            for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : valueSetBindings){
-                                if(valueSetOrSingleCodeBinding!=null && valueSetOrSingleCodeBinding.getTableId()!=null&&!valueSetOrSingleCodeBinding.getTableId().isEmpty()) {
-                                    Table table = super.findTable(tables, valueSetOrSingleCodeBinding.getTableId());
-                                    if(table != null) {
-                                      String link = this.generateInnerLink(table,host);
-                                      if(this.showInnerLinks && !"".equals(link)){
-                                        String wrappedLink = this.wrapLink(link,table.getBindingIdentifier());
-                                        bindingIdentifierList.add(wrappedLink);
-                                      } else {
-                                        bindingIdentifierList.add(table.getBindingIdentifier());
-                                      }
+                            if (this.componentValueSetBindingsMap.containsKey(component)) {
+                                List<ValueSetOrSingleCodeBinding> valueSetBindings = this.componentValueSetBindingsMap.get(component);
+                                if (valueSetBindings != null && !valueSetBindings.isEmpty()) {
+                                    List<String> bindingIdentifierList = new ArrayList<>();
+                                    for (ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : valueSetBindings) {
+                                        if (valueSetOrSingleCodeBinding != null
+                                            && valueSetOrSingleCodeBinding.getTableId() != null && !valueSetOrSingleCodeBinding.getTableId()
+                                            .isEmpty()) {
+                                            Table table = super.findTable(tables,
+                                                valueSetOrSingleCodeBinding.getTableId());
+                                            if (table != null) {
+                                                String link = this.generateInnerLink(table, host);
+                                                if (this.showInnerLinks && !"".equals(link)) {
+                                                    String wrappedLink = this.wrapLink(link, table.getBindingIdentifier());
+                                                    bindingIdentifierList.add(wrappedLink);
+                                                } else {
+                                                    bindingIdentifierList
+                                                        .add(table.getBindingIdentifier());
+                                                }
+                                            } else {
+                                                throw new TableNotFoundException(valueSetOrSingleCodeBinding.getTableId());
+                                            }
+                                        }
+                                    }
+                                    String bindingIdentifier = StringUtils.join(bindingIdentifierList, ",");
+                                    if (bindingIdentifier != null && !bindingIdentifier.isEmpty()) {
+                                        componentElement.addAttribute(new Attribute("BindingIdentifier", bindingIdentifier));
                                     }
                                 }
                             }
-                            String bindingIdentifier = StringUtils.join(bindingIdentifierList,",");
-                            if(bindingIdentifier!=null && !bindingIdentifier.isEmpty()) {
-                                componentElement.addAttribute(
-                                    new Attribute("BindingIdentifier", bindingIdentifier));
+                            String comments = super.findComments(component.getPosition(), datatype.getComments());
+                            if (comments != null && !comments.isEmpty())
+                                componentElement.addAttribute(new Attribute("Comment", comments));
+                            componentElement.addAttribute(new Attribute("Position", component.getPosition().toString()));
+                            String componentText = componentTextMap.get(component);
+                            if (componentText != null && !componentText.isEmpty()) {
+                                componentElement
+                                    .appendChild(this.createTextElement("Text", componentText));
                             }
+                            componentElement
+                                .addAttribute(new Attribute("complex", String.valueOf(isComplex)));
+                            datatypeElement.appendChild(componentElement);
+                        } catch (Exception e){
+                            throw new DatatypeComponentSerializationException(e,i);
                         }
                     }
-                    String comments = super.findComments(component.getPosition(),datatype.getComments());
-                    if (comments != null && !comments.isEmpty())
-                        componentElement.addAttribute(new Attribute("Comment", comments));
-                    componentElement
-                        .addAttribute(new Attribute("Position", component.getPosition().toString()));
-                    String componentText = componentTextMap.get(component);
-                    if (componentText != null && !componentText.isEmpty()) {
-                        componentElement.appendChild(
-                            this.createTextElement("Text", componentText));
+                    if (datatype.getComponents().size() == 0) {
+                        Element componentElement = new Element("Component");
+                        componentElement.addAttribute(new Attribute("Name", datatype.getName()));
+                        componentElement.addAttribute(new Attribute("Position", "1"));
+                        datatypeElement.appendChild(componentElement);
                     }
-                    componentElement.addAttribute(new Attribute("complex",String.valueOf(isComplex)));
-                    datatypeElement.appendChild(componentElement);
-                }
-                if (datatype.getComponents().size() == 0) {
-                    Element componentElement = new Element("Component");
-                    componentElement.addAttribute(new Attribute("Name", datatype.getName()));
-                    componentElement.addAttribute(new Attribute("Position", "1"));
-                    datatypeElement.appendChild(componentElement);
-                }
 
-                if ((datatype != null && (!this.defPreText.isEmpty()) || !this.defPostText.isEmpty())) {
-                    if (this.defPreText != null && !this.defPreText.isEmpty()) {
-                        datatypeElement.appendChild(
-                            this.createTextElement("DefPreText", this.defPreText));
+                    if ((datatype != null && (!this.defPreText.isEmpty()) || !this.defPostText
+                        .isEmpty())) {
+                        if (this.defPreText != null && !this.defPreText.isEmpty()) {
+                            datatypeElement
+                                .appendChild(this.createTextElement("DefPreText", this.defPreText));
+                        }
+                        if (this.defPostText != null && !this.defPostText.isEmpty()) {
+                            datatypeElement.appendChild(this.createTextElement("DefPostText", this.defPostText));
+                        }
                     }
-                    if (this.defPostText != null && !this.defPostText.isEmpty()) {
-                        datatypeElement.appendChild(
-                            this.createTextElement("DefPostText", this.defPostText));
+                    if (this.usageNote != null && !this.usageNote.isEmpty()) {
+                        datatypeElement
+                            .appendChild(this.createTextElement("UsageNote", this.usageNote));
                     }
                 }
-                if (this.usageNote != null && !this.usageNote.isEmpty()) {
-                    datatypeElement
-                        .appendChild(this.createTextElement("UsageNote", this.usageNote));
-                }
+            } catch (Exception e){
+                throw new DatatypeSerializationException(e,datatype.getLabel());
             }
         }
         datatypeElement.addAttribute(new Attribute("prefix", prefix));

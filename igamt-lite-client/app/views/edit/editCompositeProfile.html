@@ -94,10 +94,6 @@
                                                     </md-button>
                                                             </div>
                                                         </div>
-
-
-
-
                                                     </div>
 
                                                 </div>
@@ -129,13 +125,12 @@
                                         <label class="input-left igamt-label">Extension*</label>
 
                                         <md-input-container class=" md-block igamt-input-block" flex-gt-sm>
-                                            <input ng-disabled="viewSettings.tableReadonly" type="text" name="ext" ng-change="setDirty()" ng-model="compositeProfileStructure.ext" required ng-checkcompext property="old">
-
+                                            <input ng-disabled="viewSettings.tableReadonly" type="text" name="ext" ng-change="setDirty()" ng-model="compositeProfileStructure.ext" required>
+                                            <div role="alert"  style="color:red" ng-if="isDuplicated(compositeProfileStructure,compositeProfiles)">
+                                                <div class="my-message">Extension is already used.</div>
+                                            </div>
                                             <div ng-messages="editForm.ext.$error">
                                                 <div ng-message="required">Extension is required.</div>
-                                                <div ng-message="checkcompext">Extension already exists.</div>
-                                                <!--<div class="has-error" ng-show="compExist">Extension already exists.</div>-->
-
                                             </div>
                                         </md-input-container>
 
@@ -147,14 +142,6 @@
                                                 <div ng-message="required">Identifier is required.</div>
                                             </div>
                                         </md-input-container>
-
-                                        <!--<label class="input-left igamt-label">Description</label>-->
-
-                                        <!--<md-input-container class=" md-block igamt-input-block" flex-gt-sm>-->
-                                            <!--<input  ng-disabled="viewSettings.tableReadonly" type="text" name="description" ng-change="setDirty()" ng-model="compositeProfileStructure.description">-->
-
-                                        <!--</md-input-container>-->
-
                                         <label class="input-left igamt-label"> Type*</label>
 
                                         <md-input-container class=" md-block igamt-input-block" flex-gt-sm>
@@ -753,12 +740,6 @@
                                 </div>
                             </div>
                         </div>
-                      
-
-
-
-
-
                     </div>
                 </div>
 

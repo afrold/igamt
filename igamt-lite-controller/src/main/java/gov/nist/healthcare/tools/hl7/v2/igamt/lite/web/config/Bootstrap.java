@@ -68,6 +68,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NameAndPositionAndPresence;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notifications;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
@@ -83,6 +85,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentAtt
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TargetType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
@@ -106,6 +109,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetDa
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ExportConfigRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.NotificationsRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileStructureService;
@@ -194,6 +198,9 @@ public class Bootstrap implements InitializingBean {
 
   @Autowired
   private ExportConfigRepository exportConfigRepository;
+  
+  @Autowired
+  private NotificationsRepository notificationsRepository;
 
   /*
    * 
@@ -316,10 +323,38 @@ public class Bootstrap implements InitializingBean {
 
     // 2.0.0-beta7
     // updateTableForNumOfCodesANDSourceType();
+    // updateTableForNumOfCodesANDSourceType();
+    //TODO Do not use updateTableForNumOfCodesANDSourceType function any more. - Woo
 
+    
+   //This is just test.
+//    testNotification();
+    // 2.0.0-beta10
+    //makePhinvadsExternal(); 
   }
-
-
+  
+  
+  private void testNotification() {
+    Notification item = new Notification();
+    
+    item.setByWhom("JY Woo");
+    item.setChangedDate(new Date());
+    item.setTargetType(TargetType.Valueset);
+    item.setTargetId("57ee310484ae2aadc10efcca");
+    
+    Notification item2 = new Notification();
+    item2.setByWhom("JY Woo2");
+    item2.setChangedDate(new Date());
+    item2.setTargetType(TargetType.Valueset);
+    item2.setTargetId("57f0e74684ae7a55c2410d22");
+    
+    Notifications notifications = new Notifications();
+    notifications.setIgDocumentId("5a149844512c91633456205e");
+    notifications.addItem(item);
+    notifications.addItem(item2);
+    notificationsRepository.save(notifications);
+    
+  }
 
   private void updateTableForNumOfCodesANDSourceType() {
     List<Table> allTables = tableService.findAll();
@@ -335,24 +370,15 @@ public class Bootstrap implements InitializingBean {
 
     for (Table t : allTables) {
       int numberOfCodes = t.getCodes().size();
-      tableService.updateAttributes(t.getId(), "numberOfCodes", numberOfCodes);
-
+      if (!t.getScope().equals(SCOPE.PHINVADS)) {
+        tableService.updateAttributes(t.getId(), "numberOfCodes", numberOfCodes);
+      }
+      if (t.getScope().equals(SCOPE.PHINVADS) || numberOfCodes > 500) {
+        tableService.updateAttributes(t.getId(), "sourceType", SourceType.EXTERNAL);
+        tableService.updateAttributes(t.getId(), "managedBy", Constant.External);
+      }
       if (numberOfCodes > 500) {
-        // largeTable.put(t.getId(), t);
-        // largeTableLISTCSV = largeTableLISTCSV +
-        // "\"" + t.getId() + "\"," +
-        // "\"" + t.getBindingIdentifier() + "\"," +
-        // "\"" + t.getName() + "\"," +
-        // "\"" + t.getCodes().size() + "\"," +
-        // "\"" + t.getScope() + "\"," +
-        // "\"" + t.getHl7Version() + "\"\n";
-
-        t.setManagedBy(Constant.External);
-        t.setSourceType(SourceType.EXTERNAL);
-        t.setCodes(new ArrayList<Code>());
-        t.setNumberOfCodes(numberOfCodes);
-        tableService.save(t);
-
+        tableService.updateAttributes(t.getId(), "codes", new ArrayList<Code>());
       }
     }
 
@@ -384,6 +410,30 @@ public class Bootstrap implements InitializingBean {
     // System.out.println(IGUsedLargeTableLISTCSV);
   }
 
+  private void makePhinvadsExternal() {
+    List<Table> allPhvs = tableService.findByScope(SCOPE.PHINVADS.name());
+
+    for (Table t : allPhvs) {
+      tableService.updateAttributes(t.getId(), "sourceType", SourceType.EXTERNAL);
+
+    }
+  };
+
+  private void setCodePresence() {
+    List<TableLibrary> tbls = tableLibraryService.findAll();
+    for (TableLibrary tbl : tbls) {
+      tbl.setCodePresence(new HashMap<String, Boolean>());
+      for (TableLink link : tbl.getChildren()) {
+        if (link.getId() != null) {
+          System.out.println(link);
+          tbl.getCodePresence().put(link.getId(), true);
+
+        }
+
+      }
+      tableLibraryService.save(tbl);
+    }
+  };
 
 
   private void clearUserExportConfigurations() {

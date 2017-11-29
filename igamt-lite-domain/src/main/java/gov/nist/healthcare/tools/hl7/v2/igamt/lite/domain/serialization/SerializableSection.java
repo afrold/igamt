@@ -2,16 +2,16 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.exception.TableNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
-
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -44,23 +44,23 @@ public class SerializableSection extends SerializableElement {
     public SerializableSection(String id,String prefix,String position, String headerLevel, String title) {
         this.id = id;
         this.sectionElement = new Element("Section");
-        this.sectionElement.addAttribute(new Attribute("id", id));
+        this.sectionElement.addAttribute(new Attribute("id", id == null ? "" : id));
         this.serializableSectionList = new ArrayList<>();
         this.prefix = prefix;
         this.position = position;
         this.headerLevel = headerLevel;
         this.title = title;
-        this.prefixAttribute = new Attribute("prefix", prefix);
+        this.prefixAttribute = new Attribute("prefix", prefix  == null ? "" : prefix);
         this.sectionElement.addAttribute(this.prefixAttribute);
-        this.sectionElement.addAttribute(new Attribute("position", position));
-        this.headerAttribute = new Attribute("h", headerLevel);
+        this.sectionElement.addAttribute(new Attribute("position", position == null ? "" : position));
+        this.headerAttribute = new Attribute("h", headerLevel == null ? "" : headerLevel);
         this.sectionElement.addAttribute(headerAttribute);
-        this.titleAttribute = new Attribute("title", title);
+        this.titleAttribute = new Attribute("title", title == null ? "" : title);
         this.sectionElement.addAttribute(titleAttribute);
     }
 
     @Override
-    public Element serializeElement() {
+    public Element serializeElement() throws SerializationException {
         for(SerializableSection serializableSection : serializableSectionList){
             if(serializableSection!=null) {
                 sectionElement.appendChild(serializableSection.serializeElement());
@@ -105,8 +105,12 @@ public class SerializableSection extends SerializableElement {
         this.titleAttribute = new Attribute("title", title);
         this.sectionElement.addAttribute(titleAttribute);
     }
-
+    
     protected Element createCommentListElement(List<Comment> commentList, String locationPrefix){
+    	return createCommentListElement(commentList, locationPrefix, new HashMap<String,String>());
+    }
+
+    protected Element createCommentListElement(List<Comment> commentList, String locationPrefix, HashMap<String,String> locationPathMap){
         Element commentListElement = new Element("CommentList");
         if(commentList!=null && !commentList.isEmpty()){
             for(Comment comment : commentList){
@@ -114,10 +118,11 @@ public class SerializableSection extends SerializableElement {
                     Element commentElement = new Element("Comment");
                     if (comment.getLocation() != null) {
                         String location = "";
-                        if(locationPrefix!=null && !locationPrefix.isEmpty()){
-                            location+=locationPrefix+"-";
+                        if(locationPathMap.containsKey(comment.getLocation())){
+                        	location+=locationPathMap.get(comment.getLocation());
+                        } else {
+                        	location+=comment.getLocation();
                         }
-                        location+=comment.getLocation();
                         commentElement
                             .addAttribute(new Attribute("Location", location));
                     }
@@ -140,7 +145,12 @@ public class SerializableSection extends SerializableElement {
         return commentListElement;
     }
 
-    protected Element createValueSetBindingListElement(List<ValueSetOrSingleCodeBinding> valueSetOrSingleCodeBindings, List<Table> tables,String locationPrefix){
+    protected Element createValueSetBindingListElement(List<ValueSetOrSingleCodeBinding> valueSetOrSingleCodeBindings, List<Table> tables,String locationPrefix) throws TableNotFoundException {
+        return createValueSetBindingListElement(valueSetOrSingleCodeBindings, tables, locationPrefix,new HashMap<String,String>());
+    }
+    
+    protected Element createValueSetBindingListElement(List<ValueSetOrSingleCodeBinding> valueSetOrSingleCodeBindings, List<Table> tables,String locationPrefix, HashMap<String,String> locationPathMap) throws
+        TableNotFoundException {
         Element valueSetBindingListElement = new Element("ValueSetBindingList");
         for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : valueSetOrSingleCodeBindings){
             if(valueSetOrSingleCodeBinding!=null) {
@@ -155,10 +165,14 @@ public class SerializableSection extends SerializableElement {
                     }
                     if (valueSetOrSingleCodeBinding.getLocation() != null) {
                         String location = "";
-                        if (locationPrefix != null && !locationPrefix.isEmpty()) {
-                            location += locationPrefix + "-";
+                        if(locationPathMap.containsKey(valueSetOrSingleCodeBinding.getLocation())){
+                        	location = locationPathMap.get(valueSetOrSingleCodeBinding.getLocation());
+                        } else {
+	                        if (locationPrefix != null && !locationPrefix.isEmpty()) {
+	                            location += locationPrefix + "-";
+	                        }
+	                        location += valueSetOrSingleCodeBinding.getLocation();
                         }
-                        location += valueSetOrSingleCodeBinding.getLocation();
                         valueSetBindingElement.addAttribute(new Attribute("Location", location));
                         valueSetBindingElement.addAttribute(new Attribute("SortLocation", valueSetOrSingleCodeBinding.getLocation()));
                     }
@@ -188,13 +202,15 @@ public class SerializableSection extends SerializableElement {
                         }
                     }
                     valueSetBindingListElement.appendChild(valueSetBindingElement);
+                } else {
+                    throw new TableNotFoundException(valueSetOrSingleCodeBinding.getTableId());
                 }
             }
         }
         return valueSetBindingListElement;
     }
 
-    protected Table findTable(List<Table> tables, String tableId){
+    protected Table findTable(List<Table> tables, String tableId) throws TableNotFoundException{
         if(tableId!=null && !tableId.isEmpty()) {
             for (Table table : tables) {
                 if (table != null && table.getId() != null && table.getId().equals(tableId)) {
@@ -202,7 +218,7 @@ public class SerializableSection extends SerializableElement {
                 }
             }
         }
-        return null;
+        throw new TableNotFoundException(tableId);
     }
 
     public String findComments(Integer position, List<Comment> comments) {

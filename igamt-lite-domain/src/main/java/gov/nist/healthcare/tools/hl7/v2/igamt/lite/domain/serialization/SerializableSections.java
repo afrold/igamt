@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import nu.xom.Element;
 
 import java.util.*;
@@ -36,7 +37,7 @@ public class SerializableSections extends SerializableElement {
     }
 
     @Override
-    public Element serializeElement() {
+    public Element serializeElement() throws SerializationException {
         for(SerializableSection serializableSection : serializableSections){
             rootSections.appendChild(serializableSection.serializeElement());
         }

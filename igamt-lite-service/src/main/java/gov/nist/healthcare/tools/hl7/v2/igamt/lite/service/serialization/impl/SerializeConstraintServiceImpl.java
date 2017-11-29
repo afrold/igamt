@@ -5,6 +5,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeConstraintService;
 import org.springframework.stereotype.Service;
 
@@ -27,24 +28,38 @@ import java.util.List;
 @Service
 public class SerializeConstraintServiceImpl implements SerializeConstraintService {
 
-    @Override public List<SerializableConstraint> serializeConstraints(
-        DataModelWithConstraints dataModelWithConstraints, String location) {
-        List<ConformanceStatement> conformanceStatements = dataModelWithConstraints.getConformanceStatements();
-        List<Predicate> predicates = dataModelWithConstraints.getPredicates();
-        List<SerializableConstraint> serializableConstraints = new ArrayList<>();
-        if (conformanceStatements != null && !conformanceStatements.isEmpty()) {
-            for (Constraint constraint : conformanceStatements) {
-                SerializableConstraint serializableConstraint = new SerializableConstraint(constraint,location);
-                serializableConstraints.add(serializableConstraint);
+    @Override public List<SerializableConstraint> serializeConstraints (
+        DataModelWithConstraints dataModelWithConstraints, String location) throws ConstraintSerializationException {
+        try {
+            List<ConformanceStatement> conformanceStatements = dataModelWithConstraints.getConformanceStatements();
+            List<Predicate> predicates = dataModelWithConstraints.getPredicates();
+            List<SerializableConstraint> serializableConstraints = new ArrayList<>();
+            if (conformanceStatements != null && !conformanceStatements.isEmpty()) {
+                for (Constraint constraint : conformanceStatements) {
+                    try {
+                        SerializableConstraint serializableConstraint =
+                            new SerializableConstraint(constraint, location);
+                        serializableConstraints.add(serializableConstraint);
+                    } catch (Exception e) {
+                        throw new ConstraintSerializationException(e, constraint.toString());
+                    }
+                }
             }
-        }
-        if (predicates != null && !predicates.isEmpty()) {
-            for (Constraint constraint : predicates) {
-                SerializableConstraint serializableConstraint = new SerializableConstraint(constraint,location);
-                serializableConstraints.add(serializableConstraint);
+            if (predicates != null && !predicates.isEmpty()) {
+                for (Constraint constraint : predicates) {
+                    try {
+                        SerializableConstraint serializableConstraint =
+                            new SerializableConstraint(constraint, location);
+                        serializableConstraints.add(serializableConstraint);
+                    } catch (Exception e) {
+                        throw new ConstraintSerializationException(e, constraint.toString());
+                    }
+                }
             }
+            return serializableConstraints;
+        } catch (Exception e){
+            throw new ConstraintSerializationException(e,location);
         }
-        return serializableConstraints;
     }
 
 }

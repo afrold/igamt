@@ -1,10 +1,13 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
 
+import java.util.HashMap;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetMetadataConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableTable;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.TableSerializationException;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -22,10 +25,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
 public interface SerializeTableService {
 
     public SerializableTable serializeTable(TableLink tableLink, String prefix, Integer position,
-        CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber);
-    
-    public SerializableTable serializeTable(TableLink tableLink, Table table, String prefix, Integer position,
-        CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber);
+        CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber, HashMap<String, Boolean> codePresence)
+        throws TableSerializationException;
 
-	public SerializableTable serializeTable(Table dataModel);
+    public SerializableTable serializeTable(TableLink tableLink, Table table, String prefix, Integer position,
+        CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig, int maxCodeNumber, HashMap<String, Boolean> codePresence)
+        throws TableSerializationException;
+
+
+	public SerializableTable serializeTable(Table dataModel) throws TableSerializationException;
 }
