@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input, ViewChildren} from "@angular/core";
 import {WorkspaceService, Entity} from "../../../service/workspace/workspace.service";
 import {TocService} from "./toc.service";
 import {isNullOrUndefined} from "util";
@@ -15,7 +15,9 @@ import {falseIfMissing} from "protractor/built/util";
   styleUrls:["./toc.component.css"]
 })
 export class TocComponent {
-  @ViewChild(Tree) toc :Tree;
+  // @ViewChild(Tree) toc :Tree;
+
+  @ViewChildren("p-treeNode") treeNode :TreeNode[];
 
 
 
@@ -35,22 +37,27 @@ export class TocComponent {
   }
 
 
-  ngOnInit(){
+  ngOnInit() {
 
     this.ig = this._ws.getCurrent(Entity.IG);
-    console.log(this._ig);
+    // this.toc.dragDropService.stopDrag = function (x) {
+    //   console.log("HT");
+    //   console.log(x);
+    // };
 
-
-    this.treeData=this.tocService.buildTreeFromIgDocument(this._ig);
-    this.toc.allowDrop=this.allow;
-    this.toc.draggableNodes=true;
-    this.toc.droppableNodes=true;
+    this.treeData = this.tocService.buildTreeFromIgDocument(this._ig);
+    //this.toc.allowDrop = this.allow;
+    // this.toc.draggableNodes = true;
+    // this.toc.droppableNodes = true;
+    // this.toc.onNodeDrop.subscribe(x => {
+    //   console.log(x);
+    // });
   }
 
   print =function (obj) {
     console.log("Printing Obj");
     console.log(obj);
-  }
+  };
 
   getPath =function (node) {
     if(node.data.sectionPosition){
@@ -60,26 +67,26 @@ export class TocComponent {
         return this.getPath(node.parent)+"."+node.data.sectionPosition;
       }
     }
-
-
-  }
+  };
 
 
 
 
-  onDragStart(event, node) {
+  onDragStart(event,node) {
+    console.log(event);
 
     console.log("Drag Start");
   };
   onDragEnd(event, node) {
     console.log("DRAG END ")
 
+
   };
-  onDrop(event, node) {
+  onDrop(event) {
     console.log("Performed");
+    console.log(event);
   };
   onDragEnter(event, node) {
-    console.log()
 
   };
   onDragLeave(event, node) {

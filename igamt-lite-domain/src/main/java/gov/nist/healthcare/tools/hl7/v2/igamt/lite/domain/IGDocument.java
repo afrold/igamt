@@ -11,6 +11,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.DocumentSection;
+
 @Document(collection = "igdocument")
 public class IGDocument extends DataModel implements java.io.Serializable, Cloneable {
 
@@ -39,8 +41,12 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
   private int position;
   @JsonProperty("children")
   private Set<Section> childSections = new HashSet<Section>();
+  
+  
+  private DocumentSection content=new DocumentSection();
 
-  private Set<ShareParticipantPermission> shareParticipantIds =
+
+private Set<ShareParticipantPermission> shareParticipantIds =
       new HashSet<ShareParticipantPermission>();
 
   @Transient
@@ -63,6 +69,15 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
   public void setOwner(ShareParticipant owner) {
     this.owner = owner;
   }
+  
+  public DocumentSection getContent() {
+	return content;
+  }
+
+  public void setContent(DocumentSection content) {
+	this.content = content;
+  }
+
 
   private void addSection(Section s) {
     s.setSectionPosition(this.childSections.size() + 1);

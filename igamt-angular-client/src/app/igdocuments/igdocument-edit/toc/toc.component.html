@@ -1,14 +1,41 @@
-<p-tree [value]="treeData">
+<p-tree [value]="treeData" draggableNodes="true" droppableNodes="true">
     <ng-template let-node  pTemplate="default">
 
-        <li   [pDraggable]="true"
-                    [pDroppable]="true"
+
+      <li  *ngIf="node.data.type==='root'"  pDraggable="ddd"
+           [pDroppable]="['section', 'profile']"
+           (onDrop)="onDrop($event, node)">
+        <span (click)="print(node)">{{node.data.sectionTitle}}</span>
+      </li>
+
+      <li  *ngIf="node.data.type==='section'"  pDraggable="section"
+            pDroppable="section"
+            (onDragStart)="onDragStart($event, node)"
+            (onDragEnd)="onDragEnd($event, node)"
+            (onDrop)="onDrop($event, node)"
+            (onDragEnter)="onDragEnter($event, node)"
+            (onDragLeave)="onDragLeave($event, node)">
+        <span (click)="print(node)" *ngIf="node.data.type=='section'">{{getPath(node)+"."+node.data.sectionTitle}}</span>
+      </li>
+
+      <li  *ngIf="node.data.type==='profile'"  pDraggable="profile"
+           pDroppable="kkk"
+           (onDragStart)="onDragStart($event, node)"
+           (onDragEnd)="onDragEnd($event, node)"
+           (onDrop)="onDrop($event, node)"
+           (onDragEnter)="onDragEnter($event, node)"
+           (onDragLeave)="onDragLeave($event, node)">
+                  <span (click)="print(node)">{{node.data.sectionTitle}}</span>
+      </li>
+
+
+        <li  *ngIf="node.data.type!=='section' && node.data.type!=='root'&&node.data.type!=='profile'"
+                    [pDroppable]="[node.data.type]"
                     (onDragStart)="onDragStart($event, node)"
                     (onDragEnd)="onDragEnd($event, node)"
                     (onDrop)="onDrop($event, node)"
                     (onDragEnter)="onDragEnter($event, node)"
                     (onDragLeave)="onDragLeave($event, node)">
-        <span (click)="print(node)" *ngIf="node.data.type=='section'">{{getPath(node)+"."+node.data.sectionTitle}}</span>
         <span (click)="print(node)">{{node.data.sectionTitle}}</span>
         </li>
 
