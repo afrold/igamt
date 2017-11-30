@@ -40,9 +40,5 @@ public class DocumentSection<T extends SectionData> {
                                 this.data = data;
                                 
                 }
-                public void addChild(DocumentSection<? extends SectionData > child){
-                		this.children.add(child);
-                       
-                	
-                }
+     
 }

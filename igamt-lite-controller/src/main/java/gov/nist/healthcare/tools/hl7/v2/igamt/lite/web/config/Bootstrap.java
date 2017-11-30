@@ -355,9 +355,9 @@ public class Bootstrap implements InitializingBean {
 	    	 data.setMetaData(d.getMetaData());
 	    	 section.setData(data);
 	    	 for( Section s : d.getChildSections()){
-	    		 section.addChild(createTextSection(s));
+	    		 section.getChildren().add(createTextSection(s));
 	    	 }
-	    	 createProfileSection(d);
+	    	 section.getChildren().add(createProfileSection(d.getProfile(), section.getChildren().size()+1));
 	    	 d.setContent(section);
   }
   private DocumentSection<SectionDataWithText>  createTextSection(Section s){
@@ -370,15 +370,16 @@ public class Bootstrap implements InitializingBean {
 	  dataWithText.setReferenceType(s.getType());
 	  ret.setData(dataWithText);
 	  List<Section> sorted= new ArrayList<Section>();
+	  if(s.getChildSections()!=null&&!s.getChildSections().isEmpty())
 	  sorted.addAll(s.getChildSections());
 	  Collections.sort(sorted); 
 	  for (Section sub : sorted){	  
-		 ret.addChild(createTextSection(sub));
+		 ret.getChildren().add(createTextSection(sub));
 	  }
 	return ret;
   }
-  private DocumentSection<SectionDataWithText> createProfileSection(IGDocument d){
-	  Profile p= d.getProfile();
+  private DocumentSection<SectionDataWithText> createProfileSection(Profile p, int i){
+
 	  DocumentSection ret = new DocumentSection();
 	  SectionDataWithText dataWithText= new SectionDataWithText();
 	  //dataWithText.setPosition(p.getChildSections().size());
@@ -386,12 +387,13 @@ public class Bootstrap implements InitializingBean {
 	  dataWithText.setSectionTitle(p.getSectionTitle());;
 	  dataWithText.setReferenceId(p.getId());
 	  dataWithText.setReferenceType(p.getType());
-	  ret.addChild(createProfileComponentLibrarySection(p.getProfileComponentLibrary(),1));
-	  ret.addChild(createConformanceProfileSection(p.getMessages(),2));
-	  ret.addChild(createCompositeProfile(p.getCompositeProfiles(),3));
-	  ret.addChild(createSegmentLibrarySection(p.getSegmentLibrary(),4));
-	  ret.addChild(createDatatypeLibrary(p.getDatatypeLibrary(),5));
-	  ret.addChild(createTableLibrary(p.getTableLibrary(),6));
+	  ret.setData(dataWithText);
+	  ret.getChildren().add(createProfileComponentLibrarySection(p.getProfileComponentLibrary(),1));
+	  ret.getChildren().add(createConformanceProfileSection(p.getMessages(),2));
+	  ret.getChildren().add(createCompositeProfile(p.getCompositeProfiles(),3));
+	  ret.getChildren().add(createSegmentLibrarySection(p.getSegmentLibrary(),4));
+	  ret.getChildren().add(createDatatypeLibrary(p.getDatatypeLibrary(),5));
+	  ret.getChildren().add(createTableLibrary(p.getTableLibrary(),6));
 	return ret;
 	  
   }
@@ -406,10 +408,10 @@ public class Bootstrap implements InitializingBean {
 	  dataWithText.setSectionTitle("Value Sets");
 	  dataWithText.setReferenceId(tableLibrary.getId());
 	  dataWithText.setReferenceType(tableLibrary.getType());
+	  ret.setData(dataWithText);
 	  for(TableLink link: tableLibrary.getChildren()){
-		  ret.addChild(createSectionOfLink(link));
+		  ret.getChildren().add(createSectionOfLink(link));
 	  }	  
-	
 	return ret;
 }
 
@@ -423,8 +425,9 @@ private DocumentSection createDatatypeLibrary(DatatypeLibrary datatypeLibrary, i
 	  dataWithText.setSectionTitle("Data Types");
 	  dataWithText.setReferenceId(datatypeLibrary.getId());
 	  dataWithText.setReferenceType(datatypeLibrary.getType());
+	  ret.setData(dataWithText);
 	  for(DatatypeLink link: datatypeLibrary.getChildren()){
-		  ret.addChild(createSectionOfLink(link));
+		  ret.getChildren().add(createSectionOfLink(link));
 	  }	  
 	
 	return ret;
@@ -441,8 +444,9 @@ private DocumentSection createSegmentLibrarySection(SegmentLibrary segmentLibrar
 	  dataWithText.setSectionTitle("Segments and Fields Description");
 	  dataWithText.setReferenceId(segmentLibrary.getId());
 	  dataWithText.setReferenceType(segmentLibrary.getType());
+	  ret.setData(dataWithText);
 	  for(SegmentLink link: segmentLibrary.getChildren()){
-		  ret.addChild(createSectionOfLink(link));
+		  ret.getChildren().add(createSectionOfLink(link));
 	  }	  
 	
 	return ret;
@@ -459,8 +463,10 @@ private DocumentSection createCompositeProfile(CompositeProfiles compositeProfil
 	  dataWithText.setSectionTitle("Composite Profiles");
 	  dataWithText.setReferenceId(compositeProfiles.getId());
 	  dataWithText.setReferenceType(compositeProfiles.getType());
+	  ret.setData(dataWithText);
+
 	  for(CompositeProfileStructure link: compositeProfiles.getChildren()){
-		  ret.addChild(createSectionOfCompositeProfile(link));
+		  ret.getChildren().add(createSectionOfCompositeProfile(link));
 	  }	  
 	
 	return ret;
@@ -492,12 +498,13 @@ private DocumentSection createConformanceProfileSection(Messages messages, int p
 	  dataWithText.setSectionTitle("Conformance Profiles");
 	  dataWithText.setReferenceId(messages.getId());
 	  dataWithText.setReferenceType(messages.getType());
+	  ret.setData(dataWithText);
 	  List<Message> sorted= new ArrayList<Message>();
 	  sorted.addAll(messages.getChildren());
 	  Collections.sort(sorted); 
 	  
 	  for(Message link: sorted){
-		  ret.addChild(createSectionOfMessage(link));
+		  ret.getChildren().add(createSectionOfMessage(link));
 	  }	  
 	
 	return ret;
@@ -532,7 +539,7 @@ private DocumentSection createProfileComponentLibrarySection(ProfileComponentLib
 	  dataWithText.setReferenceType(profileComponentLibrary.getType());
 	  if(!profileComponentLibrary.getChildren().isEmpty()){
 		  	for(ProfileComponentLink link: profileComponentLibrary.getChildren()){
-		  		ret.addChild(createSectionOfLink(link));
+		  		ret.getChildren().add(createSectionOfLink(link));
 		  			}	  
  		}
 	

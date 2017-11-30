@@ -6,9 +6,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.AbstractLink;
 
 @JsonTypeName("withLink")
 
-public class SectionDataWithLink extends SectionData {
+public class SectionDataWithLink<T extends AbstractLink> extends SectionData {
 	
-	private AbstractLink ref;
+	private T ref;
 
 
 	public SectionDataWithLink() {
@@ -16,11 +16,11 @@ public class SectionDataWithLink extends SectionData {
 		super();
 	}
 
-	public AbstractLink getRef() {
+	public T getRef() {
 		return ref;
 	}
 
-	public void setRef(AbstractLink ref) {
+	public void setRef(T ref) {
 		this.ref = ref;
 	}
 	

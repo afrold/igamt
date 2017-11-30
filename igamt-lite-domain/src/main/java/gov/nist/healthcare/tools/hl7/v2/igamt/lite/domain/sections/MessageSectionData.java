@@ -9,7 +9,6 @@ public class MessageSectionData extends SectionData{
 	String messageType;
 	String description;
 	String structID;
-	int position;
 	
 
 	public MessageSectionData() {
@@ -64,16 +63,6 @@ public class MessageSectionData extends SectionData{
 
 	public void setStructID(String structID) {
 		this.structID = structID;
-	}
-
-
-	public int getPosition() {
-		return position;
-	}
-
-
-	public void setPosition(int position) {
-		this.position = position;
 	}
 
 }
