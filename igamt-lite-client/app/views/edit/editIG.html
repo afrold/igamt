@@ -43,21 +43,6 @@
                     </span>
                 </span>
             </div>
-            <div ng-if="notifications" class="col-md-12">
-                <i class="fa fa-exclamation-circle" aria-hidden="true" style="color:royalblue"></i> You have {{::notifications.items.length}} notification(s).
-                <a class="point">
-                    <span ng-click="deleteNotification(notifications.id)">Dismiss</span>
-                </a>
-                <li ng-repeat="noti in notifications.items track by $index">
-                    <strong> {{::noti.targetType}}
-                        <span ng-if="noti.targetType === 'Valueset'">[<display-label of="tablesMap[noti.targetId]" desc="true"></display-label>]</span>
-                        <span ng-if="noti.targetType === 'Datatype'">[<display-label of="datatypesMap[noti.targetId]" desc="true"></display-label>]</span>
-                        <span ng-if="noti.targetType === 'Segment'">[<display-label of="segmentsMap[noti.targetId]" desc="true"></display-label>]</span>
-                    </strong>
-                    <span> was changed by {{::noti.byWhom}} at {{::noti.changedDate | date:dateFormat}}.</span>
-                </li>
-            </div>
-
             <div class="col-md-12 ig-menu-bar">
                 <div class="col-md-1" style="width:20px">
                     <md-button ng-click="showToc = !showToc" class="md-icon-button md-primary" aria-label="Settings">
@@ -230,7 +215,8 @@
             <div class="alert has-error" ng-show="errorCount(igdocument.id)>0">
                 <!--<button type="button" class="close" aria-label="Close" ><span aria-hidden="true">&times;</span></button> {{errorCount(igdocument.id)}} Errors-->
                 <button type="button" ng-click="setIgErrorNotification();" class="close" aria-label="Close">
-                    <span>&times;</span></button>
+                    <span>&times;</span>
+                </button>
                 <i class="fa fa-times fa-fw"></i> Invalid IG Document: {{errorCount(igdocument.id)}} Errors
 
             </div>
@@ -242,6 +228,25 @@
 
             </div>
         </div>
+
+        <div class="row" ng-if="notifications" style="margin-right: 15px;margin-left: 5px;margin-top:10px">
+            <div class="alert has-error">
+                <button type="button" ng-click="deleteNotification(notifications.id);" class="close" aria-label="Close">
+                    <span>&times;</span>
+                </button>
+                <i class="fa fa-exclamation-circle fa-fw"></i>  You have {{::notifications.items.length}} notification(s).
+
+                <li ng-repeat="noti in notifications.items track by $index">
+                    <strong> {{::noti.targetType}}
+                        <span ng-if="noti.targetType === 'Valueset'">[<display-label of="tablesMap[noti.targetId]" desc="true"></display-label>]</span>
+                        <span ng-if="noti.targetType === 'Datatype'">[<display-label of="datatypesMap[noti.targetId]" desc="true"></display-label>]</span>
+                        <span ng-if="noti.targetType === 'Segment'">[<display-label of="segmentsMap[noti.targetId]" desc="true"></display-label>]</span>
+                    </strong>
+                    <span> was changed by {{::noti.byWhom}} at {{::noti.changedDate | date:dateFormat}}.</span>
+                </li>
+            </div>
+        </div>
+
         <div>
             <form name="editForm" id="editForm" class="form-horizontal" novalidate unsaved-warning-form ng-show="isEditing" ng-controller="EditAreaCtrl" ng-init="init" ng-cloak>
 
