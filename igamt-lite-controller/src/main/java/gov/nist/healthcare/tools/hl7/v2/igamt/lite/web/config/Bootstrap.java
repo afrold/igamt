@@ -328,7 +328,7 @@ public class Bootstrap implements InitializingBean {
 
     
    //This is just test.
-//    testNotification();
+    testNotification();
     // 2.0.0-beta10
     //makePhinvadsExternal(); 
   }
