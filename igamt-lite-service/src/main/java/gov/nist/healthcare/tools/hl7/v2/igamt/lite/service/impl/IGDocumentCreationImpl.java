@@ -176,8 +176,8 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		// Filling libraries--was
 		Messages msgsTarget = new Messages();
 		msgsTarget.setSectionTitle(dSource.getProfile().getMessages().getSectionTitle());
-		msgsTarget.setSectionContents(dSource.getProfile().getMessages().getSectionContents());
-		msgsTarget.setSectionDescription(dSource.getProfile().getMessages().getSectionDescription());
+		msgsTarget.setSectionContent(dSource.getProfile().getMessages().getSectionContents());
+		//msgsTarget.setSectionDescription(dSource.getProfile().getMessages().getSectionDescription());
 		msgsTarget.setSectionPosition(dSource.getProfile().getMessages().getSectionPosition());
 		SegmentLibrary sgtsTarget = new SegmentLibrary();
 		sgtsTarget.setMetaData(dSource.getProfile().getSegmentLibrary().getMetaData());
@@ -185,24 +185,24 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		segmentLibraryRepository.save(sgtsTarget);
 
 		sgtsTarget.setSectionTitle(dSource.getProfile().getSegmentLibrary().getSectionTitle());
-		sgtsTarget.setSectionContents(dSource.getProfile().getSegmentLibrary().getSectionContents());
-		sgtsTarget.setSectionDescription(dSource.getProfile().getSegmentLibrary().getSectionDescription());
+		sgtsTarget.setSectionContent(dSource.getProfile().getSegmentLibrary().getSectionContents());
+		//sgtsTarget.setSectionDescription(dSource.getProfile().getSegmentLibrary().getSectionDescription());
 		sgtsTarget.setSectionPosition(dSource.getProfile().getSegmentLibrary().getSectionPosition());
 		DatatypeLibrary dtsTarget = new DatatypeLibrary();
 		dtsTarget.setMetaData(dSource.getProfile().getDatatypeLibrary().getMetaData());
 		dtsTarget.setScope(Constant.SCOPE.USER);
 		datatypeLibraryRepository.save(dtsTarget);
 		dtsTarget.setSectionTitle(dSource.getProfile().getDatatypeLibrary().getSectionTitle());
-		dtsTarget.setSectionContents(dSource.getProfile().getDatatypeLibrary().getSectionContents());
-		dtsTarget.setSectionDescription(dSource.getProfile().getDatatypeLibrary().getSectionDescription());
+		dtsTarget.setSectionContent(dSource.getProfile().getDatatypeLibrary().getSectionContents());
+		//dtsTarget.setSectionDescription(dSource.getProfile().getDatatypeLibrary().getSectionDescription());
 		dtsTarget.setSectionPosition(dSource.getProfile().getDatatypeLibrary().getSectionPosition());
 		TableLibrary tabTarget = new TableLibrary();
 		tabTarget.setMetaData(dSource.getProfile().getTableLibrary().getMetaData());
 		tabTarget.setScope(Constant.SCOPE.USER);
 		tableLibraryRepository.save(tabTarget);
 		tabTarget.setSectionTitle(dSource.getProfile().getTableLibrary().getSectionTitle());
-		tabTarget.setSectionContents(dSource.getProfile().getTableLibrary().getSectionContents());
-		tabTarget.setSectionDescription(dSource.getProfile().getTableLibrary().getSectionDescription());
+		tabTarget.setSectionContent(dSource.getProfile().getTableLibrary().getSectionContents());
+		//tabTarget.setSectionDescription(dSource.getProfile().getTableLibrary().getSectionDescription());
 		tabTarget.setSectionPosition(dSource.getProfile().getTableLibrary().getSectionPosition());
     ProfileComponentLibrary profileComponentLibrary=new ProfileComponentLibrary();
 

@@ -24,33 +24,28 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 public abstract class AbstractLink {
 
   protected String id;
-  
   protected SCOPE scope;
   protected String type;
+  protected String hl7Version;
+  protected int numberOfChilren;
+  protected String description;
+  protected STATUS status;
+
+
+protected int  publicationVersion;
+  
+  protected List<String> hl7versions;
   
   public String getType() {
 	return type;
-}
-
-public void setType(String type) {
-	this.type = type;
-}
-
-protected String hl7Version;
-  
-  protected int numberOfChilren;
-  
-  protected String description;
-  
-  protected STATUS status;
-  
-  protected int  publicationVersion;
-  
-  protected List<String> hl7versions;
+  }
+  public void setType(String type) {
+		this.type = type;
+	}
 
   public SCOPE getScope() {
 	return scope;
-}
+  }
 
 public void setScope(SCOPE scope) {
 	this.scope = scope;

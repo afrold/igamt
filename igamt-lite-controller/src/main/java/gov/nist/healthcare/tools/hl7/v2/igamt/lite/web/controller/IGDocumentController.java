@@ -1454,15 +1454,15 @@ public class IGDocumentController extends CommonController {
     String segmentId = d.getProfile().getSegmentLibrary().getId();
 
     if (idSect.equalsIgnoreCase(conformaneId)) {
-      d.getProfile().getMessages().setSectionContents(section.getSectionContents());
+      d.getProfile().getMessages().setSectionContent(section.getSectionContents());
     } else if (idSect.equalsIgnoreCase(dataTypesId)) {
-      d.getProfile().getDatatypeLibrary().setSectionContents(section.getSectionContents());
+      d.getProfile().getDatatypeLibrary().setSectionContent(section.getSectionContents());
       datatypeLibraryService.save(d.getProfile().getDatatypeLibrary());
     } else if (idSect.equalsIgnoreCase(tableId)) {
-      d.getProfile().getTableLibrary().setSectionContents(section.getSectionContents());
+      d.getProfile().getTableLibrary().setSectionContent(section.getSectionContents());
       tableLibraryService.save(d.getProfile().getTableLibrary());
     } else if (idSect.equalsIgnoreCase(segmentId)) {
-      d.getProfile().getSegmentLibrary().setSectionContents(section.getSectionContents());
+      d.getProfile().getSegmentLibrary().setSectionContent(section.getSectionContents());
       segmentLibraryService.save(d.getProfile().getSegmentLibrary());
     } else {
       Section s = findSection(d, idSect);

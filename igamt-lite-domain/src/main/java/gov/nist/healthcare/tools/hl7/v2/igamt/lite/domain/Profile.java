@@ -38,10 +38,30 @@ public static long getSerialversionuid() {
 
   private Messages messages = new Messages();
   private CompositeProfiles compositeProfiles = new CompositeProfiles();
+  
+ 
+  private CompositeProfileLibrary compsoiteProfileLibrary= new CompositeProfileLibrary();
+  
+  private MessageLibrary messageLibrary= new MessageLibrary();
+  
 
+  public CompositeProfileLibrary getCompsoiteProfileLibrary() {
+	return compsoiteProfileLibrary;
+}
 
+public void setCompsoiteProfileLibrary(CompositeProfileLibrary compsoiteProfileLibrary) {
+	this.compsoiteProfileLibrary = compsoiteProfileLibrary;
+}
 
-  @DBRef
+public MessageLibrary getMessageLibrary() {
+	return messageLibrary;
+}
+
+public void setMessageLibrary(MessageLibrary messageLibrary) {
+	this.messageLibrary = messageLibrary;
+}
+
+@DBRef
   private TableLibrary tableLibrary = new TableLibrary();
 
   @DBRef

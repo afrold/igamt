@@ -46,6 +46,7 @@ export class TocComponent {
     // };
 
     this.treeData = this.tocService.buildTreeFromIgDocument(this._ig);
+    console.log(this.treeData);
     //this.toc.allowDrop = this.allow;
     // this.toc.draggableNodes = true;
     // this.toc.droppableNodes = true;
@@ -60,11 +61,11 @@ export class TocComponent {
   };
 
   getPath =function (node) {
-    if(node.data.sectionPosition){
-      if(node.parent.data.type=="root"){
-        return node.data.sectionPosition;
+    if(node.data.position){
+      if(node.parent.data.referenceType=="root"){
+        return node.data.position;
       }else{
-        return this.getPath(node.parent)+"."+node.data.sectionPosition;
+        return this.getPath(node.parent)+"."+node.data.position;
       }
     }
   };

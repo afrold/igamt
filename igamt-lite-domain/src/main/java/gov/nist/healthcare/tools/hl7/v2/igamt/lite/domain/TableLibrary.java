@@ -28,7 +28,6 @@ public class TableLibrary extends Library implements java.io.Serializable, Clone
 
   private String organizationName;
 
-  private String description;
 
   private String dateCreated;
 
@@ -101,14 +100,6 @@ public class TableLibrary extends Library implements java.io.Serializable, Clone
 
   public void setOrganizationName(String organizationName) {
     this.organizationName = organizationName;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
   }
 
   public String getDateCreated() {
@@ -247,8 +238,8 @@ public class TableLibrary extends Library implements java.io.Serializable, Clone
     clone.setExt(this.getExt() + "-" + genRand());
     clone.setMetaData(this.getMetaData().clone());
     clone.setScope(this.getScope());
-    clone.setSectionContents(this.getSectionContents());
-    clone.setSectionDescription(this.getSectionDescription());
+    clone.setSectionContent(this.getSectionContents());
+   // clone.setSectionDescription(this.getSectionDescription());
     clone.setSectionPosition(this.getSectionPosition());
     clone.setSectionTitle(this.getSectionTitle());
     clone.setType(this.getType());

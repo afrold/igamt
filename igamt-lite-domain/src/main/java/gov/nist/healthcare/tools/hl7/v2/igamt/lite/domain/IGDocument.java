@@ -11,7 +11,12 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.DocumentSection;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.SectionDataWithText;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.SectionData;
+
 
 @Document(collection = "igdocument")
 public class IGDocument extends DataModel implements java.io.Serializable, Cloneable {
@@ -157,7 +162,7 @@ private Set<ShareParticipantPermission> shareParticipantIds =
     p.getMessages().setSectionPosition(0);
     p.getMessages().setSectionTitle("Conformance Profiles");
     p.getMessages().setType("messages");
-    p.getMessages().setSectionContents("");
+    p.getMessages().setSectionContent("");
 
     int messagePositionNum = 1;
     for (Message m : p.getMessages().getChildren()) {
@@ -168,16 +173,16 @@ private Set<ShareParticipantPermission> shareParticipantIds =
     p.getSegmentLibrary().setSectionPosition(1);
     p.getSegmentLibrary().setSectionTitle("Segments and Field Descriptions");
     p.getSegmentLibrary().setType("segments");
-    p.getSegmentLibrary().setSectionContents("");
+    p.getSegmentLibrary().setSectionContent("");
 
     p.getDatatypeLibrary().setSectionPosition(2);
     p.getDatatypeLibrary().setSectionTitle("Datatypes");
     p.getDatatypeLibrary().setType("datatypes");
-    p.getDatatypeLibrary().setSectionContents("");
+    p.getDatatypeLibrary().setSectionContent("");
     p.getTableLibrary().setSectionPosition(3);
     p.getTableLibrary().setSectionTitle("Value Sets");
     p.getTableLibrary().setType("tables");
-    p.getTableLibrary().setSectionContents("xsx");
+    p.getTableLibrary().setSectionContent("xsx");
     
     
     
@@ -359,13 +364,37 @@ private Set<ShareParticipantPermission> shareParticipantIds =
     this.metaData = metaData;
   }
 
-
   public Profile getProfile() {
-    return profile;
+	  
+	  if(content.getChildren()!=null){
+		 DocumentSection profileSection=new DocumentSection<SectionDataWithText>();
+		 for (Object child : this.content.getChildren()){
+			if(child instanceof DocumentSection){
+				DocumentSection section=(DocumentSection)child;
+				if(section.getData()!= null){
+					SectionData data=section.getData();
+					if(data instanceof SectionDataWithText){
+						SectionDataWithText dataWithText=(SectionDataWithText) data;
+						if(((SectionDataWithText) data).getReferenceType()==Constant.PROFILE){
+							return buildProfileFromSection(section);
+						}
+						}
+					}
+			} 
+		 }
+		  
+	  }
+	  
+    return new Profile();
   }
 
 
-  public void setProfile(Profile profile) {
+  private Profile buildProfileFromSection(DocumentSection section) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+public void setProfile(Profile profile) {
     this.profile = profile;
   }
 

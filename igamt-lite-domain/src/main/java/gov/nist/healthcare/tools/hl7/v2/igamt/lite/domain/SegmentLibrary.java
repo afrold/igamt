@@ -175,8 +175,8 @@ public class SegmentLibrary extends Library implements java.io.Serializable,
     clone.setExt(this.getExt() + "-" + genRand());
     clone.setMetaData(this.getMetaData().clone());
     clone.setScope(this.getScope());
-    clone.setSectionContents(this.getSectionContents());
-    clone.setSectionDescription(this.getSectionDescription());
+    clone.setSectionContent(this.getSectionContents());
+    //clone.setSectionDescription(this.getSectionDescription());
     clone.setSectionPosition(this.getSectionPosition());
     clone.setSectionTitle(this.getSectionTitle());
     clone.setType(this.getType());

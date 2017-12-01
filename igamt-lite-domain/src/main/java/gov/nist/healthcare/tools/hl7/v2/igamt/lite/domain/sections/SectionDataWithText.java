@@ -5,7 +5,31 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("withText")
 public class SectionDataWithText extends SectionData{
+	
+	
 	protected String sectionContent;
+	protected String referenceType;
+	protected String referenceId;
+	protected  Integer position;
+	
+	public String getReferenceType() {
+		return referenceType;
+	}
+	public void setReferenceType(String referenceType) {
+		this.referenceType = referenceType;
+	}
+	public String getReferenceId() {
+		return referenceId;
+	}
+	public void setReferenceId(String referenceId) {
+		this.referenceId = referenceId;
+	}
+	public Integer getPosition() {
+		return position;
+	}
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
 	public String getSectionContent() {
 		return sectionContent;
 	}

@@ -13,20 +13,25 @@ export  class TocService{
 
   buildTreeFromIgDocument=function (igdocument) {
     var treeData= [];
+   //
+   //  var toc={};
+   //  toc["label"]= "Table of Content";
+   //  toc["data"]={sectionTitle: "IG Document",type:"root"};
+   //  toc["expanded"]=true;
+   //
+   //  console.log(igdocument);
+   //
+   //  var narratives= this.convertNarratives(igdocument.childSections);
+   // // var profileSctions=this.processProfile(igdocument.profile);
+   //  var children=narratives;
+   //  toc["children"]=children;
+   //
+    igdocument["content"]["data"]["referenceType"]="root";
+    igdocument["content"]["data"]["sectionTitle"]="Table of Content";
 
-    var toc={};
-    toc["label"]= "Table of Content";
-    toc["data"]={sectionTitle: "IG Document",type:"root"};
-    toc["expanded"]=true;
 
-    console.log(igdocument);
+    treeData.push(igdocument["content"]);
 
-    var narratives= this.convertNarratives(igdocument.childSections);
-   // var profileSctions=this.processProfile(igdocument.profile);
-    var children=narratives;
-    toc["children"]=children;
-
-    treeData.push(toc);
     return treeData;
 
   };

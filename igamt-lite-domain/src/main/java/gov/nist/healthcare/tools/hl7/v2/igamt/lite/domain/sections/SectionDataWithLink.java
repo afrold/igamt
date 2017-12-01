@@ -12,7 +12,6 @@ public class SectionDataWithLink<T extends AbstractLink> extends SectionData {
 
 
 	public SectionDataWithLink() {
-		// TODO Auto-generated constructor stub
 		super();
 	}
 

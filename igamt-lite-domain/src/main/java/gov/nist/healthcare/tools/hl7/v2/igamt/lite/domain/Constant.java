@@ -57,7 +57,8 @@ public class Constant {
   public final static String DATATYPELIBRARYSECTION = "DatatypeLibrarySection";
   public final static String SEGMENTLIBRARYSECTION = "SegmentLibrarySection";
   public final static String TABLELIBRARYSECTION = "TableLibrarySection";
-  
+  public final static String MESSAGELINK="messageLink";
+  public final static String COMPOSITEPROFILELINK="CompositeProfileLink";
 
 
   public final static String Document = "document";

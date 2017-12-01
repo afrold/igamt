@@ -45,6 +45,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ColumnsConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfiles;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
@@ -70,6 +72,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NameAndPositionAndPresence;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
@@ -115,11 +119,14 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.RootSectionDa
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.SectionData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.SectionDataWithLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.SectionDataWithText;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.CompositeProfileLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ExportConfigRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileStructureService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -128,6 +135,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontConfigServi
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
@@ -208,9 +216,20 @@ public class Bootstrap implements InitializingBean {
   @Autowired
   private DeltaService deltaService;
 
-  @Autowired
-  private ExportConfigRepository exportConfigRepository;
+//  @Autowired
+//  private ExportConfigRepository exportConfigRepository;
 
+  @Autowired
+  private CompositeProfileLibraryService compositeProfileLibraryService;
+  
+  @Autowired
+  private MessageLibraryService messageLibraryService;
+  
+  @Autowired
+  private CompositeProfileLibraryRepository CpLibRepo;
+  
+  @Autowired
+  private MessageLibraryRepository messageLibraryRepository;
   /*
    * 
    */
@@ -335,13 +354,68 @@ public class Bootstrap implements InitializingBean {
 
 	  //angular 
 	 // addInfoToLinks();
-	  
-	  //addProfileToSection();
+	  createCompositeProfileLibraries();
+	  createMessageLibrary();
+
 	  createToc();
   }
   
   
-  private void createToc() throws IGDocumentException{
+  private void createCompositeProfileLibrary() throws IGDocumentException {
+	// TODO Auto-generated method stub
+	   List<IGDocument> allIGs = documentService.findAll();	
+	    for(IGDocument d : allIGs){
+	    	CompositeProfileLibrary lib=new CompositeProfileLibrary();
+	    	lib.setId(d.getProfile().getCompositeProfiles().getId());
+	    	Set<CompositeProfileStructure> children= d.getProfile().getCompositeProfiles().getChildren();
+	    	for(CompositeProfileStructure struct:children ){
+	    		CompositeProfileLink link=new CompositeProfileLink();
+	    		link.setId(struct.getId()); 
+	    		link.setNumberOfChilren(struct.getProfileComponentIds().size());
+	    		link.setName(struct.getName());
+	    		link.setType(struct.getType());
+	    		link.setDescription(struct.getDescription());
+	    		lib.addChild(link);
+	    	}
+	    	d.getProfile().setCompsoiteProfileLibrary(CpLibRepo.save(lib));
+	    	
+	    	documentService.save(d);
+
+	    	
+	    }
+}
+  
+  private void createMessageLibrary() throws IGDocumentException {
+	// TODO Auto-generated method stub
+	   List<IGDocument> allIGs = documentService.findAll();	
+	    for(IGDocument d : allIGs){
+	    	MessageLibrary lib=new MessageLibrary();
+	    	lib.setId(d.getProfile().getMessages().getId());
+	    	Set<Message> children= d.getProfile().getMessages().getChildren();
+	    	for(Message message:children ){
+	    		MessageLink link=new MessageLink();
+	    		link.setId(message.getId());
+	    		link.setNumberOfChilren(message.getChildren().size());
+	    		link.setName(message.getName());
+	    		link.setDescription(message.getDescription());
+	    		link.setIdentifier(message.getId());
+	    		link.setMessageType(message.getMessageType());
+	    		link.setStructID(message.getStructID());
+	    		lib.addMessage(link);
+	    	}
+	    	d.getProfile().setMessageLibrary(lib);
+	    	documentService.save(d);	
+	    }
+}
+
+
+private void createCompositeProfileLibraries() {
+	// TODO Auto-generated method stub
+	
+}
+
+
+private void createToc() throws IGDocumentException{
 	   List<IGDocument> allIGs = documentService.findAll();	
 	    for(IGDocument d : allIGs){
 	    	createTreeStructure(d);
@@ -382,15 +456,15 @@ public class Bootstrap implements InitializingBean {
 
 	  DocumentSection ret = new DocumentSection();
 	  SectionDataWithText dataWithText= new SectionDataWithText();
-	  //dataWithText.setPosition(p.getChildSections().size());
+	  dataWithText.setPosition(i);
 	  dataWithText.setSectionContent(p.getSectionContents());
 	  dataWithText.setSectionTitle(p.getSectionTitle());;
 	  dataWithText.setReferenceId(p.getId());
 	  dataWithText.setReferenceType(p.getType());
 	  ret.setData(dataWithText);
 	  ret.getChildren().add(createProfileComponentLibrarySection(p.getProfileComponentLibrary(),1));
-	  ret.getChildren().add(createConformanceProfileSection(p.getMessages(),2));
-	  ret.getChildren().add(createCompositeProfile(p.getCompositeProfiles(),3));
+	  ret.getChildren().add(createConformanceProfileSection(p.getMessageLibrary(),2));
+	  ret.getChildren().add(createCompositeProfile(p.getCompsoiteProfileLibrary(),3));
 	  ret.getChildren().add(createSegmentLibrarySection(p.getSegmentLibrary(),4));
 	  ret.getChildren().add(createDatatypeLibrary(p.getDatatypeLibrary(),5));
 	  ret.getChildren().add(createTableLibrary(p.getTableLibrary(),6));
@@ -453,7 +527,7 @@ private DocumentSection createSegmentLibrarySection(SegmentLibrary segmentLibrar
 }
 
 
-private DocumentSection createCompositeProfile(CompositeProfiles compositeProfiles, int position) {
+private DocumentSection createCompositeProfile(CompositeProfileLibrary compositeProfiles, int position) {
 	  DocumentSection ret = new DocumentSection();
 	  //ret.setChildren(new ArrayList<CompositeProfileSectionData>());
 
@@ -465,8 +539,8 @@ private DocumentSection createCompositeProfile(CompositeProfiles compositeProfil
 	  dataWithText.setReferenceType(compositeProfiles.getType());
 	  ret.setData(dataWithText);
 
-	  for(CompositeProfileStructure link: compositeProfiles.getChildren()){
-		  ret.getChildren().add(createSectionOfCompositeProfile(link));
+	  for(CompositeProfileLink link: compositeProfiles.getChildren()){
+		  ret.getChildren().add(createSectionOfLink(link));
 	  }	  
 	
 	return ret;
@@ -478,8 +552,8 @@ private DocumentSection createSectionOfCompositeProfile(CompositeProfileStructur
 	DocumentSection ret = new DocumentSection();
 	CompositeProfileSectionData data= new CompositeProfileSectionData();
 	data.setExt(cp.getExt());
-	data.setReferenceType(cp.getType());
-	data.setReferenceId(cp.getId());
+//	data.setReferenceType(cp.getType());
+//	data.setReferenceId(cp.getId());
 	data.setName(cp.getName());
 	data.setDescription(cp.getDescription());
 
@@ -488,7 +562,7 @@ private DocumentSection createSectionOfCompositeProfile(CompositeProfileStructur
 }
 
 
-private DocumentSection createConformanceProfileSection(Messages messages, int position) {
+private DocumentSection createConformanceProfileSection(MessageLibrary messages, int position) {
 	  DocumentSection ret = new DocumentSection();
 	//ret.setChildren(new ArrayList<MessageSectionData>());
 
@@ -499,12 +573,12 @@ private DocumentSection createConformanceProfileSection(Messages messages, int p
 	  dataWithText.setReferenceId(messages.getId());
 	  dataWithText.setReferenceType(messages.getType());
 	  ret.setData(dataWithText);
-	  List<Message> sorted= new ArrayList<Message>();
+	  List<MessageLink> sorted= new ArrayList<MessageLink>();
 	  sorted.addAll(messages.getChildren());
 	  Collections.sort(sorted); 
 	  
-	  for(Message link: sorted){
-		  ret.getChildren().add(createSectionOfMessage(link));
+	  for(MessageLink link: sorted){
+		  ret.getChildren().add(createSectionOfLink(link));
 	  }	  
 	
 	return ret;
@@ -514,10 +588,10 @@ private DocumentSection createConformanceProfileSection(Messages messages, int p
 private DocumentSection<MessageSectionData> createSectionOfMessage(Message message) {
 	DocumentSection<MessageSectionData> ret = new DocumentSection<MessageSectionData>();
 	MessageSectionData data= new MessageSectionData();
-	  data.setPosition(message.getPosition());
+	//  data.setPosition(message.getPosition());
 	  data.setName(message.getName());
-	  data.setReferenceId(message.getId());
-	  data.setReferenceType(message.getType());
+//	  data.setReferenceId(message.getId());
+//	  data.setReferenceType(message.getType());
 	  data.setMessageType(message.getMessageType());
 	  data.setDescription(message.getDescription());
 	  data.setStructID(message.getStructID());
@@ -548,8 +622,6 @@ private DocumentSection createProfileComponentLibrarySection(ProfileComponentLib
 private DocumentSection<SectionDataWithLink> createSectionOfLink(AbstractLink link){
 	  DocumentSection ret = new DocumentSection();
 	  SectionDataWithLink dataWithLink= new SectionDataWithLink();
-	  dataWithLink.setReferenceId(link.getId());
-	  dataWithLink.setReferenceType(link.getType());
 	  dataWithLink.setRef(link);
 	  ret.setData(dataWithLink);
 	  return ret;
@@ -622,10 +694,10 @@ private void updateTableForNumOfCodesANDSourceType() {
   }
 
 
-
-  private void clearUserExportConfigurations() {
-    exportConfigRepository.deleteAll();
-  }
+//
+//  private void clearUserExportConfigurations() {
+//    exportConfigRepository.deleteAll();
+//  }
   
   
   
@@ -645,6 +717,7 @@ private void updateTableForNumOfCodesANDSourceType() {
 		  Datatype temp= datatypeService.findById(link.getId());
 		  if(temp !=null){
 			  link.setExt(temp.getExt());
+			  
 			  link.setDescription(temp.getDescription());
 			  link.setHl7Version(temp.getHl7Version());
 			  link.setHl7versions(temp.getHl7versions());
@@ -657,6 +730,7 @@ private void updateTableForNumOfCodesANDSourceType() {
 	  }}
 	  datatypeLibraryService.save(lib);
   }
+
   private void  AddInfoToSegmentLinks(SegmentLibrary lib){
 	  for(SegmentLink link: lib.getChildren()){
 		  if(link.getId()!=null){

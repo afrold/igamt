@@ -24,13 +24,13 @@ public class CompositeProfiles extends Library
 
   private static final long serialVersionUID = 1L;
 
-
+  private String id;
   /**
      * 
      */
   public CompositeProfiles() {
     super();
-    this.id = ObjectId.get().toString();
+    this.setId(ObjectId.get().toString());
     type=Constant.COMPOSITEPROFILES;
     sectionPosition=3;
   }
@@ -60,5 +60,13 @@ public class CompositeProfiles extends Library
     }
     this.children.remove(toRemove);
   }
+
+public String getId() {
+	return id;
+}
+
+public void setId(String id) {
+	this.id = id;
+}
 
 }
