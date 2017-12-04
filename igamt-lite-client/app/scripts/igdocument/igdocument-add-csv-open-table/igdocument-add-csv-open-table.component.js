@@ -73,7 +73,8 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function ($scope, $mdDia
           code.codeSystem = row[2];
           code.codeUsage = row[3];
           code.comments = row[4];
-          duplicatedCodeSystems.push(code.codeSystem);
+
+          if(code.codeSystem && code.codeSystem !== '') duplicatedCodeSystems.push(code.codeSystem);
           if (code.value != null && code.value != "") {
             $scope.importedTable.codes.push(code);
           }
@@ -84,7 +85,10 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function ($scope, $mdDia
       $.each(duplicatedCodeSystems, function(i, el){
         if($.inArray(el, uniqueCodeSystems) === -1) uniqueCodeSystems.push(el);
       });
-      $scope.importedTable.codeSystems = duplicatedCodeSystems;
+      $scope.importedTable.codeSystems = uniqueCodeSystems;
+
+
+
       if($scope.importedTable.codes) $scope.importedTable.numberOfCodes = $scope.importedTable.codes.length ;
 
       if ($scope.importedTable.bindingIdentifier == null || $scope.importedTable.bindingIdentifier == '') {
