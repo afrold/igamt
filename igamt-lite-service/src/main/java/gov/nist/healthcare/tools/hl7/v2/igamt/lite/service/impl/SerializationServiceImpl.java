@@ -232,7 +232,7 @@ public class SerializationServiceImpl implements SerializationService {
       this.bindedSegments = new ArrayList<>();
       this.unbindedTables = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
       this.compositeProfiles = new ArrayList<>();
-      if (igDocument.getProfile().getCompositeProfiles() != null && !igDocument.getProfile().getCompositeProfiles().getChildren().isEmpty()) {
+      if (igDocument.getProfile().getCompositeProfiles() != null && !igDocument.getProfile().getCompositeProfiles().getChildren().isEmpty() && exportConfig.isIncludeCompositeProfileTable()) {
         for (CompositeProfileStructure compositeProfileStructure : igDocument.getProfile().getCompositeProfiles().getChildren()) {
           CompositeProfile compositeProfile = null;
           try {
@@ -319,11 +319,14 @@ public class SerializationServiceImpl implements SerializationService {
       }
 
       // Composite profiles serialization
-      SerializableSection compositeProfilesSection =
-          this.serializeCompositeProfiles(profile, serializationLayout, igDocument.getMetaData().getHl7Version(), currentPosition);
-      if (exportConfig.isIncludeCompositeProfileTable() && compositeProfilesSection != null) {
-        profileSection.addSection(compositeProfilesSection);
-        currentPosition++;
+      SerializableSection compositeProfilesSection = null;
+      if (exportConfig.isIncludeCompositeProfileTable()){
+    	  compositeProfilesSection =
+	          this.serializeCompositeProfiles(profile, serializationLayout, igDocument.getMetaData().getHl7Version(), currentPosition);
+	      if (compositeProfilesSection != null) {
+	        profileSection.addSection(compositeProfilesSection);
+	        currentPosition++;
+	      }
       }
 
       // Segments serialization
