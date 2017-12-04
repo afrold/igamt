@@ -79,7 +79,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ProfileSerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.TableSerializationException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.xml.serialization.XMLExportTool;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.xml.XMLExportTool;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ConstraintsSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -593,7 +593,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
   
   @Override
   public InputStream serializeProfileGazelleToZip(Profile original, String[] ids, DocumentMetaData metadata)
-      throws IOException, CloneNotSupportedException {
+      throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException {
     Profile filteredProfile = new Profile();
 
     HashMap<String, Segment> segmentsMap = new HashMap<String, Segment>();
@@ -678,7 +678,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
   @Override
   public InputStream serializeCompositeProfileDisplayToZip(IGDocument doc, String[] ids)
-      throws IOException, CloneNotSupportedException, TableSerializationException {
+      throws IOException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException {
     Map<String, Segment> segmentsMap = new HashMap<String, Segment>();
     Map<String, Datatype> datatypesMap = new HashMap<String, Datatype>();
     Map<String, Table> tablesMap = new HashMap<String, Table>();
@@ -863,7 +863,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
   @Override
   public InputStream serializeProfileDisplayToZip(Profile original, String[] ids,
-      DocumentMetaData metadata) throws IOException, CloneNotSupportedException, TableSerializationException {
+      DocumentMetaData metadata) throws IOException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException {
 
     Profile filteredProfile = new Profile();
 
@@ -1170,7 +1170,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
   @Override
   public InputStream serializeCompositeProfileGazelleToZip(IGDocument doc, String[] ids)
-      throws IOException, CloneNotSupportedException {
+      throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException {
     HashMap<String, Segment> segmentsMap = new HashMap<String, Segment>();
     HashMap<String, Datatype> datatypesMap = new HashMap<String, Datatype>();
     HashMap<String, Table> tablesMap = new HashMap<String, Table>();

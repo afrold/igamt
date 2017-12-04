@@ -1093,7 +1093,7 @@ public class IGDocumentController extends CommonController {
   public void exportDisplayXMLByCompositeProfile(@PathVariable("id") String id,
       @PathVariable("cIds") String[] compositeProfileIds, HttpServletRequest request,
       HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException, TableSerializationException {
+      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException {
     IGDocument d = findIGDocument(id);
     InputStream content =
         igDocumentExport.exportAsDisplayForSelectedCompositeProfiles(d, compositeProfileIds);
@@ -1109,7 +1109,7 @@ public class IGDocumentController extends CommonController {
   public void exportDisplayXMLByMessages(@PathVariable("id") String id,
       @PathVariable("mIds") String[] messageIds, HttpServletRequest request,
       HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException, TableSerializationException {
+      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException {
     IGDocument d = findIGDocument(id);
     InputStream content = igDocumentExport.exportAsDisplayForSelectedMessage(d, messageIds);
     response.setContentType("application/zip");
@@ -1124,7 +1124,7 @@ public class IGDocumentController extends CommonController {
   public void exportGazelleXMLByMessages(@PathVariable("id") String id,
       @PathVariable("mIds") String[] messageIds, HttpServletRequest request,
       HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
+      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException {
     IGDocument d = findIGDocument(id);
     InputStream content = igDocumentExport.exportAsGazelleForSelectedMessages(d, messageIds);
     response.setContentType("application/zip");
@@ -1139,7 +1139,7 @@ public class IGDocumentController extends CommonController {
   public void exportGazelleXMLByCompositeProfiles(@PathVariable("id") String id,
       @PathVariable("cIds") String[] compositeProfileIds, HttpServletRequest request,
       HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
+      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException {
     IGDocument d = findIGDocument(id);
     InputStream content =
         igDocumentExport.exportAsGazelleForSelectedCompositeProfiles(d, compositeProfileIds);

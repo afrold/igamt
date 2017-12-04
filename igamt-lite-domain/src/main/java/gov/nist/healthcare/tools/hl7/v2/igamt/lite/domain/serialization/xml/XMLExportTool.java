@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.xml.serialization;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -108,8 +108,9 @@ public class XMLExportTool {
 
   public InputStream exportXMLAsDisplayFormatForSelectedMessages(Profile profile,
       DocumentMetaData metadata, Map<String, Segment> segmentsMap,
-      Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap)
-      throws IOException, CloneNotSupportedException, TableSerializationException {
+      Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) throws IOException,
+      CloneNotSupportedException, TableSerializationException, ProfileSerializationException {
+
     this.normalizeProfile(profile, segmentsMap, datatypesMap);
 
     ByteArrayOutputStream outputStream = null;
@@ -281,9 +282,8 @@ public class XMLExportTool {
           }
 
           elmValueSetDefinition.addAttribute(new Attribute("Name", this.str(t.getName())));
-          if (t.getDescription() != null && !t.getDescription().equals(""))
-            elmValueSetDefinition
-                .addAttribute(new Attribute("Description", this.str(t.getDescription())));
+          if (t.getName() != null && !t.getName().equals(""))
+            elmValueSetDefinition.addAttribute(new Attribute("Description", this.str(t.getName())));
           if (t.getVersion() != null && !t.getVersion().equals(""))
             elmValueSetDefinition.addAttribute(new Attribute("Version", this.str(t.getVersion())));
           if (t.getOid() != null && !t.getOid().equals(""))
@@ -414,685 +414,812 @@ public class XMLExportTool {
 
   private String serializeProfileDisplayToXML(Profile p, Message m, DocumentMetaData metadata,
       Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap,
-      Map<String, Table> tablesMap) throws TableSerializationException {
-    Element e = new Element("ConformanceProfile");
-    this.serializeProfileMetaData(e, p, metadata, "Display");
-    e.appendChild(this.serializeDisplayMessage(m, p, segmentsMap, datatypesMap, tablesMap));
-    e.appendChild(this.serializeTableXML(p, metadata, tablesMap));
-    Document doc = new Document(e);
-    return doc.toXML();
+      Map<String, Table> tablesMap)
+      throws TableSerializationException, ProfileSerializationException {
+    try {
+      Element e = new Element("ConformanceProfile");
+      this.serializeProfileMetaData(e, p, metadata, "Display");
+      e.appendChild(this.serializeDisplayMessage(m, p, segmentsMap, datatypesMap, tablesMap));
+      e.appendChild(this.serializeTableXML(p, metadata, tablesMap));
+      Document doc = new Document(e);
+      return doc.toXML();
+    } catch (Exception e) {
+      throw new ProfileSerializationException(e, p != null ? p.getId() : "");
+    }
+
   }
 
   private Element serializeDisplayMessage(Message m, Profile profile,
       Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap,
-      Map<String, Table> tablesMap) {
-    Element elmMessage = new Element("Message");
-    if (m.getName() != null && !m.getName().equals(""))
-      elmMessage.addAttribute(new Attribute("Name", this.str(m.getName())));
-    elmMessage.addAttribute(new Attribute("Type", this.str(m.getMessageType())));
-    elmMessage.addAttribute(new Attribute("Event", this.str(m.getEvent())));
-    elmMessage.addAttribute(new Attribute("StructID", this.str(m.getStructID())));
-    if (m.getDescription() != null && !m.getDescription().equals(""))
-      elmMessage.addAttribute(new Attribute("Description", this.str(m.getDescription())));
+      Map<String, Table> tablesMap) throws MessageSerializationException {
+    try {
+      Element elmMessage = new Element("Message");
+      if (m.getName() != null && !m.getName().equals(""))
+        elmMessage.addAttribute(new Attribute("Name", this.str(m.getName())));
+      elmMessage.addAttribute(new Attribute("Type", this.str(m.getMessageType())));
+      elmMessage.addAttribute(new Attribute("Event", this.str(m.getEvent())));
+      elmMessage.addAttribute(new Attribute("StructID", this.str(m.getStructID())));
+      if (m.getDescription() != null && !m.getDescription().equals(""))
+        elmMessage.addAttribute(new Attribute("Description", this.str(m.getDescription())));
 
-    Map<Integer, SegmentRefOrGroup> segmentRefOrGroups = new HashMap<Integer, SegmentRefOrGroup>();
-    for (SegmentRefOrGroup segmentRefOrGroup : m.getChildren()) {
-      segmentRefOrGroups.put(segmentRefOrGroup.getPosition(), segmentRefOrGroup);
-    }
-
-    for (int i = 1; i < segmentRefOrGroups.size() + 1; i++) {
-      String path = i + "[1]";
-      SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
-      if (segmentRefOrGroup instanceof SegmentRef) {
-        elmMessage.appendChild(serializeDisplaySegment((SegmentRef) segmentRefOrGroup, profile, m,
-            path, segmentsMap, datatypesMap, tablesMap));
-      } else if (segmentRefOrGroup instanceof Group) {
-        elmMessage.appendChild(serializeDisplayGroup((Group) segmentRefOrGroup, profile, m, path,
-            segmentsMap, datatypesMap, tablesMap));
+      Map<Integer, SegmentRefOrGroup> segmentRefOrGroups =
+          new HashMap<Integer, SegmentRefOrGroup>();
+      for (SegmentRefOrGroup segmentRefOrGroup : m.getChildren()) {
+        segmentRefOrGroups.put(segmentRefOrGroup.getPosition(), segmentRefOrGroup);
       }
+
+      for (int i = 1; i < segmentRefOrGroups.size() + 1; i++) {
+        String path = i + "[1]";
+        SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
+        if (segmentRefOrGroup instanceof SegmentRef) {
+          elmMessage.appendChild(serializeDisplaySegment((SegmentRef) segmentRefOrGroup, profile, m,
+              path, segmentsMap, datatypesMap, tablesMap));
+        } else if (segmentRefOrGroup instanceof Group) {
+          elmMessage.appendChild(serializeDisplayGroup((Group) segmentRefOrGroup, profile, m, path,
+              segmentsMap, datatypesMap, tablesMap));
+        }
+      }
+      return elmMessage;
+    } catch (Exception e) {
+      throw new MessageSerializationException(e, m != null ? m.getName() : "");
     }
-    return elmMessage;
+
   }
 
   private Element serializeDisplayGroup(Group group, Profile profile, Message message, String path,
       Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap,
-      Map<String, Table> tablesMap) {
-    Element elmGroup = new Element("Group");
-    elmGroup.addAttribute(new Attribute("ID", this.str(group.getName())));
-    elmGroup.addAttribute(new Attribute("Name", this.str(group.getName())));
-    elmGroup.addAttribute(new Attribute("Usage", this.str(group.getUsage().value())));
-    elmGroup.addAttribute(new Attribute("Min", this.str(group.getMin() + "")));
-    elmGroup.addAttribute(new Attribute("Max", this.str(group.getMax())));
+      Map<String, Table> tablesMap) throws GroupSerializationException {
+    try {
+      Element elmGroup = new Element("Group");
+      elmGroup.addAttribute(new Attribute("ID", this.str(group.getName())));
+      elmGroup.addAttribute(new Attribute("Name", this.str(group.getName())));
+      elmGroup.addAttribute(new Attribute("Usage", this.str(group.getUsage().value())));
+      elmGroup.addAttribute(new Attribute("Min", this.str(group.getMin() + "")));
+      elmGroup.addAttribute(new Attribute("Max", this.str(group.getMax())));
 
-    Predicate groupPredicate = this.findPredicate(null, null, message.getPredicates(), path);
-    if (groupPredicate != null) {
-      Element elmPredicate = new Element("Predicate");
-      elmPredicate.addAttribute(new Attribute("TrueUsage", "" + groupPredicate.getTrueUsage()));
-      elmPredicate.addAttribute(new Attribute("FalseUsage", "" + groupPredicate.getFalseUsage()));
+      Predicate groupPredicate = this.findPredicate(null, null, message.getPredicates(), path);
+      if (groupPredicate != null) {
+        try {
+          Element elmPredicate = new Element("Predicate");
+          elmPredicate.addAttribute(new Attribute("TrueUsage", "" + groupPredicate.getTrueUsage()));
+          elmPredicate
+              .addAttribute(new Attribute("FalseUsage", "" + groupPredicate.getFalseUsage()));
 
-      Element elmDescription = new Element("Description");
-      elmDescription.appendChild(groupPredicate.getDescription());
-      elmPredicate.appendChild(elmDescription);
+          Element elmDescription = new Element("Description");
+          elmDescription.appendChild(groupPredicate.getDescription());
+          elmPredicate.appendChild(elmDescription);
 
-      Node n = this.innerXMLHandler(groupPredicate.getAssertion());
-      if (n != null)
-        elmPredicate.appendChild(n);
+          Node n = this.innerXMLHandler(groupPredicate.getAssertion());
+          if (n != null)
+            elmPredicate.appendChild(n);
 
-      elmGroup.appendChild(elmPredicate);
-    }
+          elmGroup.appendChild(elmPredicate);
+        } catch (Exception e) {
+          throw new ConstraintSerializationException(e, groupPredicate.getDescription());
+        }
 
-    List<ConformanceStatement> groupConformanceStatements =
-        this.findConformanceStatements(null, null, message.getConformanceStatements(), path);
-
-    if (groupConformanceStatements.size() > 0) {
-      Element elmConformanceStatements = new Element("ConformanceStatements");
-
-      for (ConformanceStatement c : groupConformanceStatements) {
-        Element elmConformanceStatement = new Element("ConformanceStatement");
-        elmConformanceStatement.addAttribute(new Attribute("ID", "" + c.getConstraintId()));
-        Element elmDescription = new Element("Description");
-        elmDescription.appendChild(c.getDescription());
-        elmConformanceStatement.appendChild(elmDescription);
-
-        Node n = this.innerXMLHandler(c.getAssertion());
-        if (n != null)
-          elmConformanceStatement.appendChild(n);
-
-        elmConformanceStatements.appendChild(elmConformanceStatement);
       }
 
-      elmGroup.appendChild(elmConformanceStatements);
-    }
+      List<ConformanceStatement> groupConformanceStatements =
+          this.findConformanceStatements(null, null, message.getConformanceStatements(), path);
 
-    Map<Integer, SegmentRefOrGroup> segmentRefOrGroups = new HashMap<Integer, SegmentRefOrGroup>();
+      if (groupConformanceStatements.size() > 0) {
+        Element elmConformanceStatements = new Element("ConformanceStatements");
 
-    for (SegmentRefOrGroup segmentRefOrGroup : group.getChildren()) {
-      segmentRefOrGroups.put(segmentRefOrGroup.getPosition(), segmentRefOrGroup);
-    }
+        for (ConformanceStatement c : groupConformanceStatements) {
+          try {
+            Element elmConformanceStatement = new Element("ConformanceStatement");
+            elmConformanceStatement.addAttribute(new Attribute("ID", "" + c.getConstraintId()));
+            Element elmDescription = new Element("Description");
+            elmDescription.appendChild(c.getDescription());
+            elmConformanceStatement.appendChild(elmDescription);
 
-    Element elmStructure = new Element("Structure");
+            Node n = this.innerXMLHandler(c.getAssertion());
+            if (n != null)
+              elmConformanceStatement.appendChild(n);
 
-    for (int i = 1; i < segmentRefOrGroups.size() + 1; i++) {
-      String childPath = path + "." + i + "[1]";
-      SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
-      if (segmentRefOrGroup instanceof SegmentRef) {
-        elmStructure.appendChild(serializeDisplaySegment((SegmentRef) segmentRefOrGroup, profile,
-            message, childPath, segmentsMap, datatypesMap, tablesMap));
-      } else if (segmentRefOrGroup instanceof Group) {
-        elmStructure.appendChild(serializeDisplayGroup((Group) segmentRefOrGroup, profile, message,
-            childPath, segmentsMap, datatypesMap, tablesMap));
+            elmConformanceStatements.appendChild(elmConformanceStatement);
+          } catch (Exception e) {
+            throw new ConstraintSerializationException(e, c.getDescription());
+          }
+        }
+
+        elmGroup.appendChild(elmConformanceStatements);
+      }
+
+      Map<Integer, SegmentRefOrGroup> segmentRefOrGroups =
+          new HashMap<Integer, SegmentRefOrGroup>();
+
+      for (SegmentRefOrGroup segmentRefOrGroup : group.getChildren()) {
+        segmentRefOrGroups.put(segmentRefOrGroup.getPosition(), segmentRefOrGroup);
+      }
+
+      Element elmStructure = new Element("Structure");
+
+      for (int i = 1; i < segmentRefOrGroups.size() + 1; i++) {
+        String childPath = path + "." + i + "[1]";
+        SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
+        if (segmentRefOrGroup instanceof SegmentRef) {
+          elmStructure.appendChild(serializeDisplaySegment((SegmentRef) segmentRefOrGroup, profile,
+              message, childPath, segmentsMap, datatypesMap, tablesMap));
+        } else if (segmentRefOrGroup instanceof Group) {
+          elmStructure.appendChild(serializeDisplayGroup((Group) segmentRefOrGroup, profile,
+              message, childPath, segmentsMap, datatypesMap, tablesMap));
+        }
+      }
+
+      elmGroup.appendChild(elmStructure);
+
+      return elmGroup;
+    } catch (Exception e) {
+      if (group != null) {
+        throw new GroupSerializationException(e, group.getName());
       }
     }
+    return null;
 
-    elmGroup.appendChild(elmStructure);
-
-    return elmGroup;
   }
 
   private Element serializeDisplaySegment(SegmentRef segmentRef, Profile profile, Message message,
       String path, Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap,
-      Map<String, Table> tablesMap) {
+      Map<String, Table> tablesMap) throws SegmentSerializationException {
     Element elmSegment = new Element("Segment");
-
     Segment segment = segmentsMap.get(segmentRef.getRef().getId());
 
-    elmSegment.addAttribute(new Attribute("ID", this.str(segment.getLabel())));
-    elmSegment.addAttribute(new Attribute("Usage", this.str(segmentRef.getUsage().value())));
-    elmSegment.addAttribute(new Attribute("Min", this.str(segmentRef.getMin() + "")));
-    elmSegment.addAttribute(new Attribute("Max", this.str(segmentRef.getMax())));
-    elmSegment.addAttribute(new Attribute("Name", this.str(segment.getName())));
-    elmSegment.addAttribute(new Attribute("Description", this.str(segment.getDescription())));
+    try {
+      elmSegment.addAttribute(new Attribute("ID", this.str(segment.getLabel())));
+      elmSegment.addAttribute(new Attribute("Usage", this.str(segmentRef.getUsage().value())));
+      elmSegment.addAttribute(new Attribute("Min", this.str(segmentRef.getMin() + "")));
+      elmSegment.addAttribute(new Attribute("Max", this.str(segmentRef.getMax())));
+      elmSegment.addAttribute(new Attribute("Name", this.str(segment.getName())));
+      elmSegment.addAttribute(new Attribute("Description", this.str(segment.getDescription())));
 
-    Predicate segmentPredicate = this.findPredicate(null, null, message.getPredicates(), path);
-    if (segmentPredicate != null) {
-      Element elmPredicate = new Element("Predicate");
-      elmPredicate.addAttribute(new Attribute("TrueUsage", "" + segmentPredicate.getTrueUsage()));
-      elmPredicate.addAttribute(new Attribute("FalseUsage", "" + segmentPredicate.getFalseUsage()));
+      Predicate segmentPredicate = this.findPredicate(null, null, message.getPredicates(), path);
+      if (segmentPredicate != null) {
+        try {
+          Element elmPredicate = new Element("Predicate");
+          elmPredicate
+              .addAttribute(new Attribute("TrueUsage", "" + segmentPredicate.getTrueUsage()));
+          elmPredicate
+              .addAttribute(new Attribute("FalseUsage", "" + segmentPredicate.getFalseUsage()));
 
-      Element elmDescription = new Element("Description");
-      elmDescription.appendChild(segmentPredicate.getDescription());
-      elmPredicate.appendChild(elmDescription);
+          Element elmDescription = new Element("Description");
+          elmDescription.appendChild(segmentPredicate.getDescription());
+          elmPredicate.appendChild(elmDescription);
 
-      Node n = this.innerXMLHandler(segmentPredicate.getAssertion());
-      if (n != null)
-        elmPredicate.appendChild(n);
+          Node n = this.innerXMLHandler(segmentPredicate.getAssertion());
+          if (n != null)
+            elmPredicate.appendChild(n);
 
-      elmSegment.appendChild(elmPredicate);
-    }
-
-    List<ConformanceStatement> segmentConformanceStatements =
-        this.findConformanceStatements(null, null, message.getConformanceStatements(), path);
-
-    if (segmentConformanceStatements.size() > 0) {
-      Element elmConformanceStatements = new Element("ConformanceStatements");
-
-      for (ConformanceStatement c : segmentConformanceStatements) {
-        Element elmConformanceStatement = new Element("ConformanceStatement");
-        elmConformanceStatement.addAttribute(new Attribute("ID", "" + c.getConstraintId()));
-        Element elmDescription = new Element("Description");
-        elmDescription.appendChild(c.getDescription());
-        elmConformanceStatement.appendChild(elmDescription);
-
-        Node n = this.innerXMLHandler(c.getAssertion());
-        if (n != null)
-          elmConformanceStatement.appendChild(n);
-
-        elmConformanceStatements.appendChild(elmConformanceStatement);
-      }
-      elmSegment.appendChild(elmConformanceStatements);
-    }
-
-    Element elmSegmentStructure = new Element("Structure");
-
-    Map<Integer, Field> fields = new HashMap<Integer, Field>();
-    for (Field f : segment.getFields()) {
-      fields.put(f.getPosition(), f);
-    }
-
-    if (fields.size() > 0) {
-      elmSegment.appendChild(elmSegmentStructure);
-    }
-
-    String targetPosition = null;
-    String reference = null;
-    String secondReference = null;
-    String referenceTableId = null;
-    HashMap<String, Datatype> dm = new HashMap<String, Datatype>();
-    HashMap<String, Datatype> dm2nd = new HashMap<String, Datatype>();
-
-    if (segment.getName().equals("OBX") || segment.getName().equals("MFA")
-        || segment.getName().equals("MFE")) {
-
-
-      if (segment.getName().equals("OBX")) {
-        targetPosition = "5";
-        reference = "2";
-      }
-
-      if (segment.getName().equals("MFA")) {
-        targetPosition = "5";
-        reference = "6";
-      }
-
-      if (segment.getName().equals("MFE")) {
-        targetPosition = "4";
-        reference = "5";
-      }
-
-      if (segment.getCoConstraintsTable() != null
-          && segment.getCoConstraintsTable().getIfColumnDefinition() != null) {
-        if (segment.getCoConstraintsTable().getIfColumnDefinition().isPrimitive()) {
-          secondReference = segment.getCoConstraintsTable().getIfColumnDefinition().getPath();
-        } else {
-          secondReference =
-              segment.getCoConstraintsTable().getIfColumnDefinition().getPath() + ".1";
+          elmSegment.appendChild(elmPredicate);
+        } catch (Exception e) {
+          throw new ConstraintSerializationException(e, segmentPredicate.getDescription());
         }
+
       }
 
-      referenceTableId = this.findValueSetID(segment.getValueSetBindings(), reference);
+      List<ConformanceStatement> segmentConformanceStatements =
+          this.findConformanceStatements(null, null, message.getConformanceStatements(), path);
 
-      if (referenceTableId != null) {
-        Table table = tablesMap.get(referenceTableId);
-        String hl7Version = null;
-        hl7Version = table.getHl7Version();
-        if (hl7Version == null)
-          hl7Version = segment.getHl7Version();
+      if (segmentConformanceStatements.size() > 0) {
+        Element elmConformanceStatements = new Element("ConformanceStatements");
 
-        if (table != null) {
-          for (Code c : table.getCodes()) {
-            if (c.getValue() != null) {
-              Datatype d =
-                  this.findHL7DatatypeByNameAndVesion(datatypesMap, c.getValue(), hl7Version);
-              if (d != null) {
-                dm.put(c.getValue(), d);
+        for (ConformanceStatement c : segmentConformanceStatements) {
+          try {
+            Element elmConformanceStatement = new Element("ConformanceStatement");
+            elmConformanceStatement.addAttribute(new Attribute("ID", "" + c.getConstraintId()));
+            Element elmDescription = new Element("Description");
+            elmDescription.appendChild(c.getDescription());
+            elmConformanceStatement.appendChild(elmDescription);
+
+            Node n = this.innerXMLHandler(c.getAssertion());
+            if (n != null)
+              elmConformanceStatement.appendChild(n);
+
+            elmConformanceStatements.appendChild(elmConformanceStatement);
+          } catch (Exception e) {
+            throw new ConstraintSerializationException(e, c.getDescription());
+          }
+
+        }
+        elmSegment.appendChild(elmConformanceStatements);
+      }
+
+      Element elmSegmentStructure = new Element("Structure");
+
+      Map<Integer, Field> fields = new HashMap<Integer, Field>();
+      for (Field f : segment.getFields()) {
+        fields.put(f.getPosition(), f);
+      }
+
+      if (fields.size() > 0) {
+        elmSegment.appendChild(elmSegmentStructure);
+      }
+
+      String targetPosition = null;
+      String reference = null;
+      String secondReference = null;
+      String referenceTableId = null;
+      HashMap<String, Datatype> dm = new HashMap<String, Datatype>();
+      HashMap<String, Datatype> dm2nd = new HashMap<String, Datatype>();
+
+      if (segment.getName().equals("OBX") || segment.getName().equals("MFA")
+          || segment.getName().equals("MFE")) {
+
+
+        if (segment.getName().equals("OBX")) {
+          targetPosition = "5";
+          reference = "2";
+        }
+
+        if (segment.getName().equals("MFA")) {
+          targetPosition = "5";
+          reference = "6";
+        }
+
+        if (segment.getName().equals("MFE")) {
+          targetPosition = "4";
+          reference = "5";
+        }
+
+        if (segment.getCoConstraintsTable() != null
+            && segment.getCoConstraintsTable().getIfColumnDefinition() != null) {
+          if (segment.getCoConstraintsTable().getIfColumnDefinition().isPrimitive()) {
+            secondReference = segment.getCoConstraintsTable().getIfColumnDefinition().getPath();
+          } else {
+            secondReference =
+                segment.getCoConstraintsTable().getIfColumnDefinition().getPath() + ".1";
+          }
+        }
+
+        referenceTableId = this.findValueSetID(segment.getValueSetBindings(), reference);
+
+        if (referenceTableId != null) {
+          Table table = tablesMap.get(referenceTableId);
+          String hl7Version = null;
+          hl7Version = table.getHl7Version();
+          if (hl7Version == null)
+            hl7Version = segment.getHl7Version();
+
+          if (table != null) {
+            for (Code c : table.getCodes()) {
+              if (c.getValue() != null) {
+                Datatype d =
+                    this.findHL7DatatypeByNameAndVesion(datatypesMap, c.getValue(), hl7Version);
+                if (d != null) {
+                  dm.put(c.getValue(), d);
+                }
               }
             }
           }
-        }
-        if (segment.getDynamicMappingDefinition() != null) {
-          for (DynamicMappingItem item : segment.getDynamicMappingDefinition()
-              .getDynamicMappingItems()) {
-            if (item.getFirstReferenceValue() != null && item.getDatatypeId() != null)
-              dm.put(item.getFirstReferenceValue(), datatypesMap.get(item.getDatatypeId()));
+          if (segment.getDynamicMappingDefinition() != null) {
+            for (DynamicMappingItem item : segment.getDynamicMappingDefinition()
+                .getDynamicMappingItems()) {
+              if (item.getFirstReferenceValue() != null && item.getDatatypeId() != null)
+                dm.put(item.getFirstReferenceValue(), datatypesMap.get(item.getDatatypeId()));
+            }
           }
         }
-      }
-      if (secondReference != null) {
-        for (CoConstraintColumnDefinition definition : segment.getCoConstraintsTable()
-            .getThenColumnDefinitionList()) {
-          if (definition.isdMReference()) {
-            List<CoConstraintTHENColumnData> dataList =
-                segment.getCoConstraintsTable().getThenMapData().get(definition.getId());
+        if (secondReference != null) {
+          for (CoConstraintColumnDefinition definition : segment.getCoConstraintsTable()
+              .getThenColumnDefinitionList()) {
+            if (definition.isdMReference()) {
+              List<CoConstraintTHENColumnData> dataList =
+                  segment.getCoConstraintsTable().getThenMapData().get(definition.getId());
 
-            if (dataList != null && segment.getCoConstraintsTable().getIfColumnData() != null) {
-              for (int i = 0; i < dataList.size(); i++) {
-                CoConstraintIFColumnData ref =
-                    segment.getCoConstraintsTable().getIfColumnData().get(i);
-                CoConstraintTHENColumnData data = dataList.get(i);
+              if (dataList != null && segment.getCoConstraintsTable().getIfColumnData() != null) {
+                for (int i = 0; i < dataList.size(); i++) {
+                  CoConstraintIFColumnData ref =
+                      segment.getCoConstraintsTable().getIfColumnData().get(i);
+                  CoConstraintTHENColumnData data = dataList.get(i);
 
-                if (ref != null && data != null && ref.getValueData() != null
-                    && ref.getValueData().getValue() != null && data.getDatatypeId() != null
-                    && data.getValueData() != null && data.getValueData().getValue() != null) {
-                  dm2nd.put(ref.getValueData().getValue(), datatypesMap.get(data.getDatatypeId()));
+                  if (ref != null && data != null && ref.getValueData() != null
+                      && ref.getValueData().getValue() != null && data.getDatatypeId() != null
+                      && data.getValueData() != null && data.getValueData().getValue() != null) {
+                    dm2nd.put(ref.getValueData().getValue(),
+                        datatypesMap.get(data.getDatatypeId()));
+                  }
                 }
               }
             }
           }
         }
       }
-    }
 
-    for (int i = 1; i < fields.size() + 1; i++) {
-      String fieldPath = path + "." + i + "[1]";
-      Field f = fields.get(i);
-      if(f != null){
-        if (dm.size() > 0 || dm2nd.size() > 0) {
-          if (targetPosition.equals(i + "")) {
-            Element elmDynamicField = new Element("DynamicField");
-            elmDynamicField.addAttribute(new Attribute("Name", this.str(f.getName())));
-            elmDynamicField.addAttribute(new Attribute("Reference", reference));
-            if (secondReference != null) {
-              elmDynamicField.addAttribute(new Attribute("SecondReference", secondReference));
-            }
-
-            for (String key : dm.keySet()) {
-              Element elmCase = new Element("Case");
-              Datatype d = dm.get(key);
-              if (d != null) {
-                elmCase.addAttribute(new Attribute("Value", d.getName()));
-                this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()),
-                    elmCase, profile, message, segment, fieldPath, datatypesMap, tablesMap);
-                elmDynamicField.appendChild(elmCase);
+      for (int i = 1; i < fields.size() + 1; i++) {
+        String fieldPath = path + "." + i + "[1]";
+        Field f = fields.get(i);
+        if (f != null) {
+          if (dm.size() > 0 || dm2nd.size() > 0) {
+            if (targetPosition.equals(i + "")) {
+              Element elmDynamicField = new Element("DynamicField");
+              elmDynamicField.addAttribute(new Attribute("Name", this.str(f.getName())));
+              elmDynamicField.addAttribute(new Attribute("Reference", reference));
+              if (secondReference != null) {
+                elmDynamicField.addAttribute(new Attribute("SecondReference", secondReference));
               }
-            }
 
-            for (String key : dm2nd.keySet()) {
-              Element elmCase = new Element("Case");
-              Datatype d = dm2nd.get(key);
-              if (d != null) {
-                elmCase.addAttribute(new Attribute("Value", d.getName()));
-                elmCase.addAttribute(new Attribute("SecondValue", key));
-                this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()),
-                    elmCase, profile, message, segment, fieldPath, datatypesMap, tablesMap);
-                elmDynamicField.appendChild(elmCase);
+              for (String key : dm.keySet()) {
+                Element elmCase = new Element("Case");
+                Datatype d = dm.get(key);
+                if (d != null) {
+                  elmCase.addAttribute(new Attribute("Value", d.getName()));
+                  this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()),
+                      elmCase, profile, message, segment, fieldPath, datatypesMap, tablesMap);
+                  elmDynamicField.appendChild(elmCase);
+                }
               }
+
+              for (String key : dm2nd.keySet()) {
+                Element elmCase = new Element("Case");
+                Datatype d = dm2nd.get(key);
+                if (d != null) {
+                  elmCase.addAttribute(new Attribute("Value", d.getName()));
+                  elmCase.addAttribute(new Attribute("SecondValue", key));
+                  this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()),
+                      elmCase, profile, message, segment, fieldPath, datatypesMap, tablesMap);
+                  elmDynamicField.appendChild(elmCase);
+                }
+              }
+              elmSegmentStructure.appendChild(elmDynamicField);
+            } else {
+              this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()),
+                  elmSegmentStructure, profile, message, segment, fieldPath, datatypesMap,
+                  tablesMap);
             }
-            elmSegmentStructure.appendChild(elmDynamicField);
           } else {
             this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()),
                 elmSegmentStructure, profile, message, segment, fieldPath, datatypesMap, tablesMap);
           }
-        } else {
-          this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()),
-              elmSegmentStructure, profile, message, segment, fieldPath, datatypesMap, tablesMap);
-        }  
+        }
       }
+
+      return elmSegment;
+    } catch (Exception e) {
+      throw new SegmentSerializationException(e, segment.getLabel());
     }
 
-    return elmSegment;
+
+
   }
 
   private void serializeDisplayField(Segment s, Field f, Datatype fieldDatatype, Element elmParent,
       Profile profile, Message message, Segment segment, String fieldPath,
-      Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
-    Element elmField = new Element("Field");
-    elmParent.appendChild(elmField);
+      Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap)
+      throws FieldSerializationException {
+    try {
 
-    elmField.addAttribute(new Attribute("Name", this.str(f.getName())));
-    elmField.addAttribute(new Attribute("Usage", this.str(f.getUsage().toString())));
-    elmField.addAttribute(new Attribute("Datatype", this.str(fieldDatatype.getName())));
-    elmField.addAttribute(new Attribute("Flavor", this.str(fieldDatatype.getLabel())));
-    elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
-    if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
-      elmField.addAttribute(new Attribute("MaxLength", this.str(f.getMaxLength())));
-    if (f.getConfLength() != null && !f.getConfLength().equals(""))
-      elmField.addAttribute(new Attribute("ConfLength", this.str(f.getConfLength())));
+      if (f.getDatatype() != null && fieldDatatype == null) {
+        throw new DatatypeNotFoundException(f.getDatatype().getId());
+      }
 
-    List<ValueSetBinding> bindings = findBinding(s.getValueSetBindings(), f.getPosition());
-    if (bindings.size() > 0) {
-      String bindingString = "";
-      String bindingStrength = null;
-      String bindingLocation = null;
+      Element elmField = new Element("Field");
+      elmParent.appendChild(elmField);
 
-      for (ValueSetBinding binding : bindings) {
-        Table table = tablesMap.get(binding.getTableId());
-        bindingStrength = binding.getBindingStrength().toString();
-        bindingLocation = binding.getBindingLocation();
-        if (table != null && table.getBindingIdentifier() != null
-            && !table.getBindingIdentifier().equals("")) {
-          if (table.getHl7Version() != null && !table.getHl7Version().equals("")) {
-            if (table.getBindingIdentifier().startsWith("0396")
-                || table.getBindingIdentifier().startsWith("HL70396")) {
-              bindingString = bindingString + table.getBindingIdentifier() + ":";
-            } else {
-              bindingString = bindingString + table.getBindingIdentifier() + "_"
-                  + table.getHl7Version().replaceAll("\\.", "-") + ":";
+      elmField.addAttribute(new Attribute("Name", this.str(f.getName())));
+      elmField.addAttribute(new Attribute("Usage", this.str(f.getUsage().toString())));
+      elmField.addAttribute(new Attribute("Datatype", this.str(fieldDatatype.getName())));
+      elmField.addAttribute(new Attribute("Flavor", this.str(fieldDatatype.getLabel())));
+      elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
+      if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
+        elmField.addAttribute(new Attribute("MaxLength", this.str(f.getMaxLength())));
+      if (f.getConfLength() != null && !f.getConfLength().equals(""))
+        elmField.addAttribute(new Attribute("ConfLength", this.str(f.getConfLength())));
+
+      List<ValueSetBinding> bindings = findBinding(s.getValueSetBindings(), f.getPosition());
+      if (bindings.size() > 0) {
+        String bindingString = "";
+        String bindingStrength = null;
+        String bindingLocation = null;
+
+        for (ValueSetBinding binding : bindings) {
+          try {
+            Table table = tablesMap.get(binding.getTableId());
+            bindingStrength = binding.getBindingStrength().toString();
+            bindingLocation = binding.getBindingLocation();
+            if (table != null && table.getBindingIdentifier() != null
+                && !table.getBindingIdentifier().equals("")) {
+              if (table.getHl7Version() != null && !table.getHl7Version().equals("")) {
+                if (table.getBindingIdentifier().startsWith("0396")
+                    || table.getBindingIdentifier().startsWith("HL70396")) {
+                  bindingString = bindingString + table.getBindingIdentifier() + ":";
+                } else {
+                  bindingString = bindingString + table.getBindingIdentifier() + "_"
+                      + table.getHl7Version().replaceAll("\\.", "-") + ":";
+                }
+              } else {
+                bindingString = bindingString + table.getBindingIdentifier() + ":";
+              }
             }
-          } else {
-            bindingString = bindingString + table.getBindingIdentifier() + ":";
+          } catch (Exception e) {
+            throw new TableSerializationException(e, binding.getLocation());
+          }
+        }
+
+        IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
+        if (config.getValueSetAllowedDTs().contains(fieldDatatype.getName())) {
+          if (!bindingString.equals(""))
+            elmField.addAttribute(
+                new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
+          if (bindingStrength != null)
+            elmField.addAttribute(new Attribute("BindingStrength", bindingStrength));
+
+          if (fieldDatatype != null && fieldDatatype.getComponents() != null
+              && fieldDatatype.getComponents().size() > 0) {
+            if (bindingLocation != null && !bindingLocation.equals("")) {
+              bindingLocation = bindingLocation.replaceAll("\\s+", "").replaceAll("or", ":");
+              elmField.addAttribute(new Attribute("BindingLocation", bindingLocation));
+            } else {
+              elmField.addAttribute(new Attribute("BindingLocation", "1"));
+            }
           }
         }
       }
 
-      IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
-      if (config.getValueSetAllowedDTs().contains(fieldDatatype.getName())) {
-        if (!bindingString.equals(""))
-          elmField.addAttribute(
-              new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
-        if (bindingStrength != null)
-          elmField.addAttribute(new Attribute("BindingStrength", bindingStrength));
+      elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
+      elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
+      if (f.getItemNo() != null && !f.getItemNo().equals(""))
+        elmField.addAttribute(new Attribute("ItemNo", this.str(f.getItemNo())));
 
-        if (fieldDatatype != null && fieldDatatype.getComponents() != null
-            && fieldDatatype.getComponents().size() > 0) {
-          if (bindingLocation != null && !bindingLocation.equals("")) {
-            bindingLocation = bindingLocation.replaceAll("\\s+", "").replaceAll("or", ":");
-            elmField.addAttribute(new Attribute("BindingLocation", bindingLocation));
-          } else {
-            elmField.addAttribute(new Attribute("BindingLocation", "1"));
+      Predicate fieldPredicate = this.findPredicate(segment.getPredicates(),
+          f.getPosition() + "[1]", message.getPredicates(), fieldPath);
+      if (fieldPredicate != null) {
+        try {
+          Element elmPredicate = new Element("Predicate");
+          elmPredicate.addAttribute(new Attribute("TrueUsage", "" + fieldPredicate.getTrueUsage()));
+          elmPredicate
+              .addAttribute(new Attribute("FalseUsage", "" + fieldPredicate.getFalseUsage()));
+
+          Element elmDescription = new Element("Description");
+          elmDescription.appendChild(fieldPredicate.getDescription());
+          elmPredicate.appendChild(elmDescription);
+
+          Node n = this.innerXMLHandler(fieldPredicate.getAssertion());
+          if (n != null)
+            elmPredicate.appendChild(n);
+
+          elmField.appendChild(elmPredicate);
+        } catch (Exception e) {
+          throw new ConstraintSerializationException(e, fieldPredicate.getDescription());
+        }
+
+      }
+
+      List<ConformanceStatement> fieldConformanceStatements =
+          this.findConformanceStatements(segment.getConformanceStatements(),
+              f.getPosition() + "[1]", message.getConformanceStatements(), fieldPath);
+
+      if (fieldConformanceStatements.size() > 0) {
+        Element elmConformanceStatements = new Element("ConformanceStatements");
+
+        for (ConformanceStatement c : fieldConformanceStatements) {
+          try {
+            Element elmConformanceStatement = new Element("ConformanceStatement");
+            elmConformanceStatement.addAttribute(new Attribute("ID", "" + c.getConstraintId()));
+            Element elmDescription = new Element("Description");
+            elmDescription.appendChild(c.getDescription());
+            elmConformanceStatement.appendChild(elmDescription);
+
+            Node n = this.innerXMLHandler(c.getAssertion());
+            if (n != null)
+              elmConformanceStatement.appendChild(n);
+
+            elmConformanceStatements.appendChild(elmConformanceStatement);
+          } catch (Exception e) {
+            throw new ConstraintSerializationException(e, c.getDescription());
           }
         }
-      }
-    }
 
-    elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
-    elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
-    if (f.getItemNo() != null && !f.getItemNo().equals(""))
-      elmField.addAttribute(new Attribute("ItemNo", this.str(f.getItemNo())));
-
-    Predicate fieldPredicate = this.findPredicate(segment.getPredicates(), f.getPosition() + "[1]",
-        message.getPredicates(), fieldPath);
-    if (fieldPredicate != null) {
-      Element elmPredicate = new Element("Predicate");
-      elmPredicate.addAttribute(new Attribute("TrueUsage", "" + fieldPredicate.getTrueUsage()));
-      elmPredicate.addAttribute(new Attribute("FalseUsage", "" + fieldPredicate.getFalseUsage()));
-
-      Element elmDescription = new Element("Description");
-      elmDescription.appendChild(fieldPredicate.getDescription());
-      elmPredicate.appendChild(elmDescription);
-
-      Node n = this.innerXMLHandler(fieldPredicate.getAssertion());
-      if (n != null)
-        elmPredicate.appendChild(n);
-
-      elmField.appendChild(elmPredicate);
-    }
-
-    List<ConformanceStatement> fieldConformanceStatements =
-        this.findConformanceStatements(segment.getConformanceStatements(), f.getPosition() + "[1]",
-            message.getConformanceStatements(), fieldPath);
-
-    if (fieldConformanceStatements.size() > 0) {
-      Element elmConformanceStatements = new Element("ConformanceStatements");
-
-      for (ConformanceStatement c : fieldConformanceStatements) {
-        Element elmConformanceStatement = new Element("ConformanceStatement");
-        elmConformanceStatement.addAttribute(new Attribute("ID", "" + c.getConstraintId()));
-        Element elmDescription = new Element("Description");
-        elmDescription.appendChild(c.getDescription());
-        elmConformanceStatement.appendChild(elmDescription);
-
-        Node n = this.innerXMLHandler(c.getAssertion());
-        if (n != null)
-          elmConformanceStatement.appendChild(n);
-
-        elmConformanceStatements.appendChild(elmConformanceStatement);
+        elmField.appendChild(elmConformanceStatements);
       }
 
-      elmField.appendChild(elmConformanceStatements);
+      Element elmFieldStructure = new Element("Structure");
+      Map<Integer, Component> components = new HashMap<Integer, Component>();
+
+      for (Component c : fieldDatatype.getComponents()) {
+        components.put(c.getPosition(), c);
+      }
+
+      if (components.size() > 0) {
+        elmField.appendChild(elmFieldStructure);
+      }
+
+      for (int j = 1; j < components.size() + 1; j++) {
+        String componentPath = fieldPath + "." + j + "[1]";
+        Component c = components.get(j);
+        this.serializeDisplayComponent(c, datatypesMap.get(c.getDatatype().getId()),
+            elmFieldStructure, profile, message, fieldDatatype, componentPath, datatypesMap,
+            tablesMap);
+      }
+    } catch (Exception e) {
+      throw new FieldSerializationException(e, "Field[" + f.getPosition() + "]");
     }
 
-    Element elmFieldStructure = new Element("Structure");
-    Map<Integer, Component> components = new HashMap<Integer, Component>();
-
-    for (Component c : fieldDatatype.getComponents()) {
-      components.put(c.getPosition(), c);
-    }
-
-    if (components.size() > 0) {
-      elmField.appendChild(elmFieldStructure);
-    }
-
-    for (int j = 1; j < components.size() + 1; j++) {
-      String componentPath = fieldPath + "." + j + "[1]";
-      Component c = components.get(j);
-      this.serializeDisplayComponent(c, datatypesMap.get(c.getDatatype().getId()),
-          elmFieldStructure, profile, message, fieldDatatype, componentPath, datatypesMap,
-          tablesMap);
-    }
   }
 
   private void serializeDisplayComponent(Component c, Datatype componentDatatype, Element elmParent,
       Profile profile, Message message, Datatype fieldDatatype, String componentPath,
-      Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
-    Element elmComponent = new Element("Component");
-    elmComponent.addAttribute(new Attribute("Name", this.str(c.getName())));
-    elmComponent.addAttribute(new Attribute("Usage", this.str(c.getUsage().toString())));
-    elmComponent.addAttribute(new Attribute("Datatype", this.str(componentDatatype.getName())));
-    elmComponent.addAttribute(new Attribute("Flavor", this.str(componentDatatype.getLabel())));
-    elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
-    if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
-      elmComponent.addAttribute(new Attribute("MaxLength", this.str(c.getMaxLength())));
-    if (c.getConfLength() != null && !c.getConfLength().equals(""))
-      elmComponent.addAttribute(new Attribute("ConfLength", this.str(c.getConfLength())));
-    List<ValueSetBinding> bindings =
-        findBinding(fieldDatatype.getValueSetBindings(), c.getPosition());
-    if (bindings.size() > 0) {
-      String bindingString = "";
-      String bindingStrength = null;
-      String bindingLocation = null;
+      Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap)
+      throws DatatypeComponentSerializationException {
+    try {
 
-      for (ValueSetBinding binding : bindings) {
-        Table table = tablesMap.get(binding.getTableId());
-        bindingStrength = binding.getBindingStrength().toString();
-        bindingLocation = binding.getBindingLocation();
-        if (table != null && table.getBindingIdentifier() != null
-            && !table.getBindingIdentifier().equals("")) {
-          if (table.getHl7Version() != null && !table.getHl7Version().equals("")) {
-            if (table.getBindingIdentifier().startsWith("0396")
-                || table.getBindingIdentifier().startsWith("HL70396")) {
-              bindingString = bindingString + table.getBindingIdentifier() + ":";
-            } else {
-              bindingString = bindingString + table.getBindingIdentifier() + "_"
-                  + table.getHl7Version().replaceAll("\\.", "-") + ":";
+      if (c.getDatatype() != null && componentDatatype == null) {
+        throw new DatatypeNotFoundException(c.getDatatype().getId());
+      }
+
+      Element elmComponent = new Element("Component");
+      elmComponent.addAttribute(new Attribute("Name", this.str(c.getName())));
+      elmComponent.addAttribute(new Attribute("Usage", this.str(c.getUsage().toString())));
+      elmComponent.addAttribute(new Attribute("Datatype", this.str(componentDatatype.getName())));
+      elmComponent.addAttribute(new Attribute("Flavor", this.str(componentDatatype.getLabel())));
+      elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
+      if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
+        elmComponent.addAttribute(new Attribute("MaxLength", this.str(c.getMaxLength())));
+      if (c.getConfLength() != null && !c.getConfLength().equals(""))
+        elmComponent.addAttribute(new Attribute("ConfLength", this.str(c.getConfLength())));
+      List<ValueSetBinding> bindings =
+          findBinding(fieldDatatype.getValueSetBindings(), c.getPosition());
+      if (bindings.size() > 0) {
+        String bindingString = "";
+        String bindingStrength = null;
+        String bindingLocation = null;
+
+        for (ValueSetBinding binding : bindings) {
+          try {
+            Table table = tablesMap.get(binding.getTableId());
+            bindingStrength = binding.getBindingStrength().toString();
+            bindingLocation = binding.getBindingLocation();
+            if (table != null && table.getBindingIdentifier() != null
+                && !table.getBindingIdentifier().equals("")) {
+              if (table.getHl7Version() != null && !table.getHl7Version().equals("")) {
+                if (table.getBindingIdentifier().startsWith("0396")
+                    || table.getBindingIdentifier().startsWith("HL70396")) {
+                  bindingString = bindingString + table.getBindingIdentifier() + ":";
+                } else {
+                  bindingString = bindingString + table.getBindingIdentifier() + "_"
+                      + table.getHl7Version().replaceAll("\\.", "-") + ":";
+                }
+              } else {
+                bindingString = bindingString + table.getBindingIdentifier() + ":";
+              }
             }
-          } else {
-            bindingString = bindingString + table.getBindingIdentifier() + ":";
+          } catch (Exception e) {
+            throw new TableSerializationException(e, binding.getLocation());
+          }
+
+        }
+
+        IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
+        if (config.getValueSetAllowedDTs().contains(componentDatatype.getName())) {
+          if (!bindingString.equals(""))
+            elmComponent.addAttribute(
+                new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
+          if (bindingStrength != null)
+            elmComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
+
+          if (fieldDatatype != null && fieldDatatype.getComponents() != null
+              && fieldDatatype.getComponents().size() > 0) {
+            if (bindingLocation != null && !bindingLocation.equals("")) {
+              bindingLocation = bindingLocation.replaceAll("\\s+", "").replaceAll("or", ":");
+              elmComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
+            } else {
+              elmComponent.addAttribute(new Attribute("BindingLocation", "1"));
+            }
           }
         }
       }
 
-      IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
-      if (config.getValueSetAllowedDTs().contains(componentDatatype.getName())) {
-        if (!bindingString.equals(""))
-          elmComponent.addAttribute(
-              new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
-        if (bindingStrength != null)
-          elmComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
+      Predicate componentPredicate = this.findPredicate(fieldDatatype.getPredicates(),
+          c.getPosition() + "[1]", message.getPredicates(), componentPath);
+      if (componentPredicate != null) {
+        try {
+          Element elmPredicate = new Element("Predicate");
+          elmPredicate
+              .addAttribute(new Attribute("TrueUsage", "" + componentPredicate.getTrueUsage()));
+          elmPredicate
+              .addAttribute(new Attribute("FalseUsage", "" + componentPredicate.getFalseUsage()));
 
-        if (fieldDatatype != null && fieldDatatype.getComponents() != null
-            && fieldDatatype.getComponents().size() > 0) {
-          if (bindingLocation != null && !bindingLocation.equals("")) {
-            bindingLocation = bindingLocation.replaceAll("\\s+", "").replaceAll("or", ":");
-            elmComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
-          } else {
-            elmComponent.addAttribute(new Attribute("BindingLocation", "1"));
-          }
+          Element elmDescription = new Element("Description");
+          elmDescription.appendChild(componentPredicate.getDescription());
+          elmPredicate.appendChild(elmDescription);
+
+          Node n = this.innerXMLHandler(componentPredicate.getAssertion());
+          if (n != null)
+            elmPredicate.appendChild(n);
+
+          elmComponent.appendChild(elmPredicate);
+        } catch (Exception e) {
+          throw new ConstraintSerializationException(e, componentPredicate.getDescription());
         }
       }
-    }
 
+      List<ConformanceStatement> componentConformanceStatements =
+          this.findConformanceStatements(fieldDatatype.getConformanceStatements(),
+              c.getPosition() + "[1]", message.getConformanceStatements(), componentPath);
 
-    Predicate componentPredicate = this.findPredicate(fieldDatatype.getPredicates(),
-        c.getPosition() + "[1]", message.getPredicates(), componentPath);
-    if (componentPredicate != null) {
-      Element elmPredicate = new Element("Predicate");
-      elmPredicate.addAttribute(new Attribute("TrueUsage", "" + componentPredicate.getTrueUsage()));
-      elmPredicate
-          .addAttribute(new Attribute("FalseUsage", "" + componentPredicate.getFalseUsage()));
+      if (componentConformanceStatements.size() > 0) {
+        Element elmConformanceStatements = new Element("ConformanceStatements");
 
-      Element elmDescription = new Element("Description");
-      elmDescription.appendChild(componentPredicate.getDescription());
-      elmPredicate.appendChild(elmDescription);
+        for (ConformanceStatement cs : componentConformanceStatements) {
+          try {
+            Element elmConformanceStatement = new Element("ConformanceStatement");
+            elmConformanceStatement.addAttribute(new Attribute("ID", "" + cs.getConstraintId()));
+            Element elmDescription = new Element("Description");
+            elmDescription.appendChild(cs.getDescription());
+            elmConformanceStatement.appendChild(elmDescription);
 
-      Node n = this.innerXMLHandler(componentPredicate.getAssertion());
-      if (n != null)
-        elmPredicate.appendChild(n);
+            Node n = this.innerXMLHandler(cs.getAssertion());
+            if (n != null)
+              elmConformanceStatement.appendChild(n);
 
-      elmComponent.appendChild(elmPredicate);
-    }
+            elmConformanceStatements.appendChild(elmConformanceStatement);
+          } catch (Exception e) {
+            throw new ConstraintSerializationException(e, cs.getDescription());
+          }
+        }
 
-    List<ConformanceStatement> componentConformanceStatements =
-        this.findConformanceStatements(fieldDatatype.getConformanceStatements(),
-            c.getPosition() + "[1]", message.getConformanceStatements(), componentPath);
-
-    if (componentConformanceStatements.size() > 0) {
-      Element elmConformanceStatements = new Element("ConformanceStatements");
-
-      for (ConformanceStatement cs : componentConformanceStatements) {
-        Element elmConformanceStatement = new Element("ConformanceStatement");
-        elmConformanceStatement.addAttribute(new Attribute("ID", "" + cs.getConstraintId()));
-        Element elmDescription = new Element("Description");
-        elmDescription.appendChild(cs.getDescription());
-        elmConformanceStatement.appendChild(elmDescription);
-
-        Node n = this.innerXMLHandler(cs.getAssertion());
-        if (n != null)
-          elmConformanceStatement.appendChild(n);
-
-        elmConformanceStatements.appendChild(elmConformanceStatement);
+        elmComponent.appendChild(elmConformanceStatements);
       }
 
-      elmComponent.appendChild(elmConformanceStatements);
-    }
+      Element elmComponentStructure = new Element("Structure");
+      Map<Integer, Component> subComponents = new HashMap<Integer, Component>();
 
-    Element elmComponentStructure = new Element("Structure");
-    Map<Integer, Component> subComponents = new HashMap<Integer, Component>();
+      for (Component sc : componentDatatype.getComponents()) {
+        subComponents.put(sc.getPosition(), sc);
+      }
 
-    for (Component sc : componentDatatype.getComponents()) {
-      subComponents.put(sc.getPosition(), sc);
-    }
+      if (subComponents.size() > 0) {
+        elmComponent.appendChild(elmComponentStructure);
+      }
 
-    if (subComponents.size() > 0) {
-      elmComponent.appendChild(elmComponentStructure);
+      for (int k = 1; k < subComponents.size() + 1; k++) {
+        String subComponentPath = componentPath + "." + k + "[1]";
+        Component sc = subComponents.get(k);
+        this.serializeDisplaySubComponent(sc, datatypesMap.get(sc.getDatatype().getId()),
+            elmComponentStructure, profile, message, componentDatatype, subComponentPath,
+            datatypesMap, tablesMap);
+      }
+      elmParent.appendChild(elmComponent);
+    } catch (Exception e) {
+      throw new DatatypeComponentSerializationException(e, c.getPosition());
     }
-
-    for (int k = 1; k < subComponents.size() + 1; k++) {
-      String subComponentPath = componentPath + "." + k + "[1]";
-      Component sc = subComponents.get(k);
-      this.serializeDisplaySubComponent(sc, datatypesMap.get(sc.getDatatype().getId()),
-          elmComponentStructure, profile, message, componentDatatype, subComponentPath,
-          datatypesMap, tablesMap);
-    }
-    elmParent.appendChild(elmComponent);
   }
 
   private void serializeDisplaySubComponent(Component sc, Datatype subComponentDatatype,
       Element elmParent, Profile profile, Message message, Datatype componentDatatype,
-      String subComponentPath, Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
-    Element elmSubComponent = new Element("SubComponent");
-    elmSubComponent.addAttribute(new Attribute("Name", this.str(sc.getName())));
-    elmSubComponent.addAttribute(new Attribute("Usage", this.str(sc.getUsage().toString())));
-    elmSubComponent
-        .addAttribute(new Attribute("Datatype", this.str(subComponentDatatype.getName())));
-    elmSubComponent
-        .addAttribute(new Attribute("Flavor", this.str(subComponentDatatype.getLabel())));
-    elmSubComponent.addAttribute(new Attribute("MinLength", "" + sc.getMinLength()));
-    if (sc.getMaxLength() != null && !sc.getMaxLength().equals(""))
-      elmSubComponent.addAttribute(new Attribute("MaxLength", this.str(sc.getMaxLength())));
-    if (sc.getConfLength() != null && !sc.getConfLength().equals(""))
-      elmSubComponent.addAttribute(new Attribute("ConfLength", this.str(sc.getConfLength())));
+      String subComponentPath, Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap)
+      throws ConstraintSerializationException, TableSerializationException,
+      DatatypeComponentSerializationException {
+    try {
 
-    List<ValueSetBinding> bindings =
-        findBinding(componentDatatype.getValueSetBindings(), sc.getPosition());
-    if (bindings.size() > 0) {
-      String bindingString = "";
-      String bindingStrength = null;
-      String bindingLocation = null;
+      if (sc.getDatatype() != null && subComponentDatatype == null) {
+        throw new DatatypeNotFoundException(sc.getDatatype().getId());
+      }
 
-      for (ValueSetBinding binding : bindings) {
-        Table table = tablesMap.get(binding.getTableId());
-        bindingStrength = binding.getBindingStrength().toString();
-        bindingLocation = binding.getBindingLocation();
-        if (table != null && table.getBindingIdentifier() != null
-            && !table.getBindingIdentifier().equals("")) {
-          if (table.getHl7Version() != null && !table.getHl7Version().equals("")) {
-            if (table.getBindingIdentifier().startsWith("0396")
-                || table.getBindingIdentifier().startsWith("HL70396")) {
-              bindingString = bindingString + table.getBindingIdentifier() + ":";
-            } else {
-              bindingString = bindingString + table.getBindingIdentifier() + "_"
-                  + table.getHl7Version().replaceAll("\\.", "-") + ":";
+
+      Element elmSubComponent = new Element("SubComponent");
+      elmSubComponent.addAttribute(new Attribute("Name", this.str(sc.getName())));
+      elmSubComponent.addAttribute(new Attribute("Usage", this.str(sc.getUsage().toString())));
+      elmSubComponent
+          .addAttribute(new Attribute("Datatype", this.str(subComponentDatatype.getName())));
+      elmSubComponent
+          .addAttribute(new Attribute("Flavor", this.str(subComponentDatatype.getLabel())));
+      elmSubComponent.addAttribute(new Attribute("MinLength", "" + sc.getMinLength()));
+      if (sc.getMaxLength() != null && !sc.getMaxLength().equals(""))
+        elmSubComponent.addAttribute(new Attribute("MaxLength", this.str(sc.getMaxLength())));
+      if (sc.getConfLength() != null && !sc.getConfLength().equals(""))
+        elmSubComponent.addAttribute(new Attribute("ConfLength", this.str(sc.getConfLength())));
+
+      List<ValueSetBinding> bindings =
+          findBinding(componentDatatype.getValueSetBindings(), sc.getPosition());
+      if (bindings.size() > 0) {
+        String bindingString = "";
+        String bindingStrength = null;
+        String bindingLocation = null;
+
+        for (ValueSetBinding binding : bindings) {
+          try {
+            Table table = tablesMap.get(binding.getTableId());
+            bindingStrength = binding.getBindingStrength().toString();
+            bindingLocation = binding.getBindingLocation();
+            if (table != null && table.getBindingIdentifier() != null
+                && !table.getBindingIdentifier().equals("")) {
+              if (table.getHl7Version() != null && !table.getHl7Version().equals("")) {
+                if (table.getBindingIdentifier().startsWith("0396")
+                    || table.getBindingIdentifier().startsWith("HL70396")) {
+                  bindingString = bindingString + table.getBindingIdentifier() + ":";
+                } else {
+                  bindingString = bindingString + table.getBindingIdentifier() + "_"
+                      + table.getHl7Version().replaceAll("\\.", "-") + ":";
+                }
+              } else {
+                bindingString = bindingString + table.getBindingIdentifier() + ":";
+              }
             }
-          } else {
-            bindingString = bindingString + table.getBindingIdentifier() + ":";
+          } catch (Exception e) {
+            throw new TableSerializationException(e, binding.getLocation());
+          }
+
+        }
+
+        IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
+        if (config.getValueSetAllowedDTs().contains(subComponentDatatype.getName())) {
+          if (!bindingString.equals(""))
+            elmSubComponent.addAttribute(
+                new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
+          if (bindingStrength != null)
+            elmSubComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
+
+          if (componentDatatype != null && componentDatatype.getComponents() != null
+              && componentDatatype.getComponents().size() > 0) {
+            if (bindingLocation != null && !bindingLocation.equals("")) {
+              bindingLocation = bindingLocation.replaceAll("\\s+", "").replaceAll("or", ":");
+              elmSubComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
+            } else {
+              elmSubComponent.addAttribute(new Attribute("BindingLocation", "1"));
+            }
           }
         }
       }
 
-      IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
-      if (config.getValueSetAllowedDTs().contains(subComponentDatatype.getName())) {
-        if (!bindingString.equals(""))
-          elmSubComponent.addAttribute(
-              new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
-        if (bindingStrength != null)
-          elmSubComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
+      Predicate subComponentPredicate = this.findPredicate(componentDatatype.getPredicates(),
+          sc.getPosition() + "[1]", message.getPredicates(), subComponentPath);
+      if (subComponentPredicate != null) {
+        try {
+          Element elmPredicate = new Element("Predicate");
+          elmPredicate
+              .addAttribute(new Attribute("TrueUsage", "" + subComponentPredicate.getTrueUsage()));
+          elmPredicate.addAttribute(
+              new Attribute("FalseUsage", "" + subComponentPredicate.getFalseUsage()));
 
-        if (componentDatatype != null && componentDatatype.getComponents() != null
-            && componentDatatype.getComponents().size() > 0) {
-          if (bindingLocation != null && !bindingLocation.equals("")) {
-            bindingLocation = bindingLocation.replaceAll("\\s+", "").replaceAll("or", ":");
-            elmSubComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
-          } else {
-            elmSubComponent.addAttribute(new Attribute("BindingLocation", "1"));
-          }
+          Element elmDescription = new Element("Description");
+          elmDescription.appendChild(subComponentPredicate.getDescription());
+          elmPredicate.appendChild(elmDescription);
+
+          Node n = this.innerXMLHandler(subComponentPredicate.getAssertion());
+          if (n != null)
+            elmPredicate.appendChild(n);
+
+          elmSubComponent.appendChild(elmPredicate);
+        } catch (Exception e) {
+          throw new ConstraintSerializationException(e, subComponentPredicate.getDescription());
         }
-      }
-    }
 
-    Predicate subComponentPredicate = this.findPredicate(componentDatatype.getPredicates(),
-        sc.getPosition() + "[1]", message.getPredicates(), subComponentPath);
-    if (subComponentPredicate != null) {
-      Element elmPredicate = new Element("Predicate");
-      elmPredicate
-          .addAttribute(new Attribute("TrueUsage", "" + subComponentPredicate.getTrueUsage()));
-      elmPredicate
-          .addAttribute(new Attribute("FalseUsage", "" + subComponentPredicate.getFalseUsage()));
-
-      Element elmDescription = new Element("Description");
-      elmDescription.appendChild(subComponentPredicate.getDescription());
-      elmPredicate.appendChild(elmDescription);
-
-      Node n = this.innerXMLHandler(subComponentPredicate.getAssertion());
-      if (n != null)
-        elmPredicate.appendChild(n);
-
-      elmSubComponent.appendChild(elmPredicate);
-    }
-
-    List<ConformanceStatement> subComponentConformanceStatements =
-        this.findConformanceStatements(componentDatatype.getConformanceStatements(),
-            sc.getPosition() + "[1]", message.getConformanceStatements(), subComponentPath);
-
-    if (subComponentConformanceStatements.size() > 0) {
-      Element elmConformanceStatements = new Element("ConformanceStatements");
-
-      for (ConformanceStatement cs : subComponentConformanceStatements) {
-        Element elmConformanceStatement = new Element("ConformanceStatement");
-        elmConformanceStatement.addAttribute(new Attribute("ID", "" + cs.getConstraintId()));
-        Element elmDescription = new Element("Description");
-        elmDescription.appendChild(cs.getDescription());
-        elmConformanceStatement.appendChild(elmDescription);
-
-        Node n = this.innerXMLHandler(cs.getAssertion());
-        if (n != null)
-          elmConformanceStatement.appendChild(n);
-
-        elmConformanceStatements.appendChild(elmConformanceStatement);
       }
 
-      elmSubComponent.appendChild(elmConformanceStatements);
+      List<ConformanceStatement> subComponentConformanceStatements =
+          this.findConformanceStatements(componentDatatype.getConformanceStatements(),
+              sc.getPosition() + "[1]", message.getConformanceStatements(), subComponentPath);
+
+      if (subComponentConformanceStatements.size() > 0) {
+        Element elmConformanceStatements = new Element("ConformanceStatements");
+
+        for (ConformanceStatement cs : subComponentConformanceStatements) {
+          try {
+            Element elmConformanceStatement = new Element("ConformanceStatement");
+            elmConformanceStatement.addAttribute(new Attribute("ID", "" + cs.getConstraintId()));
+            Element elmDescription = new Element("Description");
+            elmDescription.appendChild(cs.getDescription());
+            elmConformanceStatement.appendChild(elmDescription);
+
+            Node n = this.innerXMLHandler(cs.getAssertion());
+            if (n != null)
+              elmConformanceStatement.appendChild(n);
+
+            elmConformanceStatements.appendChild(elmConformanceStatement);
+          } catch (Exception e) {
+            throw new ConstraintSerializationException(e, cs.getDescription());
+          }
+
+        }
+
+        elmSubComponent.appendChild(elmConformanceStatements);
+      }
+      elmParent.appendChild(elmSubComponent);
+    } catch (Exception e) {
+      throw new DatatypeComponentSerializationException(e, sc.getPosition());
     }
-    elmParent.appendChild(elmSubComponent);
+
   }
 
   private Predicate findPredicate(List<Predicate> predicates, String path,
@@ -1642,7 +1769,8 @@ public class XMLExportTool {
     return null;
   }
 
-  private Element serializeByNameOrByID(ByNameOrByID byNameOrByIDObj) throws ConstraintSerializationException {
+  private Element serializeByNameOrByID(ByNameOrByID byNameOrByIDObj)
+      throws ConstraintSerializationException {
     if (byNameOrByIDObj instanceof ByName) {
       ByName byNameObj = (ByName) byNameOrByIDObj;
       Element elmByName = new Element("ByName");
@@ -1890,7 +2018,8 @@ public class XMLExportTool {
 
               for (ValueSetBinding binding : bindings) {
                 Table table = tablesMap.get(binding.getTableId());
-                if(table == null) throw new TableNotFoundException(binding.getTableId());
+                if (table == null)
+                  throw new TableNotFoundException(binding.getTableId());
                 bindingStrength = binding.getBindingStrength().toString();
                 bindingLocation = binding.getBindingLocation();
                 if (table != null && table.getBindingIdentifier() != null
@@ -2621,7 +2750,7 @@ public class XMLExportTool {
   public InputStream exportXMLAsGazelleFormatForSelectedMessages(Profile profile,
       DocumentMetaData metadata, HashMap<String, Segment> segmentsMap,
       HashMap<String, Datatype> datatypesMap, HashMap<String, Table> tablesMap)
-      throws CloneNotSupportedException, IOException {
+      throws CloneNotSupportedException, IOException, ProfileSerializationException, TableSerializationException {
     this.normalizeProfile(profile, segmentsMap, datatypesMap);
 
     ByteArrayOutputStream outputStream = null;
@@ -2644,476 +2773,582 @@ public class XMLExportTool {
 
   private Document serializeProfileGazelleToXML(Profile profile, DocumentMetaData metadata,
       HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap,
-      HashMap<String, Table> tablesMap) {
-    Element e = new Element("HL7v2xConformanceProfile");
-    Attribute schemaDecl = new Attribute("noNamespaceSchemaLocation",
-        "https://raw.githubusercontent.com/Jungyubw/NIST_healthcare_hl7_v2_profile_schema/master/Schema/Gazelle%20Schema/HL7MessageProfile.xsd");
-    schemaDecl.setNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-    e.addAttribute(schemaDecl);
-    e.addAttribute(new Attribute("HL7Version",
-        this.str(profile.getMetaData().getHl7Version().replaceAll("\\.", "-"))));
-    e.addAttribute(new Attribute("ProfileType", this.str(profile.getMetaData().getType())));
-    Element metadataElm = new Element("MetaData");
-    metadataElm.addAttribute(new Attribute("Name", this.str(metadata.getTitle())));
-    metadataElm
-        .addAttribute(new Attribute("OrgName", this.str(profile.getMetaData().getOrgName())));
-    metadataElm
-        .addAttribute(new Attribute("Version", this.str(profile.getMetaData().getVersion())));
-    e.appendChild(metadataElm);
-
-    Element impNoteElm = new Element("ImpNote");
-    impNoteElm.appendChild(this.str(metadata.getTitle()));
-    e.appendChild(impNoteElm);
-
-    Element useCaseElm = new Element("UseCase");
-    e.appendChild(useCaseElm);
-
-    Element encodingsElm = new Element("Encodings");
-    Element encodingElm = new Element("Encoding");
-    encodingElm.appendChild("ER7");
-    encodingsElm.appendChild(encodingElm);
-    e.appendChild(encodingsElm);
-
-    Element dynamicDefElm = new Element("DynamicDef");
-    dynamicDefElm.addAttribute(new Attribute("AccAck", "NE"));
-    dynamicDefElm.addAttribute(new Attribute("AppAck", "AL"));
-    dynamicDefElm.addAttribute(new Attribute("MsgAckMode", "Deferred"));
-    e.appendChild(dynamicDefElm);
-
-    for (Message message : profile.getMessages().getChildren()) {
-      Element hL7v2xStaticDefElm = new Element("HL7v2xStaticDef");
-      hL7v2xStaticDefElm.addAttribute(new Attribute("MsgType", this.str(message.getMessageType())));
-      hL7v2xStaticDefElm.addAttribute(new Attribute("EventType", this.str(message.getEvent())));
-      hL7v2xStaticDefElm
-          .addAttribute(new Attribute("MsgStructID", this.str(message.getStructID())));
-      hL7v2xStaticDefElm
-          .addAttribute(new Attribute("EventDesc", this.str(message.getDescription())));
-
-      Element metadataMessageElm = new Element("MetaData");
-      metadataMessageElm.addAttribute(new Attribute("Name", this.str(message.getName())));
-      metadataMessageElm
+      HashMap<String, Table> tablesMap) throws ProfileSerializationException {
+    try{
+      Element e = new Element("HL7v2xConformanceProfile");
+      Attribute schemaDecl = new Attribute("noNamespaceSchemaLocation",
+          "https://raw.githubusercontent.com/Jungyubw/NIST_healthcare_hl7_v2_profile_schema/master/Schema/Gazelle%20Schema/HL7MessageProfile.xsd");
+      schemaDecl.setNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+      e.addAttribute(schemaDecl);
+      e.addAttribute(new Attribute("HL7Version",
+          this.str(profile.getMetaData().getHl7Version().replaceAll("\\.", "-"))));
+      if(profile.getMetaData().getType().equals("HL7") || profile.getMetaData().getType().equals("Implementation") || profile.getMetaData().getType().equals("Constrainable")){
+        e.addAttribute(new Attribute("ProfileType", this.str(profile.getMetaData().getType())));  
+      }else {
+        e.addAttribute(new Attribute("ProfileType", "Implementation"));  
+      }
+      
+      Element metadataElm = new Element("MetaData");
+      metadataElm.addAttribute(new Attribute("Name", this.str(metadata.getTitle())));
+      metadataElm
           .addAttribute(new Attribute("OrgName", this.str(profile.getMetaData().getOrgName())));
-      hL7v2xStaticDefElm.appendChild(metadataMessageElm);
+      metadataElm
+          .addAttribute(new Attribute("Version", this.str(profile.getMetaData().getVersion())));
+      e.appendChild(metadataElm);
 
-      Map<Integer, SegmentRefOrGroup> segmentRefOrGroups =
-          new HashMap<Integer, SegmentRefOrGroup>();
-      for (SegmentRefOrGroup segmentRefOrGroup : message.getChildren()) {
-        segmentRefOrGroups.put(segmentRefOrGroup.getPosition(), segmentRefOrGroup);
-      }
-      for (int i = 1; i < segmentRefOrGroups.size() + 1; i++) {
-        String path = i + "[1]";
-        SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
-        if (segmentRefOrGroup instanceof SegmentRef) {
-          hL7v2xStaticDefElm.appendChild(serializeGazelleSegment((SegmentRef) segmentRefOrGroup,
-              profile, message, path, segmentsMap, datatypesMap, tablesMap));
-        } else if (segmentRefOrGroup instanceof Group) {
-          hL7v2xStaticDefElm.appendChild(serializeGazelleGroup((Group) segmentRefOrGroup, profile,
-              message, path, segmentsMap, datatypesMap, tablesMap));
+      Element impNoteElm = new Element("ImpNote");
+      impNoteElm.appendChild(this.str(metadata.getTitle()));
+      e.appendChild(impNoteElm);
+
+      Element useCaseElm = new Element("UseCase");
+      e.appendChild(useCaseElm);
+
+      Element encodingsElm = new Element("Encodings");
+      Element encodingElm = new Element("Encoding");
+      encodingElm.appendChild("ER7");
+      encodingsElm.appendChild(encodingElm);
+      e.appendChild(encodingsElm);
+
+      Element dynamicDefElm = new Element("DynamicDef");
+      dynamicDefElm.addAttribute(new Attribute("AccAck", "NE"));
+      dynamicDefElm.addAttribute(new Attribute("AppAck", "AL"));
+      dynamicDefElm.addAttribute(new Attribute("MsgAckMode", "Deferred"));
+      e.appendChild(dynamicDefElm);
+
+      for (Message message : profile.getMessages().getChildren()) {
+        try{
+          Element hL7v2xStaticDefElm = new Element("HL7v2xStaticDef");
+          hL7v2xStaticDefElm.addAttribute(new Attribute("MsgType", this.str(message.getMessageType())));
+          hL7v2xStaticDefElm.addAttribute(new Attribute("EventType", this.str(message.getEvent())));
+          hL7v2xStaticDefElm
+              .addAttribute(new Attribute("MsgStructID", this.str(message.getStructID())));
+          hL7v2xStaticDefElm
+              .addAttribute(new Attribute("EventDesc", this.str(message.getDescription())));
+
+          Element metadataMessageElm = new Element("MetaData");
+          metadataMessageElm.addAttribute(new Attribute("Name", this.str(message.getName())));
+          metadataMessageElm
+              .addAttribute(new Attribute("OrgName", this.str(profile.getMetaData().getOrgName())));
+          hL7v2xStaticDefElm.appendChild(metadataMessageElm);
+
+          Map<Integer, SegmentRefOrGroup> segmentRefOrGroups =
+              new HashMap<Integer, SegmentRefOrGroup>();
+          for (SegmentRefOrGroup segmentRefOrGroup : message.getChildren()) {
+            segmentRefOrGroups.put(segmentRefOrGroup.getPosition(), segmentRefOrGroup);
+          }
+          for (int i = 1; i < segmentRefOrGroups.size() + 1; i++) {
+            String path = i + "[1]";
+            SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
+            if (segmentRefOrGroup instanceof SegmentRef) {
+              hL7v2xStaticDefElm.appendChild(serializeGazelleSegment((SegmentRef) segmentRefOrGroup,
+                  profile, message, path, segmentsMap, datatypesMap, tablesMap));
+            } else if (segmentRefOrGroup instanceof Group) {
+              hL7v2xStaticDefElm.appendChild(serializeGazelleGroup((Group) segmentRefOrGroup, profile,
+                  message, path, segmentsMap, datatypesMap, tablesMap));
+            }
+          }
+          e.appendChild(hL7v2xStaticDefElm);
+        }catch (Exception e1) {
+          throw new MessageSerializationException(e1, message != null ? message.getName() : "");
         }
+        
       }
-      e.appendChild(hL7v2xStaticDefElm);
+      Document doc = new Document(e);
+      return doc;
+    }catch (Exception e) {
+      throw new ProfileSerializationException(e, profile != null ? profile.getId() : "");
     }
-    Document doc = new Document(e);
-    return doc;
   }
 
   private Element serializeGazelleGroup(Group group, Profile profile, Message message, String path,
       HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap,
-      HashMap<String, Table> tablesMap) {
-    Element elmSegGroup = new Element("SegGroup");
-    if (group.getName().contains(".")) {
-      elmSegGroup.addAttribute(new Attribute("Name",
-          this.str(group.getName().substring(group.getName().lastIndexOf(".") + 1))));
-    } else {
-      elmSegGroup.addAttribute(new Attribute("Name", this.str(group.getName())));
-    }
-
-    elmSegGroup.addAttribute(new Attribute("LongName", this.str(group.getName())));
-    if (group.getUsage().value().equals("B")) {
-      elmSegGroup.addAttribute(new Attribute("Usage", "X"));
-    } else {
-      elmSegGroup.addAttribute(new Attribute("Usage", this.str(group.getUsage().value())));
-    }
-    elmSegGroup.addAttribute(new Attribute("Min", this.str(group.getMin() + "")));
-    if (group.getMax().equals("0")) {
-      elmSegGroup.addAttribute(new Attribute("Max", "" + 1));
-    } else {
-      elmSegGroup.addAttribute(new Attribute("Max", this.str(group.getMax())));
-    }
-    List<ConformanceStatement> groupConformanceStatements =
-        this.findConformanceStatements(null, null, message.getConformanceStatements(), path);
-
-    if (groupConformanceStatements.size() > 0) {
-      Element elmImpNote = new Element("ImpNote");
-      String note = "";
-      for (ConformanceStatement c : groupConformanceStatements) {
-        note = note + "\n" + "[" + c.getConstraintId() + "]" + c.getDescription();
+      HashMap<String, Table> tablesMap) throws GroupSerializationException {
+    try{
+      Element elmSegGroup = new Element("SegGroup");
+      if (group.getName().contains(".")) {
+        elmSegGroup.addAttribute(new Attribute("Name",
+            this.str(group.getName().substring(group.getName().lastIndexOf(".") + 1))));
+      } else {
+        elmSegGroup.addAttribute(new Attribute("Name", this.str(group.getName())));
       }
-      elmImpNote.appendChild(note);
-      elmSegGroup.appendChild(elmImpNote);
-    }
 
-    Predicate groupPredicate = this.findPredicate(null, null, message.getPredicates(), path);
-    if (groupPredicate != null) {
-      Element elmPredicate = new Element("Predicate");
-      String note = "[C(" + groupPredicate.getTrueUsage() + "/" + groupPredicate.getFalseUsage()
-          + ")]" + groupPredicate.getDescription();
-      elmPredicate.appendChild(note);
-      elmSegGroup.appendChild(elmPredicate);
-    }
+      elmSegGroup.addAttribute(new Attribute("LongName", this.str(group.getName())));
+      if (group.getUsage().value().equals("B")) {
+        elmSegGroup.addAttribute(new Attribute("Usage", "X"));
+      } else {
+        elmSegGroup.addAttribute(new Attribute("Usage", this.str(group.getUsage().value())));
+      }
+      elmSegGroup.addAttribute(new Attribute("Min", this.str(group.getMin() + "")));
+      if (group.getMax().equals("0")) {
+        elmSegGroup.addAttribute(new Attribute("Max", "" + 1));
+      } else {
+        elmSegGroup.addAttribute(new Attribute("Max", this.str(group.getMax())));
+      }
+      List<ConformanceStatement> groupConformanceStatements =
+          this.findConformanceStatements(null, null, message.getConformanceStatements(), path);
 
-    Map<Integer, SegmentRefOrGroup> segmentRefOrGroups = new HashMap<Integer, SegmentRefOrGroup>();
+      if (groupConformanceStatements.size() > 0) {
+        Element elmImpNote = new Element("ImpNote");
+        String note = "";
+        for (ConformanceStatement c : groupConformanceStatements) {
+          try{
+            note = note + "\n" + "[" + c.getConstraintId() + "]" + c.getDescription(); 
+          }catch (Exception e) {
+            throw new ConstraintSerializationException(e, c.getDescription());
+          }
+        }
+        elmImpNote.appendChild(note);
+        elmSegGroup.appendChild(elmImpNote);
+      }
 
-    for (SegmentRefOrGroup segmentRefOrGroup : group.getChildren()) {
-      segmentRefOrGroups.put(segmentRefOrGroup.getPosition(), segmentRefOrGroup);
-    }
+      Predicate groupPredicate = this.findPredicate(null, null, message.getPredicates(), path);
+      if (groupPredicate != null) {
+        try{
+          Element elmPredicate = new Element("Predicate");
+          String note = "[C(" + groupPredicate.getTrueUsage() + "/" + groupPredicate.getFalseUsage()
+              + ")]" + groupPredicate.getDescription();
+          elmPredicate.appendChild(note);
+          elmSegGroup.appendChild(elmPredicate); 
+        }catch (Exception e) {
+          throw new ConstraintSerializationException(e, groupPredicate.getDescription());
+        }
+      }
 
-    for (int i = 1; i < segmentRefOrGroups.size() + 1; i++) {
-      String childPath = path + "." + i + "[1]";
-      SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
-      if (segmentRefOrGroup instanceof SegmentRef) {
-        elmSegGroup.appendChild(serializeGazelleSegment((SegmentRef) segmentRefOrGroup, profile,
-            message, childPath, segmentsMap, datatypesMap, tablesMap));
-      } else if (segmentRefOrGroup instanceof Group) {
-        elmSegGroup.appendChild(serializeGazelleGroup((Group) segmentRefOrGroup, profile, message,
-            childPath, segmentsMap, datatypesMap, tablesMap));
+      Map<Integer, SegmentRefOrGroup> segmentRefOrGroups = new HashMap<Integer, SegmentRefOrGroup>();
+
+      for (SegmentRefOrGroup segmentRefOrGroup : group.getChildren()) {
+        segmentRefOrGroups.put(segmentRefOrGroup.getPosition(), segmentRefOrGroup);
+      }
+
+      for (int i = 1; i < segmentRefOrGroups.size() + 1; i++) {
+        String childPath = path + "." + i + "[1]";
+        SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
+        if (segmentRefOrGroup instanceof SegmentRef) {
+          elmSegGroup.appendChild(serializeGazelleSegment((SegmentRef) segmentRefOrGroup, profile,
+              message, childPath, segmentsMap, datatypesMap, tablesMap));
+        } else if (segmentRefOrGroup instanceof Group) {
+          elmSegGroup.appendChild(serializeGazelleGroup((Group) segmentRefOrGroup, profile, message,
+              childPath, segmentsMap, datatypesMap, tablesMap));
+        }
+      }
+
+      return elmSegGroup;
+    }catch (Exception e) {
+      if (group != null) {
+        throw new GroupSerializationException(e, group.getName());
       }
     }
-
-    return elmSegGroup;
+    return null;
   }
 
   private Element serializeGazelleSegment(SegmentRef segmentRef, Profile profile, Message message,
       String path, HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap,
-      HashMap<String, Table> tablesMap) {
+      HashMap<String, Table> tablesMap) throws SegmentSerializationException {
     Element elmSegment = new Element("Segment");
 
     Segment segment = segmentsMap.get(segmentRef.getRef().getId());
-    elmSegment.addAttribute(new Attribute("Name", this.str(segment.getName())));
-    elmSegment.addAttribute(new Attribute("LongName", this.str(segment.getDescription())));
-    if (segmentRef.getUsage().value().equals("B")) {
-      elmSegment.addAttribute(new Attribute("Usage", "X"));
-    } else {
-      elmSegment.addAttribute(new Attribute("Usage", this.str(segmentRef.getUsage().value())));
-    }
-    elmSegment.addAttribute(new Attribute("Min", this.str(segmentRef.getMin() + "")));
-
-    if (segmentRef.getMax().equals("0")) {
-      elmSegment.addAttribute(new Attribute("Max", "" + 1));
-    } else {
-      elmSegment.addAttribute(new Attribute("Max", this.str(segmentRef.getMax())));
-    }
-
-    List<ConformanceStatement> segmentConformanceStatements =
-        this.findConformanceStatements(null, null, message.getConformanceStatements(), path);
-    if (segmentConformanceStatements.size() > 0) {
-      Element elmImpNote = new Element("ImpNote");
-      String note = "";
-      for (ConformanceStatement c : segmentConformanceStatements) {
-        note = note + "\n" + "[" + c.getConstraintId() + "]" + c.getDescription();
+    
+    try{
+      elmSegment.addAttribute(new Attribute("Name", this.str(segment.getName())));
+      elmSegment.addAttribute(new Attribute("LongName", this.str(segment.getDescription())));
+      if (segmentRef.getUsage().value().equals("B")) {
+        elmSegment.addAttribute(new Attribute("Usage", "X"));
+      } else {
+        elmSegment.addAttribute(new Attribute("Usage", this.str(segmentRef.getUsage().value())));
       }
-      elmImpNote.appendChild(note);
-      elmSegment.appendChild(elmImpNote);
-    }
+      elmSegment.addAttribute(new Attribute("Min", this.str(segmentRef.getMin() + "")));
 
-    Predicate segmentPredicate = this.findPredicate(null, null, message.getPredicates(), path);
-    if (segmentPredicate != null) {
-      Element elmPredicate = new Element("Predicate");
-      String note = "[C(" + segmentPredicate.getTrueUsage() + "/" + segmentPredicate.getFalseUsage()
-          + ")]" + segmentPredicate.getDescription();
-      elmPredicate.appendChild(note);
-      elmSegment.appendChild(elmPredicate);
-    }
-
-    Map<Integer, Field> fields = new HashMap<Integer, Field>();
-    for (Field f : segment.getFields()) {
-      fields.put(f.getPosition(), f);
-    }
-
-    for (int i = 1; i < fields.size() + 1; i++) {
-      String fieldPath = path + "." + i + "[1]";
-      Field f = fields.get(i);
-      if(f != null){
-        this.serializeGazelleField(f, datatypesMap.get(f.getDatatype().getId()), elmSegment, profile,
-            message, segment, fieldPath, datatypesMap, tablesMap);        
+      if (segmentRef.getMax().equals("0")) {
+        elmSegment.addAttribute(new Attribute("Max", "" + 1));
+      } else {
+        elmSegment.addAttribute(new Attribute("Max", this.str(segmentRef.getMax())));
       }
+
+      List<ConformanceStatement> segmentConformanceStatements =
+          this.findConformanceStatements(null, null, message.getConformanceStatements(), path);
+      if (segmentConformanceStatements.size() > 0) {
+        Element elmImpNote = new Element("ImpNote");
+        String note = "";
+        for (ConformanceStatement c : segmentConformanceStatements) {
+          try{
+            note = note + "\n" + "[" + c.getConstraintId() + "]" + c.getDescription(); 
+          }catch (Exception e) {
+            throw new ConstraintSerializationException(e, c.getDescription());
+          }
+        }
+        elmImpNote.appendChild(note);
+        elmSegment.appendChild(elmImpNote);
+      }
+
+      Predicate segmentPredicate = this.findPredicate(null, null, message.getPredicates(), path);
+      if (segmentPredicate != null) {
+        try{
+          Element elmPredicate = new Element("Predicate");
+          String note = "[C(" + segmentPredicate.getTrueUsage() + "/" + segmentPredicate.getFalseUsage()
+              + ")]" + segmentPredicate.getDescription();
+          elmPredicate.appendChild(note);
+          elmSegment.appendChild(elmPredicate);          
+        }catch (Exception e) {
+          throw new ConstraintSerializationException(e, segmentPredicate.getDescription());
+        }
+      }
+
+      Map<Integer, Field> fields = new HashMap<Integer, Field>();
+      for (Field f : segment.getFields()) {
+        fields.put(f.getPosition(), f);
+      }
+
+      for (int i = 1; i < fields.size() + 1; i++) {
+        String fieldPath = path + "." + i + "[1]";
+        Field f = fields.get(i);
+        if (f != null) {
+          this.serializeGazelleField(f, datatypesMap.get(f.getDatatype().getId()), elmSegment,
+              profile, message, segment, fieldPath, datatypesMap, tablesMap);
+        }
+      }
+      return elmSegment;
+    }catch (Exception e) {
+      throw new SegmentSerializationException(e, segment.getLabel());
     }
-    return elmSegment;
   }
 
   private void serializeGazelleField(Field f, Datatype fieldDatatype, Element elmParent,
       Profile profile, Message message, Segment segment, String fieldPath,
-      HashMap<String, Datatype> datatypesMap, HashMap<String, Table> tablesMap) {
-    Element elmField = new Element("Field");
-    elmParent.appendChild(elmField);
-
-    elmField.addAttribute(new Attribute("Name", this.str(f.getName())));
-    if (f.getUsage().value().equals("B")) {
-      elmField.addAttribute(new Attribute("Usage", "X"));
-    } else {
-      elmField.addAttribute(new Attribute("Usage", this.str(f.getUsage().value())));
-    }
-    elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
-    if (f.getMax().equals("0")) {
-      elmField.addAttribute(new Attribute("Max", "" + 1));
-    } else {
-      elmField.addAttribute(new Attribute("Max", this.str(f.getMax())));
-    }
-
-    if (f.getMaxLength() != null && !f.getMaxLength().equals("")) {
-      if (f.getMaxLength().equals("*")) {
-        elmField.addAttribute(new Attribute("Length", "" + 225));
-      } else if (f.getMaxLength().equals("0")) {
-        elmField.addAttribute(new Attribute("Length", "" + 1));
-      } else {
-        elmField.addAttribute(new Attribute("Length", this.str(f.getMaxLength())));
+      HashMap<String, Datatype> datatypesMap, HashMap<String, Table> tablesMap) throws FieldSerializationException {
+    try{
+      if (f.getDatatype() != null && fieldDatatype == null) {
+        throw new DatatypeNotFoundException(f.getDatatype().getId());
       }
-    }
-    elmField.addAttribute(new Attribute("Datatype", this.str(fieldDatatype.getName())));
+      
+      Element elmField = new Element("Field");
+      elmParent.appendChild(elmField);
+
+      elmField.addAttribute(new Attribute("Name", this.str(f.getName())));
+      if (f.getUsage().value().equals("B")) {
+        elmField.addAttribute(new Attribute("Usage", "X"));
+      } else {
+        elmField.addAttribute(new Attribute("Usage", this.str(f.getUsage().value())));
+      }
+      elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
+      if (f.getMax().equals("0")) {
+        elmField.addAttribute(new Attribute("Max", "" + 1));
+      } else {
+        elmField.addAttribute(new Attribute("Max", this.str(f.getMax())));
+      }
+
+      if (f.getMaxLength() != null && !f.getMaxLength().equals("")) {
+        if (f.getMaxLength().equals("*")) {
+          elmField.addAttribute(new Attribute("Length", "" + 225));
+        } else if (f.getMaxLength().equals("0")) {
+          elmField.addAttribute(new Attribute("Length", "" + 1));
+        } else {
+          elmField.addAttribute(new Attribute("Length", this.str(f.getMaxLength())));
+        }
+      }
+      elmField.addAttribute(new Attribute("Datatype", this.str(fieldDatatype.getName())));
 
 
-    List<ValueSetBinding> bindings = findBinding(segment.getValueSetBindings(), f.getPosition());
-    if (bindings.size() > 0) {
-      String bindingString = "";
+      List<ValueSetBinding> bindings = findBinding(segment.getValueSetBindings(), f.getPosition());
+      if (bindings.size() > 0) {
+        String bindingString = "";
 
-      for (ValueSetBinding binding : bindings) {
-        Table table = tablesMap.get(binding.getTableId());
-        if (table != null && table.getBindingIdentifier() != null
-            && !table.getBindingIdentifier().equals("")) {
-          if (table.getHl7Version() != null && !table.getHl7Version().equals("")) {
-            if (table.getBindingIdentifier().startsWith("0396")
-                || table.getBindingIdentifier().startsWith("HL70396")) {
-              bindingString = bindingString + table.getBindingIdentifier() + ":";
-            } else {
-              bindingString = bindingString + table.getBindingIdentifier() + "_"
-                  + table.getHl7Version().replaceAll("\\.", "-") + ":";
-            }
-          } else {
-            bindingString = bindingString + table.getBindingIdentifier() + ":";
+        for (ValueSetBinding binding : bindings) {
+          try{
+            Table table = tablesMap.get(binding.getTableId());
+            if (table != null && table.getBindingIdentifier() != null
+                && !table.getBindingIdentifier().equals("")) {
+              if (table.getHl7Version() != null && !table.getHl7Version().equals("")) {
+                if (table.getBindingIdentifier().startsWith("0396")
+                    || table.getBindingIdentifier().startsWith("HL70396")) {
+                  bindingString = bindingString + table.getBindingIdentifier() + ":";
+                } else {
+                  bindingString = bindingString + table.getBindingIdentifier() + "_"
+                      + table.getHl7Version().replaceAll("\\.", "-") + ":";
+                }
+              } else {
+                bindingString = bindingString + table.getBindingIdentifier() + ":";
+              }
+            }            
+          }catch (Exception e) {
+            throw new TableSerializationException(e, binding.getLocation());
           }
+
+        }
+
+        IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
+        if (config.getValueSetAllowedDTs().contains(fieldDatatype.getName())) {
+          if (!bindingString.equals(""))
+            elmField.addAttribute(
+                new Attribute("Table", bindingString.substring(0, bindingString.length() - 1)));
         }
       }
 
-      IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
-      if (config.getValueSetAllowedDTs().contains(fieldDatatype.getName())) {
-        if (!bindingString.equals(""))
-          elmField.addAttribute(
-              new Attribute("Table", bindingString.substring(0, bindingString.length() - 1)));
+      if (f.getItemNo() != null && !f.getItemNo().equals(""))
+        elmField.addAttribute(new Attribute("ItemNo", this.str(f.getItemNo())));
+
+      List<ConformanceStatement> fieldConformanceStatements =
+          this.findConformanceStatements(segment.getConformanceStatements(), f.getPosition() + "[1]",
+              message.getConformanceStatements(), fieldPath);
+      if (fieldConformanceStatements.size() > 0) {
+        Element elmImpNote = new Element("ImpNote");
+        String note = "";
+        for (ConformanceStatement c : fieldConformanceStatements) {
+          try{
+            note = note + "\n" + "[" + c.getConstraintId() + "]" + c.getDescription();  
+          }catch (Exception e) {
+            throw new ConstraintSerializationException(e, c.getDescription());
+          }
+          
+        }
+        elmImpNote.appendChild(note);
+        elmField.appendChild(elmImpNote);
       }
-    }
 
-    if (f.getItemNo() != null && !f.getItemNo().equals(""))
-      elmField.addAttribute(new Attribute("ItemNo", this.str(f.getItemNo())));
+      Predicate fieldPredicate = this.findPredicate(segment.getPredicates(), f.getPosition() + "[1]",
+          message.getPredicates(), fieldPath);
+      if (fieldPredicate != null) {
+        try{
+          Element elmPredicate = new Element("Predicate");
+          String note = "[C(" + fieldPredicate.getTrueUsage() + "/" + fieldPredicate.getFalseUsage()
+              + ")]" + fieldPredicate.getDescription();
+          elmPredicate.appendChild(note);
+          elmField.appendChild(elmPredicate);          
+        }catch (Exception e) {
+          throw new ConstraintSerializationException(e, fieldPredicate.getDescription());
+        }
 
-    List<ConformanceStatement> fieldConformanceStatements =
-        this.findConformanceStatements(segment.getConformanceStatements(), f.getPosition() + "[1]",
-            message.getConformanceStatements(), fieldPath);
-    if (fieldConformanceStatements.size() > 0) {
-      Element elmImpNote = new Element("ImpNote");
-      String note = "";
-      for (ConformanceStatement c : fieldConformanceStatements) {
-        note = note + "\n" + "[" + c.getConstraintId() + "]" + c.getDescription();
       }
-      elmImpNote.appendChild(note);
-      elmField.appendChild(elmImpNote);
-    }
 
-    Predicate fieldPredicate = this.findPredicate(segment.getPredicates(), f.getPosition() + "[1]",
-        message.getPredicates(), fieldPath);
-    if (fieldPredicate != null) {
-      Element elmPredicate = new Element("Predicate");
-      String note = "[C(" + fieldPredicate.getTrueUsage() + "/" + fieldPredicate.getFalseUsage()
-          + ")]" + fieldPredicate.getDescription();
-      elmPredicate.appendChild(note);
-      elmField.appendChild(elmPredicate);
-    }
+      Map<Integer, Component> components = new HashMap<Integer, Component>();
 
-    Map<Integer, Component> components = new HashMap<Integer, Component>();
+      for (Component c : fieldDatatype.getComponents()) {
+        components.put(c.getPosition(), c);
+      }
 
-    for (Component c : fieldDatatype.getComponents()) {
-      components.put(c.getPosition(), c);
-    }
-
-    for (int j = 1; j < components.size() + 1; j++) {
-      String componentPath = fieldPath + "." + j + "[1]";
-      Component c = components.get(j);
-      this.serializeGazelleComponent(c, datatypesMap.get(c.getDatatype().getId()), elmField,
-          profile, message, fieldDatatype, componentPath, datatypesMap, tablesMap);
+      for (int j = 1; j < components.size() + 1; j++) {
+        String componentPath = fieldPath + "." + j + "[1]";
+        Component c = components.get(j);
+        this.serializeGazelleComponent(c, datatypesMap.get(c.getDatatype().getId()), elmField,
+            profile, message, fieldDatatype, componentPath, datatypesMap, tablesMap);
+      }
+    }catch (Exception e) {
+      throw new FieldSerializationException(e, "Field[" + f.getPosition() + "]");
     }
   }
 
   private void serializeGazelleComponent(Component c, Datatype componentDatatype, Element elmParent,
       Profile profile, Message message, Datatype fieldDatatype, String componentPath,
-      HashMap<String, Datatype> datatypesMap, HashMap<String, Table> tablesMap) {
-    Element elmComponent = new Element("Component");
-    elmComponent.addAttribute(new Attribute("Name", this.str(c.getName())));
-    if (c.getUsage().value().equals("B")) {
-      elmComponent.addAttribute(new Attribute("Usage", "X"));
-    } else {
-      elmComponent.addAttribute(new Attribute("Usage", this.str(c.getUsage().value())));
-    }
-    elmComponent.addAttribute(new Attribute("Datatype", this.str(componentDatatype.getName())));
-    if (c.getMaxLength() != null && !c.getMaxLength().equals("")) {
-      if (c.getMaxLength().equals("*")) {
-        elmComponent.addAttribute(new Attribute("Length", "" + 225));
-      } else if (c.getMaxLength().equals("0")) {
-        elmComponent.addAttribute(new Attribute("Length", "" + 1));
-      } else {
-        elmComponent.addAttribute(new Attribute("Length", this.str(c.getMaxLength())));
+      HashMap<String, Datatype> datatypesMap, HashMap<String, Table> tablesMap) throws DatatypeComponentSerializationException {
+    try{
+      if (c.getDatatype() != null && componentDatatype == null) {
+        throw new DatatypeNotFoundException(c.getDatatype().getId());
       }
-    }
-
-    List<ValueSetBinding> bindings =
-        findBinding(fieldDatatype.getValueSetBindings(), c.getPosition());
-    if (bindings.size() > 0) {
-      String bindingString = "";
-
-      for (ValueSetBinding binding : bindings) {
-        Table table = tablesMap.get(binding.getTableId());
-        if (table != null && table.getBindingIdentifier() != null
-            && !table.getBindingIdentifier().equals("")) {
-          if (table.getHl7Version() != null && !table.getHl7Version().equals("")) {
-            if (table.getBindingIdentifier().startsWith("0396")
-                || table.getBindingIdentifier().startsWith("HL70396")) {
-              bindingString = bindingString + table.getBindingIdentifier() + ":";
-            } else {
-              bindingString = bindingString + table.getBindingIdentifier() + "_"
-                  + table.getHl7Version().replaceAll("\\.", "-") + ":";
-            }
-          } else {
-            bindingString = bindingString + table.getBindingIdentifier() + ":";
-          }
+      
+      Element elmComponent = new Element("Component");
+      elmComponent.addAttribute(new Attribute("Name", this.str(c.getName())));
+      if (c.getUsage().value().equals("B")) {
+        elmComponent.addAttribute(new Attribute("Usage", "X"));
+      } else {
+        elmComponent.addAttribute(new Attribute("Usage", this.str(c.getUsage().value())));
+      }
+      elmComponent.addAttribute(new Attribute("Datatype", this.str(componentDatatype.getName())));
+      if (c.getMaxLength() != null && !c.getMaxLength().equals("")) {
+        if (c.getMaxLength().equals("*")) {
+          elmComponent.addAttribute(new Attribute("Length", "" + 225));
+        } else if (c.getMaxLength().equals("0")) {
+          elmComponent.addAttribute(new Attribute("Length", "" + 1));
+        } else {
+          elmComponent.addAttribute(new Attribute("Length", this.str(c.getMaxLength())));
         }
       }
 
-      IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
-      if (config.getValueSetAllowedDTs().contains(componentDatatype.getName())) {
-        if (!bindingString.equals(""))
-          elmComponent.addAttribute(
-              new Attribute("Table", bindingString.substring(0, bindingString.length() - 1)));
+      List<ValueSetBinding> bindings =
+          findBinding(fieldDatatype.getValueSetBindings(), c.getPosition());
+      if (bindings.size() > 0) {
+        String bindingString = "";
+
+        for (ValueSetBinding binding : bindings) {
+          try{
+            Table table = tablesMap.get(binding.getTableId());
+            if (table != null && table.getBindingIdentifier() != null
+                && !table.getBindingIdentifier().equals("")) {
+              if (table.getHl7Version() != null && !table.getHl7Version().equals("")) {
+                if (table.getBindingIdentifier().startsWith("0396")
+                    || table.getBindingIdentifier().startsWith("HL70396")) {
+                  bindingString = bindingString + table.getBindingIdentifier() + ":";
+                } else {
+                  bindingString = bindingString + table.getBindingIdentifier() + "_"
+                      + table.getHl7Version().replaceAll("\\.", "-") + ":";
+                }
+              } else {
+                bindingString = bindingString + table.getBindingIdentifier() + ":";
+              }
+            }  
+          }catch (Exception e) {
+            throw new TableSerializationException(e, binding.getLocation());
+          }
+        }
+
+        IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
+        if (config.getValueSetAllowedDTs().contains(componentDatatype.getName())) {
+          if (!bindingString.equals(""))
+            elmComponent.addAttribute(
+                new Attribute("Table", bindingString.substring(0, bindingString.length() - 1)));
+        }
       }
-    }
 
-    List<ConformanceStatement> componentConformanceStatements =
-        this.findConformanceStatements(fieldDatatype.getConformanceStatements(),
-            c.getPosition() + "[1]", message.getConformanceStatements(), componentPath);
-    if (componentConformanceStatements.size() > 0) {
-      Element elmImpNote = new Element("ImpNote");
-      String note = "";
-      for (ConformanceStatement cs : componentConformanceStatements) {
-        note = note + "\n" + "[" + cs.getConstraintId() + "]" + cs.getDescription();
+      List<ConformanceStatement> componentConformanceStatements =
+          this.findConformanceStatements(fieldDatatype.getConformanceStatements(),
+              c.getPosition() + "[1]", message.getConformanceStatements(), componentPath);
+      if (componentConformanceStatements.size() > 0) {
+        Element elmImpNote = new Element("ImpNote");
+        String note = "";
+        for (ConformanceStatement cs : componentConformanceStatements) {
+          try{
+            note = note + "\n" + "[" + cs.getConstraintId() + "]" + cs.getDescription();  
+          }catch (Exception e) {
+            throw new ConstraintSerializationException(e, cs.getDescription());
+          }
+        }
+        elmImpNote.appendChild(note);
+        elmComponent.appendChild(elmImpNote);
       }
-      elmImpNote.appendChild(note);
-      elmComponent.appendChild(elmImpNote);
-    }
 
-    Predicate componentPredicate = this.findPredicate(fieldDatatype.getPredicates(),
-        c.getPosition() + "[1]", message.getPredicates(), componentPath);
-    if (componentPredicate != null) {
-      Element elmPredicate = new Element("Predicate");
-      String note = "[C(" + componentPredicate.getTrueUsage() + "/"
-          + componentPredicate.getFalseUsage() + ")]" + componentPredicate.getDescription();
-      elmPredicate.appendChild(note);
-      elmComponent.appendChild(elmPredicate);
-    }
+      Predicate componentPredicate = this.findPredicate(fieldDatatype.getPredicates(),
+          c.getPosition() + "[1]", message.getPredicates(), componentPath);
+      if (componentPredicate != null) {
+        try{
+          Element elmPredicate = new Element("Predicate");
+          String note = "[C(" + componentPredicate.getTrueUsage() + "/"
+              + componentPredicate.getFalseUsage() + ")]" + componentPredicate.getDescription();
+          elmPredicate.appendChild(note);
+          elmComponent.appendChild(elmPredicate);   
+        }catch (Exception e) {
+          throw new ConstraintSerializationException(e, componentPredicate.getDescription());
+        }
+       
+      }
 
-    Map<Integer, Component> subComponents = new HashMap<Integer, Component>();
+      Map<Integer, Component> subComponents = new HashMap<Integer, Component>();
 
-    for (Component sc : componentDatatype.getComponents()) {
-      subComponents.put(sc.getPosition(), sc);
-    }
+      for (Component sc : componentDatatype.getComponents()) {
+        subComponents.put(sc.getPosition(), sc);
+      }
 
-    for (int k = 1; k < subComponents.size() + 1; k++) {
-      String subComponentPath = componentPath + "." + k + "[1]";
-      Component sc = subComponents.get(k);
-      this.serializeGazelleSubComponent(sc, datatypesMap.get(sc.getDatatype().getId()),
-          elmComponent, profile, message, componentDatatype, subComponentPath, datatypesMap,
-          tablesMap);
+      for (int k = 1; k < subComponents.size() + 1; k++) {
+        String subComponentPath = componentPath + "." + k + "[1]";
+        Component sc = subComponents.get(k);
+        this.serializeGazelleSubComponent(sc, datatypesMap.get(sc.getDatatype().getId()),
+            elmComponent, profile, message, componentDatatype, subComponentPath, datatypesMap,
+            tablesMap);
+      }
+      elmParent.appendChild(elmComponent);
+    }catch (Exception e) {
+      throw new DatatypeComponentSerializationException(e, c.getPosition());
     }
-    elmParent.appendChild(elmComponent);
+    
   }
 
   private void serializeGazelleSubComponent(Component sc, Datatype subComponentDatatype,
       Element elmParent, Profile profile, Message message, Datatype componentDatatype,
       String subComponentPath, HashMap<String, Datatype> datatypesMap,
-      HashMap<String, Table> tablesMap) {
-    Element elmSubComponent = new Element("SubComponent");
-    elmSubComponent.addAttribute(new Attribute("Name", this.str(sc.getName())));
-    if (sc.getUsage().value().equals("B")) {
-      elmSubComponent.addAttribute(new Attribute("Usage", "X"));
-    } else {
-      elmSubComponent.addAttribute(new Attribute("Usage", this.str(sc.getUsage().value())));
-    }
-    elmSubComponent
-        .addAttribute(new Attribute("Datatype", this.str(subComponentDatatype.getName())));
-    if (sc.getMaxLength() != null && !sc.getMaxLength().equals("")) {
-      if (sc.getMaxLength().equals("*")) {
-        elmSubComponent.addAttribute(new Attribute("Length", "" + 225));
-      } else if (sc.getMaxLength().equals("0")) {
-        elmSubComponent.addAttribute(new Attribute("Length", "" + 1));
-      } else {
-        elmSubComponent.addAttribute(new Attribute("Length", this.str(sc.getMaxLength())));
+      HashMap<String, Table> tablesMap) throws DatatypeComponentSerializationException {
+    try{
+      if (sc.getDatatype() != null && subComponentDatatype == null) {
+        throw new DatatypeNotFoundException(sc.getDatatype().getId());
       }
-    }
-
-    List<ValueSetBinding> bindings =
-        findBinding(componentDatatype.getValueSetBindings(), sc.getPosition());
-    if (bindings.size() > 0) {
-      String bindingString = "";
-
-      for (ValueSetBinding binding : bindings) {
-        Table table = tablesMap.get(binding.getTableId());
-        if (table != null && table.getBindingIdentifier() != null
-            && !table.getBindingIdentifier().equals("")) {
-          if (table.getHl7Version() != null && !table.getHl7Version().equals("")) {
-            if (table.getBindingIdentifier().startsWith("0396")
-                || table.getBindingIdentifier().startsWith("HL70396")) {
-              bindingString = bindingString + table.getBindingIdentifier() + ":";
-            } else {
-              bindingString = bindingString + table.getBindingIdentifier() + "_"
-                  + table.getHl7Version().replaceAll("\\.", "-") + ":";
-            }
-          } else {
-            bindingString = bindingString + table.getBindingIdentifier() + ":";
-          }
+      Element elmSubComponent = new Element("SubComponent");
+      elmSubComponent.addAttribute(new Attribute("Name", this.str(sc.getName())));
+      if (sc.getUsage().value().equals("B")) {
+        elmSubComponent.addAttribute(new Attribute("Usage", "X"));
+      } else {
+        elmSubComponent.addAttribute(new Attribute("Usage", this.str(sc.getUsage().value())));
+      }
+      elmSubComponent
+          .addAttribute(new Attribute("Datatype", this.str(subComponentDatatype.getName())));
+      if (sc.getMaxLength() != null && !sc.getMaxLength().equals("")) {
+        if (sc.getMaxLength().equals("*")) {
+          elmSubComponent.addAttribute(new Attribute("Length", "" + 225));
+        } else if (sc.getMaxLength().equals("0")) {
+          elmSubComponent.addAttribute(new Attribute("Length", "" + 1));
+        } else {
+          elmSubComponent.addAttribute(new Attribute("Length", this.str(sc.getMaxLength())));
         }
       }
 
-      IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
-      if (config.getValueSetAllowedDTs().contains(subComponentDatatype.getName())) {
-        if (!bindingString.equals(""))
-          elmSubComponent.addAttribute(
-              new Attribute("Table", bindingString.substring(0, bindingString.length() - 1)));
+      List<ValueSetBinding> bindings =
+          findBinding(componentDatatype.getValueSetBindings(), sc.getPosition());
+      if (bindings.size() > 0) {
+        String bindingString = "";
+
+        for (ValueSetBinding binding : bindings) {
+          try{
+            Table table = tablesMap.get(binding.getTableId());
+            if (table != null && table.getBindingIdentifier() != null
+                && !table.getBindingIdentifier().equals("")) {
+              if (table.getHl7Version() != null && !table.getHl7Version().equals("")) {
+                if (table.getBindingIdentifier().startsWith("0396")
+                    || table.getBindingIdentifier().startsWith("HL70396")) {
+                  bindingString = bindingString + table.getBindingIdentifier() + ":";
+                } else {
+                  bindingString = bindingString + table.getBindingIdentifier() + "_"
+                      + table.getHl7Version().replaceAll("\\.", "-") + ":";
+                }
+              } else {
+                bindingString = bindingString + table.getBindingIdentifier() + ":";
+              }
+            }  
+          }catch (Exception e) {
+            throw new TableSerializationException(e, binding.getLocation());
+          }
+        }
+
+        IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
+        if (config.getValueSetAllowedDTs().contains(subComponentDatatype.getName())) {
+          if (!bindingString.equals(""))
+            elmSubComponent.addAttribute(
+                new Attribute("Table", bindingString.substring(0, bindingString.length() - 1)));
+        }
       }
-    }
 
-    List<ConformanceStatement> subComponentConformanceStatements =
-        this.findConformanceStatements(componentDatatype.getConformanceStatements(),
-            sc.getPosition() + "[1]", message.getConformanceStatements(), subComponentPath);
-    if (subComponentConformanceStatements.size() > 0) {
-      Element elmImpNote = new Element("ImpNote");
-      String note = "";
-      for (ConformanceStatement cs : subComponentConformanceStatements) {
-        note = note + "\n" + "[" + cs.getConstraintId() + "]" + cs.getDescription();
+      List<ConformanceStatement> subComponentConformanceStatements =
+          this.findConformanceStatements(componentDatatype.getConformanceStatements(),
+              sc.getPosition() + "[1]", message.getConformanceStatements(), subComponentPath);
+      if (subComponentConformanceStatements.size() > 0) {
+        Element elmImpNote = new Element("ImpNote");
+        String note = "";
+        for (ConformanceStatement cs : subComponentConformanceStatements) {
+          try{
+            note = note + "\n" + "[" + cs.getConstraintId() + "]" + cs.getDescription();  
+          }catch (Exception e) {
+            throw new ConstraintSerializationException(e, cs.getDescription());
+          }
+        }
+        elmImpNote.appendChild(note);
+        elmSubComponent.appendChild(elmImpNote);
       }
-      elmImpNote.appendChild(note);
-      elmSubComponent.appendChild(elmImpNote);
-    }
 
-    Predicate subComponentPredicate = this.findPredicate(componentDatatype.getPredicates(),
-        sc.getPosition() + "[1]", message.getPredicates(), subComponentPath);
-    if (subComponentPredicate != null) {
-      Element elmPredicate = new Element("Predicate");
-      String note = "[C(" + subComponentPredicate.getTrueUsage() + "/"
-          + subComponentPredicate.getFalseUsage() + ")]" + subComponentPredicate.getDescription();
-      elmPredicate.appendChild(note);
-      elmSubComponent.appendChild(elmPredicate);
-    }
+      Predicate subComponentPredicate = this.findPredicate(componentDatatype.getPredicates(),
+          sc.getPosition() + "[1]", message.getPredicates(), subComponentPath);
+      if (subComponentPredicate != null) {
+        try{
+          Element elmPredicate = new Element("Predicate");
+          String note = "[C(" + subComponentPredicate.getTrueUsage() + "/"
+              + subComponentPredicate.getFalseUsage() + ")]" + subComponentPredicate.getDescription();
+          elmPredicate.appendChild(note);
+          elmSubComponent.appendChild(elmPredicate);          
+        }catch (Exception e) {
+          throw new ConstraintSerializationException(e, subComponentPredicate.getDescription());
+        }
+      }
 
-    elmParent.appendChild(elmSubComponent);
+      elmParent.appendChild(elmSubComponent);
+    }catch (Exception e) {
+      throw new DatatypeComponentSerializationException(e, sc.getPosition());
+    }
   }
 
-  private Element serializeTablesMapToGazelleElement(Map<String, Table> tablesMap) {
+  private Element serializeTablesMapToGazelleElement(Map<String, Table> tablesMap) throws TableSerializationException {
     Element elmSpecification = new Element("Specification");
     Attribute schemaDecl = new Attribute("noNamespaceSchemaLocation",
         "https://raw.githubusercontent.com/Jungyubw/NIST_healthcare_hl7_v2_profile_schema/master/Schema/Gazelle%20Schema/HL7TableSchema.xsd");
@@ -3149,58 +3384,62 @@ public class XMLExportTool {
     Element elmHl7tables = new Element("hl7tables");
 
     for (String key : tablesMap.keySet()) {
-      Table t = tablesMap.get(key);
-      tableID = tableID + 1;
-      Element elmHl7table = new Element("hl7table");
-      elmHl7table.addAttribute(new Attribute("id", tableID + ""));
-      if (t.getHl7Version() != null && !t.getHl7Version().equals("")) {
-        if (t.getBindingIdentifier().startsWith("0396")
-            || t.getBindingIdentifier().startsWith("HL70396")) {
-          elmHl7table.addAttribute(new Attribute("name", this.str(t.getBindingIdentifier())));
+      try{
+        Table t = tablesMap.get(key);
+        tableID = tableID + 1;
+        Element elmHl7table = new Element("hl7table");
+        elmHl7table.addAttribute(new Attribute("id", tableID + ""));
+        if (t.getHl7Version() != null && !t.getHl7Version().equals("")) {
+          if (t.getBindingIdentifier().startsWith("0396")
+              || t.getBindingIdentifier().startsWith("HL70396")) {
+            elmHl7table.addAttribute(new Attribute("name", this.str(t.getBindingIdentifier())));
+          } else {
+            elmHl7table.addAttribute(new Attribute("name",
+                this.str(t.getBindingIdentifier() + "_" + t.getHl7Version().replaceAll("\\.", "-"))));
+          }
         } else {
-          elmHl7table.addAttribute(new Attribute("name",
-              this.str(t.getBindingIdentifier() + "_" + t.getHl7Version().replaceAll("\\.", "-"))));
+          elmHl7table.addAttribute(new Attribute("name", this.str(t.getBindingIdentifier())));
         }
-      } else {
-        elmHl7table.addAttribute(new Attribute("name", this.str(t.getBindingIdentifier())));
-      }
-      elmHl7table.addAttribute(new Attribute("type", "HL7"));
-      int order = 0;
-      List<String> codesysList = new ArrayList<String>();
+        elmHl7table.addAttribute(new Attribute("type", "HL7"));
+        int order = 0;
+        List<String> codesysList = new ArrayList<String>();
 
-      for (Code c : t.getCodes()) {
-        order = order + 1;
-        if (c.getCodeSystem() != null && !codesysList.contains(c.getCodeSystem()))
-          codesysList.add(c.getCodeSystem());
+        for (Code c : t.getCodes()) {
+          order = order + 1;
+          if (c.getCodeSystem() != null && !codesysList.contains(c.getCodeSystem()))
+            codesysList.add(c.getCodeSystem());
 
-        Element elmTableElement = new Element("tableElement");
-        elmTableElement.addAttribute(new Attribute("order", order + ""));
-        elmTableElement.addAttribute(new Attribute("code", this.str(c.getValue())));
-        elmTableElement.addAttribute(new Attribute("description", this.str(c.getLabel())));
-        elmTableElement.addAttribute(new Attribute("displayName", this.str(c.getLabel())));
+          Element elmTableElement = new Element("tableElement");
+          elmTableElement.addAttribute(new Attribute("order", order + ""));
+          elmTableElement.addAttribute(new Attribute("code", this.str(c.getValue())));
+          elmTableElement.addAttribute(new Attribute("description", this.str(c.getLabel())));
+          elmTableElement.addAttribute(new Attribute("displayName", this.str(c.getLabel())));
 
-        if (c.getCodeSystem() == null || c.getCodeSystem().equals(""))
-          elmTableElement.addAttribute(new Attribute("source", "NOSource"));
-        else
-          elmTableElement.addAttribute(new Attribute("source", this.str(c.getCodeSystem())));
-        elmTableElement.addAttribute(new Attribute("usage", "Optional"));
-        elmTableElement.addAttribute(new Attribute("creator", ""));
-        elmTableElement.addAttribute(new Attribute("date", ""));
-        elmTableElement.addAttribute(new Attribute("instruction", ""));
-        elmHl7table.appendChild(elmTableElement);
-      }
-
-      if (codesysList.size() == 0) {
-        elmHl7table.addAttribute(new Attribute("codeSys", ""));
-      } else {
-        String codeSysSet = "";
-        for (String s : codesysList) {
-          codeSysSet = codeSysSet + "," + s;
+          if (c.getCodeSystem() == null || c.getCodeSystem().equals(""))
+            elmTableElement.addAttribute(new Attribute("source", "NOSource"));
+          else
+            elmTableElement.addAttribute(new Attribute("source", this.str(c.getCodeSystem())));
+          elmTableElement.addAttribute(new Attribute("usage", "Optional"));
+          elmTableElement.addAttribute(new Attribute("creator", ""));
+          elmTableElement.addAttribute(new Attribute("date", ""));
+          elmTableElement.addAttribute(new Attribute("instruction", ""));
+          elmHl7table.appendChild(elmTableElement);
         }
-        elmHl7table.addAttribute(new Attribute("codeSys", codeSysSet.substring(1)));
-      }
 
-      elmHl7tables.appendChild(elmHl7table);
+        if (codesysList.size() == 0) {
+          elmHl7table.addAttribute(new Attribute("codeSys", ""));
+        } else {
+          String codeSysSet = "";
+          for (String s : codesysList) {
+            codeSysSet = codeSysSet + "," + s;
+          }
+          elmHl7table.addAttribute(new Attribute("codeSys", codeSysSet.substring(1)));
+        }
+
+        elmHl7tables.appendChild(elmHl7table); 
+      }catch (Exception e) {
+        throw new TableSerializationException(e, key);
+      }
     }
 
     elmSpecification.appendChild(elmHl7tables);

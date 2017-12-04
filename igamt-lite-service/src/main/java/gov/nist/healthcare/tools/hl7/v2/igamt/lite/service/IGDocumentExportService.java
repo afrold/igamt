@@ -33,15 +33,15 @@ public interface IGDocumentExportService {
 
   InputStream exportAsValidationForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException;
   
-  InputStream exportAsGazelleForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException;
+  InputStream exportAsGazelleForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException;
 
-  InputStream exportAsDisplayForSelectedMessage(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException, TableSerializationException;
+  InputStream exportAsDisplayForSelectedMessage(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException;
   
-  InputStream exportAsDisplayForSelectedCompositeProfiles(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException, TableSerializationException;
+  InputStream exportAsDisplayForSelectedCompositeProfiles(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException;
   
   InputStream exportAsValidationForSelectedCompositeProfiles(IGDocument d, String[] cids) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException;
 
-  InputStream exportAsGazelleForSelectedCompositeProfiles(IGDocument d, String[] cids) throws IOException, CloneNotSupportedException;
+  InputStream exportAsGazelleForSelectedCompositeProfiles(IGDocument d, String[] cids) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException;
 
   InputStream exportAsXlsx(IGDocument d) throws IOException;
 

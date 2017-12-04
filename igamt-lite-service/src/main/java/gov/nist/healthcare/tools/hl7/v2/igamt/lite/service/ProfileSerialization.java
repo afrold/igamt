@@ -30,14 +30,14 @@ public interface ProfileSerialization {
 
 	InputStream serializeProfileToZip(Profile profile, String[] ids, DocumentMetaData metadata) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException;
 
-	InputStream serializeProfileDisplayToZip(Profile profile, String[] ids, DocumentMetaData metadata) throws IOException, CloneNotSupportedException, TableSerializationException;
+	InputStream serializeProfileDisplayToZip(Profile profile, String[] ids, DocumentMetaData metadata) throws IOException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException;
 
-	InputStream serializeProfileGazelleToZip(Profile profile, String[] ids, DocumentMetaData metadata) throws IOException, CloneNotSupportedException;
+	InputStream serializeProfileGazelleToZip(Profile profile, String[] ids, DocumentMetaData metadata) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException;
 	
 	InputStream serializeCompositeProfileToZip(IGDocument doc, String[] ids) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException;
 	
-	InputStream serializeCompositeProfileGazelleToZip(IGDocument doc, String[] ids) throws IOException, CloneNotSupportedException;
+	InputStream serializeCompositeProfileGazelleToZip(IGDocument doc, String[] ids) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException;
    
-	InputStream serializeCompositeProfileDisplayToZip(IGDocument doc, String[] ids) throws IOException, CloneNotSupportedException, TableSerializationException;
+	InputStream serializeCompositeProfileDisplayToZip(IGDocument doc, String[] ids) throws IOException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException;
 	
 }

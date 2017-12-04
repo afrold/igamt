@@ -202,7 +202,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
   @Override
   public InputStream exportAsGazelleForSelectedMessages(IGDocument d, String[] mids)
-      throws IOException, CloneNotSupportedException {
+      throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException {
     if (d != null) {
       return profileSerializationService.serializeProfileGazelleToZip(d.getProfile(), mids,
           d.getMetaData());
@@ -213,7 +213,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
   @Override
   public InputStream exportAsDisplayForSelectedMessage(IGDocument d, String[] mids)
-      throws IOException, CloneNotSupportedException, TableSerializationException {
+      throws IOException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException {
     if (d != null) {
       return profileSerializationService.serializeProfileDisplayToZip(d.getProfile(), mids,
           d.getMetaData());
@@ -234,7 +234,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
   @Override
   public InputStream exportAsGazelleForSelectedCompositeProfiles(IGDocument d, String[] cids)
-      throws IOException, CloneNotSupportedException {
+      throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException {
     if (d != null) {
       return profileSerializationService.serializeCompositeProfileGazelleToZip(d, cids);
     } else {
@@ -244,7 +244,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
   @Override
   public InputStream exportAsDisplayForSelectedCompositeProfiles(IGDocument d, String[] cids)
-      throws IOException, CloneNotSupportedException, TableSerializationException {
+      throws IOException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException {
     if (d != null) {
       return profileSerializationService.serializeCompositeProfileDisplayToZip(d, cids);
     } else {
