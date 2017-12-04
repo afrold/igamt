@@ -685,48 +685,48 @@ public class XMLExportTool {
     for (int i = 1; i < fields.size() + 1; i++) {
       String fieldPath = path + "." + i + "[1]";
       Field f = fields.get(i);
-
-      if (dm.size() > 0 || dm2nd.size() > 0) {
-        if (targetPosition.equals(i + "")) {
-          Element elmDynamicField = new Element("DynamicField");
-          elmDynamicField.addAttribute(new Attribute("Name", this.str(f.getName())));
-          elmDynamicField.addAttribute(new Attribute("Reference", reference));
-          if (secondReference != null) {
-            elmDynamicField.addAttribute(new Attribute("SecondReference", secondReference));
-          }
-
-          for (String key : dm.keySet()) {
-            Element elmCase = new Element("Case");
-            Datatype d = dm.get(key);
-            if (d != null) {
-              elmCase.addAttribute(new Attribute("Value", d.getName()));
-              this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()),
-                  elmCase, profile, message, segment, fieldPath, datatypesMap, tablesMap);
-              elmDynamicField.appendChild(elmCase);
+      if(f != null){
+        if (dm.size() > 0 || dm2nd.size() > 0) {
+          if (targetPosition.equals(i + "")) {
+            Element elmDynamicField = new Element("DynamicField");
+            elmDynamicField.addAttribute(new Attribute("Name", this.str(f.getName())));
+            elmDynamicField.addAttribute(new Attribute("Reference", reference));
+            if (secondReference != null) {
+              elmDynamicField.addAttribute(new Attribute("SecondReference", secondReference));
             }
-          }
 
-          for (String key : dm2nd.keySet()) {
-            Element elmCase = new Element("Case");
-            Datatype d = dm2nd.get(key);
-            if (d != null) {
-              elmCase.addAttribute(new Attribute("Value", d.getName()));
-              elmCase.addAttribute(new Attribute("SecondValue", key));
-              this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()),
-                  elmCase, profile, message, segment, fieldPath, datatypesMap, tablesMap);
-              elmDynamicField.appendChild(elmCase);
+            for (String key : dm.keySet()) {
+              Element elmCase = new Element("Case");
+              Datatype d = dm.get(key);
+              if (d != null) {
+                elmCase.addAttribute(new Attribute("Value", d.getName()));
+                this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()),
+                    elmCase, profile, message, segment, fieldPath, datatypesMap, tablesMap);
+                elmDynamicField.appendChild(elmCase);
+              }
             }
+
+            for (String key : dm2nd.keySet()) {
+              Element elmCase = new Element("Case");
+              Datatype d = dm2nd.get(key);
+              if (d != null) {
+                elmCase.addAttribute(new Attribute("Value", d.getName()));
+                elmCase.addAttribute(new Attribute("SecondValue", key));
+                this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()),
+                    elmCase, profile, message, segment, fieldPath, datatypesMap, tablesMap);
+                elmDynamicField.appendChild(elmCase);
+              }
+            }
+            elmSegmentStructure.appendChild(elmDynamicField);
+          } else {
+            this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()),
+                elmSegmentStructure, profile, message, segment, fieldPath, datatypesMap, tablesMap);
           }
-          elmSegmentStructure.appendChild(elmDynamicField);
         } else {
           this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()),
               elmSegmentStructure, profile, message, segment, fieldPath, datatypesMap, tablesMap);
-        }
-      } else {
-        this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()),
-            elmSegmentStructure, profile, message, segment, fieldPath, datatypesMap, tablesMap);
+        }  
       }
-
     }
 
     return elmSegment;
@@ -2833,9 +2833,10 @@ public class XMLExportTool {
     for (int i = 1; i < fields.size() + 1; i++) {
       String fieldPath = path + "." + i + "[1]";
       Field f = fields.get(i);
-      this.serializeGazelleField(f, datatypesMap.get(f.getDatatype().getId()), elmSegment, profile,
-          message, segment, fieldPath, datatypesMap, tablesMap);
-
+      if(f != null){
+        this.serializeGazelleField(f, datatypesMap.get(f.getDatatype().getId()), elmSegment, profile,
+            message, segment, fieldPath, datatypesMap, tablesMap);        
+      }
     }
     return elmSegment;
   }
