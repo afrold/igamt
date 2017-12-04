@@ -45,7 +45,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ProfileSerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.TableSerializationException;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
@@ -187,7 +191,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
   @Override
   public InputStream exportAsValidationForSelectedMessages(IGDocument d, String[] mids)
-      throws IOException, CloneNotSupportedException {
+      throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException {
     if (d != null) {
       return profileSerializationService.serializeProfileToZip(d.getProfile(), mids,
           d.getMetaData());
@@ -209,7 +213,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
   @Override
   public InputStream exportAsDisplayForSelectedMessage(IGDocument d, String[] mids)
-      throws IOException, CloneNotSupportedException {
+      throws IOException, CloneNotSupportedException, TableSerializationException {
     if (d != null) {
       return profileSerializationService.serializeProfileDisplayToZip(d.getProfile(), mids,
           d.getMetaData());
@@ -220,7 +224,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
   @Override
   public InputStream exportAsValidationForSelectedCompositeProfiles(IGDocument d, String[] cids)
-      throws IOException, CloneNotSupportedException {
+      throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException {
     if (d != null) {
       return profileSerializationService.serializeCompositeProfileToZip(d, cids);
     } else {
@@ -240,7 +244,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
   @Override
   public InputStream exportAsDisplayForSelectedCompositeProfiles(IGDocument d, String[] cids)
-      throws IOException, CloneNotSupportedException {
+      throws IOException, CloneNotSupportedException, TableSerializationException {
     if (d != null) {
       return profileSerializationService.serializeCompositeProfileDisplayToZip(d, cids);
     } else {

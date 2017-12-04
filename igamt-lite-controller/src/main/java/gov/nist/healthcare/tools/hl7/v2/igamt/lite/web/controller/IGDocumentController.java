@@ -17,7 +17,11 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ProfileSerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.TableSerializationException;
+
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1058,7 +1062,7 @@ public class IGDocumentController extends CommonController {
   public void exportValidationXMLByCompositeProfile(@PathVariable("id") String id,
       @PathVariable("cIds") String[] compositeProfileIds, HttpServletRequest request,
       HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
+      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException {
     IGDocument d = findIGDocument(id);
     InputStream content =
         igDocumentExport.exportAsValidationForSelectedCompositeProfiles(d, compositeProfileIds);
@@ -1074,7 +1078,7 @@ public class IGDocumentController extends CommonController {
   public void exportValidationXMLByMessages(@PathVariable("id") String id,
       @PathVariable("mIds") String[] messageIds, HttpServletRequest request,
       HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
+      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException {
     IGDocument d = findIGDocument(id);
     InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d, messageIds);
     response.setContentType("application/zip");
@@ -1089,7 +1093,7 @@ public class IGDocumentController extends CommonController {
   public void exportDisplayXMLByCompositeProfile(@PathVariable("id") String id,
       @PathVariable("cIds") String[] compositeProfileIds, HttpServletRequest request,
       HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
+      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException, TableSerializationException {
     IGDocument d = findIGDocument(id);
     InputStream content =
         igDocumentExport.exportAsDisplayForSelectedCompositeProfiles(d, compositeProfileIds);
@@ -1105,7 +1109,7 @@ public class IGDocumentController extends CommonController {
   public void exportDisplayXMLByMessages(@PathVariable("id") String id,
       @PathVariable("mIds") String[] messageIds, HttpServletRequest request,
       HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
+      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException, TableSerializationException {
     IGDocument d = findIGDocument(id);
     InputStream content = igDocumentExport.exportAsDisplayForSelectedMessage(d, messageIds);
     response.setContentType("application/zip");

@@ -4,6 +4,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocumen
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFont;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.IntegrationTestApplicationConfig;
@@ -51,7 +52,7 @@ public class DataTypeLibraryExportTest  {
     private ExportFontConfig exportFontConfig = new ExportFontConfig(new ExportFont(FONT, FONT+";"), 14, false);
 
     @Test
-    public void testHtmlExport(){
+    public void testHtmlExport() throws SerializationException{
         DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById(TEST_DOCUMENT_ID);
         try {
             //File htmlFile = new File("tmp/dtLib_"+new Date().toString()+".html");
@@ -68,7 +69,7 @@ public class DataTypeLibraryExportTest  {
         }
     }
     @Test
-    public void testDocxExport(){
+    public void testDocxExport() throws SerializationException{
         DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById(TEST_DOCUMENT_ID);
         try {
             File wordFile = new File(EXPORT_BASE_PATH+".docx");

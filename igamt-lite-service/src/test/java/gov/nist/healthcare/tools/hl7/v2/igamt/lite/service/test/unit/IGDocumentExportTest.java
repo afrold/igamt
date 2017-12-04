@@ -4,6 +4,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFont;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.IntegrationTestApplicationConfig;
@@ -50,7 +51,7 @@ public class IGDocumentExportTest {
     private ExportFontConfig exportFontConfig = new ExportFontConfig(new ExportFont(FONT, FONT+";"), 14, false);
 
     @Test
-    public void testHtmlCompactExport(){
+    public void testHtmlCompactExport() throws SerializationException{
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
             //File htmlFile = new File("tmp/dtLib_"+new Date().toString()+".html");
@@ -68,7 +69,7 @@ public class IGDocumentExportTest {
         }
     }
     @Test
-    public void testHtmlVerboseExport(){
+    public void testHtmlVerboseExport() throws SerializationException{
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
             ExportConfig exportConfig = ExportConfig.getBasicExportConfig(true);
@@ -87,7 +88,7 @@ public class IGDocumentExportTest {
     }
 
     @Test
-    public void testHtmlTablesExport(){
+    public void testHtmlTablesExport() throws SerializationException{
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
             ExportConfig exportConfig = ExportConfig.getBasicExportConfig(true);
@@ -105,7 +106,7 @@ public class IGDocumentExportTest {
         }
     }
     @Test
-    public void testDocxCompactExport(){
+    public void testDocxCompactExport() throws SerializationException{
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
             File wordFile = new File(EXPORT_BASE_PATH+"_compact.docx");
@@ -122,7 +123,7 @@ public class IGDocumentExportTest {
         }
     }
     @Test
-    public void testDocxVerboseExport(){
+    public void testDocxVerboseExport() throws SerializationException{
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
             File wordFile = new File(EXPORT_BASE_PATH+"_verbose.docx");
@@ -139,7 +140,7 @@ public class IGDocumentExportTest {
         }
     }
     @Test
-    public void testDocxTablesExport(){
+    public void testDocxTablesExport() throws SerializationException{
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
             File wordFile = new File(EXPORT_BASE_PATH+"_table.docx");

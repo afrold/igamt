@@ -19,7 +19,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ProfileSerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.TableSerializationException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,15 +31,15 @@ public interface IGDocumentExportService {
 
   InputStream exportAsPdf(IGDocument d) throws IOException, SerializationException;
 
-  InputStream exportAsValidationForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException;
+  InputStream exportAsValidationForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException;
   
   InputStream exportAsGazelleForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException;
 
-  InputStream exportAsDisplayForSelectedMessage(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException;
+  InputStream exportAsDisplayForSelectedMessage(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException, TableSerializationException;
   
-  InputStream exportAsDisplayForSelectedCompositeProfiles(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException;
+  InputStream exportAsDisplayForSelectedCompositeProfiles(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException, TableSerializationException;
   
-  InputStream exportAsValidationForSelectedCompositeProfiles(IGDocument d, String[] cids) throws IOException, CloneNotSupportedException;
+  InputStream exportAsValidationForSelectedCompositeProfiles(IGDocument d, String[] cids) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException;
 
   InputStream exportAsGazelleForSelectedCompositeProfiles(IGDocument d, String[] cids) throws IOException, CloneNotSupportedException;
 
