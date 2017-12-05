@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.xml.serialization.XMLConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.xml.XMLConfig;
 
 /**
  * @author Harold Affo (NIST)

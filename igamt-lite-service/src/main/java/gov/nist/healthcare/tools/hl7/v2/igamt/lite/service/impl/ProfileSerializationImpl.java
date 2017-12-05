@@ -44,6 +44,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SourceType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -66,8 +67,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SourceType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByName;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
@@ -75,7 +76,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.xml.serialization.XMLExportTool;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ProfileSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.TableSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.xml.XMLExportTool;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ConstraintsSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -589,7 +593,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
   
   @Override
   public InputStream serializeProfileGazelleToZip(Profile original, String[] ids, DocumentMetaData metadata)
-      throws IOException, CloneNotSupportedException {
+      throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException {
     Profile filteredProfile = new Profile();
 
     HashMap<String, Segment> segmentsMap = new HashMap<String, Segment>();
@@ -674,7 +678,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
   @Override
   public InputStream serializeCompositeProfileDisplayToZip(IGDocument doc, String[] ids)
-      throws IOException, CloneNotSupportedException {
+      throws IOException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException {
     Map<String, Segment> segmentsMap = new HashMap<String, Segment>();
     Map<String, Datatype> datatypesMap = new HashMap<String, Datatype>();
     Map<String, Table> tablesMap = new HashMap<String, Table>();
@@ -758,7 +762,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
   
   @Override
   public InputStream serializeProfileToZip(Profile original, String[] ids,
-      DocumentMetaData metadata) throws IOException, CloneNotSupportedException {
+      DocumentMetaData metadata) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException {
     Profile filteredProfile = new Profile();
 
     HashMap<String, Segment> segmentsMap = new HashMap<String, Segment>();
@@ -859,7 +863,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
   @Override
   public InputStream serializeProfileDisplayToZip(Profile original, String[] ids,
-      DocumentMetaData metadata) throws IOException, CloneNotSupportedException {
+      DocumentMetaData metadata) throws IOException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException {
 
     Profile filteredProfile = new Profile();
 
@@ -981,7 +985,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
                   d = datatypeService.findByNameAndVesionAndScope(c.getValue(),
                       table.getHl7Version(), "HL7STANDARD");
                   if (d != null) {
-                    this.addDatatypeForDM(d, datatypesMap);
+                    this.addDatatypeForDM(d, datatypesMap, tablesMap);
                   } else {
                     System.out.println("--------NOT FOUND---------");
                     System.out.println(c.getValue());
@@ -1020,13 +1024,22 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     return null;
   }
 
-  private void addDatatypeForDM(Datatype d, Map<String, Datatype> datatypesMap) {
+  private void addDatatypeForDM(Datatype d, Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
     if (d != null) {
       int randumNum = new SecureRandom().nextInt(100000);
       d.setExt("ForDM" + randumNum);
       datatypesMap.put(d.getId(), d);
       for (Component c : d.getComponents()) {
-        this.addDatatypeForDM(datatypeService.findById(c.getDatatype().getId()), datatypesMap);
+        this.addDatatypeForDM(datatypeService.findById(c.getDatatype().getId()), datatypesMap, tablesMap);
+      }
+      
+      for(ValueSetOrSingleCodeBinding binding:d.getValueSetBindings()){
+        if(binding instanceof ValueSetBinding){
+          Table t = tableService.findById(binding.getTableId());
+          if(t != null){
+            tablesMap.put(t.getId(), t);
+          }
+        }
       }
     } else {
       log.error("datatypelink is missing!");
@@ -1054,7 +1067,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
   @Override
   public InputStream serializeCompositeProfileToZip(IGDocument doc, String[] ids)
-      throws IOException, CloneNotSupportedException {
+      throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException {
     Map<String, Segment> segmentsMap = new HashMap<String, Segment>();
     Map<String, Datatype> datatypesMap = new HashMap<String, Datatype>();
     Map<String, Table> tablesMap = new HashMap<String, Table>();
@@ -1157,7 +1170,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
   @Override
   public InputStream serializeCompositeProfileGazelleToZip(IGDocument doc, String[] ids)
-      throws IOException, CloneNotSupportedException {
+      throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException {
     HashMap<String, Segment> segmentsMap = new HashMap<String, Segment>();
     HashMap<String, Datatype> datatypesMap = new HashMap<String, Datatype>();
     HashMap<String, Table> tablesMap = new HashMap<String, Table>();
