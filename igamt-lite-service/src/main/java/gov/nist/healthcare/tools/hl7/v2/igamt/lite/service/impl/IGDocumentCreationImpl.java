@@ -204,13 +204,13 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		tabTarget.setSectionContent(dSource.getProfile().getTableLibrary().getSectionContents());
 		//tabTarget.setSectionDescription(dSource.getProfile().getTableLibrary().getSectionDescription());
 		tabTarget.setSectionPosition(dSource.getProfile().getTableLibrary().getSectionPosition());
-    ProfileComponentLibrary profileComponentLibrary=new ProfileComponentLibrary();
+        ProfileComponentLibrary profileComponentLibrary=new ProfileComponentLibrary();
 
 		pTarget.setMessages(msgsTarget);
 		pTarget.setSegmentLibrary(sgtsTarget);
 		pTarget.setDatatypeLibrary(dtsTarget);
 		pTarget.setTableLibrary(tabTarget);
-    pTarget.setProfileComponentLibrary(profileComponentLibrary);
+        pTarget.setProfileComponentLibrary(profileComponentLibrary);
 
 
 		addSections(dSource, dTarget);
@@ -220,7 +220,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		segmentLibraryRepository.save(sgtsTarget);
 		datatypeLibraryRepository.save(dtsTarget);
 		tableLibraryRepository.save(tabTarget);
-    profileComponentLibraryRepository.save(profileComponentLibrary);
+        profileComponentLibraryRepository.save(profileComponentLibrary);
 
 		igdocumentRepository.save(dTarget);
 		return dTarget;

@@ -17,6 +17,8 @@ import {IgDocumentGuard} from "./igdocument-edit.guard";
           { path: 'section', component: SectionComponent },
           { path: '', component: IgDocumentMetadataComponent },
           { path: 'segment', loadChildren: './segment-edit/segment-edit.module#SegmentEditModule' },
+          { path: 'datatype', loadChildren: './datatype-edit/datatype-edit.module#DatatypeEditModule' }
+
         ]
 			},
       // {

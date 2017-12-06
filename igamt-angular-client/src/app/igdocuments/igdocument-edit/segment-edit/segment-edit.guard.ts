@@ -14,7 +14,7 @@ export class SegmentGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      let obs = this.$http.get('api/segment/'+route.params['id']).map(res => res.json()).subscribe(data => {
+      let obs = this.$http.get('api/segments/'+route.params['id']).map(res => res.json()).subscribe(data => {
         let ig = this._ws.getCurrent(Entity.IG);
         for(let segment of ig.profile.segmentLibrary.children){
           if(segment.id === data.id){

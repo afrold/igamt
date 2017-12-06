@@ -27,6 +27,7 @@ export  class TocService{
    //  toc["children"]=children;
    //
     igdocument["content"]["data"]["referenceType"]="root";
+    igdocument["content"]["expanded"]=true;
     igdocument["content"]["data"]["sectionTitle"]="Table of Content";
 
 

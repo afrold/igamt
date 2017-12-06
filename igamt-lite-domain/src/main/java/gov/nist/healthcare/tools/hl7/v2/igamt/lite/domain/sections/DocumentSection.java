@@ -2,18 +2,17 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections;
 import java.util.ArrayList;
 import java.util.List;
  
-public class DocumentSection<T extends SectionData> {
+public class DocumentSection {
                
                 private String label;
                 private int position;
-                private T data;
-                private List<DocumentSection<? extends SectionData>> children = new ArrayList<DocumentSection<? extends SectionData>>() ;
+                private SectionData data;
+                private List<DocumentSection> children = new ArrayList<DocumentSection>() ;
                 
                 public DocumentSection() {
 					super();
 					// TODO Auto-generated constructor stub
 				}
-				private DocumentSection<SectionData> parent;
                
                 public String getLabel() {
                                 return label;
@@ -27,16 +26,16 @@ public class DocumentSection<T extends SectionData> {
                 public void setPosition(int position) {
                                 this.position = position;
                 }
-                public List<DocumentSection<? extends SectionData>> getChildren() {
+                public List<DocumentSection> getChildren() {
                                 return children;
                 }
-                public void setChildren(List<DocumentSection<? extends SectionData>> children) {
+                public void setChildren(List<DocumentSection> children) {
                                 this.children = children;
                 }
-                public T getData() {
+                public SectionData getData() {
                                 return data;
                 }
-                public void setData(T data) {
+                public void setData(SectionData data) {
                                 this.data = data;
                                 
                 }

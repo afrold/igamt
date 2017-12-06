@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("message")
 public class MessageSectionData extends SectionData{
 	
-	String name;
-	String identifier;
-	String messageType;
-	String description;
-	String structID;
+	private String name;
+	private String identifier;
+	private String messageType;
+	private String description;
+	private String structID;
+	private String messageId;
+	private Integer position;
 	
 
 	public MessageSectionData() {
@@ -63,6 +65,26 @@ public class MessageSectionData extends SectionData{
 
 	public void setStructID(String structID) {
 		this.structID = structID;
+	}
+
+
+	public Integer getPosition() {
+		return position;
+	}
+
+
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
+
+
+	public String getMessageId() {
+		return messageId;
+	}
+
+
+	public void setMessageId(String messageId) {
+		this.messageId = messageId;
 	}
 
 }

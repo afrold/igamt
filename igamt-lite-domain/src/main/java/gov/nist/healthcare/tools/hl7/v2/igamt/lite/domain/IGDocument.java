@@ -48,11 +48,11 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
   private Set<Section> childSections = new HashSet<Section>();
   
   
+  @Transient
   private DocumentSection content=new DocumentSection();
 
 
-private Set<ShareParticipantPermission> shareParticipantIds =
-      new HashSet<ShareParticipantPermission>();
+  private Set<ShareParticipantPermission> shareParticipantIds = new HashSet<ShareParticipantPermission>();
 
   @Transient
   private List<ShareParticipant> realUsers = new ArrayList<ShareParticipant>();
@@ -365,34 +365,35 @@ private Set<ShareParticipantPermission> shareParticipantIds =
   }
 
   public Profile getProfile() {
+	  return this.profile;
 	  
-	  if(content.getChildren()!=null){
-		 DocumentSection profileSection=new DocumentSection<SectionDataWithText>();
-		 for (Object child : this.content.getChildren()){
-			if(child instanceof DocumentSection){
-				DocumentSection section=(DocumentSection)child;
-				if(section.getData()!= null){
-					SectionData data=section.getData();
-					if(data instanceof SectionDataWithText){
-						SectionDataWithText dataWithText=(SectionDataWithText) data;
-						if(((SectionDataWithText) data).getReferenceType()==Constant.PROFILE){
-							return buildProfileFromSection(section);
-						}
-						}
-					}
-			} 
-		 }
-		  
-	  }
+//	  if(content.getChildren()!=null){
+//		 //DocumentSection profileSection=new DocumentSection<SectionDataWithText>();
+//		 for ( DocumentSection<SectionData> child : this.content.getChildren()){
+////			if(child instanceof DocumentSection){
+////				DocumentSection section=(DocumentSection)child;
+////				if(section.getData()!= null){
+////					SectionData data=section.getData();
+////					if(data instanceof SectionDataWithText){
+////						SectionDataWithText dataWithText=(SectionDataWithText) data;
+////						if(((SectionDataWithText) data).getReferenceType()==Constant.PROFILE){
+////							return buildProfileFromSection(section);
+////						}
+////					}
+////					}
+////			} 
+////		 }
+//		  
+//	  //}
+//	//return null;
 	  
-    return new Profile();
-  }
+}
 
 
   private Profile buildProfileFromSection(DocumentSection section) {
-	// TODO Auto-generated method stub
+	  
 	return null;
-}
+  }
 
 public void setProfile(Profile profile) {
     this.profile = profile;

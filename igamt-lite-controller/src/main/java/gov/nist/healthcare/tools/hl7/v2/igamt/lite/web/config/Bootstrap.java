@@ -112,7 +112,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.CompositeProfileSectionData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.CompositeProfileSectionDataLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.DocumentSection;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.MessageSectionData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.RootSectionData;
@@ -145,6 +145,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.TocService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DataCorrectionSectionPosition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 
@@ -215,6 +216,9 @@ public class Bootstrap implements InitializingBean {
 
   @Autowired
   private DeltaService deltaService;
+  
+  @Autowired
+  private TocService tocService;
 
 //  @Autowired
 //  private ExportConfigRepository exportConfigRepository;
@@ -354,284 +358,18 @@ public class Bootstrap implements InitializingBean {
 
 	  //angular 
 	 // addInfoToLinks();
-	  createCompositeProfileLibraries();
-	  createMessageLibrary();
 
-	  createToc();
+	 // createToc();
   }
   
-  
-  private void createCompositeProfileLibrary() throws IGDocumentException {
-	// TODO Auto-generated method stub
+	private void createToc() throws IGDocumentException{
 	   List<IGDocument> allIGs = documentService.findAll();	
 	    for(IGDocument d : allIGs){
-	    	CompositeProfileLibrary lib=new CompositeProfileLibrary();
-	    	lib.setId(d.getProfile().getCompositeProfiles().getId());
-	    	Set<CompositeProfileStructure> children= d.getProfile().getCompositeProfiles().getChildren();
-	    	for(CompositeProfileStructure struct:children ){
-	    		CompositeProfileLink link=new CompositeProfileLink();
-	    		link.setId(struct.getId()); 
-	    		link.setNumberOfChilren(struct.getProfileComponentIds().size());
-	    		link.setName(struct.getName());
-	    		link.setType(struct.getType());
-	    		link.setDescription(struct.getDescription());
-	    		lib.addChild(link);
-	    	}
-	    	d.getProfile().setCompsoiteProfileLibrary(CpLibRepo.save(lib));
-	    	
-	    	documentService.save(d);
-
-	    	
-	    }
-}
-  
-  private void createMessageLibrary() throws IGDocumentException {
-	// TODO Auto-generated method stub
-	   List<IGDocument> allIGs = documentService.findAll();	
-	    for(IGDocument d : allIGs){
-	    	MessageLibrary lib=new MessageLibrary();
-	    	lib.setId(d.getProfile().getMessages().getId());
-	    	Set<Message> children= d.getProfile().getMessages().getChildren();
-	    	for(Message message:children ){
-	    		MessageLink link=new MessageLink();
-	    		link.setId(message.getId());
-	    		link.setNumberOfChilren(message.getChildren().size());
-	    		link.setName(message.getName());
-	    		link.setDescription(message.getDescription());
-	    		link.setIdentifier(message.getId());
-	    		link.setMessageType(message.getMessageType());
-	    		link.setStructID(message.getStructID());
-	    		lib.addMessage(link);
-	    	}
-	    	d.getProfile().setMessageLibrary(lib);
-	    	documentService.save(d);	
-	    }
-}
-
-
-private void createCompositeProfileLibraries() {
-	// TODO Auto-generated method stub
-	
-}
-
-
-private void createToc() throws IGDocumentException{
-	   List<IGDocument> allIGs = documentService.findAll();	
-	    for(IGDocument d : allIGs){
-	    	createTreeStructure(d);
 	    	documentService.save(d);
 	    }
-  }
-  private void createTreeStructure(IGDocument d){
-	  		
-	    	 DocumentSection section=new DocumentSection() ;
-	    	 RootSectionData data =new RootSectionData();
-	    	 data.setMetaData(d.getMetaData());
-	    	 section.setData(data);
-	    	 for( Section s : d.getChildSections()){
-	    		 section.getChildren().add(createTextSection(s));
-	    	 }
-	    	 section.getChildren().add(createProfileSection(d.getProfile(), section.getChildren().size()+1));
-	    	 d.setContent(section);
-  }
-  private DocumentSection<SectionDataWithText>  createTextSection(Section s){
-	  DocumentSection ret = new DocumentSection();
-	  SectionDataWithText dataWithText= new SectionDataWithText();
-	  dataWithText.setPosition(s.getSectionPosition());
-	  dataWithText.setSectionContent(s.getSectionContents());
-	  dataWithText.setSectionTitle(s.getSectionTitle());;
-	  dataWithText.setReferenceId(s.getId());
-	  dataWithText.setReferenceType(s.getType());
-	  ret.setData(dataWithText);
-	  List<Section> sorted= new ArrayList<Section>();
-	  if(s.getChildSections()!=null&&!s.getChildSections().isEmpty())
-	  sorted.addAll(s.getChildSections());
-	  Collections.sort(sorted); 
-	  for (Section sub : sorted){	  
-		 ret.getChildren().add(createTextSection(sub));
-	  }
-	return ret;
-  }
-  private DocumentSection<SectionDataWithText> createProfileSection(Profile p, int i){
-
-	  DocumentSection ret = new DocumentSection();
-	  SectionDataWithText dataWithText= new SectionDataWithText();
-	  dataWithText.setPosition(i);
-	  dataWithText.setSectionContent(p.getSectionContents());
-	  dataWithText.setSectionTitle(p.getSectionTitle());;
-	  dataWithText.setReferenceId(p.getId());
-	  dataWithText.setReferenceType(p.getType());
-	  ret.setData(dataWithText);
-	  ret.getChildren().add(createProfileComponentLibrarySection(p.getProfileComponentLibrary(),1));
-	  ret.getChildren().add(createConformanceProfileSection(p.getMessageLibrary(),2));
-	  ret.getChildren().add(createCompositeProfile(p.getCompsoiteProfileLibrary(),3));
-	  ret.getChildren().add(createSegmentLibrarySection(p.getSegmentLibrary(),4));
-	  ret.getChildren().add(createDatatypeLibrary(p.getDatatypeLibrary(),5));
-	  ret.getChildren().add(createTableLibrary(p.getTableLibrary(),6));
-	return ret;
-	  
-  }
-
-  private DocumentSection createTableLibrary(TableLibrary tableLibrary,int i) {
-	// TODO Auto-generated method stub
-	  DocumentSection ret = new DocumentSection();
-
-	  SectionDataWithText dataWithText= new SectionDataWithText();
-	  dataWithText.setPosition(i);
-	  dataWithText.setSectionContent(tableLibrary.getSectionContents());
-	  dataWithText.setSectionTitle("Value Sets");
-	  dataWithText.setReferenceId(tableLibrary.getId());
-	  dataWithText.setReferenceType(tableLibrary.getType());
-	  ret.setData(dataWithText);
-	  for(TableLink link: tableLibrary.getChildren()){
-		  ret.getChildren().add(createSectionOfLink(link));
-	  }	  
-	return ret;
-}
-
-
-private DocumentSection createDatatypeLibrary(DatatypeLibrary datatypeLibrary, int position ) {
-	  DocumentSection ret = new DocumentSection();
-
-	  SectionDataWithText dataWithText= new SectionDataWithText();
-	  dataWithText.setPosition(position);
-	  dataWithText.setSectionContent(datatypeLibrary.getSectionContents());
-	  dataWithText.setSectionTitle("Data Types");
-	  dataWithText.setReferenceId(datatypeLibrary.getId());
-	  dataWithText.setReferenceType(datatypeLibrary.getType());
-	  ret.setData(dataWithText);
-	  for(DatatypeLink link: datatypeLibrary.getChildren()){
-		  ret.getChildren().add(createSectionOfLink(link));
-	  }	  
-	
-	return ret;
-}
-
-
-private DocumentSection createSegmentLibrarySection(SegmentLibrary segmentLibrary,int  position) {
-	  DocumentSection ret = new DocumentSection();
-	 // ret.setChildren(new ArrayList<SectionDataWithLink>());
-
-	  SectionDataWithText dataWithText= new SectionDataWithText();
-	  dataWithText.setPosition(position);
-	  dataWithText.setSectionContent(segmentLibrary.getSectionContents());
-	  dataWithText.setSectionTitle("Segments and Fields Description");
-	  dataWithText.setReferenceId(segmentLibrary.getId());
-	  dataWithText.setReferenceType(segmentLibrary.getType());
-	  ret.setData(dataWithText);
-	  for(SegmentLink link: segmentLibrary.getChildren()){
-		  ret.getChildren().add(createSectionOfLink(link));
-	  }	  
-	
-	return ret;
-}
-
-
-private DocumentSection createCompositeProfile(CompositeProfileLibrary compositeProfiles, int position) {
-	  DocumentSection ret = new DocumentSection();
-	  //ret.setChildren(new ArrayList<CompositeProfileSectionData>());
-
-	  SectionDataWithText dataWithText= new SectionDataWithText();
-	  dataWithText.setPosition(position);
-	  dataWithText.setSectionContent(compositeProfiles.getSectionContents());
-	  dataWithText.setSectionTitle("Composite Profiles");
-	  dataWithText.setReferenceId(compositeProfiles.getId());
-	  dataWithText.setReferenceType(compositeProfiles.getType());
-	  ret.setData(dataWithText);
-
-	  for(CompositeProfileLink link: compositeProfiles.getChildren()){
-		  ret.getChildren().add(createSectionOfLink(link));
-	  }	  
-	
-	return ret;
-}
-
-
-private DocumentSection createSectionOfCompositeProfile(CompositeProfileStructure cp) {
-
-	DocumentSection ret = new DocumentSection();
-	CompositeProfileSectionData data= new CompositeProfileSectionData();
-	data.setExt(cp.getExt());
-//	data.setReferenceType(cp.getType());
-//	data.setReferenceId(cp.getId());
-	data.setName(cp.getName());
-	data.setDescription(cp.getDescription());
-
-	  ret.setData(data);
-	  return ret;
-}
-
-
-private DocumentSection createConformanceProfileSection(MessageLibrary messages, int position) {
-	  DocumentSection ret = new DocumentSection();
-	//ret.setChildren(new ArrayList<MessageSectionData>());
-
-	  SectionDataWithText dataWithText= new SectionDataWithText();
-	  dataWithText.setPosition(position);
-	  dataWithText.setSectionContent(messages.getSectionContents());
-	  dataWithText.setSectionTitle("Conformance Profiles");
-	  dataWithText.setReferenceId(messages.getId());
-	  dataWithText.setReferenceType(messages.getType());
-	  ret.setData(dataWithText);
-	  List<MessageLink> sorted= new ArrayList<MessageLink>();
-	  sorted.addAll(messages.getChildren());
-	  Collections.sort(sorted); 
-	  
-	  for(MessageLink link: sorted){
-		  ret.getChildren().add(createSectionOfLink(link));
-	  }	  
-	
-	return ret;
-}
-
-
-private DocumentSection<MessageSectionData> createSectionOfMessage(Message message) {
-	DocumentSection<MessageSectionData> ret = new DocumentSection<MessageSectionData>();
-	MessageSectionData data= new MessageSectionData();
-	//  data.setPosition(message.getPosition());
-	  data.setName(message.getName());
-//	  data.setReferenceId(message.getId());
-//	  data.setReferenceType(message.getType());
-	  data.setMessageType(message.getMessageType());
-	  data.setDescription(message.getDescription());
-	  data.setStructID(message.getStructID());
-	  data.setIdentifier(message.getIdentifier());
-	  ret.setData(data);
-	  return ret;
-}
-
-
-private DocumentSection createProfileComponentLibrarySection(ProfileComponentLibrary profileComponentLibrary, int position) {
-	// TODO Auto-generated method stub
-	  DocumentSection ret = new DocumentSection();
-
-	  SectionDataWithText dataWithText= new SectionDataWithText();
-	  dataWithText.setPosition(position);
-	  dataWithText.setSectionContent(profileComponentLibrary.getSectionContents());
-	  dataWithText.setSectionTitle("Profile Components");
-	  dataWithText.setReferenceId(profileComponentLibrary.getId());
-	  dataWithText.setReferenceType(profileComponentLibrary.getType());
-	  if(!profileComponentLibrary.getChildren().isEmpty()){
-		  	for(ProfileComponentLink link: profileComponentLibrary.getChildren()){
-		  		ret.getChildren().add(createSectionOfLink(link));
-		  			}	  
- 		}
-	
-	return ret;
-}
-private DocumentSection<SectionDataWithLink> createSectionOfLink(AbstractLink link){
-	  DocumentSection ret = new DocumentSection();
-	  SectionDataWithLink dataWithLink= new SectionDataWithLink();
-	  dataWithLink.setRef(link);
-	  ret.setData(dataWithLink);
-	  return ret;
-	  
-}
-
-
-
-private void updateTableForNumOfCodesANDSourceType() {
-    List<Table> allTables = tableService.findAll();
+	}
+	private void updateTableForNumOfCodesANDSourceType() {
+		List<Table> allTables = tableService.findAll();
     // String largeTableLISTCSV = "\"ID\"," + "\"Binding Identifier\"," + "\"Name\"," + "\"Code
     // Size\"," + "\"SCOPE\"," + "\"HL7 Version\"\n";
     // String IGUsedLargeTableLISTCSV = "\"ID\"," + "\"IG Name\"," + "\"IG Title\"," + "\"IG

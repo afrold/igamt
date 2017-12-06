@@ -4,22 +4,20 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.AbstractLink;
 
-@JsonTypeName("withLink")
-
-public class SectionDataWithLink<T extends AbstractLink> extends SectionData {
+public class SectionDataWithLink extends SectionData {
 	
-	private T ref;
+	private SectionDataLink ref;
 
 
 	public SectionDataWithLink() {
 		super();
 	}
 
-	public T getRef() {
+	public SectionDataLink getRef() {
 		return ref;
 	}
 
-	public void setRef(T ref) {
+	public void setRef(SectionDataLink ref) {
 		this.ref = ref;
 	}
 	

@@ -15,6 +15,7 @@ import {TocService} from "./toc/toc.service";
 import {TreeModule} from "primeng/components/tree/tree";
 import {TreeDragDropService} from "primeng/components/common/treedragdropservice";
 import {DragDropModule} from "primeng/components/dragdrop/dragdrop";
+import {ContextMenuModule,MenuItem} from 'primeng/primeng';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import {DragDropModule} from "primeng/components/dragdrop/dragdrop";
     TieredMenuModule,
     UtilsModule,
     TreeModule,
-    DragDropModule
+    DragDropModule,
+    ContextMenuModule
 	],
 	declarations: [
 		IgDocumentEditComponent, IgDocumentMetadataComponent, SectionComponent, TocComponent

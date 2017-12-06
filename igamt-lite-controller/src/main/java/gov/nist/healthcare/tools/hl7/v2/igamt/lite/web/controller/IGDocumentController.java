@@ -95,6 +95,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstrai
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintTHENColumnData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.DocumentSection;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileStructureService;
@@ -122,6 +123,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.TocService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.GVTExportException;
@@ -197,6 +199,9 @@ public class IGDocumentController extends CommonController {
 
   @Autowired
   private MessageService messageService;
+  
+  @Autowired
+  private TocService tocSevrice;
 
   @Autowired
   private ProfileSerialization profileSerializationService;
@@ -236,8 +241,8 @@ public class IGDocumentController extends CommonController {
    * @throws UserAccountNotFoundException
    * @throws IGDocumentException
    */
-  @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-  public List<IGDocument> getIGDocumentListByType(@RequestParam("type") String type)
+  @RequestMapping(value="/list/{type}", method = RequestMethod.GET, produces = "application/json")
+  public List<IGDocument> getIGDocumentListByType(@PathVariable("type") String type)
       throws UserAccountNotFoundException, IGDocumentListException {
     try {
       if ("PRELOADED".equalsIgnoreCase(type)) {
@@ -292,7 +297,10 @@ public class IGDocumentController extends CommonController {
   @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
   public IGDocument getIgDocumentById(@PathVariable("id") String id) throws NotFoundException {
     log.info("Fetching igDocumentById..." + id);
-    return findById(id);
+    IGDocument ig = findById(id);
+    DocumentSection toc =tocSevrice.buildTree(ig);
+    ig.setContent(toc);
+    return ig;
   }
 
   public IGDocument findById(String id) throws NotFoundException {

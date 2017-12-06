@@ -7,6 +7,8 @@ import  {ViewChild} from '@angular/core';
 import {UITreeNode, Tree} from "primeng/components/tree/tree";
 import {TreeNode} from "primeng/components/common/treenode";
 import {falseIfMissing} from "protractor/built/util";
+import {ContextMenuModule,MenuItem} from 'primeng/primeng';
+
 
 
 @Component({
@@ -15,19 +17,12 @@ import {falseIfMissing} from "protractor/built/util";
   styleUrls:["./toc.component.css"]
 })
 export class TocComponent {
-  // @ViewChild(Tree) toc :Tree;
-
-  @ViewChildren("p-treeNode") treeNode :TreeNode[];
-
-
-
+  @ViewChild(Tree) toc :Tree;
+  rootMenu: MenuItem[];
 
   _ig : any;
 
   treeData: any;
-  parentSource:any;
-  parentDest:any;
-
   constructor(private _ws : WorkspaceService, private  tocService:TocService){
 
   }
@@ -38,21 +33,47 @@ export class TocComponent {
 
 
   ngOnInit() {
+    var ctrl=this;
 
     this.ig = this._ws.getCurrent(Entity.IG);
+
     // this.toc.dragDropService.stopDrag = function (x) {
     //   console.log("HT");
     //   console.log(x);
     // };
 
+
     this.treeData = this.tocService.buildTreeFromIgDocument(this._ig);
-    console.log(this.treeData);
-    //this.toc.allowDrop = this.allow;
+
+
+    this.rootMenu= [{label: "add Section", command:function(event){
+      console.log(ctrl.treeData);
+      var data= {position: 4, sectionTitle: "New Section", referenceId: "", referenceType: "section", sectionContent: null};
+      var node={};
+      node["data"]=data;
+      ctrl.treeData[0].children.push(node);
+
+
+    }}];
+    this.toc.allowDrop = this.allow;
     // this.toc.draggableNodes = true;
     // this.toc.droppableNodes = true;
-    // this.toc.onNodeDrop.subscribe(x => {
-    //   console.log(x);
-    // });
+     this.toc.onNodeDrop.subscribe(x => {
+       for(let a = 0; a<x.dragNode.parent.children.length; a++){
+         x.dragNode.parent.children[a].data.position=a+1;
+       }
+
+       for(let c = 0; c<x.dropNode.children.length; c++){
+         if(x.dropNode.children[c].data){
+           x.dropNode.children[c].data.position=c+1;
+
+         }
+       }
+         for(let b = 0; b<x.dropNode.parent.children.length; b++){
+           x.dropNode.parent.children[b].data.position=b+1;
+         }
+
+     });
   }
 
   print =function (obj) {
@@ -99,12 +120,16 @@ export class TocComponent {
   };
 
   allow(dragNode: TreeNode, dropNode: TreeNode, dragNodeScope: any) {
+    if(dragNode==dropNode){
+      return false;
+    }
     if(dropNode&&dropNode.parent&&dropNode.parent.data) {
 
-      if (dragNode.data.type == 'profile') {
-        return dropNode.parent.data.type == 'root';
-      } else if (dragNode.data.type == 'section') {
-        return dropNode.parent.data.type=='root'|| dropNode.parent.data.type=='section';
+      if (dragNode.data.referenceType == 'profile') {
+        console.log(dropNode);
+        return dropNode.parent.data.referenceType == 'root';
+      } else if (dragNode.data.referenceType == 'section') {
+        return dropNode.parent.data.referenceType=='root'|| dropNode.parent.data.referenceType=='section';
 
       }
     }else {

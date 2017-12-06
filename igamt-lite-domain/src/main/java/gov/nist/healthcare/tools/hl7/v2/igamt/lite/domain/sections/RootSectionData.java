@@ -4,18 +4,17 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 
-@JsonTypeName("root")
 
 public class RootSectionData extends SectionData{
 	
-	DocumentMetaData metaData;
+	DocumentMetaData data;
 	
 	public DocumentMetaData getMetaData() {
-		return metaData;
+		return data;
 	}
 
 	public void setMetaData(DocumentMetaData metaData) {
-		this.metaData = metaData;
+		this.data= metaData;
 	}
 
 	public RootSectionData() {
