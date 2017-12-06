@@ -1,12 +1,12 @@
 <style id="antiClickjack">
     body {
         display: none !important;
-        
+
     }
 
 
 
-    
+
 </style>
 <script type="text/javascript">
 if (self === top) {
@@ -42,76 +42,76 @@ if (self === top) {
         filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#356aa0', endColorstr='#356aa0', GradientType=0);
         /* IE6-9 */
     }
-    
+
     .panel-body {}
     /* .fa{ */
     /* font-size: 18px; */
-    
+
     .scrollit {
         height: 500px !important;
         overflow: scroll !important;
     }
-    
+
     .selected1 {
         background-color: #B5F7EC !important;
     }
-    
+
     .selected2 {
         background-color: #EDE1AF !important;
     }
     /* } */
-    
+
     .treeRoot {
         font-size: 18px;
     }
-    
+
     .treeSection {
         font-size: 16px;
         margin-left: -10px;
     }
-    
+
     .treeSubSection {
         font-size: 14px;
     }
-    
+
     .grey {
         /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+0,000000+2,000000+2&0.65+99,0.65+99 */
         background-color: #d2d2d2 !important;
     }
-    
+
     .treeUnderSubSection {
         font-size: 13px;
     }
-    
+
     .cursorMove {
         cursor: move;
     }
-    
+
     .message {
         font-size: 17px;
     }
-    
+
     .messageContent {
         font-size: 16;
     }
-    
+
     .messageSubContent {
         font-size: 12px;
         margin-left: 45px;
     }
-    
+
     .uitree {
         margin-left: 8px;
     }
-    
+
     .label-USE {
         background-color: green;
     }
-    
+
     .label-HL7 {
         background-color: red;
     }
-    
+
     .label-MASTER {
         /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ff7400+0,ff7400+100;Orange+Flat */
         background: #ff7400;
@@ -132,7 +132,7 @@ if (self === top) {
         cursor: pointer;
         font-weight: normal;
     }
-    
+
     .angular-ui-tree-handle {
         margin-left: 0px;
         cursor: move;
@@ -142,11 +142,11 @@ if (self === top) {
         text-decoration-style: solid;
         font-weight: 700;
     }
-    
+
     ui-tree-node {
         padding-left: 15px !important;
     }
-    
+
     .form-group {
         text-align: left;
         margin-bottom: 60px;
@@ -191,7 +191,7 @@ if (self === top) {
                                     <div layout="row" class="container">
                                         <span class="material-icons" style="font-size: 42px;">search</span>
                                         <md-input-container flex style="margin: 0px !important" layout="row">
-                                            <input type="search"  flex ng-model="search.metaData.name" />
+                                            <input type="search" no-dirty-check flex ng-model="search.datatypeLibrary.metaData.name" />
                                         </md-input-container>
                                     </div>
 
@@ -210,7 +210,7 @@ if (self === top) {
 
                                                     <div flex class="md-list-item-text" layout="column" style="margin-left: 5px; max-width: 100%">
 
-                                                        <span class="md-headline ig-title"><a class="point" ng-click="navToLibrary(row)">{{row.metaData.name}}</a>
+                                                        <span class="md-headline ig-title"><a class="point" ng-click="navToLibrary(row)">{{row.datatypeLibrary.metaData.name}}</a>
                                                         </span>
 
                                                         <div class="md-subhead" flex layout="row" layout-align="start start">
@@ -264,7 +264,7 @@ if (self === top) {
 
 
                                         <md-menu-bar  flex="20">
-                                            <md-menu class="pull-right">
+                                            <md-menu class="pull-right" ng-if="isAdmin()">
                                                 <button type="button" class="white-color"
                                                         ng-click="createGeneralDatatypeLibrary()" >
                                                     <i class="fa fa-plus"></i> Create Library
@@ -277,7 +277,7 @@ if (self === top) {
                                         <span class="material-icons" style="font-size: 42px;">search</span>
                                         <md-input-container flex style="margin: 0px !important" layout="row">
 
-                                            <input type="search"  flex ng-model="search.metaData.name"  />
+                                            <input type="search" flex ng-model="search.datatypeLibrary.metaData.name"/>
 
                                         </md-input-container>
                                     </div>
@@ -298,13 +298,13 @@ if (self === top) {
 
                                                     <div flex class="md-list-item-text" layout="column" style="margin-left: 5px; max-width: 100%">
 
-                                                        <span class="md-headline ig-title"> <a class="point" ng-click="navToLibrary(row)">{{row.metaData.name}}</a>
+                                                        <span class="md-headline ig-title"> <a class="point" ng-click="navToLibrary(row)">{{row.datatypeLibrary.metaData.name}}</a>
                                                         </span>
                                                         <div class="md-subhead" flex layout="row" layout-align="start start">
                                                             <div flex="40" class="ig-list-info">
                                                                 <i class="fa fa-calendar" aria-hidden="true"></i>
                                                                 Created on {{row.datatypeLibrary.dateUpdated | date:dateFormat}}
-                                                                <span> by {{row.metaData.owner}}</span>
+                                                                <span> by {{row.datatypeLibrary.metaData.owner}}</span>
                                                             </div>
 
 
@@ -748,7 +748,6 @@ if (self === top) {
                             </div>
 
                         </li>
-
                     </ol>
             </li>
             </li>

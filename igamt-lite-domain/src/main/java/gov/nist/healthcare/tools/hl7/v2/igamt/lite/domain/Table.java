@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -276,7 +277,7 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
       clonedTable.addCode(c.clone());
     }
 
-    clonedTable.setId(id);
+    clonedTable.setId(ObjectId.get().toString());
     clonedTable.setExtensibility(extensibility);
     clonedTable.setBindingIdentifier(bindingIdentifier);
     clonedTable.setDescription(description);
@@ -294,6 +295,8 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
     clonedTable.setCodeSystems(codeSystems);
     clonedTable.setSourceType(sourceType);
     clonedTable.setNumberOfCodes(numberOfCodes);
+    clonedTable.setReferenceUrl(referenceUrl);
+    clonedTable.setAuthorNotes("");
 
     return clonedTable;
   }

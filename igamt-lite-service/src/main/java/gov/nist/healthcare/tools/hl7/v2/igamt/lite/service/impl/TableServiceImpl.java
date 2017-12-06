@@ -225,4 +225,37 @@ public class TableServiceImpl implements TableService {
     // TODO Auto-generated method stub
     tableRepository.updateAttributes(id, attributeName, value);
   }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService#findShortByScope(java.lang.
+   * String)
+   */
+  @Override
+  public List<Table> findShortByScope(String scope) {
+    // TODO Auto-generated method stub
+    return tableRepository.findShortByScope(scope);
+  }
+
+  @Override
+  public Table findShortById(String id) {
+    // TODO Auto-generated method stub
+    return tableRepository.findShortById(id);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService#
+   * findByScopeAndVersionAndBindingIdentifier(java.lang.String, java.lang.String, java.lang.String)
+   */
+  @Override
+  public List<Table> findByScopeAndVersionAndBindingIdentifier(String scope, String version,
+      String bindingIdentifier) {
+    // TODO Auto-generated method stub
+    return tableRepository.findByScopeAndVersionAndBindingIdentifier(scope, version,
+        bindingIdentifier);
+  }
 }

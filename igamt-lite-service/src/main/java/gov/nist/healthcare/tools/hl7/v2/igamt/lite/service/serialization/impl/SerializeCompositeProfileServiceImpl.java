@@ -1,8 +1,14 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.exception.TableNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.CompositeProfileSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
@@ -15,6 +21,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeCompositeProfileService;
 
@@ -34,64 +41,85 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.Seriali
 @Service
 public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrCompositeProfile implements SerializeCompositeProfileService {
 
+	@Autowired
+	TableService tableService;
+	
     @Override
     public SerializableCompositeProfile serializeCompositeProfile(CompositeProfile compositeProfile,
         String prefix, SerializationLayout serializationLayout, String hl7Version,
-        ExportConfig exportConfig) {
-        List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
-        String type = "ConformanceStatement";
-        SerializableConstraints serializableConformanceStatements = super.serializeConstraints(
-        		compositeProfile.retrieveAllConformanceStatements(), compositeProfile.getName(),
-            compositeProfile.getPosition(), type);
-        type = "ConditionPredicate";
-        SerializableConstraints serializablePredicates = super.serializeConstraints(
-            compositeProfile.getPredicates(), compositeProfile.getName(),
-            compositeProfile.getPosition(), type);
-        int segmentSectionPosition = 1;
-        String usageNote, defPreText, defPostText;
-        usageNote = defPreText = defPostText = "";
-        if(compositeProfile.getUsageNote()!=null&&!compositeProfile.getUsageNote().isEmpty()){
-            usageNote = serializationUtil.cleanRichtext(compositeProfile.getUsageNote());
-            segmentSectionPosition++;
-        }
-        if(compositeProfile.getDefPreText()!=null&&!compositeProfile.getDefPreText().isEmpty()){
-            defPreText = serializationUtil.cleanRichtext(compositeProfile.getDefPreText());
-            segmentSectionPosition++;
-        }
-        if(compositeProfile.getDefPostText()!=null&&!compositeProfile.getDefPostText().isEmpty()){
-            defPostText = serializationUtil.cleanRichtext(compositeProfile.getDefPostText());
-        }
-        Boolean showConfLength = serializationUtil.isShowConfLength(hl7Version);
-        List<Table> tables = new ArrayList<>();
-        for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : compositeProfile.getValueSetBindings()){
-            if(valueSetOrSingleCodeBinding.getTableId()!=null && !valueSetOrSingleCodeBinding.getTableId().isEmpty()){
-                Table table = findTableInProfile(valueSetOrSingleCodeBinding,compositeProfile);
-                if(table!=null){
-                    tables.add(table);
+        ExportConfig exportConfig) throws CompositeProfileSerializationException {
+        try {
+            List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
+            String type = "ConformanceStatement";
+            SerializableConstraints serializableConformanceStatements = super.serializeConstraints(compositeProfile.retrieveAllConformanceStatements(),
+                compositeProfile.getName(), compositeProfile.getPosition(), type);
+            type = "ConditionPredicate";
+            SerializableConstraints serializablePredicates = super
+                .serializeConstraints(compositeProfile.getPredicates(), compositeProfile.getName(),
+                    compositeProfile.getPosition(), type);
+            int segmentSectionPosition = 1;
+            String usageNote, defPreText, defPostText;
+            usageNote = defPreText = defPostText = "";
+            if (compositeProfile.getUsageNote() != null && !compositeProfile.getUsageNote()
+                .isEmpty()) {
+                usageNote = serializationUtil.cleanRichtext(compositeProfile.getUsageNote());
+                segmentSectionPosition++;
+            }
+            if (compositeProfile.getDefPreText() != null && !compositeProfile.getDefPreText()
+                .isEmpty()) {
+                defPreText = serializationUtil.cleanRichtext(compositeProfile.getDefPreText());
+                segmentSectionPosition++;
+            }
+            if (compositeProfile.getDefPostText() != null && !compositeProfile.getDefPostText()
+                .isEmpty()) {
+                defPostText = serializationUtil.cleanRichtext(compositeProfile.getDefPostText());
+            }
+            Boolean showConfLength = serializationUtil.isShowConfLength(hl7Version);
+            List<Table> tables = new ArrayList<>();
+            for (ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : compositeProfile
+                .getValueSetBindings()) {
+                if (valueSetOrSingleCodeBinding.getTableId() != null && !valueSetOrSingleCodeBinding
+                    .getTableId().isEmpty()) {
+                    Table table = findTableInProfile(valueSetOrSingleCodeBinding, compositeProfile);
+                    if (table != null) {
+                        tables.add(table);
+                    }
                 }
             }
-        }
-        String title = generateTitle(compositeProfile);
-
-        SerializableCompositeProfile serializableCompositeProfile = new SerializableCompositeProfile(compositeProfile,prefix,title,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText,tables,showConfLength);
-        SerializableSection compositeProfileSegments = new SerializableSection(compositeProfile.getIdentifier()+"_segments",prefix+"."+String.valueOf(compositeProfile.getPosition())+"."+segmentSectionPosition,"1","4","Segment definitions");
-        this.messageSegmentsNameList = new ArrayList<>();
-        this.segmentPosition = 1;
-        UsageConfig fieldsUsageConfig = exportConfig.getFieldsExport();
-        UsageConfig segmentUsageConfig = exportConfig.getSegmentsExport();
-        UsageConfig segmentOrGroupUsageConfig = exportConfig.getSegmentORGroupsCompositeProfileExport();
-        for(SegmentRefOrGroup segmentRefOrGroup : compositeProfile.getChildren()){
-            SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup,segmentOrGroupUsageConfig,fieldsUsageConfig, compositeProfile.getSegmentsMap());
-            serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
-            if(serializationLayout.equals(SerializationLayout.PROFILE)){
-                serializeSegment(segmentRefOrGroup,
-                    compositeProfileSegments.getPrefix() + ".", compositeProfileSegments, segmentUsageConfig, fieldsUsageConfig, exportConfig.isDuplicateOBXDataTypeWhenFlavorNull());
+            String title = generateTitle(compositeProfile);
+            HashMap<String, String> positionNameSegOrGroupMap = super.retrieveComponentsPaths(compositeProfile);
+            SerializableCompositeProfile serializableCompositeProfile =
+                new SerializableCompositeProfile(compositeProfile, prefix, title,
+                    serializableSegmentRefOrGroups, serializableConformanceStatements,
+                    serializablePredicates, usageNote, defPreText, defPostText, tables,
+                    positionNameSegOrGroupMap, showConfLength);
+            SerializableSection compositeProfileSegments =
+                new SerializableSection(compositeProfile.getIdentifier() + "_segments",
+                    prefix + "." + String.valueOf(compositeProfile.getPosition()) + "."
+                        + segmentSectionPosition, "1", "4", "Segment definitions");
+            this.messageSegmentsNameList = new ArrayList<>();
+            this.segmentPosition = 1;
+            UsageConfig fieldsUsageConfig = exportConfig.getFieldsExport();
+            UsageConfig segmentUsageConfig = exportConfig.getSegmentsExport();
+            UsageConfig segmentOrGroupUsageConfig = exportConfig.getSegmentORGroupsCompositeProfileExport();
+            for (SegmentRefOrGroup segmentRefOrGroup : compositeProfile.getChildren()) {
+                SerializableSegmentRefOrGroup serializableSegmentRefOrGroup =
+                    serializeSegmentRefOrGroup(segmentRefOrGroup, segmentOrGroupUsageConfig,
+                        fieldsUsageConfig, compositeProfile.getSegmentsMap());
+                serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
+                if (serializationLayout.equals(SerializationLayout.PROFILE)) {
+                    serializeSegment(segmentRefOrGroup, compositeProfileSegments.getPrefix() + ".",
+                        compositeProfileSegments, segmentUsageConfig, fieldsUsageConfig,
+                        exportConfig.isDuplicateOBXDataTypeWhenFlavorNull());
+                }
             }
+            if (!compositeProfileSegments.getSerializableSectionList().isEmpty()) {
+                serializableCompositeProfile.addSection(compositeProfileSegments);
+            }
+            return serializableCompositeProfile;
+        } catch (Exception e){
+            throw new CompositeProfileSerializationException(e,compositeProfile.getName());
         }
-        if(!compositeProfileSegments.getSerializableSectionList().isEmpty()){
-            serializableCompositeProfile.addSection(compositeProfileSegments);
-        }
-        return serializableCompositeProfile;
     }
 
     private String generateTitle(CompositeProfile compositeProfile) {
@@ -111,14 +139,23 @@ public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrComp
     }
 
     private Table findTableInProfile(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding,
-        CompositeProfile compositeProfile) {
-    	if(compositeProfile!=null && compositeProfile.getTablesMap() != null && !compositeProfile.getTablesMap().isEmpty()){
-	        for(String currentId : compositeProfile.getTablesMap().keySet()){
-	            if(currentId.equals(valueSetOrSingleCodeBinding.getId())){
-	                return compositeProfile.getTablesMap().get(currentId);
-	            }
-	        }
+        CompositeProfile compositeProfile)  throws TableNotFoundException {
+    	if(valueSetOrSingleCodeBinding != null && valueSetOrSingleCodeBinding.getTableId() !=null && !valueSetOrSingleCodeBinding.getTableId().isEmpty()){
+	    	if(compositeProfile!=null && compositeProfile.getTablesMap() != null && !compositeProfile.getTablesMap().isEmpty()){
+		        for(String currentId : compositeProfile.getTablesMap().keySet()){
+		            if(currentId.equals(valueSetOrSingleCodeBinding.getTableId())){
+		                return compositeProfile.getTablesMap().get(currentId);
+		            }
+		        }
+	    	}
+	    	Table table = tableService.findById(valueSetOrSingleCodeBinding.getTableId());
+	    	if(table!=null){
+	    		return table;
+	    	} else {
+	    	    throw new TableNotFoundException(valueSetOrSingleCodeBinding.getTableId());
+        }
     	}
         return null;
     }
+    
 }

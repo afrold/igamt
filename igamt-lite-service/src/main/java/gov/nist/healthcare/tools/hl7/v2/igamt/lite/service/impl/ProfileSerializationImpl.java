@@ -67,6 +67,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SourceType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByName;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
@@ -799,7 +800,22 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     for (TableLink tl : original.getTableLibrary().getChildren()) {
       if (tl != null) {
         Table t = tableService.findById(tl.getId());
-        if (t != null) {
+        if (t != null) {    
+          /*
+           * Temporary script Begin
+           * This script is to hack Codes for external-user ValueSet. It is just temporary script till implementation for external valueset validation
+           */
+
+          if(t != null && t.getSourceType().equals(SourceType.EXTERNAL) && t.getCreatedFrom() != null && !t.getCreatedFrom().isEmpty()){
+            Table origin = tableService.findById(t.getCreatedFrom());
+            if(origin != null && origin.getCodes() != null && origin.getCodes().size() > 0){
+              t.setCodes(origin.getCodes());
+            }
+          }
+          
+          /*
+           * Temporary script End
+           */  
           tablesMap.put(t.getId(), t);
         }
       }
@@ -1065,6 +1081,24 @@ public class ProfileSerializationImpl implements ProfileSerialization {
       if (tl != null) {
         Table t = tableService.findById(tl.getId());
         if (t != null) {
+          
+          /*
+           * Temporary script Begin
+           * This script is to hack Codes for external-user ValueSet. It is just temporary script till implementation for external valueset validation
+           */
+
+          if(t != null && t.getSourceType().equals(SourceType.EXTERNAL) && t.getCreatedFrom() != null && !t.getCreatedFrom().isEmpty()){
+            Table origin = tableService.findById(t.getCreatedFrom());
+            if(origin != null && origin.getCodes() != null && origin.getCodes().size() > 0){
+              t.setCodes(origin.getCodes());
+            }
+          }
+          
+          /*
+           * Temporary script End
+           */  
+          
+          
           tablesMap.put(t.getId(), t);
         }
       }

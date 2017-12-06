@@ -48,6 +48,13 @@ angular.module('igl').controller(
         console.log("Changes discarded.");
       });
     };
+
+     $scope.compareWith=function (str1, str2) {
+         var n = str1.localeCompare(str2);
+         return n>-1;
+
+
+     };
     $scope.hl7VersionsInstance = function() {
       $scope.listHL7Versions().then(function(response) {
         var hl7Versions = [];

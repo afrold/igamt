@@ -31,6 +31,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     $scope.tabStatus = {
       active: 1
     };
+    console.log("INITIALISING")
     $scope.selectedCodes = [];
     $rootScope.$on('event:cloneTableFlavor', function(event, table) {
       $scope.copyTable(table);
@@ -49,7 +50,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     blockUI.start();
     cleanState();
     $rootScope.table = angular.copy($rootScope.entireTable);
-    //$rootScope.findValueSetBindings();
+    // $rootScope.table.smallCodes=angular.copy($rootScope.table.codes);
     blockUI.stop();
   };
   $scope.redirectSeg = function(segmentRef) {
@@ -63,16 +64,10 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
             return segment;
           }
         }
-
-
-
       });
       modalInstance.result.then(function() {
         $rootScope.editSeg(segment);
       });
-
-
-
     });
   };
 
@@ -181,6 +176,8 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
   };
 
   $scope.save = function() {
+    console.log("EDIT FORM")
+    console.log($scope.editForm);
     if ($rootScope.table.scope === 'USER') {
       $scope.saving = true;
       var table = $rootScope.table;
@@ -194,6 +191,8 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
 
       TableService.save(table).then(function(result) {
         $rootScope.entireTable=angular.copy(result);
+        $rootScope.table.codes=$rootScope.entireTable.codes;
+
 
         var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.tableLibrary.children);
 
@@ -284,44 +283,34 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
       codeSystem: '',
       codeUsage: 'R'
     };
-    $rootScope.searchObject={
-      };
+    $rootScope.searchObject={};
 
 
-    $rootScope.table.smallCodes.unshift(newValue);
+    // $rootScope.table.smallCodes.unshift(newValue);
     $rootScope.table.codes.unshift(newValue);
     var newValueBlock = { targetType: 'table', targetId: $rootScope.table.id, obj: newValue };
     if (!$scope.isNewObject('table', 'add', $rootScope.table.id)) {
       $rootScope.recordChangeForEdit2('value', "add", null, 'value', newValueBlock);
     }
+    $rootScope.table.numberOfCodes+=1;
     $scope.setDirty();
   };
 
   $scope.isValidTable = function () {
     var valueCodeSystemList = [];
-    var labelCodeSystemList = [];
 
-    for (var i = 0; i < $rootScope.table.smallCodes.length; i++) {
-      var value = $rootScope.table.smallCodes[i].value;
-      var label = $rootScope.table.smallCodes[i].label;
-      var codeSystem = $rootScope.table.smallCodes[i].codeSystem;
+    for (var i = 0; i < $rootScope.table.codes.length; i++) {
+      var value = $rootScope.table.codes[i].value;
+      var codeSystem = $rootScope.table.codes[i].codeSystem;
 
       if(!value || value === '') return false;
-      if(!label || label === '') return false;
       if(!codeSystem || codeSystem === '') return false;
 
       var valueCodeSystem = value + codeSystem;
-      var labelCodeSystem = label + codeSystem;
 
 
       if ($.inArray(valueCodeSystem,valueCodeSystemList) === -1) {
         valueCodeSystemList.push(valueCodeSystem);
-      }else {
-        return false;
-      }
-
-      if ($.inArray(labelCodeSystem,labelCodeSystemList) === -1) {
-        labelCodeSystemList.push(labelCodeSystem);
       }else {
         return false;
       }
@@ -346,9 +335,11 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
   $scope.addOrRemoveValue = function(c) {
     if (c.selected === true) {
       $scope.selectedCodes.push(c);
+        $rootScope.table.numberOfCodes+=1;
     } else if (c.selected === false) {
       var index = $scope.selectedCodes.indexOf(c);
       if (index > -1) {
+          $rootScope.table.numberOfCodes-=1;
         $scope.selectedCodes.splice(index, 1);
       }
     }
@@ -383,7 +374,8 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
   }
   $scope.deleteSlectedValues = function() {
     $rootScope.table.codes = _.difference($rootScope.table.codes, $scope.selectedCodes);
-    $rootScope.table.smallCodes = _.difference($rootScope.table.smallCodes, $scope.selectedCodes);
+      $rootScope.table.numberOfCodes-=$scope.selectedCodes.length;
+    // $rootScope.table.smallCodes = _.difference($rootScope.table.smallCodes, $scope.selectedCodes);
     $scope.selectedCodes = [];
     $rootScope.recordChanged();
   };
@@ -409,7 +401,9 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     // }
     console.log($scope.selectedCodes);
     $rootScope.table.codes.splice($rootScope.table.codes.indexOf(value), 1);
-    $scope.setDirty();
+      $rootScope.table.numberOfCodes-=1;
+
+      $scope.setDirty();
   };
 
   $scope.isNewValueThenDelete = function(id) {
@@ -474,6 +468,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
 
       $scope.cancel=function(){
         $rootScope.table.sourceType="INTERNAL";
+        $rootScope.table.referenceUrl=null;
         $mdDialog.hide();
 
       }
@@ -481,7 +476,6 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         $rootScope.table.referenceUrl=$scope.url;
         $rootScope.table.sourceType="EXTERNAL";
         $rootScope.table.codes=[];
-        $rootScope.table.smallCodes=[];
         $rootScope.recordChanged();
         $mdDialog.hide("OK");
 

@@ -161,11 +161,6 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
             }
 
           }
-
-
-
-
-
         }
       });
     }
@@ -179,7 +174,6 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.segments2 = [];
     $scope.ig2 = "";
     if ($scope.scope2 && $scope.version2) {
-      console.log("hereee2");
       IgDocumentService.getIgDocumentsByScopesAndVersion([$scope.scope2], $scope.version2).then(function(result) {
 
         if (result) {

@@ -63,9 +63,6 @@ angular.module('igl').factory(
           $rootScope.segmentsMap[newSegment.id] = newSegment;
           //TODO MasterMap need to add Segment
           $rootScope.processElement(newSegment);
-//                	MastermapSvc.addSegmentObject(newSegment, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
-          $rootScope.filteredSegmentsList.push(newSegment);
-          $rootScope.filteredSegmentsList = _.uniq($rootScope.filteredSegmentsList);
           $rootScope.$broadcast('event:openSegment', newSegment);
         }, function (error) {
           $rootScope.saving = false;
@@ -146,9 +143,6 @@ angular.module('igl').factory(
           //TODO MasterMap need to add Datatype
 
           $rootScope.processElement(newDatatype);
-//                    MastermapSvc.addDatatypeObject(newDatatype, [[$rootScope.igdocument.profile.id, "profile"], [$rootScope.igdocument.id, "ig"]]);
-          $rootScope.filteredDatatypesList.push(newDatatype);
-          $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
           $rootScope.Activate(newDatatype.id);
           if($rootScope.igdocument){
             $rootScope.$broadcast('event:openDatatype',  $rootScope.datatypesMap[newDatatype.id]);
@@ -265,9 +259,6 @@ angular.module('igl').factory(
           //TODO MasterMap need to add Datatype
 
           $rootScope.processElement(newDatatype);
-//                    MastermapSvc.addDatatypeObject(newDatatype, [[$rootScope.igdocument.profile.id, "profile"], [$rootScope.igdocument.id, "ig"]]);
-          $rootScope.filteredDatatypesList.push(newDatatype);
-          $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
           $rootScope.Activate(newDatatype.id);
           if($rootScope.igdocument){
             $rootScope.$broadcast('event:openDatatype',  $rootScope.datatypesMap[newDatatype.id]);
@@ -317,11 +308,6 @@ angular.module('igl').factory(
           $rootScope.tablesMap[newTable.id] = newTable;
 
           $rootScope.codeSystems = [];
-
-          if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
-            $rootScope.filteredTablesList.push(newTable);
-            $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
-          }
           $rootScope.$broadcast('event:openTable', newTable);
         }, function (error) {
           $rootScope.msg().text = error.data.text;
@@ -337,7 +323,8 @@ angular.module('igl').factory(
     };
 
     svc.copyTable = function (table) {
-      TableService.getOne(table.id).then(function(newTable){
+      console.log("Copy");
+      TableService.getOneInLibrary(table.id, $rootScope.tableLibrary.id).then(function(newTable){
         newTable.shareParticipantIds = [];
         newTable.status="UNPUBLISHED";
         newTable.id = null;
@@ -347,6 +334,11 @@ angular.module('igl').factory(
         if(table.scope=='PHINVADS'){
           newTable.referenceUrl= $rootScope.getPhinvadsURL(table);
         }
+        console.log($rootScope.tableLibrary);
+        console.log(table);
+        if($rootScope.tableLibrary.codePresence[table.id] !==false){
+              newTable.sourceType="INTERNAL";
+          }
         newTable.libIds.push($rootScope.tableLibrary.id);
         if($rootScope.igdocument){
           newTable.bindingIdentifier = $rootScope.createNewFlavorName(newTable.bindingIdentifier);
@@ -371,24 +363,17 @@ angular.module('igl').factory(
           newLink.id = newTable.id;
 
           TableLibrarySvc.addChild($rootScope.tableLibrary.id, newLink).then(function (link) {
-            $rootScope.tableLibrary.children.splice(0, 0, newLink);
-            $rootScope.tables.splice(0, 0, newTable);
-            $rootScope.table = newTable;
+              $rootScope.tableLibrary.children.splice(0, 0, newLink);
+              $rootScope.tables.splice(0, 0, newTable);
+              $rootScope.table = newTable;
+              // if ($rootScope.tableLibrary.codePresence[table.id]!==undefined){
+              //     TableLibrarySvc.updatePresence($rootScope.tableLibrary.id, table.id, $rootScope.tableLibrary.codePresence[table.id]).then(function (response) {
+              //         $rootScope.tableLibrary.codePresence[newTable.id] = response;
+              //     });
+              // }
             $rootScope.tablesMap[newTable.id] = newTable;
 
             $rootScope.codeSystems = [];
-
-            for (var i = 0; i < $rootScope.table.codes.length; i++) {
-              if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
-                if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
-                  $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
-                }
-              }
-            }
-            if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
-              $rootScope.filteredTablesList.push(newTable);
-              $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
-            }
             $rootScope.$broadcast('event:openTable', newTable);
 
           }, function (error) {
@@ -482,10 +467,6 @@ angular.module('igl').factory(
               }
             }
           }
-          if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
-            $rootScope.filteredTablesList.push(newTable);
-            $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
-          }
           $rootScope.$broadcast('event:openTable', newTable);
 
         }, function (error) {
@@ -544,10 +525,6 @@ angular.module('igl').factory(
               }
             }
           }
-//                    if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
-//                        $rootScope.filteredTablesList.push(newTable);
-//                        $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
-//                    }
           $rootScope.$broadcast('event:openTable', newTable);
 
         }, function (error) {
@@ -673,12 +650,6 @@ angular.module('igl').factory(
         if (table.id === $rootScope.activeModel) {
           $rootScope.displayNullView();
         }
-        if($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
-          var index = $rootScope.filteredTablesList.indexOf(table);
-          if(index >= 0)
-            $rootScope.filteredTablesList.splice(index, 1);
-        }
-
       }, function () {
       });
     };
@@ -902,11 +873,6 @@ angular.module('igl').factory(
         if (datatype.id === $rootScope.activeModel) {
           $rootScope.displayNullView();
         }
-        if ($rootScope.filteredDatatypesList && $rootScope.filteredDatatypesList != null) {
-          var index = $rootScope.filteredDatatypesList.indexOf(datatype);
-          if (index >= 0)
-            $rootScope.filteredDatatypesList.splice(index, 1);
-        }
         dtToDelete = datatype;
       }, function () {
       });
@@ -986,11 +952,6 @@ angular.module('igl').factory(
         segToDelete = segment;
         if (segment.id === $rootScope.activeModel) {
           $rootScope.displayNullView();
-        }
-        if ($rootScope.filteredSegmentsList && $rootScope.filteredSegmentsList != null) {
-          var index = $rootScope.filteredSegmentsList.indexOf(segment);
-          if (index >= 0)
-            $rootScope.filteredSegmentsList.splice(index, 1);
         }
 
       }, function () {

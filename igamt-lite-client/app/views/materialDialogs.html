@@ -705,12 +705,8 @@
                         </div>
                     </form>
                 </div>
-
                 <md-dialog-actions layout="row">
-
-
-                    <md-button class="md-primary md-raised" ng-click="ok()"
-                               ng-disabled="!checkedExt||!NocheckedExt||selectedDatatypes.length===0">
+                    <md-button class="md-primary md-raised" ng-click="ok()" ng-disabled="!checkedExt||!NocheckedExt||selectedDatatypes.length===0">
                         Add
                     </md-button>
                 </md-dialog-actions>
@@ -815,17 +811,17 @@
                                             </div>
                                         </div>
                                         <div class="container">
-                                            <table class="fixed_headers table-bordered">
-                                                <thead>
-                                                <tr class="tbl-header" style="color: white !important; font-weight: bold">
+                                            <table class="table-bordered fixed-header">
+                                                <thead class="fixed-header">
+                                                <tr  class="tbl-header fixed-header" style="color: black !important; font-weight: bold">
                                                     <th class="widthInside">Name</th>
                                                     <th class="widthInside">Versions</th>
                                                     <th class="widthInside"></th>
 
                                                 </tr>
                                                 </thead>
-                                                <tbody style="max-height:300px; overflow:scroll; display:block">
-                                                <tr ng-repeat="data in datatypeTemplates| filter:search|orderBy: 'name'">
+                                                <tbody  class="fixed-header">
+                                                <tr ng-repeat="data in datatypeTemplates| filter:search|orderBy: 'name'" class="fixed-header">
                                                     <td class="widthInside">
                                                         <span>{{data.name}}</span>
                                                     </td>
@@ -854,9 +850,9 @@
                                                    ng-model="search1.name" style="width:500px"/>
                                         </div>
                                         <div class="container">
-                                            <table class="fixed_headers table-bordered">
-                                                <thead>
-                                                <tr class="tbl-header" style="color: white !important; font-weight: bold">
+                                            <table class="table-bordered fixed-header">
+                                                <thead class="fixed-header">
+                                                <tr class="tbl-header fixed-header" style="color: black !important; font-weight: bold">
                                                     <th class="widthInside2">Name</th>
                                                     <th class="widthInside2">Extension</th>
                                                     <th class="widthInside2">Compatible HL7 Version</th>
@@ -865,8 +861,8 @@
                                                     <th class="widthInside2">Actions</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody style="max-height:300px; overflow:scroll; display:block">
-                                                <tr ng-repeat="data in addedDatatypes| filter:search1">
+                                                <tbody class="fixed-header">
+                                                <tr ng-repeat="data in addedDatatypes| filter:search1" class="fixed-header">
                                                     <td class="widthInside2">
                                                         <span>{{data.name}}</span>
                                                     </td>

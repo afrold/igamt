@@ -25,8 +25,11 @@ public class TableLink extends AbstractLink implements Cloneable, Comparable<Tab
   
   private String  name;
 
+  private Boolean includeCode;
+
   public TableLink() {
     super();
+    this.includeCode = true;
   }
 
 

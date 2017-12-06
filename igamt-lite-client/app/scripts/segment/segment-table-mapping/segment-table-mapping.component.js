@@ -10,6 +10,7 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $md
   $scope.valueSetSelectedForSingleCode = null;
   $scope.mCode = null;
   $scope.mCodeSystem = null;
+  $scope.codedElement = false;
 
   $scope.setChanged = function(){
     $scope.changed = true;
@@ -26,7 +27,7 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $md
     var code = {};
     code.value = $scope.mCode;
     code.codeSystem = $scope.mCodeSystem;
-    $scope.selectedValueSetBindings.push({ tableId: null, location: currentNode.path, usage: $scope.currentNode.usage, type: "singlecode", code : code});
+    $scope.selectedValueSetBindings.push({ tableId: null, location: currentNode.path, usage: $scope.currentNode.usage, type: "singlecode", code : code, codedElement : $scope.codedElement});
     $scope.changed = true;
   };
 
@@ -37,6 +38,7 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $md
   if(_.find($rootScope.config.codedElementDTs, function(valueSetAllowedDT){
       return valueSetAllowedDT == $rootScope.datatypesMap[$scope.currentNode.datatype.id].name;
     })) {
+    $scope.codedElement = true;
     for (var i = 0; i < $scope.selectedValueSetBindings.length; i++) {
       if (!$scope.selectedValueSetBindings[i].bindingLocation || $scope.selectedValueSetBindings[i].bindingLocation == '') {
         $scope.selectedValueSetBindings[i].bindingLocation = "1";
@@ -121,7 +123,7 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $md
 
   $scope.selectCode = function (c){
     $scope.selectedValueSetBindings = [];
-    $scope.selectedValueSetBindings.push({ tableId: $scope.valueSetSelectedForSingleCode.id, location: currentNode.path, usage: currentNode.usage, type: "singlecode", code : c});
+    $scope.selectedValueSetBindings.push({ tableId: $scope.valueSetSelectedForSingleCode.id, location: currentNode.path, usage: currentNode.usage, type: "singlecode", code : c, codedElement : $scope.codedElement});
     $scope.changed = true;
   };
 

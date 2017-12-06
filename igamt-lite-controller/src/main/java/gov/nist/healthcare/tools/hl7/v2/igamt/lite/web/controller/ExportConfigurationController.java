@@ -66,8 +66,7 @@ public class ExportConfigurationController {
     try {
       Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
       if (null != account) {
-        currentConfig =
-            exportConfigService.findOneByAccountId(account.getId());
+        currentConfig =  exportConfigService.findOneByAccountId(account.getId());
         if (null != currentConfig) {
           exportConfigService.delete(currentConfig);
         }

@@ -52,6 +52,7 @@ public class ExportConfig {
 
   private UsageConfig valueSetsExport;
   private CodeUsageConfig codesExport;
+  private boolean phinvadsUpdateEmailNotification;
 
   private UsageConfig datatypesExport;
   private UsageConfig componentExport;
@@ -105,7 +106,7 @@ public class ExportConfig {
     defaultConfiguration.setProfileComponentItemsExport(displayAll);
 
     defaultConfiguration.setCodesExport(codeUsageExport);
-
+    defaultConfiguration.setPhinvadsUpdateEmailNotification(false);
     defaultConfiguration.setDatatypesExport(displaySelectives);
     defaultConfiguration.setSegmentsExport(displaySelectives);
 
@@ -435,6 +436,11 @@ public class ExportConfig {
     this.maxCodeNumber = maxCodeNumber;
   }
 
+  public boolean isPhinvadsUpdateEmailNotification() {
+    return phinvadsUpdateEmailNotification;
+  }
 
-
+  public void setPhinvadsUpdateEmailNotification(boolean phinvadsUpdateEmailNotification) {
+    this.phinvadsUpdateEmailNotification = phinvadsUpdateEmailNotification;
+  }
 }

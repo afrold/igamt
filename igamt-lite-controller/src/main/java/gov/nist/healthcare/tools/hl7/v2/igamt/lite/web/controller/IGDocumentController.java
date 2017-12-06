@@ -17,13 +17,13 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.GrantedAuthority;
@@ -42,14 +42,17 @@ import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.AppInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ApplyInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfiles;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SourceType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -63,7 +66,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IgDocumentComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageComparator;
@@ -90,6 +92,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.comparator.IgDocumentComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CCValue;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintTHENColumnData;
@@ -117,7 +120,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibra
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
@@ -156,6 +158,8 @@ public class IGDocumentController extends CommonController {
 
   @Autowired
   UserService userService;
+  @Autowired
+  AppInfo appInfo;
   @Autowired
   ProfileService profileService;
   @Autowired
@@ -203,9 +207,6 @@ public class IGDocumentController extends CommonController {
   @Autowired
   private TocService tocSevrice;
 
-  @Autowired
-  private ProfileSerialization profileSerializationService;
-
   @Value("${server.email}")
   private String SERVER_EMAIL;
 
@@ -246,13 +247,13 @@ public class IGDocumentController extends CommonController {
       throws UserAccountNotFoundException, IGDocumentListException {
     try {
       if ("PRELOADED".equalsIgnoreCase(type)) {
-        return GetorderByposition(preloaded());
+        return getOrderByposition(preloaded());
       } else if ("USER".equalsIgnoreCase(type)) {
-        return GetorderByposition(userIGDocuments());
+        return getOrderByposition(userIGDocuments());
       } else if ("SHARED".equalsIgnoreCase(type)) {
-        return GetorderByposition(sharedIGDocument());
+        return getOrderByposition(sharedIGDocument());
       } else if ("all".equalsIgnoreCase(type)) {
-        return GetorderByposition(allIGDocument());
+        return getOrderByposition(allIGDocument());
       }
       throw new IGDocumentListException("Unknown IG document type");
     } catch (RuntimeException e) {
@@ -336,9 +337,9 @@ public class IGDocumentController extends CommonController {
 
     List<IGDocument> d =
         igDocumentService.findByAccountIdAndScope(account.getId(), IGDocumentScope.USER);
-    if (!d.isEmpty()) {
+    if (d != null && !d.isEmpty()) {
       for (IGDocument ig : d) {
-        SetUserInfos(ig);
+        setUserInfos(ig);
       }
     }
     return d;
@@ -526,7 +527,6 @@ public class IGDocumentController extends CommonController {
 
           // Deleted LibId
 
-
           tl.setId(t.getId());
           clonedTableLibrary.addTable(tl);
           if (oldTableId != null) {
@@ -568,7 +568,6 @@ public class IGDocumentController extends CommonController {
   private void updateModifiedIdForPC(List<ProfileComponent> profilecomponents,
       HashMap<String, String> tableIdChangeMap, HashMap<String, String> datatypeIdChangeMap,
       HashMap<String, String> segmentIdChangeMap, HashMap<String, String> messageIdChangeMap) {
-
 
     for (ProfileComponent pc : profilecomponents) {
 
@@ -624,7 +623,6 @@ public class IGDocumentController extends CommonController {
         if (att.getOldRef() != null && att.getOldRef().getId() != null
             && segmentIdChangeMap.containsKey(att.getOldRef().getId()))
           att.getOldRef().setId(segmentIdChangeMap.get(att.getOldRef().getId()));
-
 
         if (att.getDynamicMappingDefinition() != null) {
           for (DynamicMappingItem dmi : att.getDynamicMappingDefinition()
@@ -892,7 +890,7 @@ public class IGDocumentController extends CommonController {
         throw new UserAccountNotFoundException();
       log.info("Delete IGDocument with id=" + id);
       IGDocument d = findIGDocument(id);
-      if (d.getAccountId() == account.getId()) {
+      if (d.getAccountId().equals(account.getId())) {
         d.setScope(IGDocumentScope.ARCHIVED);
         deleteSegmentLibrary(d.getProfile().getSegmentLibrary());
         deleteTableLibrary(d.getProfile().getTableLibrary());
@@ -1159,7 +1157,8 @@ public class IGDocumentController extends CommonController {
   @RequestMapping(value = "/{id}/export/pdf", method = RequestMethod.POST,
       produces = "application/pdf", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
   public void exportPdfFromXsl(@PathVariable("id") String id, HttpServletRequest request,
-      HttpServletResponse response) throws IOException, IGDocumentNotFoundException {
+      HttpServletResponse response)
+      throws IOException, IGDocumentNotFoundException, SerializationException {
     log.info("Exporting as pdf file profile with id=" + id);
     IGDocument d = findIGDocument(id);
     InputStream content = null;
@@ -1295,7 +1294,7 @@ public class IGDocumentController extends CommonController {
       produces = "application/json")
   public List<String> findHl7Versions() {
     log.info("Fetching all HL7 versions.");
-    List<String> result = igDocumentCreation.findHl7Versions();
+    List<String> result = appInfo.getHl7Versions();
     return result;
   }
 
@@ -1312,7 +1311,6 @@ public class IGDocumentController extends CommonController {
         toReturn.add(t);
       }
     }
-
 
     return toReturn;
   }
@@ -1359,7 +1357,7 @@ public class IGDocumentController extends CommonController {
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
     IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(idrw.getMsgEvts(),
         idrw.getMetaData(), idrw.getHl7Version(), account.getId());
-    SetUserInfos(igDocument);
+    setUserInfos(igDocument);
     return igDocument;
   }
 
@@ -1796,14 +1794,19 @@ public class IGDocumentController extends CommonController {
       }
       for (Long accountId : participants) {
         d.getShareParticipantIds().add(new ShareParticipantPermission(accountId));
-
-        // Find the user
-        Account acc = accountRepository.findOne(accountId);
-        // Send confirmation email
-        sendShareConfirmation(d, acc, account);
       }
       igDocumentService.save(d);
+
+      for (Long accountId : participants) {
+        Account acc = accountRepository.findOne(accountId);
+        // Send confirmation email
+        if (acc != null)
+          sendShareConfirmation(d, acc, account);
+      }
       return true;
+    } catch (RuntimeException e) {
+      log.error("", e);
+      throw new IGDocumentException("Failed to share IG Document \n" + e.getMessage());
     } catch (Exception e) {
       log.error("", e);
       throw new IGDocumentException("Failed to share IG Document \n" + e.getMessage());
@@ -1822,8 +1825,9 @@ public class IGDocumentController extends CommonController {
       produces = "application/json")
   public boolean unshareIgDocument(@PathVariable("id") String id,
       @RequestBody Long shareParticipantId) throws IGDocumentException {
-    log.info("Unsharing id document with id=" + id + " with participant=" + shareParticipantId);
     try {
+      log.info("Unsharing id document with id=" + id + " with participant=" + shareParticipantId);
+
       User u = userService.getCurrentUser();
       Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
       if (account == null)
@@ -1860,9 +1864,9 @@ public class IGDocumentController extends CommonController {
       if (account == null)
         throw new UserAccountNotFoundException();
       List<IGDocument> d = igDocumentService.findSharedIgDocuments(account.getId());
-      if (!d.isEmpty()) {
+      if (d != null && !d.isEmpty()) {
         for (IGDocument ig : d) {
-          SetUserInfos(ig);
+          setUserInfos(ig);
         }
       }
       return d;
@@ -1872,7 +1876,7 @@ public class IGDocumentController extends CommonController {
     }
   }
 
-  public void SetUserInfos(IGDocument ig) {
+  public void setUserInfos(IGDocument ig) {
     Set<Long> participants = new HashSet<Long>();
     if (ig.getShareParticipantIds() != null && !ig.getShareParticipantIds().isEmpty())
       for (ShareParticipantPermission participant : ig.getShareParticipantIds()) {
@@ -1881,7 +1885,7 @@ public class IGDocumentController extends CommonController {
     participants.add(ig.getAccountId());
 
     List<Account> accounts = accountRepository.findAllInIds(participants);
-    if (!accounts.isEmpty()) {
+    if (accounts != null && !accounts.isEmpty()) {
       for (Account acc : accounts) {
         ShareParticipant participant = new ShareParticipant(acc.getId());
         participant.setUsername(acc.getUsername());
@@ -1896,7 +1900,6 @@ public class IGDocumentController extends CommonController {
     }
   }
 
-
   private List<IGDocument> allIGDocument() throws IGDocumentException {
     try {
       User u = userService.getCurrentUser();
@@ -1905,16 +1908,15 @@ public class IGDocumentController extends CommonController {
         throw new UserAccountNotFoundException();
       if (hasRole("admin")) {
         List<IGDocument> d = igDocumentService.findAllByScope(IGDocumentScope.USER);
-        if (!d.isEmpty()) {
+        if (d != null && !d.isEmpty()) {
           for (IGDocument ig : d) {
-            SetUserInfos(ig);
+            setUserInfos(ig);
           }
         }
         return d;
       } else {
         throw new IGDocumentException("you don't have the rights to access these resources");
       }
-
     } catch (Exception e) {
       log.error("", e);
       throw new IGDocumentException("Failed to share IG Document \n" + e.getMessage());
@@ -1937,44 +1939,50 @@ public class IGDocumentController extends CommonController {
   }
 
   private void sendShareConfirmation(IGDocument doc, Account target, Account source) {
-
-    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
-
-    msg.setSubject("NIST IGAMT IG Document Shared with you.");
-    msg.setTo(target.getEmail());
-    msg.setText("Dear " + target.getUsername() + ", \n\n" + source.getFullName() + "("
-        + source.getUsername() + ")"
-        + " wants to share the following Implementation Guide with you: \n" + "\n Title: "
-        + doc.getMetaData().getTitle() + "\n Sub Title: " + doc.getMetaData().getSubTitle()
-        + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:"
-        + doc.getMetaData().getHl7Version()
-        + "\n If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Implementation Guides' tab"
-        + "\n\n" + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
     try {
+      SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+      msg.setSubject("NIST IGAMT IG Document Sharing Notification");
+      msg.setTo(target.getEmail());
+      msg.setText("Dear " + target.getUsername() + ", \n\n" + source.getFullName() + "("
+          + source.getUsername() + ")"
+          + " wants to share the following Implementation Guide with you: \n" + "\n Title: "
+          + doc.getMetaData().getTitle() + "\n Sub Title: " + doc.getMetaData().getSubTitle()
+          + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:"
+          + doc.getProfile().getMetaData().getHl7Version()
+          + "\n If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Implementation Guides' tab"
+          + "\n\n" + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
+
       this.mailSender.send(msg);
-    } catch (MailException ex) {
-      log.error(ex.getMessage(), ex);
+    } catch (RuntimeException e) {
+      log.error("Failed to send Email", e);
+
+
+    } catch (Exception e) {
+      log.error("Failed to send Email", e);
+
     }
+
+
   }
 
   private void sendUnshareEmail(IGDocument doc, Account target, Account source) {
-
-    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
-
-    msg.setSubject("NIST IGAMT IGDocument unshare");
-    msg.setTo(target.getEmail());
-    msg.setText("Dear " + target.getUsername() + " \n\n" + "This is to let you know that "
-        + source.getFullName() + "(" + source.getUsername()
-        + ") has stopped sharing the following Implementation Guide \n" + "\n Title: "
-        + doc.getMetaData().getTitle() + "\n Sub Title: " + doc.getMetaData().getSubTitle()
-        + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:"
-        + doc.getMetaData().getHl7Version() + "\n\n" + "P.S: If you need help, contact us at '"
-        + ADMIN_EMAIL + "'");
     try {
+      SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+      msg.setSubject("NIST IGAMT IGDocument  Unsharing Notification");
+      msg.setTo(target.getEmail());
+      msg.setText("Dear " + target.getUsername() + " \n\n" + source.getFullName() + "("
+          + source.getUsername() + ") has stopped sharing the following Implementation Guide \n"
+          + "\n Title: " + doc.getMetaData().getTitle() + "\n Sub Title: "
+          + doc.getMetaData().getSubTitle() + "\n Description:" + doc.getMetaData().getDescription()
+          + "\n HL7 Version:" + doc.getProfile().getMetaData().getHl7Version() + "\n\n"
+          + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
       this.mailSender.send(msg);
-    } catch (MailException ex) {
-      log.error(ex.getMessage(), ex);
+    } catch (RuntimeException e) {
+      log.error("Failed to send Email", e);
+    } catch (Exception e) {
+      log.error("Failed to send Email", e);
     }
+
   }
 
   /**
@@ -1987,8 +1995,9 @@ public class IGDocumentController extends CommonController {
   @RequestMapping(value = "/{id}/updateDate", method = RequestMethod.POST,
       produces = "application/json")
   public Long updateDate(@PathVariable("id") String id) throws IGDocumentException {
-    log.info("Updating date of ig document with id=" + id);
     try {
+      log.info("Updating date of ig document with id=" + id);
+
       User u = userService.getCurrentUser();
       if (accountRepository.findByTheAccountsUsername(u.getUsername()) == null)
         throw new UserAccountNotFoundException();
@@ -2000,7 +2009,7 @@ public class IGDocumentController extends CommonController {
     }
   }
 
-  public List<IGDocument> GetorderByposition(List<IGDocument> toOrder) {
+  public List<IGDocument> getOrderByposition(List<IGDocument> toOrder) {
     // List<IGDocument>
     List<IGDocument> sortedList = new ArrayList<IGDocument>();
     sortedList.addAll(toOrder);
@@ -2050,19 +2059,45 @@ public class IGDocumentController extends CommonController {
     }
   }
 
-  //
-  // @RequestMapping(value = "/{id}/exportConfig", method = RequestMethod.POST,
-  // produces = "application/json")
-  // public boolean saveExportConfig(@PathVariable("id") String id,
-  // @RequestBody LibraryExportConfig exportConfig, HttpServletRequest request,
-  // HttpServletResponse response) throws IGDocumentNotFoundException, IGDocumentException {
-  // log.info("Save export config for IG Document with id=" + id);
-  // IGDocument document = findIGDocument(id);
-  // document.setExportConfig(exportConfig);
-  // igDocumentService.save(document);
-  // return true;
-  // }
+  @RequestMapping(value = "/{libId}/addPhinvads", method = RequestMethod.POST,
+      produces = "application/json")
+  public Set<Table> addPhinvads(@PathVariable("libId") String libId,
+      @RequestBody PhinvadsAddingWrapper wrapper) throws CloneNotSupportedException {
+
+    TableLibrary tableLibrary = tableLibraryService.findById(libId);
+    Set<Table> ret = new HashSet<>();
 
 
+    for (Table t : wrapper.tables) {
+      if (t.getScope().equals(SCOPE.PHINVADS)) {
+        Table temp = tableService.findById(t.getId());
+        tableLibrary.addTable(temp);
+        ret.add(temp);
+      } else {
+        Table temp = tableService.findById(t.getCreatedFrom());
+
+        if (t.getSourceType().equals(SourceType.EXTERNAL)) {
+          t.setCodes(new ArrayList<Code>());
+          t.setReferenceUrl(appInfo.getProperties().get("PHINVADS") + t.getOid());
+
+        } else {
+
+          t.setCodes(temp.getCodes());
+
+        }
+        t.setAuthorNotes("<p></p>");
+        tableService.save(t);
+        tableLibrary.addTable(t);
+        ret.add(t);
+      }
+    }
+    for (String s : wrapper.codesPresence.keySet()) {
+      tableLibrary.getCodePresence().put(s, wrapper.codesPresence.get(s));
+    }
+    tableLibraryService.save(tableLibrary);
+
+
+    return ret;
+  }
 
 }

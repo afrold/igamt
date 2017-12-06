@@ -13,7 +13,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
@@ -41,7 +43,12 @@ public class AppInfo implements Serializable {
   @Value("${wsEndpoints}")
   private String wsEndpoints;
 
+  @Value("${hl7Versions}")
+  private String versions;
+
   HashMap<String, String> properties = new HashMap<String, String>();
+
+  List<String> hl7Versions = new ArrayList<String>();
 
   private String uploadedImagesUrl;
 
@@ -67,7 +74,35 @@ public class AppInfo implements Serializable {
       for (String url : urls) {
         String[] parts = url.split(Pattern.quote("|"));
         properties.put(parts[0], parts[1]);
+
       }
+
+    String[] vrs = this.versions.split(",");
+    if (vrs != null)
+      for (String v : vrs) {
+        hl7Versions.add(v);
+
+      }
+
+
+  }
+
+
+
+  /**
+   * @return the hl7Versions
+   */
+  public List<String> getHl7Versions() {
+    return hl7Versions;
+  }
+
+
+
+  /**
+   * @param hl7Versions the hl7Versions to set
+   */
+  public void setHl7Versions(List<String> hl7Versions) {
+    this.hl7Versions = hl7Versions;
   }
 
 

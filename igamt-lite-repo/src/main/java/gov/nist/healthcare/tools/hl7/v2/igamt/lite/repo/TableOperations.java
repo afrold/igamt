@@ -19,10 +19,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 
-/**
- * @author gcr1
- *
- */
+
 public interface TableOperations {
 
   List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
@@ -61,5 +58,12 @@ public interface TableOperations {
 
   public Table findOneByScopeAndBindingIdentifier(String scope, String bindingIdentifier);
 
+  public List<Table> findShortByScope(String scope);
+
+  public List<Table> findByScopeAndVersionAndBindingIdentifier(String scope, String version,
+      String bindingIdentifier);
+
+
+  public Table findShortById(String id);
 
 }

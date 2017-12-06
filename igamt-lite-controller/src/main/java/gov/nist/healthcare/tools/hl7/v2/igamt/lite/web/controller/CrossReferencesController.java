@@ -373,7 +373,9 @@ public class CrossReferencesController {
             if (coconstraints.getThenMapData().get(thn.getId()) != null
                 && !coconstraints.getThenMapData().get(thn.getId()).isEmpty()) {
               for (int i = 0; i < coconstraints.getThenMapData().get(thn.getId()).size(); i++) {
-                if (coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId() != null
+                if (coconstraints.getThenMapData().get(thn.getId()).get(i) != null
+                    && coconstraints.getThenMapData().get(thn.getId()).get(i)
+                        .getDatatypeId() != null
                     && coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId()
                         .equals(wrapper.getDatatypeId())) {
                   SegmentFound segFound = new SegmentFound();
@@ -513,7 +515,9 @@ public class CrossReferencesController {
               if (coconstraints.getThenMapData().get(thn.getId()) != null
                   && !coconstraints.getThenMapData().get(thn.getId()).isEmpty()) {
                 for (int i = 0; i < coconstraints.getThenMapData().get(thn.getId()).size(); i++) {
-                  if (coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId() != null
+                  if (coconstraints.getThenMapData().get(thn.getId()).get(i) != null
+                      && coconstraints.getThenMapData().get(thn.getId()).get(i)
+                          .getDatatypeId() != null
                       && coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId()
                           .equals(wrapper.getDatatypeId())) {
                     isFound = true;
@@ -542,7 +546,9 @@ public class CrossReferencesController {
               if (coconstraints.getThenMapData().get(thn.getId()) != null
                   && !coconstraints.getThenMapData().get(thn.getId()).isEmpty()) {
                 for (int i = 0; i < coconstraints.getThenMapData().get(thn.getId()).size(); i++) {
-                  if (coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId() != null
+                  if (coconstraints.getThenMapData().get(thn.getId()).get(i) != null
+                      && coconstraints.getThenMapData().get(thn.getId()).get(i)
+                          .getDatatypeId() != null
                       && coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId()
                           .equals(wrapper.getDatatypeId())) {
                     isFound = true;
@@ -747,7 +753,8 @@ public class CrossReferencesController {
                 && !coconstraints.getThenMapData().get(thn.getId()).isEmpty()) {
               for (int i = 0; i < coconstraints.getThenMapData().get(thn.getId()).size(); i++) {
 
-                if (coconstraints.getThenMapData().get(thn.getId()).get(i).getValueSets() != null
+                if (coconstraints.getThenMapData().get(thn.getId()).get(i) != null
+                    && coconstraints.getThenMapData().get(thn.getId()).get(i).getValueSets() != null
                     && !coconstraints.getThenMapData().get(thn.getId()).get(i).getValueSets()
                         .isEmpty()) {
                   for (int j = 0; j < coconstraints.getThenMapData().get(thn.getId()).get(i)

@@ -28,6 +28,7 @@ public class TableLibrary extends Library implements java.io.Serializable, Clone
 
   private String organizationName;
 
+  private String description;
 
   private String dateCreated;
 
@@ -37,10 +38,12 @@ public class TableLibrary extends Library implements java.io.Serializable, Clone
 
   private Constant.SCOPE scope;
 
+  private HashMap<String, Boolean> codePresence = new HashMap<String, Boolean>();
+
   public TableLibrary() {
     super();
     type = Constant.TABLELIBRARY;
-    sectionPosition=6;
+    codePresence = new HashMap<String, Boolean>();
   }
 
   private Set<TableLink> children = new HashSet<TableLink>();
@@ -100,6 +103,14 @@ public class TableLibrary extends Library implements java.io.Serializable, Clone
 
   public void setOrganizationName(String organizationName) {
     this.organizationName = organizationName;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public String getDateCreated() {
@@ -238,12 +249,13 @@ public class TableLibrary extends Library implements java.io.Serializable, Clone
     clone.setExt(this.getExt() + "-" + genRand());
     clone.setMetaData(this.getMetaData().clone());
     clone.setScope(this.getScope());
-    clone.setSectionContent(this.getSectionContents());
-   // clone.setSectionDescription(this.getSectionDescription());
+    clone.setSectionContents(this.getSectionContents());
+    clone.setSectionDescription(this.getSectionDescription());
     clone.setSectionPosition(this.getSectionPosition());
     clone.setSectionTitle(this.getSectionTitle());
     clone.setType(this.getType());
     clone.setExportConfig(this.exportConfig);
+    clone.setCodePresence(codePresence);
     return clone;
   }
 
@@ -253,6 +265,20 @@ public class TableLibrary extends Library implements java.io.Serializable, Clone
 
   public void addTables(Set<TableLink> dtls) {
     children.addAll(dtls);
+  }
+
+  /**
+   * @return the codePresence
+   */
+  public HashMap<String, Boolean> getCodePresence() {
+    return codePresence;
+  }
+
+  /**
+   * @param codePresence the codePresence to set
+   */
+  public void setCodePresence(HashMap<String, Boolean> codePresence) {
+    this.codePresence = codePresence;
   }
 
 }

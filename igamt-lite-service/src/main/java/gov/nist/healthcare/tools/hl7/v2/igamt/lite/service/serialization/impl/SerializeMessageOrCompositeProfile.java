@@ -1,23 +1,39 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.UUID;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SegmentSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraints;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeCompositeProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeConstraintService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeSegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -33,6 +49,9 @@ import java.util.UUID;
  * Created by Maxence Lefort on 3/9/17.
  */
 public abstract class SerializeMessageOrCompositeProfile {
+	
+	static final Logger logger = LoggerFactory.getLogger(SerializeMessageOrCompositeProfile.class);
+	
     @Autowired SegmentService segmentService;
     @Autowired SerializeConstraintService serializeConstraintService;
     @Autowired SerializationUtil serializationUtil;
@@ -45,11 +64,13 @@ public abstract class SerializeMessageOrCompositeProfile {
 
     protected int segmentPosition = 1;
 
-    protected void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentUsageConfig, UsageConfig fieldsUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull) {
+    protected void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentUsageConfig, UsageConfig fieldsUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull)
+        throws SegmentSerializationException {
         serializeSegment(segmentRefOrGroup, prefix, segmentsSection, segmentUsageConfig, fieldsUsageConfig, duplicateOBXDataTypeWhenFlavorNull, null);
     }
 
-    protected void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentUsageConfig, UsageConfig fieldsUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull, Map<String,Segment> compositeProfileSegments) {
+    protected void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentUsageConfig, UsageConfig fieldsUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull, Map<String,Segment> compositeProfileSegments)
+        throws SegmentSerializationException {
         this.compositeProfileSegments = compositeProfileSegments;
         if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),segmentUsageConfig)) {
             if (segmentRefOrGroup instanceof SegmentRef) {
@@ -75,26 +96,34 @@ public abstract class SerializeMessageOrCompositeProfile {
         }
     }
 
-    protected SerializableConstraints serializeConstraints(List<? extends Constraint> constraints,
-        String name, int position, String type){
+    protected SerializableConstraints serializeConstraints(List<? extends Constraint> constraints, String name, int position, String type) throws ConstraintSerializationException {
         List<SerializableConstraint> serializableConstraintList = new ArrayList<>();
-        for(Constraint constraint : constraints){
-            SerializableConstraint serializableConstraint = new SerializableConstraint(constraint, name);
-            serializableConstraintList.add(serializableConstraint);
+        for (Constraint constraint : constraints) {
+            try {
+                SerializableConstraint serializableConstraint = new SerializableConstraint(constraint, name);
+                serializableConstraintList.add(serializableConstraint);
+            } catch (Exception e){
+                throw new ConstraintSerializationException(e,name);
+            }
         }
         String id = UUID.randomUUID().toString();
-        SerializableConstraints serializableConstraints = new SerializableConstraints(serializableConstraintList,id,String.valueOf(position),name,type);
+        SerializableConstraints serializableConstraints =
+            new SerializableConstraints(serializableConstraintList, id, String.valueOf(position),
+                name, type);
         return serializableConstraints;
+
     }
 
-    protected SerializableSegmentRefOrGroup serializeSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup, UsageConfig segmentUsageConfig, UsageConfig fieldUsageConfig, Map<String,Segment> compositeProfileSegments){
+    protected SerializableSegmentRefOrGroup serializeSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup, UsageConfig segmentUsageConfig, UsageConfig fieldUsageConfig, Map<String,Segment> compositeProfileSegments)
+        throws SerializationException {
       return this.serializeSegmentRefOrGroup(segmentRefOrGroup, segmentUsageConfig, fieldUsageConfig, compositeProfileSegments,false, null);
     }
       
-    protected SerializableSegmentRefOrGroup serializeSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup, UsageConfig segmentUsageConfig, UsageConfig fieldUsageConfig, Map<String,Segment> compositeProfileSegments, Boolean showInnerLinks, String host){
+    protected SerializableSegmentRefOrGroup serializeSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup, UsageConfig segmentUsageConfig, UsageConfig fieldUsageConfig, Map<String,Segment> compositeProfileSegments, Boolean showInnerLinks, String host)
+        throws SerializationException {
 		if (ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(), segmentUsageConfig)) {
 			if (segmentRefOrGroup instanceof SegmentRef) {
-				SegmentRef segmentRef = (SegmentRef) segmentRefOrGroup;
+			    SegmentRef segmentRef = (SegmentRef) segmentRefOrGroup;
 				return serializeSegmentRef(segmentRef, fieldUsageConfig, compositeProfileSegments, showInnerLinks,
 						host);
 			} else if (segmentRefOrGroup instanceof Group) {
@@ -105,28 +134,33 @@ public abstract class SerializeMessageOrCompositeProfile {
 		return null;
     }
 
-    private SerializableSegmentRefOrGroup serializeSegmentRef(SegmentRef segmentRef, UsageConfig usageConfig,Map<String,Segment> compositeProfileSegments, Boolean showInnerLinks, String host){
+    private SerializableSegmentRefOrGroup serializeSegmentRef(SegmentRef segmentRef, UsageConfig usageConfig,Map<String,Segment> compositeProfileSegments, Boolean showInnerLinks, String host) throws SegmentSerializationException {
         SerializableSegmentRefOrGroup serializableSegmentRefOrGroup;
         SegmentLink segmentLink = segmentRef.getRef();
         if(segmentLink != null) {
-            Segment segment = null;
-            if(compositeProfileSegments!=null){
-                segment = findSegmentInCompositeProfileSegments(segmentLink,compositeProfileSegments);
-            } else {
-                segment = segmentService.findById(segmentLink.getId());
-            }
-            if(usageConfig != null && segment != null) {
-                List<Field> filteredFieldList = new ArrayList<>();
-                for (Field field : segment.getFields()) {
-                    if (field != null && ExportUtil.diplayUsage(field.getUsage(), usageConfig)) {
-                        filteredFieldList.add(field);
-                    }
+            try {
+                Segment segment = null;
+                if (compositeProfileSegments != null) {
+                    segment = findSegmentInCompositeProfileSegments(segmentLink,
+                        compositeProfileSegments);
+                } else {
+                    segment = segmentService.findById(segmentLink.getId());
                 }
-                segment.setFields(filteredFieldList);
+                if (usageConfig != null && segment != null) {
+                    List<Field> filteredFieldList = new ArrayList<>();
+                    for (Field field : segment.getFields()) {
+                        if (field != null && ExportUtil.diplayUsage(field.getUsage(), usageConfig)) {
+                            filteredFieldList.add(field);
+                        }
+                    }
+                    segment.setFields(filteredFieldList);
+                }
+                serializableSegmentRefOrGroup =
+                    new SerializableSegmentRefOrGroup(segmentRef, segment, this instanceof SerializeCompositeProfileService, showInnerLinks, host);
+                return serializableSegmentRefOrGroup;
+            } catch (Exception e){
+                throw new SegmentSerializationException(e,segmentLink.getLabel());
             }
-            serializableSegmentRefOrGroup =
-                new SerializableSegmentRefOrGroup(segmentRef, segment, this instanceof SerializeCompositeProfileService, showInnerLinks, host);
-            return serializableSegmentRefOrGroup;
         }
         return null;
     }
@@ -141,18 +175,124 @@ public abstract class SerializeMessageOrCompositeProfile {
         return null;
     }
 
-    private SerializableSegmentRefOrGroup serializeGroup(Group group, UsageConfig segmentUsageConfig, UsageConfig fieldUsageConfig, Map<String,Segment> compositeProfileSegments, Boolean showInnerLinks, String host){
-        SerializableSegmentRefOrGroup serializableGroup;
-        List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
-        for (SegmentRefOrGroup segmentRefOrGroup : group.getChildren()) {
-            SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(
-                segmentRefOrGroup, segmentUsageConfig, fieldUsageConfig, compositeProfileSegments, showInnerLinks, host);
-            if(serializableSegmentRefOrGroup!=null) {
-                serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
+    private SerializableSegmentRefOrGroup serializeGroup(Group group, UsageConfig segmentUsageConfig, UsageConfig fieldUsageConfig, Map<String,Segment> compositeProfileSegments, Boolean showInnerLinks, String host)
+        throws SerializationException {
+        try {
+            SerializableSegmentRefOrGroup serializableGroup;
+            List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
+            for (SegmentRefOrGroup segmentRefOrGroup : group.getChildren()) {
+                SerializableSegmentRefOrGroup serializableSegmentRefOrGroup =
+                    serializeSegmentRefOrGroup(segmentRefOrGroup, segmentUsageConfig,
+                        fieldUsageConfig, compositeProfileSegments, showInnerLinks, host);
+                if (serializableSegmentRefOrGroup != null) {
+                    serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
+                }
             }
+            List<SerializableConstraint> groupConstraints =
+                serializeConstraintService.serializeConstraints(group, group.getName());
+            serializableGroup =
+                new SerializableSegmentRefOrGroup(group, serializableSegmentRefOrGroups,
+                    groupConstraints, this instanceof SerializeCompositeProfileService);
+            return serializableGroup;
+        } catch (Exception e){
+            throw new GroupSerializationException(e,group.getName());
         }
-        List<SerializableConstraint> groupConstraints = serializeConstraintService.serializeConstraints(group,group.getName());
-        serializableGroup = new SerializableSegmentRefOrGroup(group,serializableSegmentRefOrGroups,groupConstraints, this instanceof SerializeCompositeProfileService);
-        return serializableGroup;
     }
+    
+    protected HashMap<String,String> retrieveComponentsPaths(Message message){
+    	HashSet<String> locationsToRetrieve = new HashSet<>();
+    	for(Comment comment : message.getComments()){
+    		if(comment != null && comment.getLocation() != null && !comment.getLocation().isEmpty() && !locationsToRetrieve.contains(comment.getLocation())){
+    			locationsToRetrieve.add(comment.getLocation());
+    		}
+    	}
+    	for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : message.getValueSetBindings()){
+    		if(valueSetOrSingleCodeBinding != null && valueSetOrSingleCodeBinding.getLocation()!=null && !valueSetOrSingleCodeBinding.getLocation().isEmpty() && !locationsToRetrieve.contains(valueSetOrSingleCodeBinding.getLocation())){
+    			locationsToRetrieve.add(valueSetOrSingleCodeBinding.getLocation());
+    		}
+    	}
+    	return retrieveComponentsPaths(locationsToRetrieve,message.getChildren());
+    }
+    
+    protected HashMap<String,String> retrieveComponentsPaths(CompositeProfile compositeProfile){
+    	HashSet<String> locationsToRetrieve = new HashSet<>();
+    	for(Comment comment : compositeProfile.getComments()){
+    		if(comment != null && comment.getLocation() != null && !comment.getLocation().isEmpty() && !locationsToRetrieve.contains(comment.getLocation())){
+    			locationsToRetrieve.add(comment.getLocation());
+    		}
+    	}
+    	for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : compositeProfile.getValueSetBindings()){
+    		if(valueSetOrSingleCodeBinding != null && valueSetOrSingleCodeBinding.getLocation()!=null && !valueSetOrSingleCodeBinding.getLocation().isEmpty() && !locationsToRetrieve.contains(valueSetOrSingleCodeBinding.getLocation())){
+    			locationsToRetrieve.add(valueSetOrSingleCodeBinding.getLocation());
+    		}
+    	}
+    	return retrieveComponentsPaths(locationsToRetrieve,compositeProfile.getChildren(),compositeProfile.getSegmentsMap());
+    }
+    
+    private HashMap<String,String> retrieveComponentsPaths(HashSet<String> locationsToRetrieve, List<SegmentRefOrGroup> segmentRefOrGroups){
+    	return retrieveComponentsPaths(locationsToRetrieve,segmentRefOrGroups,null);
+    }
+
+    
+    private HashMap<String,String> retrieveComponentsPaths(HashSet<String> locationsToRetrieve, List<SegmentRefOrGroup> segmentRefOrGroups, Map<String, Segment> compositeProfileSegmentsMap){
+    	HashMap<String,String> componentsLocationPathMap = new HashMap<>();
+    	for(String location : locationsToRetrieve){
+    		String path = null;
+    		StringTokenizer stringTokenizer = new StringTokenizer(location, ".");
+    		if(stringTokenizer.hasMoreTokens()){
+	    		try{
+	    			Integer locationToken = Integer.parseInt(stringTokenizer.nextToken());
+		    		for(SegmentRefOrGroup segmentRefOrGroup : segmentRefOrGroups){
+		    			if(segmentRefOrGroup.getPosition() == locationToken){
+		    				path = this.retrieveSegmentOrGroupName(segmentRefOrGroup,stringTokenizer,compositeProfileSegmentsMap);
+		    				break;
+		    			}
+		    		}
+	    		} catch (NumberFormatException nfe){
+	    			logger.error("Unable to retreive path: Comment location is malformed ["+location+"]");
+	    			path = location;
+	    		}
+    		}
+    		if(null == path){
+    			path = location;
+    		}
+    		while(stringTokenizer.hasMoreTokens()){
+    			path += "." + stringTokenizer.nextToken();
+    		}
+    		componentsLocationPathMap.put(location, path);
+		}
+    	return componentsLocationPathMap;
+    }
+    
+    private String retrieveSegmentOrGroupName(SegmentRefOrGroup segmentRefOrGroup, StringTokenizer stringTokenizer,Map<String, Segment> compositeProfileSegmentsMap) {
+		if(segmentRefOrGroup instanceof SegmentRef){
+			Segment segment = null;
+			String segmentId = ((SegmentRef) segmentRefOrGroup).getRef().getId();
+			if(compositeProfileSegmentsMap != null){
+				segment = compositeProfileSegmentsMap.get(segmentId);
+    		} else {
+    			segment = segmentService.findById(segmentId);
+    		}
+    		if(segment!=null){
+    			return segment.getName();
+    		}
+    	} else if(segmentRefOrGroup instanceof Group){
+    		Group group = (Group) segmentRefOrGroup;
+    		if(stringTokenizer.hasMoreTokens()){
+    			String token = stringTokenizer.nextToken();
+    			try{
+	    			Integer location = Integer.parseInt(token);
+	    			for(SegmentRefOrGroup groupSegmentRefOrGroup : group.getChildren()){
+	    				if(groupSegmentRefOrGroup.getPosition() == location){
+	    					return group.getName()+"."+retrieveSegmentOrGroupName(groupSegmentRefOrGroup, stringTokenizer,compositeProfileSegmentsMap);
+	    				}
+	    			}
+    			} catch (NumberFormatException nfe){
+	    			logger.error("Unable to retreive path: Comment group's segment location is malformed ["+token+"]");
+	    		}
+    		}
+    		return group.getName();
+    	}
+		return null;
+	}
 }
