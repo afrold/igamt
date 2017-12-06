@@ -1,59 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import Dexie from 'dexie';
-
-export interface IObject {
-  id?: string;
-  object?: object;
-}
-
-/*
-export interface IDatatype {
-  id?: string;
-  datatype?: object;
-}
-export interface IValueSet {
-  id?: string;
-  valueSet?: object;
-}
-export interface ISegment {
-  id?: string;
-  segment?: object;
-}
-export interface ISection {
-  id?: string;
-  section?: object;
-}
-export interface IProfileComponent {
-  id?: string;
-  profileComponent?: object;
-}
-export interface IProfile {
-  id?: string;
-  profile?: object;
-}
-*/
-
-class ObjectsDatabase extends Dexie {
-  datatypes: Dexie.Table<IObject, number>;
-  valueSets: Dexie.Table<IObject, number>;
-  segments: Dexie.Table<IObject, number>;
-  sections: Dexie.Table<IObject, number>;
-  profileComponents: Dexie.Table<IObject, number>;
-  profiles: Dexie.Table<IObject, number>;
-
-  constructor(name) {
-    super(name);
-    this.version(1).stores({
-      datatypes: '++id,object',
-      segments: '++id,object',
-      sections: '++id,object',
-      profileComponents: '++id,object',
-      profiles: '++id,object',
-      valueSets: '++id,object'
-    });
-  }
-}
+import { ObjectsDatabase } from './objects-database';
 
 @Injectable()
 export class IndexedDbService {
@@ -69,21 +16,28 @@ export class IndexedDbService {
     });
     this.changedObjectsDatabase.transaction('rw', this.changedObjectsDatabase.datatypes, async() => {
       await this.changedObjectsDatabase.datatypes.add({'id': '1', 'object': {'label': 'HD_IZ_CHANGED', 'version': '2.1.5'}});
+      await this.changedObjectsDatabase.datatypes.add({'id': '3', 'object': {'label': 'CWE_CHANGED', 'version': '2.1.5'}});
     });
-
   }
 
-  public getDatatype (id) {
-    const datatype = this.changedObjectsDatabase.transaction('r', this.changedObjectsDatabase.datatypes, async() => {
-      return await this.changedObjectsDatabase.datatypes.get(id);
+  public getDatatype (id, callback) {
+    let datatype;
+    this.changedObjectsDatabase.transaction('r', this.changedObjectsDatabase.datatypes, async() => {
+      datatype = await this.changedObjectsDatabase.datatypes.get(id);
     });
     if (datatype != null) {
-      return datatype;
+      console.log('datatype value from changedDb' + JSON.stringify(datatype));
+      callback(datatype);
     } else {
-      return this.objectsDatabase.transaction('r', this.objectsDatabase.datatypes, async() => {
-        return await this.objectsDatabase.datatypes.get(id);
+      this.objectsDatabase.transaction('r', this.objectsDatabase.datatypes, async() => {
+        datatype = await this.objectsDatabase.datatypes.get(id);
+        callback(datatype);
       });
     }
+    this.objectsDatabase.transaction('r', this.objectsDatabase.datatypes, async() => {
+      const datatype = await this.objectsDatabase.datatypes.get(id);
+      callback(datatype);
+    });
   }
 
 }
