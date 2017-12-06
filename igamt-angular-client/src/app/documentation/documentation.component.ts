@@ -17,4 +17,8 @@ export class DocumentationComponent implements OnInit {
       this.datatype = datatype;
     }.bind(this));
   }
+
+  public saveDatatype (datatype) {
+    this.indexedDbService.saveDatatype(datatype);
+  }
 }

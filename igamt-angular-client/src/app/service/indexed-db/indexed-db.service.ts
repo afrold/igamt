@@ -16,8 +16,6 @@ export class IndexedDbService {
     });
     this.changedObjectsDatabase.transaction('rw', this.changedObjectsDatabase.datatypes, async() => {
       this.changedObjectsDatabase.datatypes.clear();
-      await this.changedObjectsDatabase.datatypes.add({'id': '1', 'object': {'id': '1', 'label': 'HD_IZ_CHANGED', 'version': '2.1.5'}});
-      await this.changedObjectsDatabase.datatypes.add({'id': '3', 'object': {'id': '3', 'label': 'CWE_CHANGED', 'version': '2.1.5'}});
     });
   }
 
@@ -26,11 +24,11 @@ export class IndexedDbService {
     this.changedObjectsDatabase.transaction('r', this.changedObjectsDatabase.datatypes, async() => {
       datatype = await this.changedObjectsDatabase.datatypes.get(id);
       if (datatype != null) {
-        callback(datatype);
+        callback(datatype.object);
       } else {
         this.objectsDatabase.transaction('r', this.objectsDatabase.datatypes, async() => {
           datatype = await this.objectsDatabase.datatypes.get(id);
-          callback(datatype);
+          callback(datatype.object);
         });
       }
     });
@@ -50,6 +48,15 @@ export class IndexedDbService {
         });
       });
     });
+  }
+  public saveDatatype(datatype) {
+    this.changedObjectsDatabase.transaction('rw', this.changedObjectsDatabase.datatypes, async() => {
+      await this.changedObjectsDatabase.datatypes.add({
+        'id': datatype.id,
+        'object': datatype
+      });
+    });
+    console.log('save datatype with id ' + datatype.id);
   }
 
 }
