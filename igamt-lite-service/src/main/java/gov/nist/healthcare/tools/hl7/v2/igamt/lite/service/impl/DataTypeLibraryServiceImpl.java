@@ -140,9 +140,9 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
     datatypeLibrary.setMetaData(metaData);
     datatypeLibrary.setScope(scope);
     datatypeLibrary.setAccountId(accountId);
-    //datatypeLibrary.setSectionDescription("Default description");
+    datatypeLibrary.setSectionDescription("Default description");
     datatypeLibrary.setSectionTitle("Default title");
-    datatypeLibrary.setSectionContent("Default contents");
+    datatypeLibrary.setSectionContents("Default contents");
     return datatypeLibraryRepository.save(datatypeLibrary);
 
   }

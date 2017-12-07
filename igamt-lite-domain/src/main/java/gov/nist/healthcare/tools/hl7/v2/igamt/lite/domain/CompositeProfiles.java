@@ -18,26 +18,32 @@ import java.util.Set;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
-public class CompositeProfiles extends Library
+public class CompositeProfiles extends TextbasedSectionModel
     implements java.io.Serializable, Cloneable {
 
 
   private static final long serialVersionUID = 1L;
 
   private String id;
+
   /**
      * 
      */
   public CompositeProfiles() {
     super();
-    this.setId(ObjectId.get().toString());
-    type=Constant.COMPOSITEPROFILES;
-    sectionPosition=3;
+    this.id = ObjectId.get().toString();
   }
 
   @DBRef
   private Set<CompositeProfileStructure> children = new HashSet<CompositeProfileStructure>();
 
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
 
   public Set<CompositeProfileStructure> getChildren() {
     return children;
@@ -60,13 +66,5 @@ public class CompositeProfiles extends Library
     }
     this.children.remove(toRemove);
   }
-
-public String getId() {
-	return id;
-}
-
-public void setId(String id) {
-	this.id = id;
-}
 
 }

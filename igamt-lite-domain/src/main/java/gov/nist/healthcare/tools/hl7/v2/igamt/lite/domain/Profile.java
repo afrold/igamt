@@ -1,15 +1,13 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-public class Profile extends Section implements java.io.Serializable, Cloneable {
+public class Profile extends TextbasedSectionModel implements java.io.Serializable, Cloneable {
 
   private static final long serialVersionUID = 1L;
 
@@ -22,13 +20,11 @@ public class Profile extends Section implements java.io.Serializable, Cloneable 
 
   private IGDocumentScope scope;
 
-  private ProfileMetaData metaData;
-  
-public static long getSerialversionuid() {
-	return serialVersionUID;
-}
+  private String id;
 
-@JsonIgnoreProperties(value = {"accountId", "date"})
+  private ProfileMetaData metaData;
+
+  @JsonIgnoreProperties(value = {"accountId", "date"})
   @DBRef
   private SegmentLibrary segmentLibrary = new SegmentLibrary();
 
@@ -38,30 +34,10 @@ public static long getSerialversionuid() {
 
   private Messages messages = new Messages();
   private CompositeProfiles compositeProfiles = new CompositeProfiles();
-  
- 
-  private CompositeProfileLibrary compsoiteProfileLibrary= new CompositeProfileLibrary();
-  
-  private MessageLibrary messageLibrary= new MessageLibrary();
-  
 
-  public CompositeProfileLibrary getCompsoiteProfileLibrary() {
-	return compsoiteProfileLibrary;
-}
 
-public void setCompsoiteProfileLibrary(CompositeProfileLibrary compsoiteProfileLibrary) {
-	this.compsoiteProfileLibrary = compsoiteProfileLibrary;
-}
 
-public MessageLibrary getMessageLibrary() {
-	return messageLibrary;
-}
-
-public void setMessageLibrary(MessageLibrary messageLibrary) {
-	this.messageLibrary = messageLibrary;
-}
-
-@DBRef
+  @DBRef
   private TableLibrary tableLibrary = new TableLibrary();
 
   @DBRef
@@ -237,6 +213,7 @@ public void setMessageLibrary(MessageLibrary messageLibrary) {
     clonedProfile.setBaseId(baseId != null ? baseId : id);
     clonedProfile.setSourceId(id);
     clonedProfile.setConstraintId(constraintId);
+
     return clonedProfile;
   }
 

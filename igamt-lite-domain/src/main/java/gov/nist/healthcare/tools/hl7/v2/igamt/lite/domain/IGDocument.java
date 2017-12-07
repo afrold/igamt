@@ -7,16 +7,8 @@ import java.util.Set;
 
 import javax.persistence.Transient;
 
-import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.DocumentSection;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.SectionDataWithText;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.SectionData;
-
 
 @Document(collection = "igdocument")
 public class IGDocument extends DataModel implements java.io.Serializable, Cloneable {
@@ -44,15 +36,11 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
   private IGDocumentScope scope;
 
   private int position;
-  @JsonProperty("children")
+
   private Set<Section> childSections = new HashSet<Section>();
-  
-  
-  @Transient
-  private DocumentSection content=new DocumentSection();
 
-
-  private Set<ShareParticipantPermission> shareParticipantIds = new HashSet<ShareParticipantPermission>();
+  private Set<ShareParticipantPermission> shareParticipantIds =
+      new HashSet<ShareParticipantPermission>();
 
   @Transient
   private List<ShareParticipant> realUsers = new ArrayList<ShareParticipant>();
@@ -74,15 +62,6 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
   public void setOwner(ShareParticipant owner) {
     this.owner = owner;
   }
-  
-  public DocumentSection getContent() {
-	return content;
-  }
-
-  public void setContent(DocumentSection content) {
-	this.content = content;
-  }
-
 
   private void addSection(Section s) {
     s.setSectionPosition(this.childSections.size() + 1);
@@ -162,7 +141,7 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
     p.getMessages().setSectionPosition(0);
     p.getMessages().setSectionTitle("Conformance Profiles");
     p.getMessages().setType("messages");
-    p.getMessages().setSectionContent("");
+    p.getMessages().setSectionContents("");
 
     int messagePositionNum = 1;
     for (Message m : p.getMessages().getChildren()) {
@@ -173,20 +152,16 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
     p.getSegmentLibrary().setSectionPosition(1);
     p.getSegmentLibrary().setSectionTitle("Segments and Field Descriptions");
     p.getSegmentLibrary().setType("segments");
-    p.getSegmentLibrary().setSectionContent("");
+    p.getSegmentLibrary().setSectionContents("");
 
     p.getDatatypeLibrary().setSectionPosition(2);
     p.getDatatypeLibrary().setSectionTitle("Datatypes");
     p.getDatatypeLibrary().setType("datatypes");
-    p.getDatatypeLibrary().setSectionContent("");
+    p.getDatatypeLibrary().setSectionContents("");
     p.getTableLibrary().setSectionPosition(3);
     p.getTableLibrary().setSectionTitle("Value Sets");
     p.getTableLibrary().setType("tables");
-    p.getTableLibrary().setSectionContent("xsx");
-    
-    
-    
-    this.childSections.add(p);
+    p.getTableLibrary().setSectionContents("xsx");
 
     this.setProfile(p);
   }
@@ -300,14 +275,14 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
     p.getTableLibrary().setSectionPosition(3);
     p.getTableLibrary().setSectionTitle("Value Sets");
     p.getTableLibrary().setType("tables");
-    //this.setProfile(p);
+    this.setProfile(p);
   }
 
   @Override
   public IGDocument clone() throws CloneNotSupportedException {
     IGDocument clonedDocument = new IGDocument();
     clonedDocument.setMetaData(metaData.clone());
-    //clonedDocument.setProfile(profile.clone());
+    clonedDocument.setProfile(profile.clone());
     clonedDocument.setChildSections(new HashSet<Section>());
     for (Section section : this.childSections) {
       clonedDocument.addSection(section.clone());
@@ -364,38 +339,13 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
     this.metaData = metaData;
   }
 
+
   public Profile getProfile() {
-	  return this.profile;
-	  
-//	  if(content.getChildren()!=null){
-//		 //DocumentSection profileSection=new DocumentSection<SectionDataWithText>();
-//		 for ( DocumentSection<SectionData> child : this.content.getChildren()){
-////			if(child instanceof DocumentSection){
-////				DocumentSection section=(DocumentSection)child;
-////				if(section.getData()!= null){
-////					SectionData data=section.getData();
-////					if(data instanceof SectionDataWithText){
-////						SectionDataWithText dataWithText=(SectionDataWithText) data;
-////						if(((SectionDataWithText) data).getReferenceType()==Constant.PROFILE){
-////							return buildProfileFromSection(section);
-////						}
-////					}
-////					}
-////			} 
-////		 }
-//		  
-//	  //}
-//	//return null;
-	  
-}
-
-
-  private Profile buildProfileFromSection(DocumentSection section) {
-	  
-	return null;
+    return profile;
   }
 
-public void setProfile(Profile profile) {
+
+  public void setProfile(Profile profile) {
     this.profile = profile;
   }
 
