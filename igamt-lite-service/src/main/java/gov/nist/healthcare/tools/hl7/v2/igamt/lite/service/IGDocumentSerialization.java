@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import nu.xom.Document;
 
 public interface IGDocumentSerialization {
@@ -55,7 +56,7 @@ public interface IGDocumentSerialization {
 
   String serializeDatatypeToXML(DatatypeLink dl);
 
-  String serializeIGDocumentToXML(IGDocument igdoc);
+  String serializeIGDocumentToXML(IGDocument igdoc) throws SerializationException;
 
   String serializeMessageToXML(Message m);
 

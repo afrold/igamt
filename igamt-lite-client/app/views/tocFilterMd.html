@@ -114,24 +114,13 @@
 
                     <div ng-if="!collapsemessage && selectedMessage" data-nodrag ui-tree-handle style ="margin-left:30px;"> <span class="badge label-default" ng-click="selectedMessage=null; resetMessages(); selectedSegment=null;resetSegments()" ng-if="!collapsesegment" > <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
 
-                        <li ng-repeat="msg in ig.profile.messages.children" ui-tree-node
-
-
-                            ng-if="!collapsemessage" data-type="message">
+                        <li ng-repeat="msg in ig.profile.messages.children" ui-tree-node ng-if="!collapsemessage" data-type="message">
                             <div ui-tree-handle 
                                  context-menu="MessagesOption" style ="margin-left:30px;">
                                 <input  no-dirty-check data-nodrag type="radio" name="messagesRadio" value="msg" title="filter by this conformance profile" ng-model="msg.checked" ng-click="selectedSegment=null;resetSegments();processMessageTree(msg, null)"/>
 
-                                <span class="glyphicon glyphicon-move"></span> 
-                                
-                                
-                                
-                                
-                                
-                                <span data-nodrag style ="font-weight: normal;"
-                                                                                     confirm-click
-                                                                                     ng-class="{selected : msg.id===activeModel}"
-                                                                                     ng-click="editMessage(msg)">
+                                <span class="glyphicon glyphicon-move"></span>
+                                <span data-nodrag style ="font-weight: normal;" confirm-click ng-class="{selected : msg.id===activeModel}" ng-click="editMessage(msg)">
 									{{updateMessagePositions(ig.profile.messages.children)}}
 									[{{msg.position}}]	{{msg.name}}-{{msg.description}}
 									</span>
@@ -208,20 +197,14 @@
 							<span ng-class="{selected :activeModel ==='Datatypes'}"
                                     data-nodrag ng-click="editRoutSection('Datatypes')" confirm-click>{{ig.childSections.length+1}}.5.Datatypes {{filteredDatatypesList.length}}/{{datatypes.length}}</span>
                         </div>
-<!--                            <div ng-if="!collapsedata" data-nodrag ui-tree-handle style ="margin-left:30px;"> <label  ng-click="resetDatatypes()" ng-if="!collapsedata" >clear filter</label></div> -->
                         <li ng-repeat="data in filteredDatatypesList| orderBy :'label'" ui-tree-node
                             ng-if="!collapsedata" data-type="datatype">
                             <div ui-tree-handle  data-nodrag  
-                                 confirm-click
                                  context-menu="DataTypeOptions" style ="margin-left:30px;">
 								<span data-nodrag style ="font-weight: normal;"
                                       ng-class="{selected : data.id===activeModel}"
                                       confirm-click
-                                      ng-click="editDataType(data)">
-
-<!--                 <input type="radio" -->
-<!--                 ng-model="data.checked" -->
-<!--                 name="dataTypesRadio" ng-click="rebuildTreeFromDatatype(data)"/>   -->
+                                      ng-click="editDatatype(data)">
                         <display-label of="data" desc="true"></display-label>
                                 </span>
                             </div>

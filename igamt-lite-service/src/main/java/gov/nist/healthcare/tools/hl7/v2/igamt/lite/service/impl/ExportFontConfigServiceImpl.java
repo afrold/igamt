@@ -69,7 +69,6 @@ public class ExportFontConfigServiceImpl implements ExportFontConfigService {
    */
   @Override
   public ExportFontConfig getDefaultExportFontConfig() throws Exception {
-    // TODO Auto-generated method stub
-    return exportFontConfigRepository.findByDefaultConfig(true);
+      return exportFontConfigRepository.findByDefaultConfig(true);
   }
 }

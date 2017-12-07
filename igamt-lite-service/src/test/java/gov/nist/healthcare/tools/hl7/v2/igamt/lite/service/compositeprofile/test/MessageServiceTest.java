@@ -193,4 +193,8 @@ public class MessageServiceTest implements MessageService {
     return null;
   }
 
+  @Override public void updateAttribute(String id, String attributeName, Object value) {
+    // TODO Auto-generated method stub
+  }
+
 }

@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import nu.xom.Document;
 import nu.xom.Element;
 
@@ -31,7 +32,7 @@ public class SerializableStructure {
         this.serializableElementList.add(serializableElement);
     }
 
-    public Document serializeStructure(){
+    public Document serializeStructure() throws SerializationException {
         Element e = new Element("ConformanceProfile");
         Document doc = new Document(e);
         for(SerializableElement serializableElement:serializableElementList){

@@ -2,7 +2,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
 
 public class ServletContextListenerForPHINVADSValueSetDigger implements ServletContextListener {
 

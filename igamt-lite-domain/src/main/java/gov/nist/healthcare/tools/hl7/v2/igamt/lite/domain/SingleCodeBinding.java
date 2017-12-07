@@ -12,6 +12,7 @@ public class SingleCodeBinding extends ValueSetOrSingleCodeBinding  implements S
 	 */
 	private static final long serialVersionUID = -242692961686938693L;
 	private Code code;
+	private boolean codedElement;
 
 	public SingleCodeBinding() {
 		super();
@@ -25,5 +26,13 @@ public class SingleCodeBinding extends ValueSetOrSingleCodeBinding  implements S
 	public void setCode(Code code) {
 		this.code = code;
 	}
+
+  public boolean isCodedElement() {
+    return codedElement;
+  }
+
+  public void setCodedElement(boolean codedElement) {
+    this.codedElement = codedElement;
+  }
 
 }

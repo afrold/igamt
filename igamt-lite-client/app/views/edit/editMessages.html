@@ -38,7 +38,7 @@
                  <i class="fa fa-calendar" aria-hidden="true"></i>
 					Updated {{message.dateUpdated | date:dateFormat}}
                      <span ng-if="message.owner" style="font-style: italic;">
-                         <i class="fa fa-user" aria-hidden="true"></i> 
+                         <i class="fa fa-user" aria-hidden="true"></i>
                          ,{{datatype.owner}}
                     </span>
                     <span ng-if="message.hl7Version">,HL7 Version: {{message.hl7Version}}</span>
@@ -67,6 +67,9 @@
 
                                             <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input  type="text"  name="identifier" ng-change="setDirty()" ng-model="message.identifier" ng-disabled="viewSettings.tableReadonly" required>
+                                                <div role="alert"  style="color:red" ng-show="isDuplicated(message,igdocument.profile.messages.children)">
+                                                    <div class="my-message">Identifier is already used.</div>
+                                                </div>
                                                 <div ng-messages="editForm.identifier.$error">
                                                     <div ng-message="required">Identifier is required.</div>
                                                 </div>
@@ -307,7 +310,7 @@
                                         </span>
                                         <div class="col-md-12">
                                             <span ng-hide="listGlobalConformanceStatements.length > 0">No Conformance statement</span>
-                                            <div ng-repeat="node in listGlobalConformanceStatements">
+                                            <div ng-repeat="node in listGlobalConformanceStatements track by $index">
                                                 <span ng-show="node.type =='group'">Group : {{node.name}}</span>
                                                 <span ng-show="node.type =='message'">Message : {{node.name}}</span>
                                                 <table st-table="displayedCS" st-safe-src="node.conformanceStatements" class="table table-striped table-bordered">
@@ -318,7 +321,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr ng-repeat="c in displayedCS">
+                                                        <tr ng-repeat="c in displayedCS track by $index">
                                                             <td class="col-md-2">{{c.constraintId}}</td>
                                                             <td class="col-md-10">{{c.description}}</td>
                                                         </tr>
@@ -341,7 +344,7 @@
                                     <div class="panel-body">
                                         <div class="col-md-12">
                                             <span ng-hide="listGlobalPredicates.length > 0">No Predicate</span>
-                                            <div ng-repeat="node in listGlobalPredicates">
+                                            <div ng-repeat="node in listGlobalPredicates track by $index">
                                                 <span ng-show="node.type =='group'">Group : {{node.name}}</span>
                                                 <span ng-show="node.type =='message'">Message : {{node.name}}</span>
                                                 <table st-table="displayedCP" st-safe-src="node.predicates" class="table table-striped table-bordered">
@@ -354,7 +357,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr ng-repeat="c in displayedCP">
+                                                        <tr ng-repeat="c in displayedCP track by $index">
                                                             <td class="col-md-2">{{c.constraintTarget}}</td>
                                                             <td class="col-md-8">{{c.description}}</td>
                                                             <td class="col-md-1">{{c.trueUsage}}</td>
@@ -425,24 +428,24 @@
                                                 </td>
                                                 <td class="col-md-2">
                                                     <md-select ng-model="version2" ng-change="setVersion2(version2)" no-dirty-check>
-                                                            <md-option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{::vr}}</md-option>
+                                                            <md-option ng-repeat="vr in versions track by $index" value='{{vr}}' ng-selected="vr===version2"> {{::vr}}</md-option>
                                                         </md-select>
                                                 </td>
                                                 <td class="col-md-2">
                                                     <md-select ng-model="scope2"  ng-change="setScope2(scope2)" no-dirty-check>
-                                                            <md-option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{::scope.alias}}</md-option>
+                                                            <md-option ng-repeat="scope in scopes track by $index" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{::scope.alias}}</md-option>
                                                         </md-select>
                                                 </td>
                                                 <td class="col-md-3">
                                                     <md-select  ng-model="ig2" ng-click="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check>
 
-                                                        <md-option ng-repeat="ig in igList2 track by ig.id" ng-value="ig">{{ig.title}}</md-option>
+                                                        <md-option ng-repeat="ig in igList2 track by $index" ng-value="ig">{{ig.title}}</md-option>
                                                     </md-select>
                                                 </td>
 
                                                 <td class="col-md-4">
                                                     <md-select ng-model="cmpMsg.messageId" ng-change="setMsg2(cmpMsg.messageId)" ng-disabled="!ig2" no-dirty-check>
-                                                            <md-option ng-repeat="message in messages2" ng-disabled="disableMsg(message,message1)" ng-hide="hideMsg(message,message1)" value='{{$index}}'> {{::message.name}}</md-option>
+                                                            <md-option ng-repeat="message in messages2 track by $index" ng-disabled="disableMsg(message,message1)" ng-hide="hideMsg(message,message1)" value='{{$index}}'> {{::message.name}}</md-option>
                                                         </md-select>
                                                 </td>
                                             </tr>
@@ -518,7 +521,7 @@
                     <option ng-repeat="child in $root.segParent.children"  ng-selected="node.obj.position===child.position"> {{child.position}}</option>
                 </select>-->
                 <select ng-show="editableSeg===node.obj.id" ng-model="segmentRef" ng-change="selectSeg(node,segmentRef)" style="width:40%" class="form-control input-sm">
-                    <option ng-repeat="segmentRef in tmpResults" value="{{segmentRef}}"  ng-selected="node.obj.ref.id===segmentRef.id"> {{getSegmentLabel(segmentRef)}} {{::segmentRef.hl7Version}}</option>
+                    <option ng-repeat="segmentRef in tmpResults track by $index" value="{{segmentRef}}"  ng-selected="node.obj.ref.id===segmentRef.id"> {{getSegmentLabel(segmentRef)}} {{::segmentRef.hl7Version}}</option>
                 </select>
 
 
@@ -553,7 +556,7 @@
                                         ng-class="{ 'has-error has-feedback' : {{formName}}.usage.$invalid}"
                                         required ng-model="node.obj.usage" >
 
-                                 <md-option ng-repeat="usage in config.usages" ng-value="usage">
+                                 <md-option ng-repeat="usage in config.usages track by $index" ng-value="usage">
                                      {{usage}}
 
                                  </md-option>
@@ -625,7 +628,7 @@
         </td>
         <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('defText')"></td>
         <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
-            <div ng-repeat="comment in findingComments(node)">
+            <div ng-repeat="comment in findingComments(node) track by $index">
                     <span class="badge label-white">
                         <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span>
                         <span title="{{comment.description}}" ng-click="editCommentDlg(node, comment, false, 'message')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
@@ -648,7 +651,7 @@
         </td>
         <td>
             <span ng-bind="node.obj.usage"></span>
-            <span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
+            <span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true) track by $index">
                     ({{::p.trueUsage}}/{{::p.falseUsage}})
             </span>
         </td>
@@ -660,14 +663,14 @@
         <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('singleElm')"></td>
         <td ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
-                <p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)"
+                <p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true) track by $index" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)"
                    tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 </p>
             </div>
         </td>
         <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('defText')"></td>
         <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
-            <div ng-repeat="comment in findingComments(node)">
+            <div ng-repeat="comment in findingComments(node) track by $index">
                     <span class="badge" ng-class="{'label-MAIN' : comment.from == 'message', 'label-CHILD' : comment.from == 'segment', 'label-SUBCHILD' : comment.from == 'field', 'label-SUBSUBCHILD' : comment.from == 'component'}">
                         <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.from == 'message'" ng-click="editCommentDlg(node, comment, true, 'message')">Comments_{{comment.index}}</span>
                     </span>
@@ -696,7 +699,7 @@
                                    ng-change="selectPos()"
                                    ng-model="position"
                                     style="margin: 20px 0;">
-                            <md-option ng-repeat="child in $root.segParent.children" ng-value="child.position">
+                            <md-option ng-repeat="child in $root.segParent.children track by $index" ng-value="child.position">
                                 {{child.position}}
                             </md-option>
                         </md-select>
@@ -730,7 +733,7 @@
                                            ng-class="{ 'has-error has-feedback' : {{formName}}.usage.$invalid}"
                                            required ng-model="node.obj.usage" >
 
-                                 <md-option ng-repeat="usage in config.usages" ng-value="usage">
+                                 <md-option ng-repeat="usage in config.usages track by $index" ng-value="usage">
                                      {{usage}}
 
                                  </md-option>
@@ -799,7 +802,7 @@
         </td>
         <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('defText')"></td>
         <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
-            <div ng-repeat="comment in findingComments(node)">
+            <div ng-repeat="comment in findingComments(node) track by $index">
                     <span class="badge label-white">
                         <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span>
                         <span title="{{comment.description}}" ng-click="editCommentDlg(node, comment, false, 'message')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
@@ -823,7 +826,7 @@
         <td>
             <div>
                 <span ng-bind="node.obj.usage"></span>
-                <span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
+                <span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true) track by $index">
                     ({{::p.trueUsage}}/{{::p.falseUsage}})
                 </span>
             </div>
@@ -838,14 +841,14 @@
         <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('singleElm')"></td>
         <td ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
-                <p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)"
+                <p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true) track by $index" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)"
                    tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 </p>
             </div>
         </td>
         <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('defText')"></td>
         <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
-            <div ng-repeat="comment in findingComments(node)">
+            <div ng-repeat="comment in findingComments(node) track by $index">
                     <span class="badge" ng-class="{'label-MAIN' : comment.from == 'message', 'label-CHILD' : comment.from == 'segment', 'label-SUBCHILD' : comment.from == 'field', 'label-SUBSUBCHILD' : comment.from == 'component'}">
                         <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.from == 'message'" ng-click="editCommentDlg(node, comment, true, 'message')">Comments_{{comment.index}}</span>
                     </span>
@@ -883,7 +886,7 @@
         </td>
         <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
             <div ng-show="isAvailableForValueSet(node)">
-                <div ng-repeat="binding in findingBindings(node)">
+                <div ng-repeat="binding in findingBindings(node) track by $index">
                     <span class="badge label-white">
                         <span ng-class="{'label-message-icon' : binding.bindingFrom == 'message', 'label-field-icon' : binding.bindingFrom == 'segment', 'label-component-icon' : binding.bindingFrom == 'field', 'label-sub-component-icon' : binding.bindingFrom == 'component'}"><i class="fa fa-circle fa-fw"/></span>
                         <span title="For this message" ng-show="binding.bindingFrom == 'message' && binding.type == 'valueset'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
@@ -923,7 +926,7 @@
                     <span>{{getConstraintAsTruncatedString(findPredicateByPath(node.path), 15)}}</span>
                 </span>
             </div>
-            <div ng-repeat="p in filteredSubConstraints=(parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true)">
+            <div ng-repeat="p in filteredSubConstraints=(parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true) track by $index">
                 <span title="{{getPredicateAsString(p)}}" class="badge label-white">
                     <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span>
                     <span>{{getConstraintAsTruncatedString(p, 15)}}</span>
@@ -952,7 +955,7 @@
             </a>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
-            <div ng-repeat="comment in findingComments(node)">
+            <div ng-repeat="comment in findingComments(node) track by $index">
                     <span class="badge label-white">
                         <span ng-class="{'label-message-icon' : comment.from == 'message', 'label-field-icon' : comment.from == 'segment', 'label-component-icon' : comment.from == 'field', 'label-sub-component-icon' : comment.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
                         <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.from == 'message'" ng-click="editCommentDlg(node, comment, false, 'message')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
@@ -1002,7 +1005,7 @@
         </td>
         <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
             <div ng-show="isAvailableForValueSet(node)">
-                <div ng-repeat="binding in findingBindings(node)">
+                <div ng-repeat="binding in findingBindings(node) track by $index">
                     <span class="badge label-white">
                         <span ng-class="{'label-message-icon' : binding.bindingFrom == 'message', 'label-field-icon' : binding.bindingFrom == 'segment', 'label-component-icon' : binding.bindingFrom == 'field', 'label-sub-component-icon' : binding.bindingFrom == 'component'}"><i class="fa fa-circle fa-fw"/></span>
                         <span title="For this message" ng-show="binding.bindingFrom == 'message' && binding.type == 'valueset'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
@@ -1042,7 +1045,7 @@
                     <span>{{getConstraintAsTruncatedString(findPredicateByPath(node.path), 15)}}</span>
                 </span>
             </div>
-            <div ng-repeat="p in filteredSubConstraints=(parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true)">
+            <div ng-repeat="p in filteredSubConstraints=(parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true) track by $index">
                 <span title="{{getPredicateAsString(p)}}" class="badge label-white">
                     <span ng-class="{'label-component-icon' : node.segmentPath.split('.').length - 1 == 1, 'label-sub-component-icon' : node.segmentPath.split('.').length - 1 == 2}"><i class="fa fa-circle fa-fw"/></span>
                     <span>{{getConstraintAsTruncatedString(p, 15)}}</span>
@@ -1071,7 +1074,7 @@
             </a>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
-            <div ng-repeat="comment in findingComments(node)">
+            <div ng-repeat="comment in findingComments(node) track by $index">
                     <span class="badge label-white">
                         <span ng-class="{'label-message-icon' : comment.from == 'message', 'label-field-icon' : comment.from == 'segment', 'label-component-icon' : comment.from == 'field', 'label-sub-component-icon' : comment.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
                         <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.from == 'message'" ng-click="editCommentDlg(node, comment, false, 'message')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
@@ -1130,7 +1133,7 @@
 
                             <md-input-container class="md-block igamt-input-block" flex-gt-sm layout="row" layout-align="center center">
                                 <md-select ng-model="newSegment.position" ng-change="selectPos()" class="point" required  id="inputPosition" name="inputPosition">
-                                    <md-option  ng-repeat="child in segmentParent.children" ng-value="{{$index+1}}"> {{$index+1}}</md-option>
+                                    <md-option  ng-repeat="child in segmentParent.children track by $index" ng-value="$index+1"> {{$index+1}}</md-option>
                                     <!--<md-option ng-show="segmentParent.obj && segmentParent.obj.type==='group'" ng-repeat="child in segmentParent.children" ng-value="{{child.obj.position}}"> {{child.obj.position}}</md-option>-->
                                     <md-option ng-value="{{segmentParent.children.length+1}}">{{segmentParent.children.length+1}}</md-option>
                                 </md-select>
@@ -1142,7 +1145,7 @@
                             <label class="input-left igamt-label"> Usage*</label>
                             <md-input-container class="md-block igamt-input-block" flex-gt-sm layout="row" layout-align="center center">
                                 <md-select name="grUsage" id="grUsage" ng-change="selectUsage(newSegment.usage)" ng-model="newSegment.usage" required>
-                                    <md-option ng-repeat="usage in config.usages" ng-value="usage">{{usage}}
+                                    <md-option ng-repeat="usage in config.usages track by $index" ng-value="usage">{{usage}}
                                     </md-option>
                                 </md-select>
 
@@ -1221,8 +1224,8 @@
 
                         <md-input-container class="md-block igamt-input-block" flex-gt-sm layout="row" layout-align="center center">
                             <md-select ng-model="position" ng-change="selectPos()" class="point" required  name="grPosition">
-                                <md-option ng-show="groupParent.type==='message'" ng-repeat="child in groupParent.children" ng-value="{{child.position}}"> {{child.position}}</md-option>
-                                <md-option ng-show="groupParent.obj && groupParent.obj.type==='group'" ng-repeat="child in groupParent.children" ng-value="{{child.obj.position}}"> {{child.obj.position}}</md-option>
+                                <md-option ng-show="groupParent.type==='message'" ng-repeat="child in groupParent.children track by $index" ng-value="{{child.position}}"> {{child.position}}</md-option>
+                                <md-option ng-show="groupParent.obj && groupParent.obj.type==='group'" ng-repeat="child in groupParent.children track by $index" ng-value="{{child.obj.position}}"> {{child.obj.position}}</md-option>
                                 <md-option ng-value="{{groupParent.children.length+1}}">{{groupParent.children.length+1}}</md-option>
                             </md-select>
                             <div ng-messages="addGrpForm.name.$error">
@@ -1235,7 +1238,7 @@
 
                         <md-input-container class="md-block igamt-input-block" flex-gt-sm layout="row" layout-align="center center">
                             <md-select name="grUsage" id="grUsage" ng-change="selectUsage(newGroup.usage)" ng-model="newGroup.usage" required>
-                                <md-option ng-repeat="usage in config.usages" ng-value="usage">{{usage}}
+                                <md-option ng-repeat="usage in config.usages track by $index" ng-value="usage">{{usage}}
                                 </md-option>
                             </md-select>
 
@@ -1306,7 +1309,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="row in tmpResults | orderBy:'row.ext'" ng-class="{'active':selection.selected != null && selection.selected === row.id}">
+                                <tr ng-repeat="row in tmpResults | orderBy:'row.ext' track by $index" ng-class="{'active':selection.selected != null && selection.selected === row.id}">
                                     <td st-ratio="100">{{$index + 1}}
                                         <input type="radio" ng-model="selection.selected" ng-value="row.id" ng-click="selectSegment(row)"> {{getSegmentLabel(row)}}
                                     </td>
@@ -1420,7 +1423,8 @@
     <md-dialog>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>Change Usage O to X Confirmation</h2>
+
+                <h2>Confirm Leave</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()">
                     <i class="material-icons">clear</i>
@@ -1495,7 +1499,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="b in displayedSelectedValueSetBindings">
+                                        <tr ng-repeat="b in displayedSelectedValueSetBindings track by $index">
                                             <td class="col-md-1">
                                                 <span class="badge" ng-class="{'label-HL7' : getScopeLabel(tablesMap[b.tableId])==='HL7', 'label-USE': getScopeLabel(tablesMap[b.tableId])==='USR','label-MASTER':getScopeLabel(tablesMap[b.tableId])==='MAS','label-PRL':getScopeLabel(tablesMap[b.tableId])==='PRL','label-PVS':getScopeLabel(tablesMap[b.tableId])==='PVS'}">{{getScopeLabel(tablesMap[b.tableId])}} {{hasSameVersion(tablesMap[b.tableId])}}</span>
                                             </td>
@@ -1514,7 +1518,7 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <md-select ng-show="listOfBindingLocations" ng-model='b.bindingLocation' ng-change="setChanged()">
-                                                    <md-option ng-repeat="bl in listOfBindingLocations" ng-value="bl">
+                                                    <md-option ng-repeat="bl in listOfBindingLocations track by $index" ng-value="bl">
                                                         {{bl}}
                                                     </md-option>
                                                 </md-select>
@@ -1538,7 +1542,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="b in displayedSelectedValueSetBindings">
+                                        <tr ng-repeat="b in displayedSelectedValueSetBindings track by $index">
                                             <td class="col-md-11">
                                                 {{::currentNode.locationPath}} ({{::currentNode.obj.name}})
                                                 SHALL contain the constant value '
@@ -1593,7 +1597,7 @@
                                                 </thead>
 
                                                 <tbody>
-                                                <tr ng-repeat="v in displayCollection">
+                                                <tr ng-repeat="v in displayCollection track by $index">
                                                     <td class="col-md-1">
                                                         <span class="badge" ng-class="{'label-HL7' : getScopeLabel(v)==='HL7', 'label-USE': getScopeLabel(v)==='USR','label-MASTER':getScopeLabel(v)==='MAS','label-PRL':getScopeLabel(v)==='PRL','label-PVS':getScopeLabel(v)==='PVS'}">{{getScopeLabel(v)}} {{hasSameVersion(v)}}</span>
                                                     </td>
@@ -1640,7 +1644,7 @@
                                                     </thead>
 
                                                     <tbody>
-                                                    <tr ng-repeat="v in displayTables">
+                                                    <tr ng-repeat="v in displayTables track by $index">
                                                         <td class="col-md-1">
                                                             <span class="badge" ng-class="{'label-HL7' : getScopeLabel(v)==='HL7', 'label-USE': getScopeLabel(v)==='USR','label-MASTER':getScopeLabel(v)==='MAS','label-PRL':getScopeLabel(v)==='PRL','label-PVS':getScopeLabel(v)==='PVS'}">{{getScopeLabel(v)}} {{hasSameVersion(v)}}</span>
                                                         </td>
@@ -1727,7 +1731,7 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <tr ng-repeat="c in displayCodes">
+                                                    <tr ng-repeat="c in displayCodes track by $index">
                                                         <td class="col-md-3">
                                                             <span>{{c.value}}</span>
                                                         </td>

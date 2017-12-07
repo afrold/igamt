@@ -45,6 +45,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
@@ -268,7 +269,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
   }
 
   @Override
-  public InputStream exportAsPdf(IGDocument d) {
+  public InputStream exportAsPdf(IGDocument d) throws SerializationException {
     if (d != null) {
       return exportAsHtmlFromXsl4Pdf(d, inlineConstraints); // TODO Use
                                                             // wkhtml2pdf
@@ -290,7 +291,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
   }
 
   @Override
-  public InputStream exportAsXmlDisplay(IGDocument d) {
+  public InputStream exportAsXmlDisplay(IGDocument d) throws SerializationException {
     if (d != null) {
       return exportAsXml(igDocumentSerializationService.serializeIGDocumentToXML(d));
     } else {
@@ -299,7 +300,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
   }
 
   @Override
-  public InputStream exportAsHtml(IGDocument d) {
+  public InputStream exportAsHtml(IGDocument d) throws SerializationException {
     if (d != null) {
       return exportAsHtmlFromXsl(d, inlineConstraints);
     } else {
@@ -1019,7 +1020,8 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
     sheet.autoSizeColumn(8);
   }
 
-  public InputStream exportAsHtmlFromXsl(IGDocument igdoc, String inlineConstraints) {
+  public InputStream exportAsHtmlFromXsl(IGDocument igdoc, String inlineConstraints)
+      throws SerializationException {
     // Note: inlineConstraint can be true or false
 
     try {
@@ -1083,7 +1085,8 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
     // }
   }
 
-  public InputStream exportAsHtmlFromXsl4Pdf(IGDocument igdoc, String inlineConstraints) {
+  public InputStream exportAsHtmlFromXsl4Pdf(IGDocument igdoc, String inlineConstraints)
+      throws SerializationException {
     // Note: inlineConstraint can be true or false
 
     try {
@@ -1155,7 +1158,8 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
     }
   }
 
-  public InputStream exportAsDocxFromHtml(IGDocument igdoc, String inlineConstraints) {
+  public InputStream exportAsDocxFromHtml(IGDocument igdoc, String inlineConstraints)
+      throws SerializationException {
     // Note: inlineConstraint can be true or false
 
     try {

@@ -527,6 +527,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
     });
     modalInstance.then(function(segment) {
 
+       console.log($rootScope.messageTree);
       $scope.setDirty();
 
 

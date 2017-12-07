@@ -10,6 +10,7 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
   $scope.preloadedPhinvadsTables = [];
   $scope.phinvadsTables = [];
   $scope.selectedTables = [];
+  $scope.codesPresence={};
   $scope.searched = false;
   // $scope.tablestoAdd=tablestoAdd;
 
@@ -30,8 +31,11 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
     });
   };
   $scope.isAlreadyIn = function (table) {
-    if ($rootScope.tablesMap[table.id] == null) return false;
-    return true;
+      var index = _.findIndex($rootScope.tables, function (child) {
+          return child.id === table.id;
+      });
+      if (index == -1) return false;
+      return true;
   };
 
   $scope.isAlreadySelected = function (table) {
@@ -42,54 +46,126 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
     return true;
   };
 
-  $scope.addTable = function (table) {
-    $scope.selectedTables.push(table);
-  };
+    $scope.addTable = function (table) {
+        $scope.selectedTables.push(table);
+    };
 
-  $scope.deleteTable = function (table) {
-    var index = $scope.selectedTables.indexOf(table);
-    if (index > -1) $scope.selectedTables.splice(index, 1);
-  };
+    $scope.deleteTable = function (table) {
+            var index = $scope.selectedTables.indexOf(table);
+            if (index > -1) $scope.selectedTables.splice(index, 1);
+     };
 
-  $scope.save = function () {
-    var childrenLinks = [];
-    for (var i = 0; i < $scope.selectedTables.length; i++) {
-      $http.get('api/tables/' + $scope.selectedTables[i].id, {
-        timeout: 600000
-      }).then(function (response) {
-        var addedTable = response.data;
-        $rootScope.tables.splice(0, 0, addedTable);
-        $rootScope.tablesMap[addedTable.id] = addedTable;
-      });
 
-      var newLink = angular.fromJson({
-        id: $scope.selectedTables[i].id,
-        bindingIdentifier: $scope.selectedTables[i].bindingIdentifier
-      });
-      $scope.selectedTableLibary.children.push(newLink);
-      childrenLinks.push(newLink);
-    }
-    TableLibrarySvc.addChildren($scope.selectedTableLibary.id, childrenLinks).then(function (link) {
 
-      if ($scope.editForm) {
-        $scope.editForm.$setPristine();
-        $scope.editForm.$dirty = false;
+    $scope.AsFlavor=function (table) {
+
+      var newTable= angular.copy(table);
+      newTable.shareParticipantIds = [];
+      newTable.status="UNPUBLISHED";
+      newTable.scope="USER";
+      newTable.bindingIdentifier = table.bindingIdentifier+"_"+(Math.floor(Math.random() * 1000) + 1);
+      newTable.id = new ObjectId().toString();
+      newTable.createdFrom =table.id;
+      newTable.libIds = [];
+      newTable.referenceUrl= $rootScope.getPhinvadsURL(table);
+      newTable.libIds.push($rootScope.tableLibrary.id);
+      newTable.sourceType=null;
+      $scope.selectedTables.push(newTable);
+
+        if(newTable.numberOfCodes && newTable.numberOfCodes>500){
+            newTable.sourceType="EXTERNAL";
+
+        }else{
+            newTable.sourceType="INTERNAL";
+        }
+
+    };
+    $scope.getAllTables=function(){
+        return _.union($rootScope.tables,$scope.selectedTables);
+    };
+    $scope.toggleFlavor=function (table) {
+        if(table.sourceType=="INTERNAL"){
+            table.sourceType="EXTERNAL";
+        }else{
+            table.sourceType="INTERNAL";
+        }
+
+    };
+
+    $scope.AsIs=function (table){
+      $scope.selectedTables.push(table);
+      if(table.numberOfCodes&&table.numberOfCodes>500){
+          $scope.codesPresence[table.id]=false;
+      }else{
+          $scope.codesPresence[table.id]=true;
       }
-      $rootScope.clearChanges();
-      $mdDialog.hide();
-      $rootScope.msg().text = "tableSaved";
-      $rootScope.msg().type = "success";
-      $rootScope.msg().show = true;
+    };
 
-    }, function (error) {
-      $scope.saving = false;
-      $rootScope.msg().text = error.data.text;
-      $rootScope.msg().type = error.data.type;
-      $rootScope.msg().show = true;
-    });
+    $scope.save=function () {
+        var reducedMap={};
+        for(i=0;i<$scope.selectedTables.length; i++){
+            if($scope.codesPresence[$scope.selectedTables[i].id]==false){
+                reducedMap[$scope.selectedTables[i].id]=false;
+            }
+        }
+
+        var wrapper={tables:$scope.selectedTables,codesPresence:reducedMap};
+
+        TableService.savePhinvads($scope.selectedTableLibary.id, wrapper).then(function(tables){
+          angular.forEach(tables, function(t){
+
+            $rootScope.tables.push(t);
+            $rootScope.tablesMap[t.id]=t;
+            $scope.selectedTableLibary.codePresence[t.id]= $scope.codesPresence[t.id];
+            var newLink = angular.fromJson({
+                id:t.id,
+                bindingIdentifier: t.bindingIdentifier
+                  });
+
+            $scope.selectedTableLibary.children.push(newLink);
+                  if ($scope.editForm) {
+                    $scope.editForm.$setPristine();
+                    $scope.editForm.$dirty = false;
+                  }
+                  $rootScope.clearChanges();
+                  $mdDialog.hide();
+                  $rootScope.msg().text = "tableSaved";
+                  $rootScope.msg().type = "success";
+                  $rootScope.msg().show = true;
 
 
-  };
+          });
+      }, function (error) {
+
+              $scope.saving = false;
+              $rootScope.msg().text = error.data.text;
+              $rootScope.msg().type = error.data.type;
+              $rootScope.msg().show = true;
+      });
+
+    };
+    
+    $scope.saveDisabled=function () {
+        for(i=0; i<$scope.selectedTables.length; i++) {
+            if ($scope.duplicated($scope.selectedTables[i])==true) {
+                console.log("Found Duplicated");
+                return true;
+            }
+        }
+        return false;
+    };
+    $scope.duplicated=function(table){
+        var allTables=$scope.getAllTables();
+            for(i=0; i<allTables.length; i++) {
+
+                if(allTables[i].id!==table.id&&allTables[i].bindingIdentifier==table.bindingIdentifier&&allTables[i].scope==table.scope){
+                    return true;
+                }
+
+            }
+
+        return false;
+    };
 });
 
 

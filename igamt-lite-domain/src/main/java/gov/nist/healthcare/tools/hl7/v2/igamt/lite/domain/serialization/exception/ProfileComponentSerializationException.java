@@ -1,3 +1,5 @@
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception;
+
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
  * the Federal Government in the course of their official duties. Pursuant to title 17 Section 105
@@ -7,18 +9,24 @@
  * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
- * that they have been modified. Ismail Mellouli (NIST) Mar 8, 2017
+ * that they have been modified.
+ * <p>
+ * Created by Maxence Lefort on 11/16/17.
  */
+public class ProfileComponentSerializationException extends SerializationException{
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
+    private final static String label = "Profile Component";
 
-import java.util.Comparator;
+    public ProfileComponentSerializationException(Exception originalException, String location) {
+        super(originalException, location);
+    }
 
-public class FieldComparator implements Comparator<Field> {
+    public ProfileComponentSerializationException(Exception originalException, String location,
+        String message) {
+        super(originalException, location, message);
+    }
 
-  @Override
-  public int compare(Field f1, Field f2) {
-    return f1.getPosition() - f2.getPosition();
-  }
-
+    @Override public String getLabel() {
+        return label;
+    }
 }

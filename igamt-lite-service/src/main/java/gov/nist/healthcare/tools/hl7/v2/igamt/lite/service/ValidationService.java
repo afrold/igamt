@@ -15,6 +15,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 import java.io.InvalidObjectException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
@@ -49,8 +50,8 @@ public interface ValidationService {
       SegmentRefOrGroup reference, SegmentRefOrGroup toBeValidated, Predicate predicate,
       String hl7Version) throws InvalidObjectException;
 
-  public ValidationResult validateGroup(Group reference, Group toBeValidated, String igHl7Version)
-      throws InvalidObjectException;
+  public ValidationResult validateGroup(Group reference, Group toBeValidated, String igHl7Version,
+      Map<String, Predicate> childrenPredicates) throws InvalidObjectException;
 
   /**
    * <p>
@@ -63,7 +64,8 @@ public interface ValidationService {
    * @return List<ValidationResult>
    */
   public ValidationResult validateSegment(Segment reference, Segment toBeValidated,
-      boolean validateChildren, String igHl7Version) throws InvalidObjectException;
+      boolean validateChildren, String igHl7Version, Map<String, Predicate> childrenPredicates)
+      throws InvalidObjectException;
 
 
   /**
@@ -97,7 +99,8 @@ public interface ValidationService {
 
 
   public ValidationResult validateDatatype(Datatype reference, Datatype toBeValidated,
-      String parentId, String igHl7Version) throws InvalidObjectException;
+      String parentId, String igHl7Version, Map<String, Predicate> childrenPredicates)
+      throws InvalidObjectException;
 
   /**
    * Validates the {@code tobeValidated} {@code Element} against the provided {@code reference}

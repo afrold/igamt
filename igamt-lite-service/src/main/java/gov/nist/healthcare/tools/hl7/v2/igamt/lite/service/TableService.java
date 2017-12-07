@@ -70,5 +70,13 @@ public interface TableService {
 
   void updateAttributes(String id, String attributeName, Object value);
 
+  List<Table> findShortByScope(String scope);
+
+  Table findShortById(String id);
+
+
+  List<Table> findByScopeAndVersionAndBindingIdentifier(String scope, String version,
+      String bindingIdentifier);
+
 
 }

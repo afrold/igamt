@@ -4,6 +4,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableElement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableMessage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.MessageSerializationException;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -21,8 +22,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
 public interface SerializeMessageService {
 
     public SerializableMessage serializeMessage(Message message, String prefix, String headerLevel,
-        SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig);
+        SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig)  throws
+        MessageSerializationException;
 
-	public SerializableElement serializeMessage(Message message, String host);
+	public SerializableElement serializeMessage(Message message, String host)  throws
+      MessageSerializationException;
 
 }

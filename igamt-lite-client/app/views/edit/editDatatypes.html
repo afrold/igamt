@@ -41,7 +41,7 @@
 
 
                     <md-button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                            ng-disabled="editFrom.$invalid||!editForm.$dirty||datatype.status === 'PUBLISHED'"
+                            ng-disabled="editForm.$invalid||!editForm.$dirty||datatype.status === 'PUBLISHED'"
                             ng-hide="viewSettings.tableReadonly||datatype.status==='PUBLISHED'"
                             ng-click="saveDatatype()">
                               <span><i class="fa fa-check fa-fw"></i> Save</span>
@@ -74,13 +74,15 @@
                     <div class="static_info">
                         <!--<display-label of="datatype" desc="true"></display-label>-->
                         <!--<display-label of="datatype" desc="false"></display-label>-->
-                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                      <span  ng-if="datatype.scope!=='HL7STANDARD'">
+                      <i  class="fa fa-calendar" aria-hidden="true"></i>
                         Updated :{{datatype.dateUpdated | date:dateFormat}}
+                      </span>
                         <span ng-if="datatype.owner" style="font-style: italic;">
-                     <span ng-if="datatype.owner"> Author : <img style="max-width:30px !important;border-radius: 50%" src="{{generateHash(datatype.owner.email)}}"/> {{datatype.owner.fullname}}</span>
+                     <span > Author : <img style="max-width:30px !important;border-radius: 50%" src="{{generateHash(datatype.owner.email)}}"/> {{datatype.owner.fullname}}</span>
                      </span>
-                        <span ng-if="datatype.hl7Version!=='*'">,HL7 Version: {{datatype.hl7Version}}</span>
-                        <span ng-if="datatype.publicationVersion">,Version: {{datatype.publicationVersion}}</span>
+                        <span ng-if="datatype.hl7Version!=='*'"> HL7 Version: {{datatype.hl7Version}}</span>
+                        <span ng-if="datatype.publicationVersion"> Version: {{datatype.publicationVersion}}</span>
 
                     </div>
                     <div class="" ng-controller="cmpDatatypeCtrl as cmp">
@@ -120,11 +122,9 @@
                                                 <input type="text" ng-change="recordChanged()"
                                                        ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED'||versionAndUseMap[datatype.id]"
                                                        name="ext" id="ext" ng-model="datatype.ext" required>
-
-                                                <div role="alert" style="color:red" ng-show="isDuplicatedTwoContexts(datatype, 'name', 'ext', datatypeLibrary.children)">
+                                                <div role="alert" style="color:red" ng-if="isDuplicated(datatype,datatypes)">
                                                     <div class="my-message">Extension is already used.</div>
                                                 </div>
-
                                                 <div ng-messages="editForm.ext.$error">
                                                     <div ng-message="required">Extension is required.</div>
                                                  </div>
@@ -376,7 +376,7 @@
                                                                     </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                    <tr ng-repeat="dtmComponentDefinition in datatype.dtmConstraints.dtmComponentDefinitions">
+                                                                    <tr ng-repeat="dtmComponentDefinition in datatype.dtmConstraints.dtmComponentDefinitions track by $index">
                                                                         <td class="col-md-1" align="center">
                                                                             <span ng-bind="::dtmComponentDefinition.position"/>
                                                                         </td>
@@ -388,7 +388,7 @@
                                                                         </td>
                                                                         <td class="col-md-1" align="center">
                                                                             <md-select placeholder="Select Usage" ng-change="updateDTMConstraints(dtmComponentDefinition); setDirty();" class="inside-table" required ng-model="dtmComponentDefinition.usage" >
-                                                                                <md-option ng-repeat="usage in config.usages" ng-value="usage">
+                                                                                <md-option ng-repeat="usage in config.usages track by $index" ng-value="usage">
                                                                                     {{usage}}
                                                                                 </md-option>
                                                                             </md-select>
@@ -397,7 +397,7 @@
                                                                         <td class="col-md-1" align="center">
                                                                             <div ng-if="dtmComponentDefinition.usage ==='C'">
                                                                                 <md-select placeholder="Select Usage" class="inside-table" required ng-change="setDirty()" ng-model="dtmComponentDefinition.dtmPredicate.trueUsage" >
-                                                                                    <md-option ng-repeat="usage in config.usages" ng-value="usage">
+                                                                                    <md-option ng-repeat="usage in config.usages track by $index" ng-value="usage">
                                                                                         {{usage}}
                                                                                     </md-option>
                                                                                 </md-select>
@@ -407,7 +407,7 @@
                                                                         <td class="col-md-1" align="center">
                                                                             <div ng-if="dtmComponentDefinition.usage ==='C'">
                                                                                 <md-select placeholder="Select Usage" class="inside-table" required ng-change="setDirty()" ng-model="dtmComponentDefinition.dtmPredicate.falseUsage" >
-                                                                                    <md-option ng-repeat="usage in config.usages" ng-value="usage">
+                                                                                    <md-option ng-repeat="usage in config.usages track by $index" ng-value="usage">
                                                                                         {{usage}}
                                                                                     </md-option>
                                                                                 </md-select>
@@ -437,7 +437,7 @@
                                                                                             <tr>
                                                                                                 <td class="col-md-4">
                                                                                                     <md-select placeholder="Select Target" ng-change="setDirty()" ng-model="dtmComponentDefinition.dtmPredicate.target" >
-                                                                                                        <md-option ng-repeat="def in datatype.dtmConstraints.dtmComponentDefinitions" ng-value="def">
+                                                                                                        <md-option ng-repeat="def in datatype.dtmConstraints.dtmComponentDefinitions track by $index" ng-value="def">
                                                                                                             {{def.name}}({{def.description}})
                                                                                                         </md-option>
                                                                                                     </md-select>
@@ -542,7 +542,7 @@
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            <tr ng-repeat="c in displayedCS">
+                                                            <tr ng-repeat="c in displayedCS track by $index">
                                                                 <td class="col-md-1">
                                                                     {{c.constraintId}}
                                                                 </td>
@@ -595,7 +595,7 @@
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            <tr ng-repeat="p in displayedCP">
+                                                            <tr ng-repeat="p in displayedCP track by $index">
                                                                 <td class="col-md-3">
                                                                     <span ng-bind="displayLocationForDatatype(datatype, p.constraintTarget)"/>
                                                                 </td>
@@ -688,7 +688,7 @@
                                                                 <md-select ng-model="version2"
                                                                         ng-change="setVersion2(version2)"
                                                                         no-dirty-check>
-                                                                    <md-option ng-repeat="vr in versions" value='{{vr}}'
+                                                                    <md-option ng-repeat="vr in versions track by $index" value='{{vr}}'
                                                                             ng-selected="vr===version2"> {{vr}}
                                                                     </md-option>
                                                                 </md-select>
@@ -696,7 +696,7 @@
                                                             <td class="col-md-2">
                                                                 <md-select ng-model="scope2"
                                                                         ng-change="setScope2(scope2)" no-dirty-check>
-                                                                    <md-option ng-repeat="scope in scopes"
+                                                                    <md-option ng-repeat="scope in scopes track by $index"
                                                                             value='{{scope.name}}'
                                                                             ng-selected="scope.name===scope2">
                                                                         {{scope.alias}}
@@ -708,7 +708,7 @@
                                                                         ng-model="ig2" ng-change="setIG2(ig2)"
                                                                         ng-disabled="!scope2 || !version2 || igDisabled2"
                                                                         no-dirty-check>
-                                                                    <md-option ng-repeat="ig in igList2 track by ig.id" ng-value="ig">{{ig.title}}</md-option>
+                                                                    <md-option ng-repeat="ig in igList2 track by $index" ng-value="ig">{{ig.title}}</md-option>
                                                                 </md-select>
 
                                                             </td>
@@ -716,7 +716,7 @@
                                                                 <md-select ng-model="cmp.datatypeId" placeholder="Select Data Type"
                                                                         ng-change="setDatatype2(cmp.datatypeId)"
                                                                         ng-disabled="!ig2" no-dirty-check>
-                                                                    <md-option ng-repeat="datatype in datatypes2"
+                                                                    <md-option ng-repeat="datatype in datatypes2 track by $index"
                                                                             ng-disabled="disableDT(datatype,datatype1)"
                                                                             ng-hide="hideDT(datatype,datatype1)"
                                                                             value='{{$index}}'> {{getLabel(datatype)}}
@@ -954,7 +954,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr ng-repeat="inf in availbleVersionOfDt" ng-if="inf.publicationDate">
+                                            <tr ng-repeat="inf in availbleVersionOfDt track by $index" ng-if="inf.publicationDate">
                                                 <td class="col-md-3">
                                                     <input ng-if="inf.id !==datatype.parentVersion" type="radio" name="inforadio" value="availbleVersionOfDt" ng-model="inf.checked" ng-click="compareWithCurrent(inf.id);" />
 
@@ -1052,7 +1052,7 @@
                 </span>
                 <span ng-show="editableComp===node.id">
               <select ng-model="position" ng-change="selectPos()" style="width:15%" class="form-control input-sm">
-                  <option ng-repeat="child in datatype.components track by child.id"
+                  <option ng-repeat="child in datatype.components track by $index"
                           ng-selected="node.position===child.position">
                       {{child.position}}
               </select>
@@ -1084,7 +1084,7 @@
                                         ng-class="{ 'has-error has-feedback' : {{formName}}.usage.$invalid}"
                                         required ng-model="node.usage" >
 
-                                 <md-option ng-repeat="usage in config.usages" ng-value="usage">
+                                 <md-option ng-repeat="usage in config.usages track by $index" ng-value="usage">
                                      {{usage}}
 
                                  </md-option>
@@ -1096,7 +1096,7 @@
 
 
                 <span ng-if="node.usage === 'C' && countPredicate(node.position) !== 0" >
-                <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
+                <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true track by $index">
                     <span class="badge label-white">
                         <span>C({{p.trueUsage}}/{{p.falseUsage}})</span>
                         <span ng-click="managePredicate(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
@@ -1183,7 +1183,7 @@
                             <md-option ng-repeat="dt in results" ng-value="dt">
                                 <display-label of="datatypesMap[dt.id]" desc="false"></display-label>
                             </md-option>
-                            <md-option ng-click="otherDT(node)" value="none"> Change Data Type root</md-option>
+                            <md-option ng-click="otherDT(node)" ng-value="node.datatype"> Change Data Type root</md-option>
                         </md-select>
 
                     </div>
@@ -1200,7 +1200,7 @@
         <td ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], datatype, node.position)}"
             ng-show="viewSettings.isVisibleColumn('valueSet')&&igdocument" style="text-align:center">
             <div ng-show="isAvailableForValueSet(datatypesMap[node.datatype.id], datatype, node.position)">
-                <div ng-repeat="binding in findingBindings(node.path)">
+                <div ng-repeat="binding in findingBindings(node.path)  track by $index">
                     <span class="badge label-white">
                         <span ng-class="{'label-component-icon' : binding.isMain, 'label-sub-component-icon' : !binding.isMain}"><i
                                 class="fa fa-circle fa-fw"/></span>
@@ -1250,7 +1250,7 @@
                 </div>
 
                 <div ng-show="countPredicate(node.position) !== 0 && node.usage === 'C'">
-                    <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
+                    <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true track by $index">
                         <span title="{{getPredicateAsString(p)}}" class="badge label-white">
                             <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span>
                             <span ng-click="managePredicate(node)">{{getConstraintAsTruncatedString(p, 15)}}</span>
@@ -1278,7 +1278,7 @@
             </div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
-            <div ng-repeat="comment in findingComments(node.path)">
+            <div ng-repeat="comment in findingComments(node.path) track by $index">
                 <span class="badge label-white">
                     <span ng-class="{'label-component-icon' : comment.isMain, 'label-sub-component-icon' : !comment.isMain}"><i
                             class="fa fa-circle fa-fw"/></span>
@@ -1315,7 +1315,7 @@
                 </span>
 
                 <div ng-show="node.usage === 'C' && countPredicate(node.position) !== 0">
-                    <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
+                    <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true track by $index">
                         C({{::p.trueUsage}}/{{p.falseUsage}})
                     </p>
                 </div>
@@ -1338,7 +1338,7 @@
         <td ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], datatype, node.position)}"
             ng-show="viewSettings.isVisibleColumn('valueSet')&&igdocument" style="text-align:center">
             <div ng-show="isAvailableForValueSet(datatypesMap[node.datatype.id], datatype, node.position)">
-                <div ng-repeat="binding in findingBindings(node.path)">
+                <div ng-repeat="binding in findingBindings(node.path) track by $index">
                     <span class="badge label-white">
                         <span ng-class="{'label-component-icon' : binding.isMain, 'label-sub-component-icon' : !binding.isMain}"><i
                                 class="fa fa-circle fa-fw"/></span>
@@ -1365,7 +1365,7 @@
             ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
                 <div ng-show="countPredicate(node.position) !== 0 && node.usage === 'C'">
-                    <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
+                    <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true track by $index">
                         <span title="{{getPredicateAsString(p)}}" class="badge label-white">
                             <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span>
                             <span>{{getConstraintAsTruncatedString(p, 15)}}</span>
@@ -1381,7 +1381,7 @@
             </a>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
-            <div ng-repeat="comment in findingComments(node.path)">
+            <div ng-repeat="comment in findingComments(node.path) track by $index">
                 <span class="badge label-white">
                     <span ng-class="{'label-component-icon' : comment.isMain, 'label-sub-component-icon' : !comment.isMain}"><i
                             class="fa fa-circle fa-fw"/></span>
@@ -1412,7 +1412,7 @@
             </span>
 
             <div ng-show="node.usage === 'C' && countPredicateOnSubComponent(node.position, node.id) !== 0">
-                <p ng-repeat="p in parentsMap[node.id].predicates   | filter:{constraintTarget:node.position + '[1]'}:true">
+                <p ng-repeat="p in parentsMap[node.id].predicates   | filter:{constraintTarget:node.position + '[1]'}:true track by $index">
                     C({{::p.trueUsage}}/{{::p.falseUsage}})
                 </p>
             </div>
@@ -1435,7 +1435,7 @@
         <td ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], parentsMap[node.id], node.position)}"
             ng-show="viewSettings.isVisibleColumn('valueSet')&&igdocument" style="text-align:center">
             <div ng-show="isAvailableForValueSet(datatypesMap[node.datatype.id], parentsMap[node.id], node.position)">
-                <div ng-repeat="binding in findingBindings(node.path, parentsMap[node.id])">
+                <div ng-repeat="binding in findingBindings(node.path, parentsMap[node.id]) track by $index">
                     <span class="badge label-white">
                         <span ng-class="{'label-component-icon' : binding.isMain, 'label-sub-component-icon' : !binding.isMain}"><i
                                 class="fa fa-circle fa-fw"/></span>
@@ -1481,7 +1481,7 @@
             </div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('predicate')" ng-class="{'emptyCol':node.usage !== 'C'}">
-            <span ng-repeat="p in parentsMap[node.id].predicates|filter:{constraintTarget:node.position + '[1]'}:true">
+            <span ng-repeat="p in parentsMap[node.id].predicates|filter:{constraintTarget:node.position + '[1]'}:true track by $index">
                 <span class="label-sub-component-icon"><i class="fa fa-circle fa-fw"/></span>
                 <span title="{{getPredicateAsString(p)}}">{{getConstraintAsTruncatedString(p, 15)}}</span>
             </span>
@@ -1494,7 +1494,7 @@
             </div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
-            <div ng-repeat="comment in findingComments(node.path, parentsMap[node.id])">
+            <div ng-repeat="comment in findingComments(node.path, parentsMap[node.id]) track by $index">
                 <span class="badge label-white">
                     <span ng-class="{'label-component-icon' : comment.isMain, 'label-sub-component-icon' : !comment.isMain}"><i
                             class="fa fa-circle fa-fw"/></span>
@@ -1528,7 +1528,7 @@
             </span>
 
             <div ng-show="node.usage === 'C' && countPredicateOnSubComponent(node.position, node.id) !== 0">
-                <p ng-repeat="p in parentsMap[node.id].predicates     | filter:{constraintTarget:node.position + '[1]'}:true">
+                <p ng-repeat="p in parentsMap[node.id].predicates     | filter:{constraintTarget:node.position + '[1]'}:true track by $index">
                     C({{::p.trueUsage}}/{{::p.falseUsage}})
                 </p>
             </div>
@@ -1551,7 +1551,7 @@
         <td ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], parentsMap[node.id], node.position)}"
             ng-show="viewSettings.isVisibleColumn('valueSet')&&igdocument" style="text-align:center">
             <div ng-show="isAvailableForValueSet(datatypesMap[node.datatype.id], parentsMap[node.id], node.position)">
-                <div ng-repeat="binding in findingBindings(node.path, parentsMap[node.id])">
+                <div ng-repeat="binding in findingBindings(node.path, parentsMap[node.id]) track by $index">
                     <span class="badge label-white">
                         <span ng-class="{'label-component-icon' : binding.isMain, 'label-sub-component-icon' : !binding.isMain}"><i
                                 class="fa fa-circle fa-fw"/></span>
@@ -1580,7 +1580,7 @@
             </div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('predicate')" ng-class="{'emptyCol':node.usage !== 'C'}">
-            <span ng-repeat="p in parentsMap[node.id].predicates|filter:{constraintTarget:node.position + '[1]'}:true">
+            <span ng-repeat="p in parentsMap[node.id].predicates|filter:{constraintTarget:node.position + '[1]'}:true track by $index">
                 <span class="label-sub-component-icon"><i class="fa fa-circle fa-fw"/></span>
                 <span title="{{getPredicateAsString(p)}}">{{getConstraintAsTruncatedString(p, 15)}}</span>
             </span>
@@ -1592,7 +1592,7 @@
             </a>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
-            <div ng-repeat="comment in findingComments(node.path, parentsMap[node.id])">
+            <div ng-repeat="comment in findingComments(node.path, parentsMap[node.id]) track by $index">
                 <span class="badge label-white">
                     <span ng-class="{'label-component-icon' : comment.isMain, 'label-sub-component-icon' : !comment.isMain}"><i
                             class="fa fa-circle fa-fw"/></span>
@@ -1665,7 +1665,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="row in tmpResults  track by row.id  | orderBy:'row.ext'"
+                            <tr ng-repeat="row in tmpResults | orderBy:'row.ext' track by $index"
                                 ng-class="{'active':selection.selected != null && selection.selected === row.id}">
                                 <td st-ratio="100">{{$index + 1}}
                                     <input type="radio" ng-model="selection.selected" ng-value="row.id"
@@ -1737,7 +1737,7 @@
                     <div class="controls">
                         <select ng-model="position" ng-change="selectPos()" style="width:30%"
                                 class="form-control input-sm" required>
-                            <option ng-repeat="component in datatype.components track by component.id">
+                            <option ng-repeat="component in datatype.components track by $index">
                                 {{component.position}}
                             <option value="{{datatype.components.length+1}}">{{datatype.components.length+1}}
                         </select>
@@ -1804,7 +1804,7 @@
                     <div ng-show="searchDT.name  && !selectedDT()">
                         <li style="width:30%" class="form-control col-md-4 col-md-offset-6"
                             ng-class="{'active':isDTActive(datatype.id)}" ng-click="selectDT(datatype)"
-                            ng-repeat="datatype in datatypes | filter:searchDT">
+                            ng-repeat="datatype in datatypes | filter:searchDT track by $index">
                             {{::datatype.name}} <span ng-show="datatype.ext">_{{::datatype.ext}}</span>
                         </li>
                     </div>
@@ -1827,7 +1827,7 @@
                     <div ng-show="searchVS.name && !selectedVS()">
                         <li style="width:30%" class="form-control col-md-4 col-md-offset-6"
                             ng-class="{'active':isDTActive(valueSet.id)}" ng-click="selectVS(valueSet)"
-                            ng-repeat="valueSet in valueSets | filter:searchVS">
+                            ng-repeat="valueSet in valueSets | filter:searchVS track by $index">
                             {{::valueSet.name}}
                         </li>
                     </div>
@@ -1935,7 +1935,7 @@
                     <td class="col-md-3">
                         <select ng-show='selectedSegmentForBinding != null' ng-model='selectedFieldForBinding'
                                 class="form-control" ng-change="selectField()">
-                            <option ng-repeat="f in selectedSegmentForBinding.fields | orderBy:'+position'"
+                            <option ng-repeat="f in selectedSegmentForBinding.fields | orderBy:'+position' track by $index"
                                     value="{{f}}"
                                     ng-disabled="datatype.name!==datatypesMap[f.datatype.id].name ||checkDuplicated(getSegmentLabel(selectedSegmentForBinding) + '-' + f.position)">
                                 {{::f.position}}. {{::f.name}}
@@ -1946,7 +1946,7 @@
                         {{::datatypesMap[currentField.datatype.id].label}}
                     </td>
                     <td class="col-md-3">
-                            <span ng-repeat="table in currentField.tables">
+                            <span ng-repeat="table in currentField.tables track by $index">
                                 {{::getTableLabel(table)}}
                             </span>
 
@@ -1978,7 +1978,7 @@
                     <td class="col-md-3">
                         <select ng-show='selectedDatatypeForBinding != null' ng-model='selectedComponentForBinding'
                                 class="form-control" ng-change="selectComp()">
-                            <option ng-repeat="c in selectedDatatypeForBinding.components | orderBy:'+position'"
+                            <option ng-repeat="c in selectedDatatypeForBinding.components | orderBy:'+position' track by $index"
                                     value="{{c}}"
                                     ng-disabled="datatype.name!==datatypesMap[c.datatype.id].name ||checkDuplicated(getDatatypeLabel(selectedDatatypeForBinding) + '.' + c.position)">
                                 {{::c.position}}. {{::c.name}}
@@ -1990,7 +1990,7 @@
                         {{datatypesMap[currentComp.datatype.id].label}}
                     </td>
                     <td class="col-md-3">
-                            <span ng-repeat="table in currentComp.tables">
+                            <span ng-repeat="table in currentComp.tables track by $index">
                                 {{getTableLabel(table.id)}}
                             </span>
                     </td>
@@ -2203,7 +2203,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="b in displayedSelectedValueSetBindings">
+                                    <tr ng-repeat="b in displayedSelectedValueSetBindings track by $index">
                                         <td class="col-md-1">
                                             <span class="badge"
                                                   ng-class="{'label-HL7' : getScopeLabel(tablesMap[b.tableId])==='HL7', 'label-USE': getScopeLabel(tablesMap[b.tableId])==='USR','label-MASTER':getScopeLabel(tablesMap[b.tableId])==='MAS','label-PRL':getScopeLabel(tablesMap[b.tableId])==='PRL','label-PVS':getScopeLabel(tablesMap[b.tableId])==='PVS'}">{{getScopeLabel(tablesMap[b.tableId])}} {{hasSameVersion(tablesMap[b.tableId])}}</span>
@@ -2224,7 +2224,7 @@
                                         </td>
                                         <td class="col-md-2">
                                             <md-select ng-show="listOfBindingLocations" ng-model='b.bindingLocation' ng-change="setChanged()">
-                                                <md-option ng-repeat="bl in listOfBindingLocations" ng-value="bl">
+                                                <md-option ng-repeat="bl in listOfBindingLocations track by $index" ng-value="bl">
                                                     {{bl}}
                                                 </md-option>
                                             </md-select>
@@ -2250,7 +2250,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="b in displayedSelectedValueSetBindings">
+                                    <tr ng-repeat="b in displayedSelectedValueSetBindings track by $index">
                                         <td class="col-md-11">
                                             {{::datatype.name}}.{{::currentNode.path}} ({{::currentNode.name}})
                                             SHALL contain the constant value '
@@ -2308,7 +2308,7 @@
                                             </thead>
 
                                             <tbody>
-                                            <tr ng-repeat="v in displayCollection">
+                                            <tr ng-repeat="v in displayCollection track by $index">
                                                 <td class="col-md-1">
                                                     <span class="badge" ng-class="{'label-HL7' : getScopeLabel(v)==='HL7', 'label-USE': getScopeLabel(v)==='USR','label-MASTER':getScopeLabel(v)==='MAS','label-PRL':getScopeLabel(v)==='PRL','label-PVS':getScopeLabel(v)==='PVS'}">{{getScopeLabel(v)}} {{hasSameVersion(v)}}</span>
                                                 </td>
@@ -2361,7 +2361,7 @@
                                                 </thead>
 
                                                 <tbody>
-                                                <tr ng-repeat="v in displayTables">
+                                                <tr ng-repeat="v in displayTables track by $index">
                                                     <td class="col-md-1">
                                                         <span class="badge"
                                                               ng-class="{'label-HL7' : getScopeLabel(v)==='HL7', 'label-USE': getScopeLabel(v)==='USR','label-MASTER':getScopeLabel(v)==='MAS','label-PRL':getScopeLabel(v)==='PRL','label-PVS':getScopeLabel(v)==='PVS'}">{{getScopeLabel(v)}} {{hasSameVersion(v)}}</span>
@@ -2452,7 +2452,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr ng-repeat="c in displayCodes">
+                                                <tr ng-repeat="c in displayCodes track by $index">
                                                     <td class="col-md-3">
                                                         <span>{{c.value}}</span>
                                                     </td>

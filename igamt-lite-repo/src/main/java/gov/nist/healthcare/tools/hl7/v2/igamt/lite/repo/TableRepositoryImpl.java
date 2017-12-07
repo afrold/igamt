@@ -14,6 +14,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -147,15 +148,23 @@ public class TableRepositoryImpl implements TableOperations {
   @Override
   public List<Table> findByBindingIdentifierAndScope(String bindingIdentifier, String scope) {
     Criteria where = Criteria.where("bindingIdentifier").is(bindingIdentifier)
+        .regex(Pattern.compile(bindingIdentifier, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE))
+
         .andOperator(Criteria.where("scope").is(scope.toString()));
     Query qry = Query.query(where);
+    qry.fields().exclude("codes");
+    qry.fields().exclude("contentDefinition");
+    qry.fields().exclude("defPreText");
+    qry.fields().exclude("defPostText");
+    qry.fields().exclude("comment");
     List<Table> tables = mongo.find(qry, Table.class);
     return tables;
   }
 
   @Override
   public Table findOneByScopeAndBindingIdentifier(String scope, String bindingIdentifier) {
-    Criteria where = Criteria.where("bindingIdentifier").is(bindingIdentifier)
+    Criteria where = Criteria.where("bindingIdentifier")
+        .regex(Pattern.compile(bindingIdentifier, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE))
         .andOperator(Criteria.where("scope").is(scope));
     Query qry = Query.query(where);
     Table table = mongo.findOne(qry, Table.class);
@@ -228,16 +237,58 @@ public class TableRepositoryImpl implements TableOperations {
 
   }
 
-  // Query set4Brevis(Query qry) {
-  // qry.fields().include("_id");
-  // qry.fields().include("name");
-  // qry.fields().include("label");
-  // qry.fields().include("status");
-  // qry.fields().include("description");
-  // qry.fields().include("date");
-  // qry.fields().include("version");
-  // qry.fields().include("ext");
-  // return qry;
-  // }
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableOperations#findShortByScope(java.lang.
+   * String)
+   */
+  @Override
+  public List<Table> findShortByScope(String scope) {
+
+    Criteria where = Criteria.where("scope").is(scope);
+    Query qry = Query.query(where);
+    qry.fields().exclude("codes");
+    qry.fields().exclude("contentDefinition");
+    qry.fields().exclude("defPreText");
+    qry.fields().exclude("defPostText");
+    qry.fields().exclude("comment");
+    List<Table> tables = mongo.find(qry, Table.class);
+    return tables;
+  }
+
+  @Override
+  public Table findShortById(String id) {
+
+    Criteria where = Criteria.where("id").is(id);
+    Query qry = Query.query(where);
+    qry.fields().exclude("codes");
+    Table table = mongo.findOne(qry, Table.class);
+    return table;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableOperations#
+   * findByScopeAndVersionAndBindingIdentifier(java.lang.String, java.lang.String, java.lang.String)
+   */
+  @Override
+  public List<Table> findByScopeAndVersionAndBindingIdentifier(String scope, String version,
+      String bindingIdentifier) {
+    Criteria where = Criteria.where("bindingIdentifier")
+        .regex(Pattern.compile(bindingIdentifier, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE))
+        .andOperator(Criteria.where("scope").is(scope.toString()),
+            Criteria.where("hl7Version").is(version));
+    Query qry = Query.query(where);
+    qry.fields().exclude("codes");
+    qry.fields().exclude("contentDefinition");
+    qry.fields().exclude("defPreText");
+    qry.fields().exclude("defPostText");
+    qry.fields().exclude("comment");
+
+    return mongo.find(qry, Table.class);
+  }
 
 }

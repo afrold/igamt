@@ -4,7 +4,7 @@
 angular.module('igl').controller('otherDTCtrl', function($scope, $mdDialog, datatypes, field, $rootScope, SegmentService, blockUI) {
 
   $scope.dtChanged = false;
-  $scope.field = field;
+  $scope.field = angular.copy(field);
   $scope.searchText="";
   $scope.newDt = null;
   var oldDt = angular.copy(field.datatype);

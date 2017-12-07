@@ -4,6 +4,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SegmentSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import org.apache.commons.lang3.StringUtils;
@@ -56,51 +59,67 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
         this.isCompositeProfile = isCompositeProfile;
     }
 
-    @Override public Element serializeElement() {
-        if (this.segmentRefOrGroup instanceof SegmentRef) {
-            return this.serializeSegmentRefDisplay((SegmentRef) this.segmentRefOrGroup, 0);
-        } else if (this.segmentRefOrGroup instanceof Group) {
-            return this.serializeGroupDisplay((Group) this.segmentRefOrGroup, 0);
+    @Override public Element serializeElement() throws SerializationException {
+        try {
+            if (this.segmentRefOrGroup instanceof SegmentRef) {
+                return this.serializeSegmentRefDisplay((SegmentRef) this.segmentRefOrGroup, 0);
+            } else if (this.segmentRefOrGroup instanceof Group) {
+                return this.serializeGroupDisplay((Group) this.segmentRefOrGroup, 0);
+            }
+        } catch (Exception e){
+            String location = "";
+            if(this.segmentRefOrGroup != null){
+                if (this.segmentRefOrGroup instanceof SegmentRef && ((SegmentRef) this.segmentRefOrGroup).getRef() != null) {
+                    throw new SegmentSerializationException(e,((SegmentRef) this.segmentRefOrGroup).getRef().getLabel());
+                } else if (this.segmentRefOrGroup instanceof Group) {
+                    throw new GroupSerializationException(e,((Group)this.segmentRefOrGroup).getName());
+                }
+            }
         }
         return null;
     }
 
-    private Element serializeGroupDisplay(Group group, int depth) {
-        Element elementGroup = createGroupElement();
-        Element elementGroupBegin = createSegmentElement();
-        elementGroupBegin.addAttribute(new Attribute("IdGpe", group.getId()));
-        elementGroupBegin.addAttribute(new Attribute("Name", group.getName()));
-        elementGroupBegin.addAttribute(new Attribute("Description", "BEGIN " + group.getName() + " GROUP"));
-        elementGroupBegin.addAttribute(new Attribute("Usage", String.valueOf(group.getUsage())));
-        elementGroupBegin.addAttribute(new Attribute("Min", group.getMin() + ""));
-        elementGroupBegin.addAttribute(new Attribute("Max", group.getMax()));
-        elementGroupBegin.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4 * depth) + "["));
-        if(this.getComments()!=null) {
-            elementGroupBegin.addAttribute(new Attribute("Comment", this.getComments()));
-        }
-        elementGroupBegin.addAttribute(new Attribute("Position", group.getPosition().toString()));
-        elementGroup.appendChild(elementGroupBegin);
-
-        for (SerializableSegmentRefOrGroup serializableSegmentRefOrGroup : this.serializableSegmentRefOrGroups) {
-            elementGroup.appendChild(serializableSegmentRefOrGroup.serializeElement());
-        }
-        Element elementGroupEnd = createSegmentElement();
-        elementGroupEnd.addAttribute(new Attribute("IdGpe", group.getId()));
-        elementGroupEnd.addAttribute(new Attribute("Name", "END " + group.getName() + " GROUP"));
-        elementGroupEnd.addAttribute(new Attribute("Description", "END " + group.getName() + " GROUP"));
-        elementGroupEnd.addAttribute(new Attribute("Usage", group.getUsage().value()));
-        elementGroupEnd.addAttribute(new Attribute("Min", group.getMin() + ""));
-        elementGroupEnd.addAttribute(new Attribute("Max", group.getMax()));
-        elementGroupEnd.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4 * depth) + "]"));
-        elementGroupEnd.addAttribute(new Attribute("Depth", String.valueOf(depth)));
-        elementGroupEnd.addAttribute(new Attribute("Position", group.getPosition().toString()));
-        elementGroup.appendChild(elementGroupEnd);
-        if(groupConstraintList!=null&&!groupConstraintList.isEmpty()){
-            for(SerializableConstraint serializableConstraint : groupConstraintList){
-                elementGroup.appendChild(serializableConstraint.serializeElement());
+    private Element serializeGroupDisplay(Group group, int depth)
+        throws SerializationException {
+        try {
+            Element elementGroup = createGroupElement();
+            Element elementGroupBegin = createSegmentElement();
+            elementGroupBegin.addAttribute(new Attribute("IdGpe", group.getId()));
+            elementGroupBegin.addAttribute(new Attribute("Name", group.getName()));
+            elementGroupBegin.addAttribute(new Attribute("Description", "BEGIN " + group.getName() + " GROUP"));
+            elementGroupBegin.addAttribute(new Attribute("Usage", String.valueOf(group.getUsage())));
+            elementGroupBegin.addAttribute(new Attribute("Min", group.getMin() + ""));
+            elementGroupBegin.addAttribute(new Attribute("Max", group.getMax()));
+            elementGroupBegin.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4 * depth) + "["));
+            if (this.getComments() != null) {
+                elementGroupBegin.addAttribute(new Attribute("Comment", this.getComments()));
             }
+            elementGroupBegin.addAttribute(new Attribute("Position", group.getPosition().toString()));
+            elementGroup.appendChild(elementGroupBegin);
+
+            for (SerializableSegmentRefOrGroup serializableSegmentRefOrGroup : this.serializableSegmentRefOrGroups) {
+                elementGroup.appendChild(serializableSegmentRefOrGroup.serializeElement());
+            }
+            Element elementGroupEnd = createSegmentElement();
+            elementGroupEnd.addAttribute(new Attribute("IdGpe", group.getId()));
+            elementGroupEnd.addAttribute(new Attribute("Name", "END " + group.getName() + " GROUP"));
+            elementGroupEnd.addAttribute(new Attribute("Description", "END " + group.getName() + " GROUP"));
+            elementGroupEnd.addAttribute(new Attribute("Usage", group.getUsage().value()));
+            elementGroupEnd.addAttribute(new Attribute("Min", group.getMin() + ""));
+            elementGroupEnd.addAttribute(new Attribute("Max", group.getMax()));
+            elementGroupEnd.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4 * depth) + "]"));
+            elementGroupEnd.addAttribute(new Attribute("Depth", String.valueOf(depth)));
+            elementGroupEnd.addAttribute(new Attribute("Position", group.getPosition().toString()));
+            elementGroup.appendChild(elementGroupEnd);
+            if (groupConstraintList != null && !groupConstraintList.isEmpty()) {
+                for (SerializableConstraint serializableConstraint : groupConstraintList) {
+                    elementGroup.appendChild(serializableConstraint.serializeElement());
+                }
+            }
+            return elementGroup;
+        } catch (Exception e){
+            throw new GroupSerializationException(e,group.getName());
         }
-        return elementGroup;
     }
 
     private Element createGroupElement() {

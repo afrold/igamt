@@ -33,6 +33,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import org.apache.commons.codec.binary.Base64;
@@ -45,6 +46,7 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.mongodb.gridfs.GridFSDBFile;
@@ -79,7 +81,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 	private FileStorageService fileStorageService;
 
 	@Autowired
-	private SerializationService serializationService;
+	private ApplicationContext applicationContext;
 
 	public File serializeProfileToFile(Profile profile) throws UnsupportedEncodingException {
 		File out;
@@ -130,9 +132,10 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 	}
 
 	@Override
-	public String serializeIGDocumentToXML(IGDocument igdoc) {
-			String xml = serializationService.serializeIGDocument(igdoc, SerializationLayout.IGDOCUMENT, ExportConfig.getBasicExportConfig(false)).toXML();
-			return xml;
+	public String serializeIGDocumentToXML(IGDocument igdoc) throws SerializationException {
+		SerializationService serializationService = new SerializationServiceImpl(applicationContext);
+		String xml = serializationService.serializeIGDocument(igdoc, SerializationLayout.IGDOCUMENT, ExportConfig.getBasicExportConfig(false)).toXML();
+		return xml;
 	}
 
 	@Override

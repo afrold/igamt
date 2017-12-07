@@ -19,13 +19,14 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 public interface IGDocumentExportService {
 
-  InputStream exportAsPdf(IGDocument d) throws IOException;
+  InputStream exportAsPdf(IGDocument d) throws IOException, SerializationException;
 
   InputStream exportAsValidationForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException;
   
@@ -41,7 +42,7 @@ public interface IGDocumentExportService {
 
   InputStream exportAsXlsx(IGDocument d) throws IOException;
 
-  InputStream exportAsXmlDisplay(IGDocument d) throws IOException;
+  InputStream exportAsXmlDisplay(IGDocument d) throws IOException, SerializationException;
 
   InputStream exportAsXmlSegment(SegmentLink sl) throws IOException;
 
@@ -59,7 +60,7 @@ public interface IGDocumentExportService {
 
   InputStream exportAsDocxTable(TableLink tl) throws IOException;
 
-  InputStream exportAsHtml(IGDocument d) throws IOException;
+  InputStream exportAsHtml(IGDocument d) throws IOException, SerializationException;
   
   InputStream exportAsHtmlSegment(SegmentLink sl) throws IOException;
 

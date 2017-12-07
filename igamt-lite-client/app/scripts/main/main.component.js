@@ -4,52 +4,8 @@
 
 
 angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc', 'VersionAndUseService', '$q', 'DatatypeLibrarySvc', 'CloneDeleteSvc', 'TableService', 'TableLibrarySvc', '$mdDialog','PcService', 'md5','$mdSidenav','SearchService',function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc, VersionAndUseService, $q, DatatypeLibrarySvc, CloneDeleteSvc, TableService, TableLibrarySvc, $mdDialog,PcService,md5,$mdSidenav,SearchService) {
-  // This line fetches the info from the server if the user is currently
-  // logged in.
-  // If success, the app is updated according to the role.
-
-  //     $(document).keydown(function(e) {
-  //     var nodeName = e.target.nodeName.toLowerCase();
-
-  //     if (e.which === 8) {
-  //         if ((nodeName === 'input' && e.target.type === 'text') ||
-  //             nodeName === 'textarea') {
-  //             // do nothing
-  //         } else {
-  //             e.preventDefault();
-  //         }
-  //     }
-  // });
-  // $mdSidenav('right')
-  //     .toggle()
-  //     .then(function () {
-  //     });
-  $rootScope.fullScreen=false;
-  $rootScope.toggleScreen=function(){
-    $rootScope.fullScreen=!$rootScope.fullScreen;
-  }
 
 
-  // $scope.close = function () {
-  //     // Component lookup should always be available since we are not using `ng-if`
-  //     $mdSidenav('right').close()
-  //         .then(function () {
-  //         });
-  // };
-  // $scope.toggleRight = buildToggler('right');
-  // function buildToggler(navID) {
-  //     return function() {
-  //         // Component lookup should always be available since we are not using `ng-if`
-  //         $mdSidenav(navID)
-  //             .toggle()
-  //             .then(function () {
-  //             });
-  //     };
-  // }
-  //
-  // $scope.isOpenRight = function(){
-  //     return $mdSidenav('right').isOpen();
-  // };
   $rootScope.goNav = function(path){
     $location.url(path);
   };
@@ -61,7 +17,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     var link="//www.gravatar.com/avatar/"+hash+"?s=50&d=retro";
     return link;
 
-  }
+  };
   $rootScope.generateHashDebug=function(string){
     var hash = md5.createHash(string);
     console.log("hash")
@@ -1406,11 +1362,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
 
 
-  $rootScope.filteredSegmentsList = [];
-  $rootScope.filteredTablesList = [];
-  $rootScope.filteredDatatypesList = [];
-  $rootScope.selectedMessage = null;
-  $rootScope.selectedSegment = null;
+
 
   $rootScope.processMessageTree = function(element, parent) {
 
@@ -1419,9 +1371,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
       if (element != undefined && element != null) {
         if (element.type === "message") {
           $rootScope.selectedMessage = element;
-          $rootScope.filteredSegmentsList = [];
-          $rootScope.filteredTablesList = [];
-          $rootScope.filteredDatatypesList = [];
           var m = {};
           m.children = [];
           $rootScope.messageTree = m;
@@ -1475,9 +1424,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             parent = s;
           }
 
-          $rootScope.filteredSegmentsList.push(element);
-          $rootScope.filteredSegmentsList = _.uniq($rootScope.filteredSegmentsList);
-
           angular.forEach(element.fields, function(field) {
             $rootScope.processMessageTree(field, parent);
           });
@@ -1508,14 +1454,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
           f.obj.datatype.label = $rootScope.getLabel(f.obj.datatype.name, f.obj.datatype.ext);
           parent.children.push(f);
 
-          $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
-          $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
-          if (element.tables && element.tables.length > 0) {
-            angular.forEach(element.tables, function(table) {
-              $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
-            });
-          }
-          $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
           $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], f);
         } else if (element.type === "component") {
           var c = {};
@@ -1580,14 +1518,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
           c.obj.datatype.ext = d.ext;
           c.obj.datatype.label = $rootScope.getLabel(c.obj.datatype.name, c.obj.datatype.ext);
           parent.children.push(c);
-          $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
-          $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
-          if (element.tables && element.tables.length > 0) {
-            angular.forEach(element.tables, function(table) {
-              $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
-            });
-          }
-          $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
           $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], c);
         } else if (element.type === "datatype") {
           if (!parent) {
@@ -1613,9 +1543,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
     try {
       if (element.type === "segment") {
-        $rootScope.selectedSegment = element;
-        $rootScope.filteredTablesList = [];
-        $rootScope.filteredDatatypesList = [];
 
         if (!parent) {
           var s = {};
@@ -1635,34 +1562,13 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         f.path = parent.path + "." + element.position + "[1]";
         f.children = [];
         parent.children.push(f);
-        $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
-        $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
-        if (element.tables && element.tables.length > 0) {
-          angular.forEach(element.tables, function(table) {
-            $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
-          });
-          //$rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
-        }
-        $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
-        $rootScope.processSegmentsTree($rootScope.datatypesMap[element.datatype.id], f);
+          $rootScope.processSegmentsTree($rootScope.datatypesMap[element.datatype.id], f);
       } else if (element.type === "component") {
         var c = {};
         c.obj = element;
         c.path = parent.path + "." + element.position + "[1]";
         c.children = [];
         parent.children.push(c);
-        $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
-        $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
-        if (element.tables && element.tables.length > 0) {
-          angular.forEach(element.tables, function(table) {
-            $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
-          });
-          //$rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
-        }
-        $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
-        ////console.log($rootScope.filteredTablesList);
-        ////console.log($rootScope.filteredTablesList);
-
         $rootScope.processSegmentsTree($rootScope.datatypesMap[element.datatype.id], c);
       } else if (element.type === "datatype") {
 
@@ -1684,195 +1590,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     }
   };
 
-  $rootScope.initCoConstraintsTable = function() {
-    if($rootScope.segment){
-      if($rootScope.segment.scope === 'USER'){
-        if($rootScope.segment.name === 'OBX'){
-          if(!$rootScope.segment.coConstraintsTable
-            || !$rootScope.segment.coConstraintsTable.ifColumnDefinition
-            || !$rootScope.segment.coConstraintsTable.thenColumnDefinitionList
-            || $rootScope.segment.coConstraintsTable.thenColumnDefinitionList.length === 0){
-
-            var field2 = null;
-            var field3 = null;
-            var field5 = null;
-
-            angular.forEach($rootScope.segment.fields, function(field) {
-              if(field.position === 2){
-                field2 = field;
-              }else if(field.position === 3){
-                field3 = field;
-              }else if(field.position === 5){
-                field5 = field;
-              }
-            });
-
-            var ifColumnDefinition = {
-              id: new ObjectId().toString(),
-              path: "3",
-              constraintPath : "3[1]",
-              type : "field",
-              constraintType : "value",
-              name : field3.name,
-              usage : field3.usage,
-              dtId : field3.datatype.id,
-              primitive : false,
-              dMReference : false
-            };
-
-            var field2ColumnDefinition = {
-              id: new ObjectId().toString(),
-              path: "2",
-              constraintPath : "2[1]",
-              type : "field",
-              constraintType : "dmr",
-              name : field2.name,
-              usage : field2.usage,
-              dtId : field2.datatype.id,
-              primitive : true,
-              dMReference : true
-            };
-
-            var field5ColumnDefinition = {
-              id: new ObjectId().toString(),
-              path: "5",
-              constraintPath : "5[1]",
-              type : "field",
-              constraintType : "valueset",
-              name : field5.name,
-              usage : field5.usage,
-              dtId : field5.datatype.id,
-              primitive : true,
-              dMReference : false
-            };
-
-            var thenColumnDefinitionList = [];
-            thenColumnDefinitionList.push(field2ColumnDefinition);
-            thenColumnDefinitionList.push(field5ColumnDefinition);
-
-            var userColumnDefinitionList = [];
-            var userColumnDefinition = {
-              id : new ObjectId().toString(),
-              title : "Comments"
-            };
-            userColumnDefinitionList.push(userColumnDefinition);
-
-            $rootScope.segment.coConstraintsTable.ifColumnDefinition = ifColumnDefinition;
-            $rootScope.segment.coConstraintsTable.thenColumnDefinitionList = thenColumnDefinitionList;
-            $rootScope.segment.coConstraintsTable.userColumnDefinitionList = userColumnDefinitionList;
-
-
-            var isAdded = false;
-            if(!$rootScope.segment.coConstraintsTable.ifColumnData) $rootScope.segment.coConstraintsTable.ifColumnData = [];
-            if(!$rootScope.segment.coConstraintsTable.thenMapData) $rootScope.segment.coConstraintsTable.thenMapData = {};
-            if(!$rootScope.segment.coConstraintsTable.userMapData) $rootScope.segment.coConstraintsTable.userMapData = {};
-            if(!$rootScope.segment.coConstraintsTable.rowSize) $rootScope.segment.coConstraintsTable.rowSize = 0;
-
-            if($rootScope.segment.coConstraintsTable.ifColumnDefinition){
-              var newIFData = {};
-              newIFData.valueData = {};
-              newIFData.bindingLocation = null;
-
-              $rootScope.segment.coConstraintsTable.ifColumnData.push(newIFData);
-              isAdded = true;
-            }
-
-            if($rootScope.segment.coConstraintsTable.thenColumnDefinitionList){
-              for (var i = 0, len1 = $rootScope.segment.coConstraintsTable.thenColumnDefinitionList.length; i < len1; i++) {
-                var thenColumnDefinition = $rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i];
-
-                var newTHENData = {};
-                newTHENData.valueData = {};
-                newTHENData.valueSets = [];
-
-                if(!$rootScope.segment.coConstraintsTable.thenMapData[thenColumnDefinition.id]) $rootScope.segment.coConstraintsTable.thenMapData[thenColumnDefinition.id] = [];
-
-                $rootScope.segment.coConstraintsTable.thenMapData[thenColumnDefinition.id].push(newTHENData);
-                isAdded = true;
-              };
-            }
-
-            if($rootScope.segment.coConstraintsTable.userColumnDefinitionList){
-              for (var i = 0, len1 = $rootScope.segment.coConstraintsTable.userColumnDefinitionList.length; i < len1; i++) {
-                var userColumnDefinition = $rootScope.segment.coConstraintsTable.userColumnDefinitionList[i];
-
-                var newUSERData = {};
-                newUSERData.text = "";
-
-                if(!$rootScope.segment.coConstraintsTable.userMapData[userColumnDefinition.id]) $rootScope.segment.coConstraintsTable.userMapData[userColumnDefinition.id] = [];
-
-                $rootScope.segment.coConstraintsTable.userMapData[userColumnDefinition.id].push(newUSERData);
-                isAdded = true;
-              };
-            }
-
-            if(isAdded) {
-              $rootScope.segment.coConstraintsTable.rowSize = $rootScope.segment.coConstraintsTable.rowSize + 1;
-            }
-          }
-        }
-      }
-    }
-
-    if($rootScope.segment && $rootScope.segment.coConstraintsTable && $rootScope.segment.coConstraintsTable.thenColumnDefinitionList){
-      $rootScope.segment.coConstraintsTable.thenColumnDefinitionListForDisplay = [];
-      for (var i in $rootScope.segment.coConstraintsTable.thenColumnDefinitionList) {
-        var def = $rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i];
-
-        if(def.constraintType === 'dmr'){
-          $rootScope.segment.coConstraintsTable.thenColumnDefinitionListForDisplay.push(def);
-          var clone = angular.copy(def);
-          clone.constraintType = 'dmf';
-          $rootScope.segment.coConstraintsTable.thenColumnDefinitionListForDisplay.push(clone);
-        }else {
-          $rootScope.segment.coConstraintsTable.thenColumnDefinitionListForDisplay.push(def);
-        }
-      }
-    }
-  };
-
-  $rootScope.updateDynamicMappingInfo = function() {
-    $rootScope.isDynamicMappingSegment = false;
-    $rootScope.dynamicMappingTable = null;
-
-    var mappingStructure = _.find($rootScope.config.variesMapItems, function(item) {
-      return item.hl7Version == $rootScope.segment.hl7Version && item.segmentName == $rootScope.segment.name;
-    });
-
-    if (mappingStructure) {
-      $rootScope.isDynamicMappingSegment = true;
-      console.log("=========This is DM segment!!=========");
-
-      if ($rootScope.segment.dynamicMappingDefinition && $rootScope.segment.dynamicMappingDefinition.mappingStructure) {
-        console.log("=========Found mapping structure!!=========");
-        mappingStructure = $rootScope.segment.dynamicMappingDefinition.mappingStructure;
-      } else {
-        console.log("=========Not Found mapping structure and Default setting will be used!!=========");
-        $rootScope.segment.dynamicMappingDefinition = {};
-        $rootScope.segment.dynamicMappingDefinition.mappingStructure = mappingStructure;
-      }
-
-      var valueSetBinding = _.find($rootScope.segment.valueSetBindings, function(vsb) {
-        return vsb.location == mappingStructure.referenceLocation;
-      });
-
-      if (valueSetBinding) {
-        TableService.getOne(valueSetBinding.tableId).then(function(tbl) {
-          $rootScope.dynamicMappingTable = tbl;
-        }, function() {
-
-        });
-      }
-    }
-  };
-
   $rootScope.checkedDatatype = null;
-
-  $rootScope.rebuildTreeFromDatatype = function(data) {
-    $rootScope.checkedDatatype = data;
-    $rootScope.filteredTablesList = [];
-    $rootScope.processDatatypeTree(data, null);
-  }
 
   $rootScope.processDatatypeTree = function(element, parent) {
     ////console.log(element);
@@ -1897,15 +1615,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         c.path = parent.path + "." + element.position + "[1]";
         c.children = [];
         parent.children.push(c);
-        $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
-        $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
-        if (element.tables && element.tables != null && element.tables.length > 0) {
-          angular.forEach(element.tables, function(table) {
-            $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
-          });
-          //$rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
-        }
-        $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
+
         $rootScope.processDatatypeTree($rootScope.datatypesMap[element.datatype.id], c);
       }
 
@@ -3969,12 +3679,12 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     });
   };
 
-  $rootScope.isDuplicated = function(obj, context, list) {
-    if (obj == null || obj == undefined || obj[context] == null) return false;
-    return _.find(_.without(list, obj), function(item) {
-      return item[context] == obj[context] && item.id != obj.id;
-    });
-  };
+  // $rootScope.isDuplicated = function(obj, context, list) {
+  //   if (obj == null || obj == undefined || obj[context] == null) return false;
+  //   return _.find(_.without(list, obj), function(item) {
+  //     return item[context] == obj[context] && item.id != obj.id;
+  //   });
+  // };
 
   // $rootScope.validateExtension = function (obj, context, list) {
   // //if (obj == null || obj == undefined) return false;
@@ -3999,7 +3709,98 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     });
   };
 
-  $rootScope.isEmpty = function (value) {
+
+    $rootScope.isDuplicated= function(obj,list) {
+        if (obj === null || obj === undefined) return false;
+
+        return _.find(list, function(item) {
+          if(obj.type ==='datatype'){
+              if($scope.datatypeDuplicated(obj,item)){
+                if($scope.editForm){
+                    $scope.editForm.$invalid=true;
+                    $scope.editForm.$valid=false;
+                    return true;
+                }
+              }
+
+          }else if(obj.type==='table'){
+                  if($scope.tableDuplicated(obj,item)){
+                      if($scope.editForm){
+                          $scope.editForm.$invalid=true;
+                          $scope.editForm.$valid=false;
+                          return true;
+                      }
+                  }
+
+          }else if(obj.type==='segment'){
+
+                  if($scope.segmentDuplicated(obj,item)){
+                      if($scope.editForm){
+                          $scope.editForm.$invalid=true;
+                          $scope.editForm.$valid=false;
+                          return true;
+                      }
+                  }
+
+              }else if(obj.type=='message'){
+
+              if($scope.messageDuplicated(obj,item)){
+                  if($scope.editForm){
+                      $scope.editForm.$invalid=true;
+                      $scope.editForm.$valid=false;
+                      return true;
+                  }
+              }
+
+          }else if(obj.type ==='profilecomponent'){
+
+              if($scope.profileComponentDuplicated(obj,item)){
+                  if($scope.editForm){
+                      $scope.editForm.$invalid=true;
+                      $scope.editForm.$valid=false;
+                      return true;
+                  }
+              }
+
+          }else if(obj.type==='compositeprofilestructure'){
+
+              if($scope.compositeProfileDuplicated(obj,item)){
+                  if($scope.editForm){
+                      $scope.editForm.$invalid=true;
+                      $scope.editForm.$valid=false;
+                      return true;
+                  }
+              }
+
+          };
+
+        });
+    };
+    $scope.datatypeDuplicated = function(obj,item){
+      return obj.id!==item.id&&obj.scope===item.scope&&obj.name ===item.name&&obj.ext===item.ext&&obj.hl7Version===item.hl7Version&&obj.publicationVersion===item.publicationVersion;
+    };
+    $scope.segmentDuplicated = function(obj,item){
+        return obj.id!==item.id&&obj.scope===item.scope&&obj.name ===item.name&& obj.ext===item.ext&& obj.hl7Version===item.hl7Version;
+    };
+    
+    $scope.tableDuplicated  = function (obj ,item ) {
+      return obj.id!==item.id&&obj.bindingIdentifier===item.bindingIdentifier&& obj.scope===item.scope;
+        
+    };
+    $scope.messageDuplicated=function (obj,item) {
+        return obj.id!==item.id&&obj.hl7Version===item.hl7Version&&obj.identifier==item.identifier;
+    };
+    $scope.profileComponentDuplicated=function (obj,item) {
+        return obj.id!==item.id&&obj.name==item.name;
+    };
+    $scope.compositeProfileDuplicated=function (obj,item) {
+        return obj.id!==item.id&&obj.name==item.name&&obj.ext==item.ext;
+
+    };
+
+
+
+    $rootScope.isEmpty = function (value) {
     if(!value) return true;
     if(value === '') return true;
     return false;
@@ -4429,17 +4230,17 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         var valueCodeSystemList = [];
         var labelCodeSystemList = [];
 
-        for (var i = 0; i < $rootScope.table.smallCodes.length; i++) {
-            var value = $rootScope.table.smallCodes[i].value;
-            var label = $rootScope.table.smallCodes[i].label;
-            var codeSystem = $rootScope.table.smallCodes[i].codeSystem;
+        for (var i = 0; i < $rootScope.table.codes.length; i++) {
+            var value = $rootScope.table.codes[i].value;
+            var label = $rootScope.table.codes[i].label;
+            var codeSystem = $rootScope.table.codes[i].codeSystem;
 
             if(!value || value === '') return false;
             if(!label || label === '') return false;
             if(!codeSystem || codeSystem === '') return false;
 
             var valueCodeSystem = value + codeSystem;
-            var labelCodeSystem = label + codeSystem;
+            // var labelCodeSystem = label + codeSystem;
 
 
             if ($.inArray(valueCodeSystem,valueCodeSystemList) === -1) {
@@ -4448,11 +4249,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 return false;
             }
 
-            if ($.inArray(labelCodeSystem,labelCodeSystemList) === -1) {
-                labelCodeSystemList.push(labelCodeSystem);
-            }else {
-                return false;
-            }
+            // if ($.inArray(labelCodeSystem,labelCodeSystemList) === -1) {
+            //     labelCodeSystemList.push(labelCodeSystem);
+            // }else {
+            //     return false;
+            // }
         }
         return true;
     };
@@ -4463,11 +4264,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
 
   $rootScope.displayNullView = function() {
-    //console.log("before");
-    //console.log($rootScope.subview);
     $rootScope.subview = 'Blank.html';
-    //console.log("after");
-    //console.log($rootScope.subview);
   }
 
   $rootScope.Activate = function(param) {
