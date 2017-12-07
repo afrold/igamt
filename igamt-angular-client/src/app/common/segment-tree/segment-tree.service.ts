@@ -16,12 +16,12 @@ export class SegmentTreeNodeService {
     let nodes: TreeNode[] = [];
     let list = segment.fields.sort((x, y) => x.position - y.position);
     for (let field of list) {
-      nodes.push(this.lazyNode(field, null));
+      nodes.push(this.lazyNode(field, null, segment.valueSetBindings));
     }
     return nodes;
   }
 
-  lazyNode(element, parent) {
+  lazyNode(element, parent, bindings) {
     let node: TreeNode = {};
 
     node.label = element.name;
@@ -31,35 +31,43 @@ export class SegmentTreeNodeService {
       path: (parent && parent.data && parent.data.path) ? parent.data.path + '.' + element.position : element.position + ''
     };
 
-    //TODO ADD METADATA TO CHECK IF LEAF
-    node.leaf = !(element.datatype && element.datatype.name != 'ST');
+    this.getDatatypeLibrary().subscribe(datatypeLib => {
+      if(datatypeLib && element.datatype && datatypeLib[element.datatype.id] && datatypeLib[element.datatype.id].numOfChildren && datatypeLib[element.datatype.id].numOfChildren > 0){
+        node.leaf = false;
+      }else {
+        node.leaf = true;
+      }
+    });
+
+    if(bindings){
+      for(let binding of bindings){
+        if(node.data.path === binding.location){
+          node.data.binding = binding;
+        }
+      }
+    }
+  
     node.selectable = true;
     return node;
   }
 
   async getComponentsAsTreeNodes(node) {
+    console.log(node.data.obj.datatype.id);
+
     let nodes: TreeNode[] = [];
 
-    //TODO GET FROM API
-    let dummyDT = {
-      components: [
-        {
-          name: 'Component X',
-          type: 'component',
-          position : 1,
-          confLength: 'NA',
-          datatype: {
-            name: 'ST'
-          }
-        }
-      ]
-    };
+    this.http.get('api/datatype/'+node.data.obj.datatype.id)
+    .map(res => res.json()).subscribe(data => {
+      console.log(data);
+      for (let d of data.components) {
+        nodes.push(this.lazyNode(d, node, data.valueSetBindings));
+      }
 
-    for (let d of dummyDT.components) {
-      nodes.push(this.lazyNode(d, node));
-    }
-
+    });
     return nodes;
+  }
 
+  getDatatypeLibrary() {
+    return this.http.get('api/datatype').map(res => res.json());
   }
 }

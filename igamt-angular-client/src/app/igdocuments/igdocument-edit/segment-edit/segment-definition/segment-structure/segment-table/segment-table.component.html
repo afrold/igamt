@@ -10,49 +10,71 @@
 
     <p-column field="obj" header="Usage" [style]="{'width':'100px'}" >
       <ng-template let-col let-node="rowData" pTemplate="body" >
-        <div>
+        <div *ngIf="node.data.obj.type === 'field'">
           <p-dropdown [options]="usages" [(ngModel)]="node.data.obj.usage" appendTo="body" [style]="{'width' : '100%'}"></p-dropdown>
+        </div>
+        <div *ngIf="node.data.obj.type === 'component'">
+          {{node.data.obj.usage}}
         </div>
       </ng-template>
     </p-column>
 
     <p-column header="Cardinality" [style]="{'width':'100px'}">
       <ng-template let-col let-node="rowData" pTemplate="body">
-        <input [(ngModel)]="node.data.obj.min" type="number" style="width:45%;border-width:0px 0px 1px 0px"/>
-        <input [(ngModel)]="node.data.obj.max" type="text" style="width:45%;border-width:0px 0px 1px 0px"/>
+        <div *ngIf="node.data.obj.type === 'field'">
+          <input [(ngModel)]="node.data.obj.min" type="number" style="width:45%;border-width:0px 0px 1px 0px"/>
+          <input [(ngModel)]="node.data.obj.max" type="text" style="width:45%;border-width:0px 0px 1px 0px"/>
+        </div>
       </ng-template>
     </p-column>
 
     <p-column header="Length" [style]="{'width':'150px'}">
       <ng-template let-col let-node="rowData" pTemplate="body">
-        <input [(ngModel)]="node.data.obj.minLength" type="text" style="width:40%;border-width:0px 0px 1px 0px"/>
-        <input [(ngModel)]="node.data.obj.maxLength" type="text" style="width:40%;border-width:0px 0px 1px 0px"/>
-        <i class="fa fa-times" style="width:20%;"></i>
+          <div *ngIf="node.data.obj.type === 'field'">
+            <div *ngIf="node.data.obj.minLength !== 'NA' && node.leaf">
+              <input [(ngModel)]="node.data.obj.minLength" type="text" style="width:40%;border-width:0px 0px 1px 0px"/>
+              <input [(ngModel)]="node.data.obj.maxLength" type="text" style="width:40%;border-width:0px 0px 1px 0px"/>
+              <i class="fa fa-times" (click)="delLength(node)" style="width:20%;"></i>
+            </div>
+          </div>
+          <div *ngIf="node.data.obj.type === 'component'">
+            [{{node.data.obj.minLength}}..{{node.data.obj.maxLength}}]
+          </div>
       </ng-template>
     </p-column>
 
     <p-column header="Conf. Length" [style]="{'width':'120px'}" >
       <ng-template let-col let-node="rowData" pTemplate="body">
-        <ng-container *ngIf="node.data.obj.confLength != 'NA'">
-          <input  [(ngModel)]="node.data.obj.confLength" type="text" style="width: 80%;border-width:0px 0px 1px 0px"/>
-          <i class="fa fa-times" style="width:20%;"></i>
-        </ng-container>
-        <ng-container *ngIf="node.data.obj.confLength === 'NA'">
-          <ng-container *ngTemplateOutlet="na"></ng-container>
-        </ng-container>
+        <div *ngIf="node.data.obj.type === 'field'">
+          <ng-container *ngIf="node.data.obj.confLength != 'NA' && node.leaf">
+            <input [(ngModel)]="node.data.obj.confLength" type="text" style="width: 80%;border-width:0px 0px 1px 0px"/>
+            <i class="fa fa-times" (click)="delConfLength(node)" style="width:20%;"></i>
+          </ng-container>
+        </div>
+        <div *ngIf="node.data.obj.type === 'component'">
+          {{node.data.obj.confLength}}
+        </div>
       </ng-template>
     </p-column>
 
-    <p-column header="Datatype" [style]="{'width':'100px'}">
+    <p-column header="Datatype" [style]="{'width':'150px'}">
       <ng-template let-col let-node="rowData" pTemplate="body">
-        <display-label [elm]="node.data.obj.datatype"></display-label>
+        <display-label *ngIf="datatypeLib" [elm]="datatypeLib[node.data.obj.datatype.id]"></display-label>
+        <i class="fa fa-pencil" *ngIf="node.data.obj.type === 'field'" (click)="openDTDialog(node)" style="width:20%;"></i>
       </ng-template>
     </p-column>
-    <p-column header="ValueSet / SingleCode">
+    <p-column header="ValueSet / SingleCode" [style]="{'width':'100px'}">
       <ng-template let-col let-node="rowData" pTemplate="body">
+          <div class="ui-g-10">
+              <ng-container *ngIf="node.data.binding">
+                  {{node.data.binding.tableId}}
+              </ng-container>
+          </div>
+          <div class="ui-g-2">
+          </div>
       </ng-template>
     </p-column>
-    <p-column header="Constant Value">
+    <p-column header="Constant Value" [style]="{'width':'100px'}">
       <ng-template let-col let-node="rowData" pTemplate="body">
       </ng-template>
     </p-column>
@@ -60,11 +82,11 @@
       <ng-template let-col let-node="rowData" pTemplate="body">
       </ng-template>
     </p-column>
-    <p-column header="Text Definition">
+    <p-column header="Text Definition" [style]="{'width':'100px'}">
       <ng-template let-col let-node="rowData" pTemplate="body">
       </ng-template>
     </p-column>
-    <p-column header="Comment">
+    <p-column header="Comment" [style]="{'width':'100px'}">
       <ng-template let-col let-node="rowData" pTemplate="body">
       </ng-template>
     </p-column>
@@ -72,7 +94,4 @@
 
 </div>
 
-<ng-template #na>
-  <div class="x-empty" >
-  </div>
-</ng-template>
+<datatype-binding-picker></datatype-binding-picker>
