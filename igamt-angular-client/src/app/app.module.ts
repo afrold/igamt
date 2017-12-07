@@ -25,6 +25,8 @@ import {AppTopBarComponent} from './app.topbar.component';
 import {AppFooterComponent} from './app.footer.component';
 import {InlineProfileComponent} from './app.profile.component';
 import {GeneralConfigurationService} from "./service/general-configuration/general-configuration.service";
+import {SegmentsService} from "./service/segments/segments.service";
+import {ProfileComponentsService} from "./service/profilecomponents/profilecomponents.service";
 
 @NgModule({
   declarations: [
@@ -59,7 +61,9 @@ import {GeneralConfigurationService} from "./service/general-configuration/gener
     GeneralConfigurationService,
     IndexedDbService,
     DatatypesService,
-    ValueSetsService
+    ValueSetsService,
+    SegmentsService,
+    ProfileComponentsService
   ],
   bootstrap: [AppComponent]
 })

@@ -4,8 +4,8 @@ import { Http} from '@angular/http';
 @Injectable()
 export class ValueSetsService {
   constructor(private http: Http) {}
-  public getValueSets(igDocumentId, callback) {
-    this.http.get('api/igdocuments/' + igDocumentId + '/valueSets').map(res => res.json()).subscribe(data => {
+  public getValueSets(libId, callback) {
+    this.http.get('api/table-library/' + libId + '/tables').map(res => res.json()).subscribe(data => {
       callback(data);
     });
   }
