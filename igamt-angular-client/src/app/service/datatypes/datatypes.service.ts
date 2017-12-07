@@ -9,7 +9,7 @@ export class DatatypesService {
       callback(data);
     });
   }
-  public saveDatatypes(datatypes) {
+  /*public saveDatatypes(datatypes) {
     this.http.post('api/datatypes/save', datatypes);
-  }
+  }*/
 }

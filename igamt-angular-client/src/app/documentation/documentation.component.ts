@@ -7,6 +7,7 @@ import { IndexedDbService } from '../service/indexed-db/indexed-db.service';
 
 export class DocumentationComponent implements OnInit {
   constructor(private indexedDbService: IndexedDbService) {
+    this.indexedDbService.init('588f2d4184ae56b0b8a41197');
   }
 
   ngOnInit() {

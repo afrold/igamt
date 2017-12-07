@@ -11,11 +11,13 @@ export class IndexedDbService {
   constructor(private datatypesService: DatatypesService) {
     this.objectsDatabase = new ObjectsDatabase('ObjectsDatabase');
     this.changedObjectsDatabase = new ObjectsDatabase('ChangedObjectsDatabase');
+  }
+  public init(igDocumentId) {
     this.objectsDatabase.transaction('rw', this.objectsDatabase.datatypes, async() => {
-      this.objectsDatabase.datatypes.clear().then(this.injectDatatypes('588f2d4184ae56b0b8a41197'));
+      this.objectsDatabase.datatypes.clear().then(this.injectDatatypes(igDocumentId));
     });
     this.changedObjectsDatabase.transaction('rw', this.changedObjectsDatabase.datatypes, async() => {
-      this.changedObjectsDatabase.datatypes.clear();
+      // this.changedObjectsDatabase.datatypes.clear();
     });
   }
 
@@ -59,10 +61,10 @@ export class IndexedDbService {
     console.log('save datatype with id ' + datatype.id);
   }
 
-  public saveChangedDatatypes() {
+  /*public saveChangedDatatypes() {
     this.changedObjectsDatabase.transaction('rw', this.changedObjectsDatabase.datatypes, async () => {
       const changedDatatypes = await this.changedObjectsDatabase.datatypes.toArray();
       this.datatypesService.saveDatatypes(changedDatatypes);
     });
-  }
+  }*/
 }
