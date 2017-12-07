@@ -1,0 +1,46 @@
+
+    <script type="text/javascript">
+        $(function() {
+            $('input').on('blur', function(e) {
+                var el = $(this);
+                if(el.val() != '')
+                    el.addClass('ui-state-filled');
+                else
+                    el.removeClass('ui-state-filled');
+            });
+        });
+    </script>
+
+  <!-- 3. Display the application -->
+  <div class="login-body">
+      <div class="card login-panel ui-fluid">
+          <div class="ui-g">
+              <div class="ui-g-12">
+                  <img src="../layout/images/logo-ultima.svg">
+              </div>
+              <div class="ui-g-12">
+                    <span class="md-inputfield">
+                        <input type="text" autocomplete="off" class="ui-inputtext ui-corner-all ui-state-default ui-widget">
+                        <label>Username</label>
+                    </span>
+              </div>
+              <div class="ui-g-12">
+                  <span class="md-inputfield">
+                      <input type="password" autocomplete="off" class="ui-inputtext ui-corner-all ui-state-default ui-widget">
+                      <label>Password</label>
+                  </span>
+              </div>
+              <div class="ui-g-12">
+                  <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left">
+                      <span class="ui-button-icon-left ui-c fa fa-fw ui-icon-person"></span>
+                      <span class="ui-button-text ui-c">Sign In</span>
+                  </button>
+                  <button type="button" class="secondary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left">
+                      <span class="ui-button-icon-left ui-c fa fa-fw ui-icon-help"></span>
+                      <span class="ui-button-text ui-c">Sign In</span>
+                  </button>
+              </div>
+          </div>
+
+      </div>
+  </div>

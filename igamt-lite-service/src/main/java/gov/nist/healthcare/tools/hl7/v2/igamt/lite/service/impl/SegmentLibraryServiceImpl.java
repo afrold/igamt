@@ -131,9 +131,9 @@ public class SegmentLibraryServiceImpl implements SegmentLibraryService {
 		segmentLibrary.setMetaData(metaData);
 		segmentLibrary.setScope(scope);
 		segmentLibrary.setAccountId(accountId);
-		segmentLibrary.setSectionDescription("Default description");
+	//	segmentLibrary.setSectionDescription("Default description");
 		segmentLibrary.setSectionTitle("Default title");
-		segmentLibrary.setSectionContents("Default contents");
+		segmentLibrary.setSectionContent("Default contents");
 		segmentLibrary = segmentLibraryRepository.insert(segmentLibrary);
 		return segmentLibrary;
 	}
