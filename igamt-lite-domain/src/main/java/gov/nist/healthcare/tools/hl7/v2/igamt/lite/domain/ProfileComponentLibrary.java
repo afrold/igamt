@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 
 @Document(collection = "profileComponent-library")
-public class ProfileComponentLibrary extends Library
+public class ProfileComponentLibrary extends TextbasedSectionModel
     implements java.io.Serializable, Cloneable {
   private static final long serialVersionUID = 1L;
 
@@ -24,7 +24,6 @@ public class ProfileComponentLibrary extends Library
   public ProfileComponentLibrary() {
     super();
     type = Constant.ProfileComponentLibrary;
-    sectionPosition=1;
   }
 
   private Set<ProfileComponentLink> children = new HashSet<ProfileComponentLink>();

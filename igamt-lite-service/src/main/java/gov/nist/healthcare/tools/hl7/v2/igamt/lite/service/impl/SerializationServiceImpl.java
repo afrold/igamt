@@ -166,6 +166,8 @@ public class SerializationServiceImpl implements SerializationService {
       SerializableStructure serializableStructure = new SerializableStructure();
       datatypeLibraryDocument.getMetaData().setHl7Version("");
       datatypeLibraryDocument.getDatatypeLibrary().setSectionTitle("Data Types");
+      datatypeLibraryDocument.getDatatypeLibrary().setSectionContents("");
+      datatypeLibraryDocument.getTableLibrary().setSectionContents("");
       datatypeLibraryDocument.getTableLibrary().setSectionTitle("Value Sets");
       SerializableMetadata serializableMetadata =
           new SerializableMetadata(datatypeLibraryDocument.getMetaData(), datatypeLibraryDocument.getDateUpdated());

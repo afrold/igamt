@@ -11,31 +11,30 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-public class Messages extends Library implements java.io.Serializable, Cloneable {
+public class Messages extends TextbasedSectionModel implements java.io.Serializable, Cloneable {
 
   private static final long serialVersionUID = 1L;
 
   private String id;
-  public String getId() {
-	return id;
-}
 
-public void setId(String id) {
-	this.id = id;
-}
-
-/**
+  /**
 	 * 
 	 */
   public Messages() {
     super();
-    id = ObjectId.get().toString();
-    type=Constant.MESSAGES;
-    sectionPosition=2;
+    this.id = ObjectId.get().toString();
   }
 
   @DBRef
   private Set<Message> children = new HashSet<Message>();
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
 
   public Set<Message> getChildren() {
     return children;

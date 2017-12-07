@@ -1,22 +1,18 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-
-public class Section extends TextbasedSectionModel
-    implements java.io.Serializable, Cloneable, Comparable<Section> {
+public class Section extends TextbasedSectionModel implements java.io.Serializable, Cloneable,
+    Comparable<Section>{
 
   /**
-   * 
-   */
+	 * 
+	 */
   private static final long serialVersionUID = 1L;
 
   public Section() {
@@ -32,15 +28,13 @@ public class Section extends TextbasedSectionModel
     this.sectionTitle = title;
   }
 
-  protected String id;
-  @JsonProperty("children")
+  private String id;
+
   protected Set<Section> childSections = new HashSet<Section>();
 
   public String getId() {
     return id;
   }
-
-
 
   public void setId(String id) {
     this.id = id;
@@ -57,7 +51,7 @@ public class Section extends TextbasedSectionModel
   public void addSection(Section section) {
     section.setSectionPosition(this.childSections.size() + 1);
     @SuppressWarnings("unchecked")
-    Set<Section> sections = this.childSections;
+    Set<Section> sections = (Set<Section>) this.childSections;
     sections.add(section);
 
     this.setChildSections(sections);

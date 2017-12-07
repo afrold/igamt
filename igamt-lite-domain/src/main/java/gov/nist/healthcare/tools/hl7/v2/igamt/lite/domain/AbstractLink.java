@@ -11,12 +11,6 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
-
 /**
  * @author gcr1
  *
@@ -24,82 +18,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 public abstract class AbstractLink {
 
   protected String id;
-  protected SCOPE scope;
-  protected String type;
-  protected String hl7Version;
-  protected int numberOfChilren;
-  protected String description;
-  protected STATUS status;
 
-
-protected int  publicationVersion;
-  
-  protected List<String> hl7versions;
-  
-  public String getType() {
-	return type;
-  }
-  public void setType(String type) {
-		this.type = type;
-	}
-
-  public SCOPE getScope() {
-	return scope;
-  }
-
-public void setScope(SCOPE scope) {
-	this.scope = scope;
-}
-
-public String getHl7Version() {
-	return hl7Version;
-}
-
-public void setHl7Version(String hl7Version) {
-	this.hl7Version = hl7Version;
-}
-
-public int getNumberOfChilren() {
-	return numberOfChilren;
-}
-
-public void setNumberOfChilren(int numberOfChilren) {
-	this.numberOfChilren = numberOfChilren;
-}
-
-public String getDescription() {
-	return description;
-}
-
-public void setDescription(String description) {
-	this.description = description;
-}
-
-public STATUS getStatus() {
-	return status;
-}
-
-public void setStatus(STATUS status) {
-	this.status = status;
-}
-
-public int getPublicationVersion() {
-	return publicationVersion;
-}
-
-public void setPublicationVersion(int i) {
-	this.publicationVersion = i;
-}
-
-public List<String> getHl7versions() {
-	return hl7versions;
-}
-
-public void setHl7versions(List<String> hl7versions) {
-	this.hl7versions = hl7versions;
-}
-
-public String getId() {
+  public String getId() {
     return id;
   }
 

@@ -16,7 +16,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,7 +28,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 import org.bson.types.ObjectId;
-import org.docx4j.docProps.core.dc.terms.DDC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -38,17 +36,13 @@ import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.AbstractLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ColumnsConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfiles;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
@@ -72,8 +66,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NameAndPositionAndPresence;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notification;
@@ -81,7 +73,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notifications;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
@@ -115,22 +106,12 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.CompositeProfileSectionDataLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.DocumentSection;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.MessageSectionData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.RootSectionData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.SectionData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.SectionDataWithLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.sections.SectionDataWithText;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.CompositeProfileLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ExportConfigRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.NotificationsRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileStructureService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -139,17 +120,14 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontConfigServi
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.TocService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DataCorrectionSectionPosition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 
@@ -197,9 +175,6 @@ public class Bootstrap implements InitializingBean {
   DatatypeLibraryService datatypeLibraryService;
   @Autowired
   TableLibraryService tableLibraryService;
-  
-  @Autowired
-  SegmentLibraryService segmentLibraryService;
 
   @Autowired
   TableService tableService;
@@ -220,28 +195,13 @@ public class Bootstrap implements InitializingBean {
 
   @Autowired
   private DeltaService deltaService;
-  
+
   @Autowired
-  private TocService tocService;
   private ExportConfigRepository exportConfigRepository;
   
   @Autowired
   private NotificationsRepository notificationsRepository;
 
-//  @Autowired
-//  private ExportConfigRepository exportConfigRepository;
-
-  @Autowired
-  private CompositeProfileLibraryService compositeProfileLibraryService;
-  
-  @Autowired
-  private MessageLibraryService messageLibraryService;
-  
-  @Autowired
-  private CompositeProfileLibraryRepository CpLibRepo;
-  
-  @Autowired
-  private MessageLibraryRepository messageLibraryRepository;
   /*
    * 
    */
@@ -363,20 +323,18 @@ public class Bootstrap implements InitializingBean {
 
     // 2.0.0-beta7
     // updateTableForNumOfCodesANDSourceType();
+    // updateTableForNumOfCodesANDSourceType();
+    //TODO Do not use updateTableForNumOfCodesANDSourceType function any more. - Woo
 
-	  //angular 
-	 // addInfoToLinks();
-
-	 // createToc();
+    
+   //This is just test.
+//    testNotification();
+    // 2.0.0-beta10
+    //makePhinvadsExternal(); 
   }
   
-	private void createToc() throws IGDocumentException{
-	   List<IGDocument> allIGs = documentService.findAll();	
-	    for(IGDocument d : allIGs){
-	    	documentService.save(d);
-	    }
-	}
-	private void testNotification() {
+  
+  private void testNotification() {
     Notification item = new Notification();
     
     item.setByWhom("JY Woo");
@@ -477,79 +435,10 @@ public class Bootstrap implements InitializingBean {
     }
   };
 
-//
-//  private void clearUserExportConfigurations() {
-//    exportConfigRepository.deleteAll();
-//  }
-  
-  
-  
-  private void addInfoToLinks(){
-	    List<IGDocument> allIGs = documentService.findAll();	  
-	    for(IGDocument d : allIGs){
-	    	AddInfoToDataTypeLinks(d.getProfile().getDatatypeLibrary());
-	    	AddInfoToSegmentLinks(d.getProfile().getSegmentLibrary());
-	    	AddInfoToTablesLinks(d.getProfile().getTableLibrary());
-	    }
-  };
-  
-  private void  AddInfoToDataTypeLinks(DatatypeLibrary lib){
-	  
-	  for(DatatypeLink link: lib.getChildren()){
-		  if(link.getId()!=null){
-		  Datatype temp= datatypeService.findById(link.getId());
-		  if(temp !=null){
-			  link.setExt(temp.getExt());
-			  
-			  link.setDescription(temp.getDescription());
-			  link.setHl7Version(temp.getHl7Version());
-			  link.setHl7versions(temp.getHl7versions());
-			  link.setName(temp.getName());
-			  link.setScope(temp.getScope());
-			  link.setNumberOfChilren(temp.getComponents().size());
-			  link.setPublicationVersion(temp.getPublicationVersion());
-			  link.setStatus(temp.getStatus());
-		  }
-	  }}
-	  datatypeLibraryService.save(lib);
-  }
 
-  private void  AddInfoToSegmentLinks(SegmentLibrary lib){
-	  for(SegmentLink link: lib.getChildren()){
-		  if(link.getId()!=null){
-
-		  Segment temp= segmentService.findById(link.getId());
-		  if(temp !=null){
-			  link.setExt(temp.getExt());
-			  link.setDescription(temp.getDescription());
-			  link.setHl7Version(temp.getHl7Version());
-			  link.setName(temp.getName());
-			  link.setScope(temp.getScope());
-			  link.setNumberOfChilren(temp.getFields().size());
-			  link.setPublicationVersion(temp.getPublicationVersion());
-			  link.setStatus(temp.getStatus());
-		  }
-	  }}
-	  segmentLibraryService.save(lib);
+  private void clearUserExportConfigurations() {
+    exportConfigRepository.deleteAll();
   }
-  private void  AddInfoToTablesLinks(TableLibrary lib){
-	  
-	  for(TableLink link: lib.getChildren()){
-		  if(link.getId()!=null){
-
-		  Table temp= tableService.findById(link.getId());
-		  if(temp !=null){
-			  link.setName(temp.getName());
-			  link.setHl7Version(temp.getHl7Version());
-			  link.setScope(temp.getScope());
-			  link.setNumberOfChilren(temp.getNumberOfCodes());
-			  link.setPublicationVersion(temp.getPublicationVersion());
-			  link.setStatus(temp.getStatus());
-		  }
-	  }}
-	  tableLibraryService.save(lib);
-  }
-  
 
 
   private void fixCoConstraintsDTVS() {

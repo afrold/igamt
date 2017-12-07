@@ -169,9 +169,9 @@ public class TableLibraryController extends CommonController {
     // throw new IllegalArgumentException();
     // }
     found.setExportConfig(library.getExportConfig());
-    found.setSectionContent(library.getSectionContents());
+    found.setSectionContents(library.getSectionContents());
     found.setSectionTitle(library.getSectionTitle());
-    //found.setSectionDescription(library.getSectionDescription());
+    found.setSectionDescription(library.getSectionDescription());
     found.setDateUpdated(new Date());
     TableLibrary saved = tableLibraryService.save(found);
     return new LibrarySaveResponse(saved.getDateUpdated().getTime() + "", saved.getScope().name());

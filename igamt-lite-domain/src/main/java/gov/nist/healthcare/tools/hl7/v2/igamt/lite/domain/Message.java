@@ -18,7 +18,7 @@ public class Message extends DataModelWithConstraints implements java.io.Seriali
 
 	public Message() {
 		super();
-		this.type = Constant.MESSAGES;
+		this.type = Constant.MESSAGE;
 	}
 
 	@Id

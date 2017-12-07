@@ -114,9 +114,9 @@ public class TableLibraryServiceImpl implements TableLibraryService {
 		tableLibrary.setMetaData(metaData);
 		tableLibrary.setScope(scope);
 		tableLibrary.setAccountId(accountId);
-		//tableLibrary.setSectionDescription("Default description");
+		tableLibrary.setSectionDescription("Default description");
 		tableLibrary.setSectionTitle("Default title");
-		tableLibrary.setSectionContent("Default contents");
+		tableLibrary.setSectionContents("Default contents");
 		tableLibrary = tableLibraryRepository.insert(tableLibrary);
 		return tableLibrary;
 	}
