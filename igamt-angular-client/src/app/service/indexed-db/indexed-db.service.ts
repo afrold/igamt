@@ -59,4 +59,10 @@ export class IndexedDbService {
     console.log('save datatype with id ' + datatype.id);
   }
 
+  public saveChangedDatatypes() {
+    this.changedObjectsDatabase.transaction('rw', this.changedObjectsDatabase.datatypes, async () => {
+      const changedDatatypes = await this.changedObjectsDatabase.datatypes.toArray();
+      this.datatypesService.saveDatatypes(changedDatatypes);
+    });
+  }
 }
