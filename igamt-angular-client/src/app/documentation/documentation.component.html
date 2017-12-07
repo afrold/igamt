@@ -2,4 +2,11 @@
   <div>
  This is Documentation page
   </div>
+  <div>
+    <button (click)="getDatatype('579654555455fa34e848dcf7')">Load datatype</button>
+    label: <input type=text [value]="this.datatype.label" (input)="this.datatype.label = $event.target.value" (change)="saveDatatype(this.datatype)"/>
+    <pre>
+      {{this.datatype | json}}
+    </pre>
+  </div>
 </div>
