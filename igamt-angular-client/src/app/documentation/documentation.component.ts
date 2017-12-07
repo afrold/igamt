@@ -7,6 +7,7 @@ import { IndexedDbService } from '../service/indexed-db/indexed-db.service';
 
 export class DocumentationComponent implements OnInit {
   constructor(private indexedDbService: IndexedDbService) {
+    this.indexedDbService.init('588f2d4184ae56b0b8a41197');
   }
 
   ngOnInit() {
@@ -15,6 +16,10 @@ export class DocumentationComponent implements OnInit {
     this.indexedDbService.getDatatype(datatypeId, function (datatype) {
       // console.log('datatype 579654555455fa34e848dcf7: ' + datatype.label);
       this.datatype = datatype;
+    }.bind(this));
+    this.indexedDbService.getDatatypeMetadata(datatypeId, function (datatypeMetadata) {
+      // console.log('datatype 579654555455fa34e848dcf7: ' + datatype.label);
+      this.datatypeMetadata = datatypeMetadata;
     }.bind(this));
   }
 
