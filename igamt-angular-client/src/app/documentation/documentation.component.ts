@@ -17,6 +17,10 @@ export class DocumentationComponent implements OnInit {
       // console.log('datatype 579654555455fa34e848dcf7: ' + datatype.label);
       this.datatype = datatype;
     }.bind(this));
+    this.indexedDbService.getDatatypeMetadata(datatypeId, function (datatypeMetadata) {
+      // console.log('datatype 579654555455fa34e848dcf7: ' + datatype.label);
+      this.datatypeMetadata = datatypeMetadata;
+    }.bind(this));
   }
 
   public saveDatatype (datatype) {
