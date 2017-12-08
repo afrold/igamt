@@ -52,7 +52,7 @@ export class IndexedDbService {
     });
     // profiles
     this.objectsDatabase.transaction('rw', this.objectsDatabase.profiles, async() => {
-      //this.objectsDatabase.profiles.clear().then(this.injectDatatypes(igDocumentId));
+      // this.objectsDatabase.profiles.clear().then(this.injectDatatypes(igDocumentId));
     });
     this.changedObjectsDatabase.transaction('rw', this.changedObjectsDatabase.profiles, async() => {
       // this.changedObjectsDatabase.profiles.clear();
@@ -79,6 +79,20 @@ export class IndexedDbService {
         this.objectsDatabase.transaction('r', this.objectsDatabase.datatypes, async() => {
           datatype = await this.objectsDatabase.datatypes.get(id);
           callback(datatype.object);
+        });
+      }
+    });
+  }
+  public getValueSet (id, callback) {
+    let valueSet;
+    this.changedObjectsDatabase.transaction('r', this.changedObjectsDatabase.valueSets, async() => {
+      valueSet = await this.changedObjectsDatabase.valueSets.get(id);
+      if (valueSet != null) {
+        callback(valueSet.object);
+      } else {
+        this.objectsDatabase.transaction('r', this.objectsDatabase.valueSets, async() => {
+          valueSet = await this.objectsDatabase.valueSets.get(id);
+          callback(valueSet.object);
         });
       }
     });
@@ -114,6 +128,31 @@ export class IndexedDbService {
         'type': datatype.type
       }
        callback(metadataDatatype);
+    });
+  }
+  public getSegmentMetadata (id, callback) {
+    this.getSegment(id, function(segment){
+      const metadataSegment = {
+        'id': segment.id,
+        'name': segment.name,
+        'scope': segment.scope,
+        'hl7Version': segment.hl7Version,
+        'numberOfFields': segment.fields.length,
+        'type': segment.type
+      }
+       callback(metadataSegment);
+    });
+  }
+  public getValueSetMetadata (id, callback) {
+    this.getValueSet(id, function(valueSet){
+      const metadataValueSet = {
+        'id': valueSet.id,
+        'bindingIdentifier': valueSet.bindingIdentifier,
+        'scope': valueSet.scope,
+        'hl7Version': valueSet.hl7Version,
+        'type': valueSet.type
+      }
+       callback(metadataValueSet);
     });
   }
 
