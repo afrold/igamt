@@ -5,27 +5,30 @@ import {Injectable} from "@angular/core";
 import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot} from "@angular/router";
 import {WorkspaceService, Entity} from "../../../service/workspace/workspace.service";
 import {Http} from "@angular/http";
+import {IndexedDbService} from "../../../service/indexed-db/indexed-db.service";
 
 @Injectable()
 export class SegmentGuard implements CanActivate {
 
   constructor(private _ws : WorkspaceService,
-              private $http : Http){};
+              private db : IndexedDbService){};
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      let obs = this.$http.get('api/segment/'+route.params['id']).map(res => res.json()).subscribe(data => {
+      console.log(route.params['id']);
+      this.db.getSegment(route.params['id'],function (data) {
+        console.log(data);
+        console.log("Calling");
+
         let ig = this._ws.getCurrent(Entity.IG);
         for(let segment of ig.profile.segmentLibrary.children){
           if(segment.id === data.id){
             this._ws.setCurrent(Entity.SEGMENT, data);
-            obs.unsubscribe();
             resolve(true);
           }
         }
-        obs.unsubscribe();
         resolve(false);
-      });
+      }.bind(this));
     });
   }
 

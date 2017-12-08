@@ -8,14 +8,18 @@ import {AllIgsComponent} from './all-igs/all-igs.component';
 import {IgDocumentListRoutingModule} from './igdocument-list-routing.module';
 import {TabMenuModule} from 'primeng/primeng';
 
+import {OrderListModule} from 'primeng/primeng';
+import {IgListService} from "./igdocument-list.service";
 @NgModule({
 	imports: [
 		CommonModule,
 		IgDocumentListRoutingModule,
-		TabMenuModule
+		TabMenuModule,
+    OrderListModule
 	],
 	declarations: [
 		IgDocumentListComponent, MyIgsComponent, PreloadedIgsComponent, SharedIgsComponent, AllIgsComponent
-	]
+	],
+  providers:[IgListService]
 })
 export class IgDocumentListModule {}

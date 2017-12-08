@@ -15,6 +15,9 @@ import {AlertModule} from "ngx-bootstrap";
 import {NotFoundComponent} from "./common/404/404.component";
 
 import {AppInfoService} from './appinfo.service';
+import {IndexedDbService} from './service/indexed-db/indexed-db.service';
+import {DatatypesService} from './service/datatypes/datatypes.service';
+import {ValueSetsService} from './service/valueSets/valueSets.service';
 import {MenubarModule,PanelModule} from 'primeng/primeng';
 import {AppRoutes} from './app.routes';
 import {AppMenuComponent, AppSubMenuComponent} from './app.menu.component';
@@ -22,6 +25,8 @@ import {AppTopBarComponent} from './app.topbar.component';
 import {AppFooterComponent} from './app.footer.component';
 import {InlineProfileComponent} from './app.profile.component';
 import {GeneralConfigurationService} from "./service/general-configuration/general-configuration.service";
+import {SegmentsService} from "./service/segments/segments.service";
+import {ProfileComponentsService} from "./service/profilecomponents/profilecomponents.service";
 
 @NgModule({
   declarations: [
@@ -53,7 +58,12 @@ import {GeneralConfigurationService} from "./service/general-configuration/gener
     {provide: LocationStrategy, useClass: HashLocationStrategy},
      AppInfoService,
     WorkspaceService,
-    GeneralConfigurationService
+    GeneralConfigurationService,
+    IndexedDbService,
+    DatatypesService,
+    ValueSetsService,
+    SegmentsService,
+    ProfileComponentsService
   ],
   bootstrap: [AppComponent]
 })

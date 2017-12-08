@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "segment-library")
-public class SegmentLibrary extends TextbasedSectionModel implements java.io.Serializable,
+public class SegmentLibrary extends Library implements java.io.Serializable,
     Cloneable {
 
   private static final long serialVersionUID = 1L;
@@ -28,6 +28,7 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
   public SegmentLibrary() {
     super();
     type = Constant.SEGMENTLIBRARY;
+    sectionPosition=4;
   }
 
   private Set<SegmentLink> children = new HashSet<SegmentLink>();
@@ -174,8 +175,8 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
     clone.setExt(this.getExt() + "-" + genRand());
     clone.setMetaData(this.getMetaData().clone());
     clone.setScope(this.getScope());
-    clone.setSectionContents(this.getSectionContents());
-    clone.setSectionDescription(this.getSectionDescription());
+    clone.setSectionContent(this.getSectionContents());
+    //clone.setSectionDescription(this.getSectionDescription());
     clone.setSectionPosition(this.getSectionPosition());
     clone.setSectionTitle(this.getSectionTitle());
     clone.setType(this.getType());

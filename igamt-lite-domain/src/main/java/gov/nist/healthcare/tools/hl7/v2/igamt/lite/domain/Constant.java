@@ -31,9 +31,10 @@ public class Constant {
   public final static String COMPONENT = "component";
   public final static String SUBCOMPONENT = "subcomponent";
   public final static String GROUP = "group";
-  public final static String MESSAGE = "message";
+  public final static String MESSAGES = "messages";
   public final static String COMPOSITEMESSAGE = "compositemessage";
   public final static String COMPOSITEPROFILE = "compositeprofile";
+  public final static String COMPOSITEPROFILES = "compositeprofiles";
   public final static String DATATYPES = "datatypes";
   public final static String DATATYPELIBRARY = "datatypelibrary";
   public final static String DATATYPE = "datatype";
@@ -48,6 +49,18 @@ public class Constant {
   public final static String DefaultDatatypeLibrary = "DefaultDTLib";
 
   public final static String SECTION = "section";
+  public final static String TEXTSECTION = "textSection";
+  public final static String LIBRARYSECTION = "LibrarySection";
+  public final static String PROFILESECTION  = "ProfileSection";
+  public final static String ROOTSECTION = "ROOT";
+  public final static String CONFORMANCEPROFILESECTION = "ConformanceProfileSection";
+  public final static String DATATYPELIBRARYSECTION = "DatatypeLibrarySection";
+  public final static String SEGMENTLIBRARYSECTION = "SegmentLibrarySection";
+  public final static String TABLELIBRARYSECTION = "TableLibrarySection";
+  public final static String MESSAGELINK="messageLink";
+  public final static String COMPOSITEPROFILELINK="CompositeProfileLink";
+
+
   public final static String Document = "document";
   public final static String DECISION = "decision";
   public final static String FAQ = "FAQ";

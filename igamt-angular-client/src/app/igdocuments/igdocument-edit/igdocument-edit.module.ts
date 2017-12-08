@@ -11,6 +11,13 @@ import {MenubarModule} from "primeng/components/menubar/menubar";
 import {TooltipModule} from "primeng/components/tooltip/tooltip";
 import {TieredMenuModule} from "primeng/components/tieredmenu/tieredmenu";
 import {UtilsModule} from "../../utils/utils.module";
+import {TocService} from "./toc/toc.service";
+import {TreeModule} from "primeng/components/tree/tree";
+import {TreeDragDropService} from "primeng/components/common/treedragdropservice";
+import {DragDropModule} from "primeng/components/dragdrop/dragdrop";
+import {ContextMenuModule,MenuItem} from 'primeng/primeng';
+import {IndexedDbService} from "../../service/indexed-db/indexed-db.service";
+
 
 @NgModule({
 	imports: [
@@ -23,13 +30,16 @@ import {UtilsModule} from "../../utils/utils.module";
     MenubarModule,
     TooltipModule,
     TieredMenuModule,
-    UtilsModule
+    UtilsModule,
+    TreeModule,
+    DragDropModule,
+    ContextMenuModule
 	],
 	declarations: [
 		IgDocumentEditComponent, IgDocumentMetadataComponent, SectionComponent, TocComponent
 	],
   providers : [
-    IgDocumentGuard
+    IgDocumentGuard, TocService,TreeDragDropService
   ],
   schemas : [ CUSTOM_ELEMENTS_SCHEMA ]
 })

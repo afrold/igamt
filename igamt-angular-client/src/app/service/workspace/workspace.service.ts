@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
+import {Subject} from "rxjs";
 /**
  * Created by hnt5 on 10/25/17.
  */
@@ -7,16 +8,22 @@ import {Http} from "@angular/http";
 export enum Entity {
   IG,
   SEGMENT,
+  DATATYPE
   /* ADD ENTITY TYPE TO SUPPORT HERE */
 }
 
 @Injectable()
 export class WorkspaceService {
 
+
   private map : { [index : number] : any };
 
   constructor(private http : Http){
     this.map = {};
+  }
+
+  getObservable(key : Entity){
+
   }
 
   getCurrent(key : Entity){

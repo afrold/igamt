@@ -2,6 +2,11 @@
  * Created by hnt5 on 10/26/17.
  */
 import {Component, Input} from "@angular/core";
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import 'rxjs/add/operator/switchMap';
+
+import {WorkspaceService, Entity} from "../../service/workspace/workspace.service";
+
 @Component({
   selector : 'display-label',
   templateUrl : './display-label.component.html',
@@ -9,9 +14,20 @@ import {Component, Input} from "@angular/core";
 })
 export class DisplayLabelComponent {
   _elm : any;
+  _ig : any;
 
-  constructor(){}
-  ngOnInit(){}
+
+  constructor(
+    private _ws : WorkspaceService,
+    private route: ActivatedRoute,
+    private router: Router
+
+
+  ){}
+  ngOnInit(){
+    this._ig = this._ws.getCurrent(Entity.IG);
+
+  }
 
   @Input() set elm(obj){
     this._elm = obj;
@@ -22,7 +38,8 @@ export class DisplayLabelComponent {
   }
 
   getScopeLabel() {
-    if (this.elm) {
+
+    if (this.elm &&this.elm.scope) {
       if (this.elm.scope === 'HL7STANDARD') {
         return 'HL7';
       } else if (this.elm.scope === 'USER') {
@@ -34,12 +51,81 @@ export class DisplayLabelComponent {
       } else if (this.elm.scope === 'PHINVADS') {
         return 'PVS';
       } else {
-        return "";
+        return null ;
+      }
+    }
+  }
+
+  getElementLabel(){
+    var type =this.elm.type;
+    if(type){
+      if (type === 'segment') {
+        return this.getSegmentLabel(this.elm);
+      } else if (type='datatype') {
+        return this.getDatatypeLabel(this.elm);
+      } else if (type==='table') {
+        console.log("Called");
+        return this.getTableLabel(this.elm);
+      } else if (type ==='message') {
+        return this.getMessageLabel(this.elm);
+      } else if (type === 'profilecomponent') {
+        return this.getProfileComponentsLabel(this.elm);
+      } else if(type ==='compositeprofile'){
+        return this.getCompositeProfileLabel(this.elm);
       }
     }
   }
 
   getVersion(){
-    return this.elm ? this.elm.hl7Version : '';
+    return this.elm.hl7Version ? this.elm.hl7Version : '';
+  };
+  getSegmentLabel(elm){
+    if(!elm.ext || elm.ext==''){
+      return elm.name+"-"+elm.description;
+    }else{
+      return elm.name+"_"+elm.ext+elm.description;
+    }
+  };
+
+  getDatatypeLabel(elm){
+    if(!elm.ext || elm.ext==''){
+      return elm.name+"-"+elm.description;
+    }else{
+      return elm.name+"_"+elm.ext+elm.description;
+    }
+  };
+  getTableLabel(elm){
+    return elm.bindingIdentifier+"-"+elm.name;
+
+
+  };
+
+  getMessageLabel(elm){
+    return elm.name+"-"+elm.description;
+
+
+
+  };
+  getProfileComponentsLabel(elm){
+    return elm.name+"-"+elm.description;
+
+  };
+
+  getCompositeProfileLabel(elm){
+    return elm.name+"-"+elm.description;
+
+
+  };
+
+  goTo() {
+    console.log("Calling");
+    var type=this.elm.type;
+    var IgdocumentId=this._ig.id;
+    var link="/ig-documents/igdocuments-edit/"+IgdocumentId+"/"+this.elm.type+"/"+this.elm.id;
+    this.router.navigate([link]);
+
+
   }
+
+
 }

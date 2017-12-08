@@ -33,22 +33,22 @@ export class AppMenuComponent implements OnInit {
           }
           },
           {
-            label: 'My Documents', icon: 'brush', routerLink: ['/ig-documents'], command: (event) => {
+            label: 'My Documents', icon: 'brush', routerLink: ['/ig-documents/my-igs'], command: (event) => {
             this.loadScopeIgDocuments('USER');
           }
           },
           {
-            label: 'Shared With Me', icon: 'brush', routerLink: ['/ig-documents'], command: (event) => {
+            label: 'Shared With Me', icon: 'brush', routerLink: ['/ig-documents/shared-igs'], command: (event) => {
             this.loadScopeIgDocuments('SHARED');
           }
           },
           {
-            label: 'Pre-loaded Documents', icon: 'brush', routerLink: ['/ig-documents'], command: (event) => {
+            label: 'Pre-loaded Documents', icon: 'brush', routerLink: ['/ig-documents/preloaded-igs'], command: (event) => {
             this.loadScopeIgDocuments('PRELOADED');
           }
           },
           {
-            label: 'All IG Documents', icon: 'brush', routerLink: ['/ig-documents'], command: (event) => {
+            label: 'All IG Documents', icon: 'brush', routerLink: ['/ig-documents/all'], command: (event) => {
             this.loadScopeIgDocuments('ALL');
           }
           }
