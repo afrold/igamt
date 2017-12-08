@@ -15,11 +15,7 @@ export class SegmentGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      console.log(route.params['id']);
       this.db.getSegment(route.params['id'],function (data) {
-        console.log(data);
-        console.log("Calling");
-
         let ig = this._ws.getCurrent(Entity.IG);
         for(let segment of ig.profile.segmentLibrary.children){
           if(segment.id === data.id){
