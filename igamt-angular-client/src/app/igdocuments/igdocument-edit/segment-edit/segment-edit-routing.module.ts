@@ -17,7 +17,12 @@ import {SegmentGuard} from "./segment-edit.guard";
           {
             path: 'definition',
             loadChildren: './segment-definition/segment-definition.module#SegmentDefinitionModule'
+          },
+          {
+            path: 'metadata',
+            loadChildren: './segment-metadata-edit/segment-metadata-edit.module#SegmentMetadataEditModule'
           }
+
         ]
       }
 
@@ -27,4 +32,6 @@ import {SegmentGuard} from "./segment-edit.guard";
     RouterModule
   ]
 })
-export class SegmentEditRoutingModule {}
+export class SegmentEditRoutingModule {
+
+}

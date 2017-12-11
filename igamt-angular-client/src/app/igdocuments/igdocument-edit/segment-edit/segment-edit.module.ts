@@ -11,6 +11,7 @@ import {DialogModule} from "primeng/components/dialog/dialog";
 import {DropdownModule} from "primeng/components/dropdown/dropdown";
 import {SegmentGuard} from "./segment-edit.guard";
 import {UtilsModule} from "../../../utils/utils.module";
+import { SegmentMetadataEditComponent } from './segment-metadata-edit/segment-metadata-edit.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import {UtilsModule} from "../../../utils/utils.module";
   ],
   providers : [ SegmentGuard ],
   declarations: [
-    SegmentEditComponent
+    SegmentEditComponent,
+    SegmentMetadataEditComponent
   ],
   schemas : [ CUSTOM_ELEMENTS_SCHEMA ]
 })

@@ -16,7 +16,7 @@ export class IgDocumentGuard implements CanActivate {
     return new Promise<boolean>((resolve, reject) => {
       let obs = this.$http.get('api/igdocuments/'+route.params['id']).map(res => res.json()).subscribe(data => {
         this._ws.setCurrent(Entity.IG, data);
-        obs.unsubscribe();
+        // console.log("test")
         resolve(true);
       });
     });

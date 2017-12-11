@@ -23,29 +23,17 @@ export class TocComponent {
   _ig : any;
 
   treeData: any;
+
   constructor(private _ws : WorkspaceService, private  tocService:TocService){
 
-  }
+    let ctrl=this;
 
-  @Input() set ig(ig){
-    this._ig = ig;
-  }
+    this._ws.getCurrent(Entity.IG).subscribe(data =>{
+      console.log(data);
+      ctrl.ig=data;
+      ctrl.treeData = ctrl.tocService.buildTreeFromIgDocument(ctrl._ig);
 
-
-  ngOnInit() {
-    var ctrl=this;
-
-    this.ig = this._ws.getCurrent(Entity.IG);
-
-    // this.toc.dragDropService.stopDrag = function (x) {
-    //   console.log("HT");
-    //   console.log(x);
-    // };
-
-
-    this.treeData = this.tocService.buildTreeFromIgDocument(this._ig);
-
-
+    });
     this.rootMenu= [{label: "add Section", command:function(event){
       console.log(ctrl.treeData);
       var data= {position: 4, sectionTitle: "New Section", referenceId: "", referenceType: "section", sectionContent: null};
@@ -55,25 +43,34 @@ export class TocComponent {
 
 
     }}];
+
+
+  }
+
+  set ig(ig){
+    this._ig = ig;
+  }
+
+
+  ngOnInit() {
     this.toc.allowDrop = this.allow;
-    // this.toc.draggableNodes = true;
-    // this.toc.droppableNodes = true;
-     this.toc.onNodeDrop.subscribe(x => {
-       for(let a = 0; a<x.dragNode.parent.children.length; a++){
-         x.dragNode.parent.children[a].data.position=a+1;
-       }
+    this.toc.onNodeDrop.subscribe(x => {
+      for(let a = 0; a<x.dragNode.parent.children.length; a++){
+        x.dragNode.parent.children[a].data.position=a+1;
+      }
 
-       for(let c = 0; c<x.dropNode.children.length; c++){
-         if(x.dropNode.children[c].data){
-           x.dropNode.children[c].data.position=c+1;
+      for(let c = 0; c<x.dropNode.children.length; c++){
+        if(x.dropNode.children[c].data){
+          x.dropNode.children[c].data.position=c+1;
 
-         }
-       }
-         for(let b = 0; b<x.dropNode.parent.children.length; b++){
-           x.dropNode.parent.children[b].data.position=b+1;
-         }
+        }
+      }
+      for(let b = 0; b<x.dropNode.parent.children.length; b++){
+        x.dropNode.parent.children[b].data.position=b+1;
+      }
 
-     });
+    });
+
   }
 
   print =function (obj) {

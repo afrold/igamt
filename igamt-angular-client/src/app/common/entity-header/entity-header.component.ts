@@ -2,28 +2,34 @@
  * Created by hnt5 on 10/30/17.
  */
 import {Component, Input} from "@angular/core";
+import {Observable} from "rxjs";
 @Component({
   selector : 'entity-header',
   templateUrl : './entity-header.component.html',
   styleUrls : ['./entity-header.component.css']
 })
 export class EntityHeaderComponent {
+  @Input()
   _elm : any;
 
-  constructor(){}
+  constructor(){
+
+  }
 
   @Input() set elm(e){
-    this._elm = e;
+    this.elm = e;
   }
 
   header(){
-    switch (this._elm.type){
+    switch (this.elm.type){
       case 'segment' :
-        return this._elm.label;
+        return this.elm.label;
       case 'document' :
-        return this._elm.metaData.title;
+        return this.elm.metaData.title;
     }
     return 'ndef';
   }
-  ngOnInit(){}
+  ngOnInit(){
+
+  }
 }

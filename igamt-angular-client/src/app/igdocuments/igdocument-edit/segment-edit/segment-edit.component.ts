@@ -14,6 +14,7 @@ import {WorkspaceService, Entity} from "../../../service/workspace/workspace.ser
 export class SegmentEditComponent {
 
   _segment;
+  segment$;
   segmentEditTabs : any[];
 
   @Input() set segment(segment : any){
@@ -22,12 +23,13 @@ export class SegmentEditComponent {
 
   constructor(private _ws : WorkspaceService,    private route: ActivatedRoute,
               private router: Router){
+    this.segment$= _ws.getCurrent(Entity.SEGMENT);
 
-    this.segment = _ws.getCurrent(Entity.SEGMENT);
-    this.route.params.subscribe(x=>{
-
-      console.log(x);
-    });
+    this.segment$.subscribe( segment =>{
+          this.segment =segment,
+          console.log(segment);
+    }
+    );
   };
 
   ngOnInit(){
@@ -39,8 +41,7 @@ export class SegmentEditComponent {
     ];
   }
   ngOnDestroy(){
-    console.log( this.segment)
-    console.log("test");
+
   }
 
 }

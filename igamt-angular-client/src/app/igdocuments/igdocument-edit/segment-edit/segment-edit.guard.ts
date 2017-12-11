@@ -16,13 +16,19 @@ export class SegmentGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       this.db.getSegment(route.params['id'],function (data) {
-        let ig = this._ws.getCurrent(Entity.IG);
-        for(let segment of ig.profile.segmentLibrary.children){
-          if(segment.id === data.id){
-            this._ws.setCurrent(Entity.SEGMENT, data);
-            resolve(true);
-          }
-        }
+        console.log(data);
+         this._ws.getCurrent(Entity.IG).subscribe(res=> {
+          let ig = res;
+
+           for(let segment of ig.profile.segmentLibrary.children){
+             if(segment.id === data.id){
+               this._ws.setCurrent(Entity.SEGMENT, data);
+               resolve(true);
+             }
+           }
+
+        });
+
         resolve(false);
       }.bind(this));
     });

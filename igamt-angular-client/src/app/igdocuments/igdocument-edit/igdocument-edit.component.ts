@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {WorkspaceService, Entity} from "../../service/workspace/workspace.service";
 import {Http} from "@angular/http";
@@ -9,28 +9,51 @@ import {IndexedDbService} from "../../service/indexed-db/indexed-db.service";
     templateUrl: './igdocument-edit.component.html',
     styleUrls : ['./igdocument-edit.component.css']
 })
-export class IgDocumentEditComponent {
+export class IgDocumentEditComponent implements OnInit{
 
   items: any[];
   menui: any[];
-  _ig : any;
+  private _ig : any;
+  test : any;
 
 
   constructor(private route : ActivatedRoute,
-              private _ws   : WorkspaceService,
-              private $http : Http,
+              private ws   : WorkspaceService,
               private dbService: IndexedDbService){
-    this.ig = this._ws.getCurrent(Entity.IG);
-    this.dbService.init(this._ig);
+    console.log("Constructing");
+    console.log(this.test);
+    this.init();
+
+
+    // this._ws.getCurrent(Entity.IG).subscribe(data=>{
+    //   console.log("returning data");
+    //   this._ig=data;
+    //   this.dbService.init(this._ig);
+    //
+    // });
+
+    console.log(this._ig);
   };
 
-  @Input() set ig(doc){
-    this._ig = doc;
+  init(){
+    this.test="inside";
 
+    let obs= this.ws.getCurrent(Entity.IG).subscribe(data=>{
+      console.log(data);
 
+      this._ig=data;
+
+      this.dbService.init(this._ig);
+
+    });
+    if(!this._ig){
+      console.log("nothing");
+    }
   }
 
   ngOnInit(){
+
+
 
 
     this.items = [
@@ -69,4 +92,10 @@ export class IgDocumentEditComponent {
     ];
 
   }
+
+  printIg(){
+    console.log(this._ig);
+
+  }
+
 }

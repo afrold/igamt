@@ -25,7 +25,7 @@ export class DisplayLabelComponent {
 
   ){}
   ngOnInit(){
-    this._ig = this._ws.getCurrent(Entity.IG);
+    this._ws.getCurrent(Entity.IG).subscribe(data=> {this._ig=data});
 
   }
 
@@ -122,6 +122,7 @@ export class DisplayLabelComponent {
     var type=this.elm.type;
     var IgdocumentId=this._ig.id;
     var link="/ig-documents/igdocuments-edit/"+IgdocumentId+"/"+this.elm.type+"/"+this.elm.id;
+    console.log(link);
     this.router.navigate([link]);
 
 
