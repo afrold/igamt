@@ -508,13 +508,13 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
                         segment.coConstraintsTable.thenColumnDefinitionList = thenColumnDefinitionList;
                         segment.coConstraintsTable.userColumnDefinitionList = userColumnDefinitionList;
 
-
-                        var isAdded = false;
                         if (!segment.coConstraintsTable.ifColumnData) segment.coConstraintsTable.ifColumnData = [];
                         if (!segment.coConstraintsTable.thenMapData) segment.coConstraintsTable.thenMapData = {};
                         if (!segment.coConstraintsTable.userMapData) segment.coConstraintsTable.userMapData = {};
                         if (!segment.coConstraintsTable.rowSize) segment.coConstraintsTable.rowSize = 0;
 
+                        /*
+                        var isAdded = false;
                         if (segment.coConstraintsTable.ifColumnDefinition) {
                             var newIFData = {};
                             newIFData.valueData = {};
@@ -552,12 +552,12 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
                                 segment.coConstraintsTable.userMapData[userColumnDefinition.id].push(newUSERData);
                                 isAdded = true;
                             }
-                            ;
                         }
 
                         if (isAdded) {
                             segment.coConstraintsTable.rowSize = segment.coConstraintsTable.rowSize + 1;
                         }
+                        */
                     }
                     if (segment.coConstraintsTable.thenColumnDefinitionList) {
 
