@@ -17,6 +17,7 @@ import {TreeDragDropService} from "primeng/components/common/treedragdropservice
 import {DragDropModule} from "primeng/components/dragdrop/dragdrop";
 import {ContextMenuModule,MenuItem} from 'primeng/primeng';
 import {IndexedDbService} from "../../service/indexed-db/indexed-db.service";
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -33,7 +34,9 @@ import {IndexedDbService} from "../../service/indexed-db/indexed-db.service";
     UtilsModule,
     TreeModule,
     DragDropModule,
-    ContextMenuModule
+    ContextMenuModule,
+    FormsModule
+
 	],
 	declarations: [
 		IgDocumentEditComponent, IgDocumentMetadataComponent, SectionComponent, TocComponent

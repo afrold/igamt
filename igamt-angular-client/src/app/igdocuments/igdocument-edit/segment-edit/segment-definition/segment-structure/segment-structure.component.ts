@@ -13,7 +13,7 @@ export class SegmentStructureComponent {
   _segment : any;
 
   constructor(private _ws : WorkspaceService){
-    this.segment = _ws.getCurrent(Entity.SEGMENT);
+   _ws.getCurrent(Entity.SEGMENT).subscribe(data =>{this.segment=data});
   }
 
   @Input() set segment(s){

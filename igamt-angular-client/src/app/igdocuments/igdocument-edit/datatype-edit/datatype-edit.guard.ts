@@ -15,16 +15,16 @@ export class DatatypeGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       let obs = this.$http.get('api/datatypes/'+route.params['id']).map(res => res.json()).subscribe(data => {
-        let ig = this._ws.getCurrent(Entity.IG);
-        for(let datatype of ig.profile.datatypeLibrary.children){
-          if(datatype.id === data.id){
-            this._ws.setCurrent(Entity.DATATYPE, data);
-            obs.unsubscribe();
-            resolve(true);
-          }
-        }
-        obs.unsubscribe();
-        resolve(false);
+        // let ig = this._ws.getCurrent(Entity.IG);
+        // for(let datatype of ig.profile.datatypeLibrary.children){
+        //   if(datatype.id === data.id){
+        //     this._ws.setCurrent(Entity.DATATYPE, data);
+        //     obs.unsubscribe();
+        //     resolve(true);
+        //   }
+        // }
+        // obs.unsubscribe();
+        // resolve(false);
       });
     });
   }

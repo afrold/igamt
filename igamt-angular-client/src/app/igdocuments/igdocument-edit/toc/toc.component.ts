@@ -35,7 +35,45 @@ export class TocComponent {
   ngOnInit() {
     var ctrl=this;
 
-    this.ig = this._ws.getCurrent(Entity.IG);
+    this.ig = this._ws.getCurrent(Entity.IG).subscribe(data =>{
+      this.ig= data
+      this.treeData = this.tocService.buildTreeFromIgDocument(this._ig);
+
+
+      this.rootMenu= [{label: "add Section", command:function(event){
+        console.log(ctrl.treeData);
+        var data= {position: 4, sectionTitle: "New Section", referenceId: "", referenceType: "section", sectionContent: null};
+        var node={};
+        node["data"]=data;
+        ctrl.treeData[0].children.push(node);
+
+
+      }}];
+      this.toc.allowDrop = this.allow;
+      // this.toc.draggableNodes = true;
+      // this.toc.droppableNodes = true;
+      this.toc.onNodeDrop.subscribe(x => {
+        for(let a = 0; a<x.dragNode.parent.children.length; a++){
+          x.dragNode.parent.children[a].data.position=a+1;
+        }
+
+        for(let c = 0; c<x.dropNode.children.length; c++){
+          if(x.dropNode.children[c].data){
+            x.dropNode.children[c].data.position=c+1;
+
+          }
+        }
+        for(let b = 0; b<x.dropNode.parent.children.length; b++){
+          x.dropNode.parent.children[b].data.position=b+1;
+        }
+
+      });
+
+
+
+
+
+    });
 
     // this.toc.dragDropService.stopDrag = function (x) {
     //   console.log("HT");
@@ -43,37 +81,13 @@ export class TocComponent {
     // };
 
 
-    this.treeData = this.tocService.buildTreeFromIgDocument(this._ig);
 
 
-    this.rootMenu= [{label: "add Section", command:function(event){
-      console.log(ctrl.treeData);
-      var data= {position: 4, sectionTitle: "New Section", referenceId: "", referenceType: "section", sectionContent: null};
-      var node={};
-      node["data"]=data;
-      ctrl.treeData[0].children.push(node);
 
 
-    }}];
-    this.toc.allowDrop = this.allow;
-    // this.toc.draggableNodes = true;
-    // this.toc.droppableNodes = true;
-     this.toc.onNodeDrop.subscribe(x => {
-       for(let a = 0; a<x.dragNode.parent.children.length; a++){
-         x.dragNode.parent.children[a].data.position=a+1;
-       }
 
-       for(let c = 0; c<x.dropNode.children.length; c++){
-         if(x.dropNode.children[c].data){
-           x.dropNode.children[c].data.position=c+1;
 
-         }
-       }
-         for(let b = 0; b<x.dropNode.parent.children.length; b++){
-           x.dropNode.parent.children[b].data.position=b+1;
-         }
 
-     });
   }
 
   print =function (obj) {

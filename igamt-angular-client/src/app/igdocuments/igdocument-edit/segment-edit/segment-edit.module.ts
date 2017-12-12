@@ -11,6 +11,7 @@ import {DialogModule} from "primeng/components/dialog/dialog";
 import {DropdownModule} from "primeng/components/dropdown/dropdown";
 import {SegmentGuard} from "./segment-edit.guard";
 import {UtilsModule} from "../../../utils/utils.module";
+import {CanDeactivateGuard} from "./segment-can-desactivate.service";
 
 
 @NgModule({
@@ -23,7 +24,7 @@ import {UtilsModule} from "../../../utils/utils.module";
     SegmentEditRoutingModule,
     UtilsModule
   ],
-  providers : [ SegmentGuard ],
+  providers : [ SegmentGuard,CanDeactivateGuard ],
   declarations: [
     SegmentEditComponent
   ],

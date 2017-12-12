@@ -4,6 +4,11 @@
 import {Component, Input} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {WorkspaceService, Entity} from "../../../service/workspace/workspace.service";
+import {Md5} from "ts-md5/dist/md5";
+import {Observable} from "rxjs";
+
+import 'rxjs/add/operator/filter';
+
 
 
 @Component({
@@ -15,6 +20,10 @@ export class SegmentEditComponent {
 
   _segment;
   segmentEditTabs : any[];
+  private currentHash;
+
+
+
 
   @Input() set segment(segment : any){
     this._segment = segment;
@@ -23,11 +32,10 @@ export class SegmentEditComponent {
   constructor(private _ws : WorkspaceService,    private route: ActivatedRoute,
               private router: Router){
 
-    this.segment = _ws.getCurrent(Entity.SEGMENT);
-    this.route.params.subscribe(x=>{
+     _ws.getCurrent(Entity.SEGMENT).subscribe(data =>this.segment=data);
 
-      console.log(x);
-    });
+
+
   };
 
   ngOnInit(){
@@ -39,8 +47,14 @@ export class SegmentEditComponent {
     ];
   }
   ngOnDestroy(){
-    console.log( this.segment)
-    console.log("test");
+
+  }
+
+  hash(){
+    let str=JSON.stringify(this._segment);
+    console.log("Calling Hash ");
+    console.log(Md5.hashStr(str));
+    return Md5.hashStr(str);
   }
 
 }

@@ -25,7 +25,7 @@ export class DisplayLabelComponent {
 
   ){}
   ngOnInit(){
-    this._ig = this._ws.getCurrent(Entity.IG);
+   this._ws.getCurrent(Entity.IG).subscribe(data=>{this._ig=data});
 
   }
 
