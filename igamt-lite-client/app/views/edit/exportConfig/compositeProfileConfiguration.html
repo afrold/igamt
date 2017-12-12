@@ -10,9 +10,10 @@
     </div>
   </md-toolbar>
 
-    <div layout="row" layout-align="center start" style="width: 100%">
+    <div layout="column" style="width: 100%">
         <!-- Usages card -->
-        <div flex style="min-width:60%">
+        <div flex layout="row" layout-align="center start">
+        <div flex="50" style="min-width:60%">
             <md-content>
                 <md-card>
                     <md-card-content>
@@ -51,7 +52,7 @@
             </md-content>
         </div>
         <!-- Columns card-->
-        <div flex>
+        <div flex="50">
             <md-content>
                 <md-card>
                     <md-card-content>
@@ -67,6 +68,10 @@
                     </md-card-content>
                 </md-card>
             </md-content>
+        </div>
+        </div>
+        <div flex layout="row" >
+            <md-checkbox ng-model="config.includeDerivedDatatypes" ng-change="setChanged()"><label style="color: black">Include Derived Data Types</label></md-checkbox>
         </div>
     </div>
 </md-card-content>

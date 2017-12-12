@@ -2,7 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.Date;
 
-public class ApplyInfo implements java.io.Serializable {
+public class ApplyInfo implements java.io.Serializable, Comparable<ApplyInfo>{
   private static final long serialVersionUID = 1L;
 
   public ApplyInfo() {
@@ -37,6 +37,12 @@ public class ApplyInfo implements java.io.Serializable {
     this.id = id;
   }
 
+@Override
+public int compareTo(ApplyInfo o) {
+	// TODO Auto-generated method stub
+	return this.getPosition()-o.getPosition();
+}
+  
 
 
 }

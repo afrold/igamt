@@ -65,6 +65,7 @@ public class FlavorServiceImpl implements FlavorService {
           }
         }
       }
+      grp.setTemporary(true);
       return grp;
     } else if (dm instanceof SegmentRef) {
       SegmentRef segRef = (SegmentRef) dm;
@@ -92,6 +93,7 @@ public class FlavorServiceImpl implements FlavorService {
           Segment segmentFlavor = originalSeg.clone();
           segmentFlavor.setExt(ext + "_" + segRef.getPosition());
           segmentFlavor.setId(ObjectId.get().toString());
+          segmentFlavor.setTemporary(true);
           segmentFlavor.setScope(SCOPE.USER);
 
           if (attributes != null) {
@@ -135,6 +137,7 @@ public class FlavorServiceImpl implements FlavorService {
                 segmentFlavor.setExt(ext + "_" + segRef.getPosition());
                 segmentFlavor.setId(ObjectId.get().toString());
                 segmentFlavor.setScope(SCOPE.USER);
+                segmentFlavor.setTemporary(true); 
                 segmentFlavor.setConformanceStatements(attr.getConformanceStatements());
                 queryService.getSegmentsMap().put(segmentFlavor.getId(), segmentFlavor);
                 segRef.getRef().setId(segmentFlavor.getId());
@@ -157,6 +160,7 @@ public class FlavorServiceImpl implements FlavorService {
                 Segment segmentFlavor = originalSeg.clone();
                 segmentFlavor.setExt(ext + "_" + segRef.getPosition());
                 segmentFlavor.setId(ObjectId.get().toString());
+                segmentFlavor.setTemporary(true);
                 segmentFlavor.setScope(SCOPE.USER);
                 segmentFlavor.setDynamicMappingDefinition(attr.getDynamicMappingDefinition());
 
@@ -179,6 +183,7 @@ public class FlavorServiceImpl implements FlavorService {
                 Segment segmentFlavor = originalSeg.clone();
                 segmentFlavor.setExt(ext + "_" + segRef.getPosition());
                 segmentFlavor.setId(ObjectId.get().toString());
+                segmentFlavor.setTemporary(true);
                 segmentFlavor.setScope(SCOPE.USER);
                 segmentFlavor.setCoConstraintsTable(attr.getCoConstraintsTable());
 
@@ -199,6 +204,7 @@ public class FlavorServiceImpl implements FlavorService {
                 Segment segmentFlavor = originalSeg.clone();
                 segmentFlavor.setExt(ext + "_" + segRef.getPosition());
                 segmentFlavor.setId(ObjectId.get().toString());
+                segmentFlavor.setTemporary(true);
                 segmentFlavor.setScope(SCOPE.USER);
                 segmentFlavor.setComments(attr.getComments());
 
@@ -268,6 +274,7 @@ public class FlavorServiceImpl implements FlavorService {
           Datatype datatypeFlavor = originalDt.clone();
           datatypeFlavor.setExt(ext + "_" + field.getPosition());
           datatypeFlavor.setId(ObjectId.get().toString());
+          datatypeFlavor.setTemporary(true);
           datatypeFlavor.setScope(SCOPE.USER);
           queryService.getDatatypesMap().put(datatypeFlavor.getId(), datatypeFlavor);
           field.getDatatype().setId(datatypeFlavor.getId());
@@ -319,6 +326,7 @@ public class FlavorServiceImpl implements FlavorService {
           Datatype datatypeFlavor = originalDt.clone();
           datatypeFlavor.setExt(ext + "_" + component.getPosition());
           datatypeFlavor.setId(ObjectId.get().toString());
+          datatypeFlavor.setTemporary(true);
           datatypeFlavor.setScope(SCOPE.USER);
           queryService.getDatatypesMap().put(datatypeFlavor.getId(), datatypeFlavor);
           component.getDatatype().setId(datatypeFlavor.getId());

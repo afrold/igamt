@@ -587,14 +587,15 @@ public class SerializationServiceImpl implements SerializationService {
           CompositeProfile compositeProfile = getDatatypeCompositeProfile(entry);
           SerializableDatatype serializableDatatype = null;
           if (compositeProfile != null) {
+
             serializableDatatype = serializeDatatypeService.serializeDatatype(entry,
                 prefix + "." + String.valueOf(datatypeLinkList.indexOf(entry) + 1),
                 datatypeLinkList.indexOf(entry), datatypeComponentsUsageConfig,
-                compositeProfile.getDatatypesMap());
+                compositeProfile.getDatatypesMap(),exportConfig.isIncludeDerivedDatatypes());
           } else {
             serializableDatatype = serializeDatatypeService.serializeDatatype(entry,
-                prefix + "." + String.valueOf(datatypeLinkList.indexOf(entry) + 1),
-                datatypeLinkList.indexOf(entry), datatypeComponentsUsageConfig);
+               prefix + "." + String.valueOf(datatypeLinkList.indexOf(entry) + 1),
+             datatypeLinkList.indexOf(entry), datatypeComponentsUsageConfig);
           }
           // This "if" is only useful if we want to display only user datatypes
           // if(serializeMaster||!(serializableDatatype.getDatatype().getScope().equals(Constant.SCOPE.HL7STANDARD))){

@@ -40,7 +40,8 @@ public class ExportConfig {
   private boolean includeProfileComponentTable = true;
 
   private boolean duplicateOBXDataTypeWhenFlavorNull = false;
-
+ 
+  private boolean includeDerivedDatatypes=false;
 
   private UsageConfig segmentORGroupsMessageExport;
   private UsageConfig segmentORGroupsCompositeProfileExport;
@@ -443,4 +444,12 @@ public class ExportConfig {
   public void setPhinvadsUpdateEmailNotification(boolean phinvadsUpdateEmailNotification) {
     this.phinvadsUpdateEmailNotification = phinvadsUpdateEmailNotification;
   }
+
+public boolean isIncludeDerivedDatatypes() {
+	return includeDerivedDatatypes;
+}
+
+public void setIncludeDerivedDatatypes(boolean includeDerivedDatatypes) {
+	this.includeDerivedDatatypes = includeDerivedDatatypes;
+}
 }
