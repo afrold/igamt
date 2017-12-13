@@ -70,8 +70,12 @@
             </md-content>
         </div>
         </div>
-        <div flex layout="row" >
-            <md-checkbox ng-model="config.includeDerivedDatatypes" ng-change="setChanged()"><label style="color: black">Include Derived Data Types</label></md-checkbox>
+        <div flex layout="row">
+            <md-checkbox ng-model="config.includeComposition" ng-change="setChanged()"><label style="color: black">Include Composition</label></md-checkbox>
         </div>
+        <div flex layout="row">
+            <md-checkbox ng-model="config.includeDerived" ng-change="setChanged()"><label style="color: black">Include Generated Flavors</label></md-checkbox>
+        </div>
+
     </div>
 </md-card-content>

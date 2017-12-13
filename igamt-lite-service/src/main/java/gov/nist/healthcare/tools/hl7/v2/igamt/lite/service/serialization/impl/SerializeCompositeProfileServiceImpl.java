@@ -99,7 +99,10 @@ public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrComp
                 }
             }
             String title = generateTitle(compositeProfile);
-            String composition=generateComposition(compositeProfile);
+            String composition =null;
+            if(exportConfig.getIncludeComposition()){
+            	composition=generateComposition(compositeProfile);
+            }
             HashMap<String, String> positionNameSegOrGroupMap = super.retrieveComponentsPaths(compositeProfile);
             SerializableCompositeProfile serializableCompositeProfile =
                 new SerializableCompositeProfile(compositeProfile, prefix, title,

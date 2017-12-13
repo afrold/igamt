@@ -591,7 +591,7 @@ public class SerializationServiceImpl implements SerializationService {
             serializableDatatype = serializeDatatypeService.serializeDatatype(entry,
                 prefix + "." + String.valueOf(datatypeLinkList.indexOf(entry) + 1),
                 datatypeLinkList.indexOf(entry), datatypeComponentsUsageConfig,
-                compositeProfile.getDatatypesMap(),exportConfig.isIncludeDerivedDatatypes());
+                compositeProfile.getDatatypesMap(),exportConfig.isIncludeDerived());
           } else {
             serializableDatatype = serializeDatatypeService.serializeDatatype(entry,
                prefix + "." + String.valueOf(datatypeLinkList.indexOf(entry) + 1),
@@ -881,11 +881,14 @@ public class SerializationServiceImpl implements SerializationService {
       if (segmentLink.getId() != null) {
         CompositeProfile compositeProfile = getSegmentCompositeProfile(segmentLink);
         if (compositeProfile != null) {
-          segmentsSection.addSection(serializeSegmentService.serializeSegment(segmentLink,
-              prefix + "." + String.valueOf(this.bindedSegments.indexOf(segmentLink) + 1),
-              bindedSegments.indexOf(segmentLink), 3, fieldsUsageConfig,
-              compositeProfile.getSegmentsMap(), compositeProfile.getDatatypesMap(),
-              compositeProfile.getTablesMap(), duplicateOBXDataTypeWhenFlavorNull));
+        	SerializableSection segmentSection=serializeSegmentService.serializeSegment(segmentLink,
+                    prefix + "." + String.valueOf(this.bindedSegments.indexOf(segmentLink) + 1),
+                    bindedSegments.indexOf(segmentLink), 3, fieldsUsageConfig,
+                    compositeProfile.getSegmentsMap(), compositeProfile.getDatatypesMap(),
+                    compositeProfile.getTablesMap(), duplicateOBXDataTypeWhenFlavorNull,exportConfig.isIncludeDerived());
+        	if(segmentSection !=null){
+        			segmentsSection.addSection(segmentSection);
+        			}
         } else {
           segmentsSection.addSection(serializeSegmentService.serializeSegment(segmentLink,
               prefix + "." + String.valueOf(bindedSegments.indexOf(segmentLink) + 1),

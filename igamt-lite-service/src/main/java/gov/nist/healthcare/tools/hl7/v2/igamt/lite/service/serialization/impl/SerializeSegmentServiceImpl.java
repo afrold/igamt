@@ -71,10 +71,13 @@ import javax.xml.crypto.Data;
 
     @Override public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix,
         Integer position, Integer headerLevel, UsageConfig segmentUsageConfig,
-        Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean duplicateOBXDataTypeWhenFlavorNull) throws SegmentSerializationException {
+        Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean duplicateOBXDataTypeWhenFlavorNull,Boolean includeTemorary) throws SegmentSerializationException {
         Segment segment = compositeProfileSegments.get(segmentLink.getId());
+        if(segment.isTemporary() && !includeTemorary){
+        	return null;
+        }
         return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,compositeProfileDatatypes,compositeProfileTables, false, duplicateOBXDataTypeWhenFlavorNull, null);
-    }
+        }
 
     private SerializableSection serializeSegment(Segment segment, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean showInnerLinks, Boolean duplicateOBXDataTypeWhenFlavorNull, String host) throws SegmentSerializationException {
         if (segment != null) {

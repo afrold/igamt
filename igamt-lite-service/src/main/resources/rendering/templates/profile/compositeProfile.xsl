@@ -7,11 +7,14 @@
     <xsl:include href="/rendering/templates/profile/commentList.xsl"/>
     <xsl:include href="/rendering/templates/profile/definitionText.xsl"/>
     <xsl:template match="CompositeProfile">
+            <xsl:if test="count(./@Composition) &gt; 0">
+   
         <xsl:element name="span">
             <xsl:element name="b">
                 <xsl:text>Composition</xsl:text>
             </xsl:element>
         </xsl:element>     
+        </xsl:if>
   				<br/>
                 <xsl:value-of select="./@Composition"></xsl:value-of>
                 <br/>
