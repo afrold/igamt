@@ -953,18 +953,18 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
     });
   };
   $rootScope.addMorePcsToCompositeProfile = function (compositeProfile) {
-    var createCMInstance = $modal.open({
+    var createCMInstance = $mdDialog.show({
       templateUrl: 'addMorePcsToCompositeProfile.html',
       controller: 'addMorePcsToCompositeProfileCtrl',
+        scope: $rootScope,
+        preserveScope: true,
 
-      windowClass: 'composite-profiles-modal',
-      resolve: {
-        compositeProfileStructure: function () {
-          return compositeProfile;
+      locals: {
+        compositeProfileStructure:compositeProfile
         }
 
-      }
-    }).result.then(function (results) {
+
+    }).then(function (results) {
       console.log("$rootScope.compositeProfilesStructureMap");
       console.log($rootScope.compositeProfilesStructureMap);
       $rootScope.editCM(results);
