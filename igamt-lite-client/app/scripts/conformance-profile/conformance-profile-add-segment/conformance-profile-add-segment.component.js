@@ -139,6 +139,9 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, s
 
         var path = place.path.replace(/\[[0-9]+\]/g, '');
         path = path.split(".");
+        console.log("inserting in path:" +path);
+
+
         $scope.insertInPath(path, $rootScope.message, $scope.newSegment);
     }
     $rootScope.messageTree = null;
@@ -149,19 +152,19 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, s
 
   };
   $scope.insertInPath=function(path,messageOrGroup,segment){
+    console.log(path);
 
     if(path.length===1){
-      var list=messageOrGroup.children[path[0]-1].children;
+      var list=messageOrGroup.children[parseInt(path[0]) -1].children;
       var position=segment.position;
       var element= segment;
-      $scope.insertInList(position,list, element);
+
+        $scope.insertInList(position,list, element);
     }
     else{
-      var oldPAth=angular.copy(path);
-      var newPath=path.splice(0,1);
-
-
-      $scope.insertInPath(newPath,messageOrGroup.children[oldPath[0]-1],segment);
+      var rest=_.rest(path);
+      console.log(rest);
+      $scope.insertInPath(rest,messageOrGroup.children[parseInt(path[0])-1],segment);
 
     }
   };
