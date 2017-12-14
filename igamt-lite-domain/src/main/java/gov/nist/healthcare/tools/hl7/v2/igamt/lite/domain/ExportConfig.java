@@ -40,7 +40,8 @@ public class ExportConfig {
   private boolean includeProfileComponentTable = true;
 
   private boolean duplicateOBXDataTypeWhenFlavorNull = false;
-
+ 
+  private boolean includeDerived=false;
 
   private UsageConfig segmentORGroupsMessageExport;
   private UsageConfig segmentORGroupsCompositeProfileExport;
@@ -51,6 +52,7 @@ public class ExportConfig {
   private UsageConfig profileComponentItemsExport;
 
   private UsageConfig valueSetsExport;
+  private boolean includeComposition;
   private CodeUsageConfig codesExport;
   private boolean phinvadsUpdateEmailNotification;
 
@@ -443,4 +445,20 @@ public class ExportConfig {
   public void setPhinvadsUpdateEmailNotification(boolean phinvadsUpdateEmailNotification) {
     this.phinvadsUpdateEmailNotification = phinvadsUpdateEmailNotification;
   }
+
+public boolean isIncludeDerived() {
+	return includeDerived;
+}
+
+public void setIncludeDerived(boolean includeDerivedDatatypes) {
+	this.includeDerived = includeDerivedDatatypes;
+}
+
+public boolean getIncludeComposition() {
+	return includeComposition;
+}
+
+public void setIncludeComposition(boolean includeComposition) {
+	this.includeComposition = includeComposition;
+}
 }

@@ -1884,11 +1884,24 @@
 
 
 <script type="text/ng-template" id="addMorePcsToCompositeProfile.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Add Profile Components to {{compositeProfileStructure.name}}</h3>
-    </div>
-    <form role="form">
-        <div class="modal-body" style="height:500px;overflow-y:scroll">
+
+
+
+
+    <md-dialog aria-label="Add More PCS ">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Add Profile Components to {{compositeProfileStructure.name}} </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content medium-dialog">
             <div layout="row">
                 <div flex="30">
 
@@ -2020,24 +2033,20 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="modal-footer">
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
 
+                <md-button class="btn btn-raised btn-info btn-sm" ng-disabled="pcList.length<1" ng-click="update()">
+                    <span><i class="fa fa-check fa-fw">&nbsp; </i>Add</span>
+                </md-button>
 
-            <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
-                        &nbsp; </i>Cancel</span>
-            </button>
-            <button class="btn btn-raised btn-info btn-sm" ng-disabled="pcList.length<1" ng-click="update()">
-                <span><i class="fa fa-check fa-fw">&nbsp; </i>Add</span>
-            </button>
-
-        </div>
-    </form>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
 </script>
 
 

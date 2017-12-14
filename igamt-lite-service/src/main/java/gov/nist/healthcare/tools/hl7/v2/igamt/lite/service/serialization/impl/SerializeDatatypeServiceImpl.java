@@ -69,12 +69,16 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
     @Override
     public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix,
         Integer position, UsageConfig datatypeUsageConfig,
-        Map<String, Datatype> componentProfileDatatypes) throws DatatypeSerializationException {
+        Map<String, Datatype> componentProfileDatatypes, boolean includeTemporay) throws DatatypeSerializationException {
         if(datatypeLink!=null && datatypeLink.getId()!=null) {
             Datatype datatype = componentProfileDatatypes.get(datatypeLink.getId());
             if(datatype == null){
                 throw new DatatypeSerializationException(new DatatypeNotFoundException(datatypeLink.getId()),datatypeLink.getLabel());
             }
+            if(!includeTemporay&&datatype.isTemporary()){
+            	return null;
+            }
+
             String headerLevel = String.valueOf(3);
             return serializeDatatype(datatype,headerLevel,prefix,position,datatypeUsageConfig, false,null);
         }

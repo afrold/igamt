@@ -7,7 +7,19 @@
     <xsl:include href="/rendering/templates/profile/commentList.xsl"/>
     <xsl:include href="/rendering/templates/profile/definitionText.xsl"/>
     <xsl:template match="CompositeProfile">
+            <xsl:if test="count(./@Composition) &gt; 0">
+   
+        <xsl:element name="span">
+            <xsl:element name="b">
+                <xsl:text>Composition</xsl:text>
+            </xsl:element>
+        </xsl:element>     
+        </xsl:if>
+  				<br/>
+                <xsl:value-of select="./@Composition"></xsl:value-of>
+                <br/>
         <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0">
+        
             <xsl:call-template name="definitionText">
                 <xsl:with-param name="type">
                     <xsl:text>pre</xsl:text>
@@ -19,7 +31,8 @@
             <xsl:element name="b">
                 <xsl:text>Composite Profile Definition</xsl:text>
             </xsl:element>
-        </xsl:element>        <xsl:element name="table">
+        </xsl:element>       
+         <xsl:element name="table">
             <xsl:attribute name="class">
                 <xsl:text>contentTable</xsl:text>
             </xsl:attribute>

@@ -37,12 +37,13 @@ public class SerializableCompositeProfile extends SerializableSection {
     private List<Table> tables;
     private boolean showConfLength;
     private HashMap<String,String> locationPathMap;
+    private String composition;
     
     public SerializableCompositeProfile(CompositeProfile compositeProfile, String prefix, String title,
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups,
         SerializableConstraints serializableConformanceStatements,
         SerializableConstraints serializablePredicates, String usageNote, String defPreText,
-        String defPostText, List<Table> tables, HashMap<String,String> locationPathMap, Boolean showConfLength) {
+        String defPostText, List<Table> tables, HashMap<String,String> locationPathMap, Boolean showConfLength , String Composition) {
         super(compositeProfile.getIdentifier(),
             prefix + "." + String.valueOf(compositeProfile.getPosition()),
             String.valueOf(compositeProfile.getPosition() + 1),
@@ -55,13 +56,19 @@ public class SerializableCompositeProfile extends SerializableSection {
         this.defPreText = defPreText;
         this.defPostText = defPostText;
         this.tables = tables;
+        this.composition=Composition;
         this.showConfLength = showConfLength;
         this.locationPathMap = locationPathMap;
     }
 
-    @Override public Element serializeElement() throws CompositeProfileSerializationException {
+    @Override 
+    public Element serializeElement() throws CompositeProfileSerializationException {
         try {
             Element compositeProfileElement = new Element("CompositeProfile");
+            if(this.composition!=null && !this.composition.isEmpty()){
+                compositeProfileElement
+                .addAttribute(new Attribute("Composition", this.composition + ""));	
+            }
             compositeProfileElement
                 .addAttribute(new Attribute("ID", this.compositeProfile.getIdentifier() + ""));
             compositeProfileElement
@@ -164,4 +171,7 @@ public class SerializableCompositeProfile extends SerializableSection {
     public List<SerializableSegmentRefOrGroup> getSerializableSegmentRefOrGroups() {
         return serializableSegmentRefOrGroups;
     }
+
+    
+    
 }

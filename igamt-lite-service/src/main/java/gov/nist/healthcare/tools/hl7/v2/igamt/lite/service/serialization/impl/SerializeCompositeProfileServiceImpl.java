@@ -1,6 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,8 +12,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exceptio
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ApplyInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
@@ -21,6 +25,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeCompositeProfileService;
@@ -43,6 +49,12 @@ public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrComp
 
 	@Autowired
 	TableService tableService;
+	
+	@Autowired
+	MessageService messageService;
+	
+	@Autowired
+	ProfileComponentService pcService;
 	
     @Override
     public SerializableCompositeProfile serializeCompositeProfile(CompositeProfile compositeProfile,
@@ -87,12 +99,17 @@ public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrComp
                 }
             }
             String title = generateTitle(compositeProfile);
+            String composition =null;
+            if(exportConfig.getIncludeComposition()){
+            	composition=generateComposition(compositeProfile);
+            }
             HashMap<String, String> positionNameSegOrGroupMap = super.retrieveComponentsPaths(compositeProfile);
             SerializableCompositeProfile serializableCompositeProfile =
                 new SerializableCompositeProfile(compositeProfile, prefix, title,
                     serializableSegmentRefOrGroups, serializableConformanceStatements,
                     serializablePredicates, usageNote, defPreText, defPostText, tables,
-                    positionNameSegOrGroupMap, showConfLength);
+                    positionNameSegOrGroupMap, showConfLength, composition);
+            
             SerializableSection compositeProfileSegments =
                 new SerializableSection(compositeProfile.getIdentifier() + "_segments",
                     prefix + "." + String.valueOf(compositeProfile.getPosition()) + "."
@@ -122,7 +139,25 @@ public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrComp
         }
     }
 
-    private String generateTitle(CompositeProfile compositeProfile) {
+    private String generateComposition(CompositeProfile compositeProfile) {
+		// TODO Auto-generated method stub
+		String start =generateTitle(compositeProfile) + " = ";
+		
+		Message message= messageService.findById(compositeProfile.getCoreProfileId());
+		start = start +message.getMessageType() + "^" + message.getEvent() + "^" + message.getStructID();
+		
+		List<ApplyInfo> pcs= compositeProfile.getProfileComponents();
+		Collections.sort(pcs);
+		for(ApplyInfo pc : pcs){
+			ProfileComponent component = pcService.findById(pc.getId());
+			if(component!=null){
+				start =start+"+"+ component.getName();
+			}
+		}
+		return start;
+	}
+
+	private String generateTitle(CompositeProfile compositeProfile) {
         String title = "";
         if(compositeProfile.getName() != null){
             title = compositeProfile.getName();

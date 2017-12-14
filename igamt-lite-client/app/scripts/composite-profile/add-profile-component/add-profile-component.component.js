@@ -5,7 +5,7 @@
 
 
 angular.module('igl').controller('addMorePcsToCompositeProfileCtrl',
-  function ($scope, $rootScope, $modalInstance, $http, $filter, compositeProfileStructure, PcService, IgDocumentService, CompositeProfileService) {
+  function ($scope, $rootScope, $mdDialog, $http, $filter, compositeProfileStructure, PcService, IgDocumentService, CompositeProfileService) {
     console.log(compositeProfileStructure);
     $scope.compositeProfileStructure = compositeProfileStructure;
     $rootScope.coreMessageMetaData = {
@@ -122,7 +122,7 @@ angular.module('igl').controller('addMorePcsToCompositeProfileCtrl',
           }
 
           console.log($rootScope.igdocument);
-          $modalInstance.close(cpStructure);
+          $mdDialog.hide(cpStructure);
 
         });
 
@@ -131,7 +131,7 @@ angular.module('igl').controller('addMorePcsToCompositeProfileCtrl',
     };
 
     $scope.cancel = function () {
-      $modalInstance.dismiss('cancel');
+      $mdDialog.hide('cancel');
     };
 
 

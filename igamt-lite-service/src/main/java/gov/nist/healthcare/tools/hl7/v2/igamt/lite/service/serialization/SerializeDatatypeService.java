@@ -27,9 +27,10 @@ public interface SerializeDatatypeService {
         Integer position, UsageConfig datatypeUsageConfig) throws DatatypeSerializationException;
 
     public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix,
-        Integer position, UsageConfig datatypeUsageConfig, Map<String,Datatype> componentProfileDatatypes)
+        Integer position, UsageConfig datatypeUsageConfig, Map<String,Datatype> componentProfileDatatypes, boolean includeTemporay)
         throws DatatypeSerializationException;
 
     public SerializableDatatype serializeDatatype(Datatype datatype, String host)
         throws DatatypeSerializationException;
+
 }

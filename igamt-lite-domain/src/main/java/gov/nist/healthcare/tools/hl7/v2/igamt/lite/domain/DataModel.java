@@ -21,7 +21,16 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SourceType;
 public abstract class DataModel {
 
   protected Date dateUpdated;
-  protected boolean duplicated = false;
+  protected boolean temporary =false;
+  public boolean isTemporary() {
+	return temporary;
+}
+
+public void setTemporary(boolean temporary) {
+	this.temporary = temporary;
+}
+
+protected boolean duplicated = false;
 
   /**
    * @return the duplicated

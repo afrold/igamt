@@ -587,14 +587,15 @@ public class SerializationServiceImpl implements SerializationService {
           CompositeProfile compositeProfile = getDatatypeCompositeProfile(entry);
           SerializableDatatype serializableDatatype = null;
           if (compositeProfile != null) {
+
             serializableDatatype = serializeDatatypeService.serializeDatatype(entry,
                 prefix + "." + String.valueOf(datatypeLinkList.indexOf(entry) + 1),
                 datatypeLinkList.indexOf(entry), datatypeComponentsUsageConfig,
-                compositeProfile.getDatatypesMap());
+                compositeProfile.getDatatypesMap(),exportConfig.isIncludeDerived());
           } else {
             serializableDatatype = serializeDatatypeService.serializeDatatype(entry,
-                prefix + "." + String.valueOf(datatypeLinkList.indexOf(entry) + 1),
-                datatypeLinkList.indexOf(entry), datatypeComponentsUsageConfig);
+               prefix + "." + String.valueOf(datatypeLinkList.indexOf(entry) + 1),
+             datatypeLinkList.indexOf(entry), datatypeComponentsUsageConfig);
           }
           // This "if" is only useful if we want to display only user datatypes
           // if(serializeMaster||!(serializableDatatype.getDatatype().getScope().equals(Constant.SCOPE.HL7STANDARD))){
@@ -880,11 +881,14 @@ public class SerializationServiceImpl implements SerializationService {
       if (segmentLink.getId() != null) {
         CompositeProfile compositeProfile = getSegmentCompositeProfile(segmentLink);
         if (compositeProfile != null) {
-          segmentsSection.addSection(serializeSegmentService.serializeSegment(segmentLink,
-              prefix + "." + String.valueOf(this.bindedSegments.indexOf(segmentLink) + 1),
-              bindedSegments.indexOf(segmentLink), 3, fieldsUsageConfig,
-              compositeProfile.getSegmentsMap(), compositeProfile.getDatatypesMap(),
-              compositeProfile.getTablesMap(), duplicateOBXDataTypeWhenFlavorNull));
+        	SerializableSection segmentSection=serializeSegmentService.serializeSegment(segmentLink,
+                    prefix + "." + String.valueOf(this.bindedSegments.indexOf(segmentLink) + 1),
+                    bindedSegments.indexOf(segmentLink), 3, fieldsUsageConfig,
+                    compositeProfile.getSegmentsMap(), compositeProfile.getDatatypesMap(),
+                    compositeProfile.getTablesMap(), duplicateOBXDataTypeWhenFlavorNull,exportConfig.isIncludeDerived());
+        	if(segmentSection !=null){
+        			segmentsSection.addSection(segmentSection);
+        			}
         } else {
           segmentsSection.addSection(serializeSegmentService.serializeSegment(segmentLink,
               prefix + "." + String.valueOf(bindedSegments.indexOf(segmentLink) + 1),
