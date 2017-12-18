@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CoConstraintExportMode;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
@@ -64,12 +65,12 @@ public abstract class SerializeMessageOrCompositeProfile {
 
     protected int segmentPosition = 1;
 
-    protected void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentUsageConfig, UsageConfig fieldsUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull)
+    protected void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentUsageConfig, UsageConfig fieldsUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull,CoConstraintExportMode coConstraintExportMode)
         throws SegmentSerializationException {
-        serializeSegment(segmentRefOrGroup, prefix, segmentsSection, segmentUsageConfig, fieldsUsageConfig, duplicateOBXDataTypeWhenFlavorNull, null);
+        serializeSegment(segmentRefOrGroup, prefix, segmentsSection, segmentUsageConfig, fieldsUsageConfig, duplicateOBXDataTypeWhenFlavorNull, null, coConstraintExportMode);
     }
 
-    protected void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentUsageConfig, UsageConfig fieldsUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull, Map<String,Segment> compositeProfileSegments)
+    protected void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentUsageConfig, UsageConfig fieldsUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull, Map<String,Segment> compositeProfileSegments, CoConstraintExportMode coConstraintExportMode)
         throws SegmentSerializationException {
         this.compositeProfileSegments = compositeProfileSegments;
         if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),segmentUsageConfig)) {
@@ -78,7 +79,7 @@ public abstract class SerializeMessageOrCompositeProfile {
                 if (!messageSegmentsNameList.contains(segmentLink.getId())) {
                     segmentsSection.addSection(serializeSegmentService
                         .serializeSegment(segmentLink, prefix + String.valueOf(segmentPosition),
-                            segmentPosition, 5, fieldsUsageConfig, duplicateOBXDataTypeWhenFlavorNull));
+                            segmentPosition, 5, fieldsUsageConfig, duplicateOBXDataTypeWhenFlavorNull, coConstraintExportMode));
                     messageSegmentsNameList.add(segmentLink.getId());
                     segmentPosition++;
                 }
@@ -90,7 +91,7 @@ public abstract class SerializeMessageOrCompositeProfile {
                 for (SegmentRefOrGroup groupSegmentRefOrGroup : ((Group) segmentRefOrGroup)
                     .getChildren()) {
                     serializeSegment(groupSegmentRefOrGroup, prefix, segmentsSection,
-                        segmentUsageConfig, fieldsUsageConfig, duplicateOBXDataTypeWhenFlavorNull);
+                        segmentUsageConfig, fieldsUsageConfig, duplicateOBXDataTypeWhenFlavorNull, coConstraintExportMode);
                 }
             }
         }

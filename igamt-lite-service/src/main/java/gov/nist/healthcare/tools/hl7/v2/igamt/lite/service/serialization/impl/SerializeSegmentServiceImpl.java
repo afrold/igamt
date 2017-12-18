@@ -11,6 +11,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exceptio
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CoConstraintExportMode;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingItem;
@@ -64,22 +65,22 @@ import javax.xml.crypto.Data;
     @Autowired SerializeConstraintService serializeConstraintService;
 
     @Override
-    public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull) throws SegmentSerializationException {
+    public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull,CoConstraintExportMode coConstraintExportMode) throws SegmentSerializationException {
         Segment segment = segmentService.findById(segmentLink.getId());
-        return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,null,null, false, duplicateOBXDataTypeWhenFlavorNull, null);
+        return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,null,null, false, duplicateOBXDataTypeWhenFlavorNull, null, coConstraintExportMode);
     }
 
     @Override public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix,
         Integer position, Integer headerLevel, UsageConfig segmentUsageConfig,
-        Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean duplicateOBXDataTypeWhenFlavorNull,Boolean includeTemorary) throws SegmentSerializationException {
+        Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean duplicateOBXDataTypeWhenFlavorNull,Boolean includeTemorary,CoConstraintExportMode coConstraintExportMode) throws SegmentSerializationException {
         Segment segment = compositeProfileSegments.get(segmentLink.getId());
         if(segment.isTemporary() && !includeTemorary){
         	return null;
         }
-        return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,compositeProfileDatatypes,compositeProfileTables, false, duplicateOBXDataTypeWhenFlavorNull, null);
+        return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,compositeProfileDatatypes,compositeProfileTables, false, duplicateOBXDataTypeWhenFlavorNull, null, coConstraintExportMode);
         }
 
-    private SerializableSection serializeSegment(Segment segment, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean showInnerLinks, Boolean duplicateOBXDataTypeWhenFlavorNull, String host) throws SegmentSerializationException {
+    private SerializableSection serializeSegment(Segment segment, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean showInnerLinks, Boolean duplicateOBXDataTypeWhenFlavorNull, String host, CoConstraintExportMode coConstraintExportMode) throws SegmentSerializationException {
         if (segment != null) {
             try {
                 //Create section node
@@ -253,7 +254,7 @@ import javax.xml.crypto.Data;
                         constraints, fieldDatatypeMap, fieldValueSetBindingsMap, tables,
                         coConstraintValueTableMap, dynamicMappingDatatypeMap, showConfLength,
                         showInnerLinks, duplicateOBXDataTypeWhenFlavorNull, host,
-                        coConstraintDatatypeMap);
+                        coConstraintDatatypeMap, coConstraintExportMode);
                 serializableSegmentSection.addSection(serializableSegment);
                 return serializableSegmentSection;
             } catch (Exception e){
@@ -274,7 +275,7 @@ import javax.xml.crypto.Data;
 	@Override
 	public SerializableSection serializeSegment(Segment segment, String host) throws SegmentSerializationException {
 		ExportConfig defaultConfig = ExportConfig.getBasicExportConfig(true);
-		return serializeSegment(segment, String.valueOf(0), 1, 1, defaultConfig.getFieldsExport(), null, null, true, false, host);
+		return serializeSegment(segment, String.valueOf(0), 1, 1, defaultConfig.getFieldsExport(), null, null, true, false, host,defaultConfig.getCoConstraintExportMode());
 	}
 
 }

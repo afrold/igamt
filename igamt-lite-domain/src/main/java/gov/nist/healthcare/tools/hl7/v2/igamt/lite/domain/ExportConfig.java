@@ -40,6 +40,8 @@ public class ExportConfig {
   private boolean includeProfileComponentTable = true;
 
   private boolean duplicateOBXDataTypeWhenFlavorNull = false;
+  
+  private CoConstraintExportMode coConstraintExportMode = CoConstraintExportMode.COMPACT;
  
   private boolean includeDerived=false;
 
@@ -72,6 +74,7 @@ public class ExportConfig {
 
   public static ExportConfig getBasicExportConfig(boolean setAllTrue) {
     ExportConfig defaultConfiguration = new ExportConfig();
+    defaultConfiguration.setCoConstraintExportMode(CoConstraintExportMode.COMPACT);
     defaultConfiguration.setDefaultType(true);
     defaultConfiguration.setAccountId(null);
     defaultConfiguration.setIncludeMessageTable(true);
@@ -460,5 +463,13 @@ public boolean getIncludeComposition() {
 
 public void setIncludeComposition(boolean includeComposition) {
 	this.includeComposition = includeComposition;
+}
+
+public CoConstraintExportMode getCoConstraintExportMode() {
+	return coConstraintExportMode;
+}
+
+public void setCoConstraintExportMode(CoConstraintExportMode coConstraintExportMode) {
+	this.coConstraintExportMode = coConstraintExportMode;
 }
 }
