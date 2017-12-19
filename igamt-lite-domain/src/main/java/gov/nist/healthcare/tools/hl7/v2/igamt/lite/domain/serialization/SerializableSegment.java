@@ -699,6 +699,7 @@ public class SerializableSegment extends SerializableSection {
     		                        || coConstraintTHENColumnData.getValueData().getValue() == null || coConstraintTHENColumnData.getValueData().getValue().isEmpty()) {
     		                    } else {
     		                      row.setValue(coConstraintTHENColumnData.getValueData().getValue());
+    		                      row.setKey(row.getKey()+"(Value)");
     		                      line.children.add(row);
     		                      rowsPan++;
     		                    }
@@ -711,6 +712,7 @@ public class SerializableSegment extends SerializableSection {
     		                      }
     		                    }
     		                    row.setValue(StringUtils.join(valueSetsList, ","));
+    		                    row.setKey(row.getKey()+"(Value Set)");
     		                    line.children.add(row);
   		                      	rowsPan++;
     		                  }   		

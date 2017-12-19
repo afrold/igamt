@@ -102,7 +102,7 @@
                             </div>
                             <hr/>
                             <div>
-                                <label style="color:black">Display</label> <md-radio-group ng-model="config.coConstraintExportMode">
+                                <label style="color:black">Display</label> <md-radio-group ng-model="config.coConstraintExportMode" ng-change="setChanged()">
                                 <md-radio-button value="COMPACT">Compact</md-radio-button>
                                 <md-radio-button value="VERBOSE">Verbose</md-radio-button>
                             </md-radio-group>
