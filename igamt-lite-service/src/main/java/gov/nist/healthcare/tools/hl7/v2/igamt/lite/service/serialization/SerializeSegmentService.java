@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
 
 import java.util.Map;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CoConstraintExportMode;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
@@ -26,8 +27,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exceptio
  */
 public interface SerializeSegmentService {
     public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix,
-        Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull) throws SegmentSerializationException;
+        Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull,CoConstraintExportMode coConstraintExportMode) throws SegmentSerializationException;
     public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix,
-        Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean duplicateOBXDataTypeWhenFlavorNull ,Boolean includeTemporay) throws SegmentSerializationException;
+        Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean duplicateOBXDataTypeWhenFlavorNull ,Boolean includeTemporay,CoConstraintExportMode coConstraintExportMode) throws SegmentSerializationException;
 	public SerializableSection serializeSegment(Segment segment, String host) throws SegmentSerializationException;
 }

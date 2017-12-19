@@ -26,7 +26,8 @@
         </xsl:text>
         <xsl:text>.contentTable { width:100%; border-spacing: 0px;border-collapse: collapse; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px ; border-left-width: 1px; }</xsl:text>
         <xsl:text>.contentThead { background:#F0F0F0; color:#B21A1C; align:center; }</xsl:text>
-        <xsl:text>.ifContentThead { background:#b3b3b3;}</xsl:text>
+        <xsl:text>.ifContentThead { background:rgb(21, 101, 192)}</xsl:text>
+        <xsl:text>.ifContent{ background:#b1daff}</xsl:text>
         <xsl:text>img {text-align:center;}</xsl:text>
         <xsl:text>.contentTr { background-color:white; text-decoration:normal; }</xsl:text>
         <xsl:text>.constraintTr { background-color:#E8E8E8; text-decoration:normal; }</xsl:text>
@@ -34,6 +35,9 @@
         <xsl:text>.contentTable td, .contentTable th {border: 1px solid black;}</xsl:text>
         <xsl:text>.requiredDTM{background-color:#6495ed!important;}</xsl:text>
         <xsl:text>.greyCell{background-color:#808080;}</xsl:text>
+        <xsl:text>.greenHeader{background-color:rgb(76, 175, 80);}</xsl:text>
+        <xsl:text>.greenContent{background-color:#a7d6a9;}</xsl:text>
+        
         <xsl:text>.codeParagraph{display: block;padding: 9.5px;margin: 0 0 10px;line-height: 1.428571429;word-break: break-all;word-wrap: break-word;color: #333;background-color: #f5f5f5;border: 1px solid #ccc;border-radius: 4px;}</xsl:text>
     </xsl:template>
 

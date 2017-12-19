@@ -885,7 +885,7 @@ public class SerializationServiceImpl implements SerializationService {
                     prefix + "." + String.valueOf(this.bindedSegments.indexOf(segmentLink) + 1),
                     bindedSegments.indexOf(segmentLink), 3, fieldsUsageConfig,
                     compositeProfile.getSegmentsMap(), compositeProfile.getDatatypesMap(),
-                    compositeProfile.getTablesMap(), duplicateOBXDataTypeWhenFlavorNull,exportConfig.isIncludeDerived());
+                    compositeProfile.getTablesMap(), duplicateOBXDataTypeWhenFlavorNull,exportConfig.isIncludeDerived(),exportConfig.getCoConstraintExportMode());
         	if(segmentSection !=null){
         			segmentsSection.addSection(segmentSection);
         			}
@@ -893,7 +893,7 @@ public class SerializationServiceImpl implements SerializationService {
           segmentsSection.addSection(serializeSegmentService.serializeSegment(segmentLink,
               prefix + "." + String.valueOf(bindedSegments.indexOf(segmentLink) + 1),
               bindedSegments.indexOf(segmentLink), 3, fieldsUsageConfig,
-              duplicateOBXDataTypeWhenFlavorNull));
+              duplicateOBXDataTypeWhenFlavorNull,exportConfig.getCoConstraintExportMode()));
         }
       }
     }
