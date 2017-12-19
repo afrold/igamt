@@ -31,6 +31,8 @@ export class CanDeactivateGuard implements CanDeactivate<SegmentEditComponent> {
       console.log("saving");
       return true;
 
+    }else{
+      return true;
     }
 
   }
