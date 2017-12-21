@@ -27,6 +27,10 @@ import {InlineProfileComponent} from './app.profile.component';
 import {GeneralConfigurationService} from "./service/general-configuration/general-configuration.service";
 import {SegmentsService} from "./service/segments/segments.service";
 import {ProfileComponentsService} from "./service/profilecomponents/profilecomponents.service";
+import {LoginComponent} from "./login/login.component"
+import {AuthService} from "./login/auth.service";
+import {AuthGuard} from "./login/auth-guard.service";
+
 
 @NgModule({
   declarations: [
@@ -39,7 +43,9 @@ import {ProfileComponentsService} from "./service/profilecomponents/profilecompo
     AppSubMenuComponent,
     AppTopBarComponent,
     AppFooterComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    LoginComponent
+
   ],
   exports : [ ],
   imports: [
@@ -49,7 +55,8 @@ import {ProfileComponentsService} from "./service/profilecomponents/profilecompo
     PanelModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutes,
+
+  AppRoutes,
     HttpModule,
     BrowserAnimationsModule,
     MenubarModule
@@ -63,7 +70,9 @@ import {ProfileComponentsService} from "./service/profilecomponents/profilecompo
     DatatypesService,
     ValueSetsService,
     SegmentsService,
-    ProfileComponentsService
+    ProfileComponentsService,
+    AuthService,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

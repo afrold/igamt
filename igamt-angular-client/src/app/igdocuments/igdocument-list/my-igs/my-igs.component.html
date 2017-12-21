@@ -1,4 +1,4 @@
-<p-orderList [value]="igs" [listStyle]="{'height':'250px'}" [responsive]="true" header="IG Document" styleClass="list-ig"
+<p-orderList [value]="igs" [listStyle]="{'height':'250px', 'margin-left':'90px'}" [responsive]="true" header="IG Document" styleClass="list-ig"
              filter="filter" filterBy="metaData.title" filterPlaceholder="Filter by title" dragdrop="true" dragdropScope="igdocument">
   <ng-template let-ig pTemplate="item">
     <div routerLink="{{'/ig-documents/igdocuments-edit/'+ig.id}}"><a>{{ig.metaData.title}}</a></div>

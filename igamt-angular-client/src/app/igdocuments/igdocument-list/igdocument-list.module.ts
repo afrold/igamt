@@ -9,13 +9,15 @@ import {IgDocumentListRoutingModule} from './igdocument-list-routing.module';
 import {TabMenuModule} from 'primeng/primeng';
 
 import {OrderListModule} from 'primeng/primeng';
+import {PickListModule} from 'primeng/primeng';
+
 import {IgListService} from "./igdocument-list.service";
 @NgModule({
 	imports: [
 		CommonModule,
 		IgDocumentListRoutingModule,
 		TabMenuModule,
-    OrderListModule
+    OrderListModule,PickListModule
 	],
 	declarations: [
 		IgDocumentListComponent, MyIgsComponent, PreloadedIgsComponent, SharedIgsComponent, AllIgsComponent

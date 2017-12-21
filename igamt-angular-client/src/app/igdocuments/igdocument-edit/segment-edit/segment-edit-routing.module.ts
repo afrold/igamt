@@ -6,6 +6,7 @@ import {NgModule} from "@angular/core";
 import {SegmentEditComponent} from "./segment-edit.component";
 import {SegmentGuard} from "./segment-edit.guard";
 import {CanDeactivateGuard} from "./segment-can-desactivate.service";
+import {AuthGuard} from "./../../../login/auth-guard.service";
 
 @NgModule({
   imports: [
@@ -13,7 +14,7 @@ import {CanDeactivateGuard} from "./segment-can-desactivate.service";
       {
         path: ':id',
         component: SegmentEditComponent,
-        canActivate : [ SegmentGuard ],
+        canActivate : [ SegmentGuard,AuthGuard ],
         canDeactivate: [CanDeactivateGuard],
 
         children: [
