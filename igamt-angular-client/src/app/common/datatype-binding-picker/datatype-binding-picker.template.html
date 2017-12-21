@@ -3,10 +3,10 @@
         Select Datatype
     </p-header>
     <div class="g-row">
-        <p-dropdown [options]="options" appendTo="body" [(ngModel)]="selectedDatatype" [style]="{'width':'150px'}" filter="true">
+        <p-dropdown [options]="options" appendTo="body" [(ngModel)]="selectedDatatype" [style]="{'width':'300px'}" filter="true">
             <ng-template let-dt pTemplate="body">
                 <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-                    <display-label [elm]="datatypes[dt.value]"></display-label>
+                    <display-label [elm]="dt.value"></display-label>
                 </div>
             </ng-template>
         </p-dropdown>

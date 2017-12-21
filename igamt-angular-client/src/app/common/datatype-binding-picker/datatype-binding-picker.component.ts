@@ -11,9 +11,9 @@ import {SelectItem} from 'primeng/primeng';
     templateUrl : 'datatype-binding-picker.template.html'
 })
 export class DatatypeBindingPickerComponent extends PrimeDialogAdapter  {
-    public datatypes : any = {};
-    public selectedDatatype : string = "";
+    public selectedDatatypeId : string = "";
     options: SelectItem[];
+    selectedDatatype : any;
 
     constructor(private $http : Http){
         super();
@@ -26,11 +26,14 @@ export class DatatypeBindingPickerComponent extends PrimeDialogAdapter  {
     onDialogOpen(){
         let ctrl = this;
         this.options = [];
-        if(this.datatypes){
-            for(let key of Object.keys(this.datatypes)){
-                this.options.push({label:this.datatypes[key].label , value: key});
+        this.getDatatypes().subscribe(datatypes => {
+            if(datatypes){
+                for(let dt of datatypes){
+                    this.options.push({label:dt.label , value: dt});
+                    if(this.selectedDatatypeId === dt.id) this.selectedDatatype = dt;
+                }
             }
-        }
+        });
     }
 
     ngOnInit(){
@@ -57,5 +60,9 @@ export class DatatypeBindingPickerComponent extends PrimeDialogAdapter  {
     hasSameVersion(element) {
         if (element) return element.hl7Version;
         return null;
+    }
+
+    getDatatypes() {
+        return this.$http.get('api/datatype/').map(res => res.json());
     }
 }

@@ -22,30 +22,11 @@
     ],
     "predicates": [],
     "conformanceStatements": [],
-    "id": "588f2d3e84ae56b0b8a3f52a",
-    "label": "CWE_BR",
-    "ext": "BR",
+    "id": "588f2d3e84ae56b0b8a3f52b",
+    "label": "CWE_02",
+    "ext": "02",
     "purposeAndUse": "",
-    "valueSetBindings": [
-        {
-            "type": "valueset",
-            "id": null,
-            "location": "3",
-            "tableId": "588f2d3f84ae56b0b8a40907",
-            "usage": "R",
-            "bindingLocation": null,
-            "bindingStrength": "R"
-          },
-          {
-            "type": "valueset",
-            "id": null,
-            "location": "6",
-            "tableId": "588f2d4084ae56b0b8a4092c",
-            "usage": "R",
-            "bindingLocation": null,
-            "bindingStrength": "R"
-          }
-    ],
+    "valueSetBindings": [],
     "comments": [],
     "singleElementValues": [],
     "components": [
@@ -67,10 +48,10 @@
             "confLength": "20",
             "tables": [],
             "datatype": {
-                "id": "565f3ab5d4c6e52cfd43b962",
-                "name": "ST",
+                "id": "588f2d3e84ae56b0b8a3f540",
+                "name": "ID",
                 "ext": "",
-                "label": "ST_"
+                "label": "ID_"
             },
             "position": 1,
             "comment": "",

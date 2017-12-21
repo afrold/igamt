@@ -1052,7 +1052,6 @@
       "location": "2",
       "tableId": "588f2d3f84ae56b0b8a40907",
       "usage": "R",
-      "type": "valueset",
       "bindingLocation": null,
       "bindingStrength": "R"
     },
@@ -1062,27 +1061,15 @@
       "location": "3",
       "tableId": "588f2d4084ae56b0b8a4092c",
       "usage": "R",
-      "type": "valueset",
       "bindingLocation": null,
       "bindingStrength": "R"
     },
     {
       "type": "valueset",
       "id": null,
-      "location": "11",
-      "tableId": "588f2d3f84ae56b0b8a40908",
+      "location": "3.3",
+      "tableId": "588f2d4084ae56b0b8a4092c",
       "usage": "R",
-      "type": "valueset",
-      "bindingLocation": null,
-      "bindingStrength": "R"
-    },
-    {
-      "type": "valueset",
-      "id": null,
-      "location": "17",
-      "tableId": "588f2d3f84ae56b0b8a4091d",
-      "usage": "C",
-      "type": "valueset",
       "bindingLocation": null,
       "bindingStrength": "R"
     }
