@@ -12,7 +12,7 @@ export  class IgListService {
 
   getListByType(type){
 
-   return  this.http.get('api/igdocuments/list/'+type)
+    return  this.http.get('api/igdocuments/list/'+type)
       .toPromise()
       .then(res => <any[]> res.json());
 

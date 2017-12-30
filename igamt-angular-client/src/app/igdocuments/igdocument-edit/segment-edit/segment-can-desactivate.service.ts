@@ -22,16 +22,18 @@ export class CanDeactivateGuard implements CanDeactivate<SegmentEditComponent> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | boolean {
-
-    console.log(state.url);
-    console.log(component._segment);
+      console.log("Calling Desactivate");
 
     if(component.hash() !== this._ws.getPreviousHash()){
+      console.log("saving");
       this.db.saveSegment(component._segment);
       console.log("saving");
-      return true;
+      return Observable.of(true);
 
+    }else{
+      return Observable.of(true);
     }
+
 
   }
 }

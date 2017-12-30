@@ -23,6 +23,7 @@ import {AppRoutes} from './app.routes';
 import {AppMenuComponent, AppSubMenuComponent} from './app.menu.component';
 import {AppTopBarComponent} from './app.topbar.component';
 import {AppFooterComponent} from './app.footer.component';
+
 import {InlineProfileComponent} from './app.profile.component';
 import {GeneralConfigurationService} from "./service/general-configuration/general-configuration.service";
 import {SegmentsService} from "./service/segments/segments.service";

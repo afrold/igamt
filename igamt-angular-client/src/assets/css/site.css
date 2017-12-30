@@ -34,4 +34,17 @@ ul .ui-tree-container {
   display: none !important;
 }
 
+.list-ig{
 
+}
+
+
+.ui-orderlist .ui-orderlist-list li.ui-orderlist-item {
+  font-size: 2em !important;
+  padding: 0.625em 0.875em;
+  margin: 0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  color: #212121;
+}

@@ -14,7 +14,7 @@ import {AuthGuard} from "./../../../login/auth-guard.service";
       {
         path: ':id',
         component: SegmentEditComponent,
-        canActivate : [ SegmentGuard,AuthGuard ],
+        canActivate : [ SegmentGuard],
         canDeactivate: [CanDeactivateGuard],
 
         children: [

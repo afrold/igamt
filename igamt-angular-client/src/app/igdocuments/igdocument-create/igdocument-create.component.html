@@ -1,0 +1,49 @@
+<mat-horizontal-stepper #stepper>
+  <mat-step>
+    <ng-template matStepLabel>MetaData</ng-template>
+
+    <form>
+      <mat-form-field class="ui-g-12">
+        <input matInput placeholder="IG Document Title">
+      </mat-form-field>
+      <mat-form-field class="ui-g-12">
+        <input matInput placeholder="IG Document Subtitle">
+      </mat-form-field>
+
+      <mat-form-field class="ui-g-12">
+        <input matInput placeholder="Organization">
+      </mat-form-field>
+    </form>
+
+
+    <div>
+      <!--<button (click)="goBack(stepper)" type="button" [disabled]="stepper.selectedIndex === 0">Backdd</button>-->
+      <button style="float: right" class="btn btn-primary" (click)="goForward(stepper)" type="button" [disabled]="stepper.selectedIndex === stepper._steps.length-1">
+
+         Next</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Message Events</ng-template>
+
+    <div>
+      <button (click)="goBack(stepper)" type="button" [disabled]="stepper.selectedIndex === 0">Backdd</button>
+      <button (click)="goForward(stepper)" type="button" [disabled]="stepper.selectedIndex === stepper._steps.length-1">Next</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+
+    <div>
+      <button (click)="goBack(stepper)" type="button" [disabled]="stepper.selectedIndex === 0">Backdd</button>
+    </div>
+    Step 3
+  </mat-step>
+
+
+  <!-- one option -->
+
+</mat-horizontal-stepper>
+
+<!-- second option -->
+

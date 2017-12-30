@@ -7,13 +7,14 @@ import {DtFlavorPipe} from "../igdocuments/igdocument-edit/segment-edit/segment-
 import {CommonModule} from "@angular/common";
 import {EntityHeaderComponent} from "../common/entity-header/entity-header.component";
 import {DisplayLabelComponent} from "../common/label/display-label.component";
-import {Routes, RouterModule} from "@angular/router";
+import {Routes, RouterModule, ActivatedRouteSnapshot} from "@angular/router";
 
-
+import {ButtonModule} from 'primeng/primeng';
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    ButtonModule
   ],
   declarations: [ DisplayBadgeComponent, EntityHeaderComponent, DtFlavorPipe, DisplayLabelComponent ],
   exports: [ DisplayBadgeComponent, EntityHeaderComponent, DtFlavorPipe, DisplayLabelComponent]

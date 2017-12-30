@@ -220,6 +220,7 @@ export class IndexedDbService {
     });
   }
   public saveSegment(segment) {
+    console.log(segment);
     this.changedObjectsDatabase.transaction('rw', this.changedObjectsDatabase.segments, async() => {
       await this.changedObjectsDatabase.segments.put({
         'id': segment.id,

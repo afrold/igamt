@@ -17,9 +17,7 @@ export class SegmentGuard implements CanActivate {
     return new Promise<boolean>((resolve, reject) => {
       this.db.getSegment(route.params['id'],function (data) {
 
-            console.log(data);
             this._ws.setCurrent(Entity.SEGMENT, data);
-            console.log("resolving")
             resolve(true);
 
 

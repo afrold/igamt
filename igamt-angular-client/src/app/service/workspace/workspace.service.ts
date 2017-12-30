@@ -5,14 +5,18 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
  * Created by hnt5 on 10/25/17.
  */
 import {Md5} from 'ts-md5/dist/md5';
+import {TreeNode} from "primeng/components/common/treenode";
 
 export class Entity {
   public static  IG: string ="IG";
   public static  SEGMENT: string= "SEGMENT";
   public static  DATATYPE :string= "DATATYPE";
+  public static  CURRENTNODE :string= "CurrentNode";
+
 
   /* ADD ENTITY TYPE TO SUPPORT HERE */
 }
+
 
 @Injectable()
 export class WorkspaceService {
