@@ -31,6 +31,7 @@ import {ProfileComponentsService} from "./service/profilecomponents/profilecompo
 import {LoginComponent} from "./login/login.component"
 import {AuthService} from "./login/auth.service";
 import {AuthGuard} from "./login/auth-guard.service";
+import {HttpClientModule} from "@angular/common/http";
 
 
 @NgModule({
@@ -56,9 +57,9 @@ import {AuthGuard} from "./login/auth-guard.service";
     PanelModule,
     FormsModule,
     ReactiveFormsModule,
-
   AppRoutes,
     HttpModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     MenubarModule
   ],

@@ -9,16 +9,16 @@ export class AppInfoService {
 
   constructor(private http: Http) { }
 
-  getInfo(): Promise<any> {
+  getInfo() {
     return this.http.get(this.appInfoUrl)
       .toPromise()
-      .then(response => response.json().data)
-      .catch(this.handleError);
+      .then(res => <any[]> res.json());
+
   }
 
-  private handleError(error: any): Promise<any> {
-    return Promise.reject(error.message || error);
-  }
+  // private handleError(error: any): Promise<any> {
+  //   return Promise.reject(error.message || error);
+  // }
 
 
 }

@@ -22,6 +22,8 @@ export class Entity {
 export class WorkspaceService {
   private currentHash;
   private currentObj;
+  private appInfo;
+
 
   private map : { [index : string] : BehaviorSubject<any> };
 
@@ -33,6 +35,14 @@ export class WorkspaceService {
 
   getCurrent(key : string){
     return this.map[key];
+  }
+
+  getAppInfo(){
+    return this.appInfo;
+
+  }
+  setAppInfo(info:any){
+    this.appInfo= info;
   }
 
   setCurrent(key : string, obj : any){
