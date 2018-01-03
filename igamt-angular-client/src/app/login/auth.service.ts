@@ -9,11 +9,13 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 import {Http, Headers} from '@angular/http';
 import {HttpHeaders, HttpClient} from "@angular/common/http";
+import {BehaviorSubject} from "rxjs";
 
 
 @Injectable()
 export class AuthService {
-  isLoggedIn = false;
+  //isLoggedIn = false;
+ isLoggedIn:BehaviorSubject<boolean> =new BehaviorSubject<boolean>(false);
 
   // store the URL so we can redirect after logging in
   redirectUrl: string;
@@ -22,7 +24,8 @@ export class AuthService {
 
   }
 
-  login(username,password): Observable<boolean> {
+  login(username,password): BehaviorSubject<boolean> {
+
     var auth="Basic "+ btoa(username + ":" + password);
     let headers = new HttpHeaders(
       {
@@ -30,22 +33,20 @@ export class AuthService {
         'Content-Type': 'application/json'
       }
     );
-   // let other_headers=headers.append('Content-Type', 'application/json');
-   //  console.log(btoa(username + ":" + password));
-   //  other_headers.append('Authorization', "Basic"+ btoa(username + ":" + password));
-     console.log(headers);
     this.http.get('api/accounts/login',{headers: headers}).subscribe(data => {
-      this.isLoggedIn = true;
       return this.http.get('api/accounts/cuser').subscribe(user=>{
-        this.isLoggedIn = true;
-        return Observable.of(true);
+        this.isLoggedIn.next(true);
+
+        console.log(this.redirectUrl);
       });
     });
-     this.isLoggedIn = false;
-    return Observable.of(false);
+    return this.isLoggedIn;
+
   }
+
+
   logout(): void {
-    this.isLoggedIn = false;
+    this.isLoggedIn.next(false);
   }
 }
 

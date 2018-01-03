@@ -13,8 +13,7 @@ export class MyIgsComponent implements OnInit {
   constructor(private listService :IgListService, public router: Router ) {
 
     listService.getListByType("USER").then( res =>
-      this.igs= res
-    );
+      this.igs= res);
 
   }
 

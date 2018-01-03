@@ -186,7 +186,7 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
     
     
     
-//    this.childSections.add(p);
+   this.childSections.add(p);
 
     this.setProfile(p);
   }

@@ -14,7 +14,7 @@ export  class IgDocumentCreateService {
   getMessagesByVersion(hl7Version :string){
     return  this.http.post('api/igdocuments/messageListByVersion/', hl7Version)
       .toPromise()
-      .then(res => <any[]> res.json());
+      .then(res => { return <any[]> res.json()});
 
   }
 

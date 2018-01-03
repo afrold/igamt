@@ -22,14 +22,17 @@ export class LoginComponent {
   login() {
     this.message = 'Trying to log in ...';
 
-    this.authService.login(this.username,this.password).subscribe(() => {
-      if (this.authService.isLoggedIn) {
-        // Get the redirect URL from our auth service
-        // If no redirect has been set, use the default
+    this.authService.login(this.username,this.password).subscribe(x => {
+      console.log(x);
+      if (x==true) {
+        console.log("test");
         console.log(this.authService.redirectUrl);
-        let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/login';
+        let redirect = this.authService.redirectUrl;
         // Redirect the user
         this.router.navigate([redirect]);
+      }
+      else{
+        this.router.navigate(["/"]);
       }
     });
   }
