@@ -1,18 +1,45 @@
-<div style="align:center; width:90%;
+<div style="align:center;
 margin-left:200px;
 margin-right:auto;margin-top: 30px">
 
 <p-orderList [value]="igs"  [responsive]="true" header="User IG Document" styleClass="list-ig"
-             filter="filter" filterBy="metaData.title" filterPlaceholder="  Filter by title" dragdrop="true" dragdropScope="igdocument">
+             filter="filter" filterBy="metaData.title" filterPlaceholder="  Filter by title" dragdrop="true" dragdropScope="igdocument" selectable="false">
   <ng-template let-ig pTemplate="item">
-    <div style="height: 100px;">
-    <div routerLink="{{'/ig-documents/igdocuments-edit/'+ig.id}}" [queryParams]="{ readOnly: false }"><a>{{ig.metaData.title}} </a></div>
+    <div class="ui-g">
+      <div class="ui-g-9 ui-g-nopad">
+        <div class="ui-g-12">
+          <div class="ui-g" routerLink="{{'/ig-documents/igdocuments-edit/'+ig.id}}" [queryParams]="{ readOnly: false }"><a>{{ig.metaData.title}}   </a></div>
+        </div>
+        <div class="ui-g-12">
+          <span style="font-size: 14px; font-style: italic">
+          <i class="fa fa-calendar"></i> Updated :{{ig.dateUpdated|date}} , Author : {{ig.owner.fullname}}
+          </span>
+        </div>
+        <div class="ui-g-12">
+          <span class="ui-g-2" style="font-size: 14px; font-style: italic">Conformance profiles</span>
+        <mat-chip-list class="ui-g-10">
+          <mat-chip *ngFor="let msg of ig.profile.messages.children" >{{msg.name}}{{msg.identifier}}></mat-chip>
+        </mat-chip-list>
+        </div>
+      </div>
+      <div class="ui-g-3">
+        <button mat-icon-button  mat-raised-button  (click)="open(ig,true)">
+          <mat-icon>edit</mat-icon>
+        </button>
 
-    <button  style="float: right" (click)="open(ig,false)" class="btn btn-sm btn-warning">Edit</button>
-    <button   style="float: right" (click)="open(ig,true)" pButton type="button" class="btn btn-sm btn-primary">Read</button>
-      <button pButton type="button" class="ui-button-info"></button>
-
+        <button mat-icon-button  mat-raised-button>
+          <mat-icon>add</mat-icon>
+        </button>
+        <button mat-icon-button  mat-raised-button>
+          <mat-icon  (click)="open(ig,true)">search</mat-icon>
+        </button>
+        <button mat-icon-button  mat-raised-button  (click)="open(ig,true)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
     </div>
+
+
   </ng-template>
 </p-orderList>
 </div>

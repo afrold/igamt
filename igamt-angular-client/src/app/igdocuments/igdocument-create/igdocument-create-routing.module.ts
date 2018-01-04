@@ -11,7 +11,7 @@ import {AuthGuard} from "../../login/auth-guard.service";
     RouterModule.forChild([
       {
         path: '',
-        canActivate : [ AuthGuard],
+        // canActivate : [ AuthGuard],
 
         component: IgDocumentCreateComponent,
         children: [

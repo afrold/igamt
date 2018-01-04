@@ -35,7 +35,7 @@ ul .ui-tree-container {
 }
 
 .list-ig{
-
+min-height: 1000px !important;
 }
 
 
@@ -47,4 +47,22 @@ ul .ui-tree-container {
   -webkit-border-radius: 0;
   border-radius: 0;
   color: #212121;
+}
+
+
+.ui-orderlist .ui-orderlist-list li.ui-orderlist-item {
+  border-bottom :0.1px solid rgb(210, 210, 210) !important;
+
+}
+
+
+.ui-orderlist .ui-orderlist-list {
+  list-style-type: none;
+  min-height: 400px;
+  width: 100% !important;
+
+}
+
+body .ui-orderlist .ui-orderlist-list li.ui-orderlist-item.ui-state-highlight{
+  background-color: inherit !important;
 }

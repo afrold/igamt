@@ -2,7 +2,7 @@
  * Created by ena3 on 12/29/17.
  */
 import {Component, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import {MatStepper} from "@angular/material";
 import {IgDocumentCreateService} from "./igdocument-create.service";
 import {TreeNode} from "primeng/components/common/treenode";
@@ -33,7 +33,7 @@ export class IgDocumentCreateComponent {
   hl7Versions: any[];
   selcetedVersion: any;
 
-  constructor(private _formBuilder: FormBuilder,private createService :IgDocumentCreateService, private workSpace : WorkspaceService,
+  constructor( private _formBuilder: FormBuilder, private createService :IgDocumentCreateService, private workSpace : WorkspaceService,
               private router: Router,    private route: ActivatedRoute,
   ) {
 
@@ -44,9 +44,15 @@ export class IgDocumentCreateComponent {
 
   ngOnInit() {
 
-    this.firstFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required]
+    this.firstFormGroup = new FormGroup({
+      'name': new FormControl(this.metaData.title, [
+        Validators.required
+      ]),
+      'subTitle': new FormControl(this.metaData.subTitle),
+      'organization': new FormControl(this.metaData.subTitle)
     });
+
+
     this.secondFormGroup = this._formBuilder.group({
       secondCtrl: ['', Validators.required]
     });

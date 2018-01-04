@@ -17,13 +17,16 @@ import {MatIconModule} from '@angular/material/icon';
 
 
 import {IgListService} from "./igdocument-list.service";
+import {MatChipsModule} from '@angular/material/chips';
+
 @NgModule({
 	imports: [
 		CommonModule,
 		IgDocumentListRoutingModule,
 		TabMenuModule,
     OrderListModule,PickListModule,
-    MatButtonModule,MatListModule,MatIconModule
+    MatButtonModule,MatListModule,MatIconModule,MatChipsModule
+
 
 	],
 	declarations: [

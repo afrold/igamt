@@ -3,18 +3,20 @@
     <ng-template matStepLabel>MetaData</ng-template>
     <form [formGroup]="firstFormGroup">
       <mat-form-field class="ui-g-12">
-        <input  matInput placeholder="IG Document Title" [(ngModel)]="metaData.title" name="title" formControlName="firstCtrl" required>
+        <input  matInput placeholder="IG Document Title" [(ngModel)]="metaData.title" name="title" formControlName="name" required>
       </mat-form-field>
       <mat-form-field class="ui-g-12">
-        <input [(ngModel)]="metaData.subTitle" matInput placeholder="IG Document Subtitle" name="subTitle" formControlName="firstCtrl">
+        <input [(ngModel)]="metaData.subTitle" matInput placeholder="IG Document Subtitle" name="subTitle" formControlName="subTitle">
       </mat-form-field>
 
       <mat-form-field class="ui-g-12">
-        <input matInput  [(ngModel)]="metaData.organization" placeholder="Organization" name="organization" formControlName="firstCtrl">
+        <input matInput  [(ngModel)]="metaData.organization" placeholder="Organization" name="organization" formControlName="organization">
       </mat-form-field>
       <div>
-        <button matStepperNext style="float: right" class="btn btn-primary" type="button">Next</button>
+          <button mat-button color="primary" mat-raised-button matStepperNext style="float: right" color="primary" type="button">Next
+          </button>
       </div>
+
     </form>
   </mat-step>
   <mat-step>
@@ -58,7 +60,7 @@
     </p-treeTable>
     <p>Selected Nodes: <span *ngFor="let file of selectedNodes">{{file.data.name}} </span></p>
     <div>
-      <button (click)="goBack(stepper)" type="button" [disabled]="stepper.selectedIndex === 0">Backdd</button>
+      <button  (click)="goBack(stepper)" type="button" [disabled]="stepper.selectedIndex === 0">Backdd</button>
       <button (click)="goForward(stepper);submitEvent()" type="button" [disabled]="stepper.selectedIndex === stepper._steps.length-1">Next</button>
     </div>
   </mat-step>
