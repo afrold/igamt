@@ -263,7 +263,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
   };
 
   $scope.delCodeSystem = function(value) {
-    $rootScope.codeSystems.splice($rootScope.codeSystems.indexOf(value), 1);
+    $rootScope.table.codeSystems.splice($rootScope.codeSystems.indexOf(value), 1);
   }
 
   $scope.updateCodeSystem = function(table, codeSystem) {
