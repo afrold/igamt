@@ -590,14 +590,19 @@ public class SerializableSegment extends SerializableSection {
 	                	td1.addAttribute(new Attribute("rowspan", String.valueOf(line.children.size())));
 	                	td1.addAttribute(new Attribute("class","ifContent"));
 	                	if(line.children.get(0).getType().equals("user")){
-	                		td2.addAttribute(new Attribute("class","greenHeader"));
-	                		td3.addAttribute(new Attribute("class","greenContent"));
+//	                		td2.addAttribute(new Attribute("class","greenHeader"));
+//	                		td3.addAttribute(new Attribute("class","greenContent"));
 	                	}
 	  	              	td2.appendChild(line.children.get(0).getKey());
+                 		td2.addAttribute(new Attribute("colspan",String.valueOf(line.children.get(0).getColspan())));
+                		if(line.children.get(0).getColspan()==1){
+    	  	              	td3.appendChild(line.children.get(0).getValue());
+    	  	              	tr1.appendChild(td3);
+
+        				}
 	  	              	td3.appendChild(line.children.get(0).getValue());
 	  	              	tr1.appendChild(td1);
 	  	              	tr1.appendChild(td2);
-	  	              	tr1.appendChild(td3);
 	            		tbody.appendChild(tr1);
 	            		
 	            		if(line.children.size()>1){
@@ -605,17 +610,26 @@ public class SerializableSegment extends SerializableSection {
 	            				Element trtemp= new Element("tr");
 	            				Element tdKey= new Element("td");
 	            				Element tdValue=new Element("td");
-	            	
-	    	                 	if(line.children.get(j).getType().equals("user")){
-
-	    	                 		tdValue.addAttribute(new Attribute("class","greenContent"));
-	    	                 		tdKey.addAttribute(new Attribute("class","greenHeader"));
-
-	    	                	}
+    	                 		tdKey.addAttribute(new Attribute("colspan",String.valueOf(line.children.get(j).getColspan())));
 	            				tdKey.appendChild(line.children.get(j).getKey());
-	            				tdValue.appendChild(line.children.get(j).getValue());
+
 	            				trtemp.appendChild(tdKey);
-	            				trtemp.appendChild(tdValue);
+
+	    	                 	if(line.children.get(j).getType().equals("user")){
+	    	                 		if(line.children.get(j).getColspan()<2){
+	    	                 			trtemp.addAttribute(new Attribute("class","greenContent"));
+	    	                 		}else{
+	    	                 			trtemp.addAttribute(new Attribute("class","greenHeader"));
+
+	    	                 		}
+
+	    	                 			//"greenHeader"
+	    	                	}
+	            				if(line.children.get(j).getColspan()==1){
+		            				tdValue.appendChild(line.children.get(j).getValue());
+		            				trtemp.appendChild(tdValue);
+
+	            				}
 	            				tbody.appendChild(trtemp);
 	            				
 	            				
@@ -649,6 +663,12 @@ public class SerializableSegment extends SerializableSection {
 	  }
 	  
 	 if(!table.getThenColumnDefinitionList().isEmpty()){
+		 CoConstraintRow thenheader = new CoConstraintRow();
+		 thenheader.setType("THEN");
+		 thenheader.setKey("THEN");
+		 thenheader.setValue("THEN");
+		 thenheader.setColspan(2);
+     	 line.children.add(thenheader);
 		 for(CoConstraintColumnDefinition then :table.getThenColumnDefinitionList()){
 	           if (this.segment.getName().equals("OBX") && then.getPath()
      	              .equals("2")) {
@@ -718,6 +738,16 @@ public class SerializableSegment extends SerializableSection {
     		                  }   		
 	        	   	}
 		 }
+	 }
+	 if(table.getUserColumnDefinitionList().size()>0){
+	  		CoConstraintRow row = new CoConstraintRow();
+
+			row.setType("user");
+	   		row.setKey("USER");
+	   		row.setValue("USER");
+	   		row.setColspan(2);
+     	   line.children.add(row);
+
 	 }
      for (CoConstraintUserColumnDefinition coConstraintColumnDefinition : table
              .getUserColumnDefinitionList()) {
