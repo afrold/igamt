@@ -1716,7 +1716,7 @@
                             <tbody>
                             <tr ng-repeat="item in displayItems">
                                 <td class="col-md-3">
-                                    <md-select ng-model="item.firstReferenceValue" placeholder="Select DT Base Name" ng-disabled="seeOrEdit==='see'" ng-change="recordChanged();">
+                                    <md-select ng-model="item.firstReferenceValue" placeholder="Select DT Base Name" ng-disabled="seeOrEdit==='see'" ng-change="setChanged();">
                                         <md-option ng-repeat="c in dynamicMappingTable.codes | orderBy:'value'" value="{{c.value}}">
                                             {{c.value}}({{c.label}})
                                         </md-option>
@@ -1726,7 +1726,7 @@
                                     <md-select ng-model="item.datatypeId"
                                                ng-show="item.firstReferenceValue"
                                                placeholder="Select DT Flavor"
-                                               ng-disabled="seeOrEdit==='see'">
+                                               ng-disabled="seeOrEdit==='see'" ng-change="setChanged()">
                                         <md-option ng-repeat="link in $root.igdocument.profile.datatypeLibrary.children | filter: {name: item.firstReferenceValue}" value="{{link.id}}">
                                             {{$root.getDatatypeLabel($root.datatypesMap[link.id])}}
                                         </md-option>
