@@ -1,4 +1,21 @@
 <div style="overflow: scroll;">
+
+  <div class="table-context">
+    <strong> Context :</strong>
+    <span class="label-segment-binding-icon">
+      <i class="fa fa-circle fa-fw"></i>
+    </span>
+      Segment
+    <span class="label-field-binding-icon">
+      <i class="fa fa-circle fa-fw"></i>
+    </span>
+      Field
+    <span class="label-component-binding-icon">
+      <i class="fa fa-circle fa-fw"></i>
+    </span>
+      Component
+  </div>
+
   <p-treeTable [value]="tree" (onNodeExpand)="loadNode($event)" tableStyleClass="table-condensed table-stripped table-bordered">
     
     <p-column field="obj.name" header="Name" [style]="{'width':'350px'}">
@@ -82,17 +99,25 @@
 
       <ng-template let-node="rowData" pTemplate="body">
           <div *ngIf="node.data.isAvailableForValueSet">
-            <div *ngIf="node.data.segmentValueSetBindings && node.data.segmentValueSetBindings.length > 0">
+            <div *ngIf="node.data.segmentValueSetBindings.length > 0">
               <div *ngFor="let binding of node.data.segmentValueSetBindings">
+                <i class="fa fa-circle fa-fw label-segment-binding-icon"></i>
+                {{binding.bindingIdentifier}}
+                <i class="fa fa-times" (click)="delValueSet(binding,node)"></i>
+              </div>
+            </div>
+            <div *ngIf="node.data.segmentValueSetBindings.length === 0 && node.data.fieldDTValueSetBindings.length > 0">
+              <div *ngFor="let binding of node.data.fieldDTValueSetBindings">
+                <i class="fa fa-circle fa-fw label-field-binding-icon"></i>
                 {{binding.bindingIdentifier}}
               </div>
             </div>
-            <div *ngIf="node.data.segmentValueSetBindings && node.data.segmentValueSetBindings.length === 0 && node.data.fieldDTValueSetBindings && node.data.fieldDTValueSetBindings.length > 0">
-                <div *ngFor="let binding of node.data.fieldDTValueSetBindings">
-                  {{binding.bindingIdentifier}}
-                </div>
+            <div *ngIf="node.data.segmentValueSetBindings.length === 0 && node.data.fieldDTValueSetBindings.length === 0 && node.data.componentDTValueSetBindings.length > 0">
+              <div *ngFor="let binding of node.data.componentDTValueSetBindings">
+                <i class="fa fa-circle fa-fw label-component-binding-icon"></i>
+                {{binding.bindingIdentifier}}
               </div>
-              
+            </div>
           </div>
           <div *ngIf="!node.data.isAvailableForValueSet">NA</div>
       </ng-template>

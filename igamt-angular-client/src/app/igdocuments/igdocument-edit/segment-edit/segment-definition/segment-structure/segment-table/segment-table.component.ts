@@ -60,6 +60,21 @@ export class SegmentTableComponent {
     node.data.obj.confLength = 'NA';
   }
 
+  delValueSet(binding, node){
+    var indexForBinding = -1;
+    for(let b of this.segment.valueSetBindings){
+      if(node.data.path === b.location && b.type === 'valueset' && b.tableId === binding.id){
+        indexForBinding = this.segment.valueSetBindings.indexOf(b);
+      }
+    }
+    if (indexForBinding >= 0) {
+      this.segment.valueSetBindings.splice(indexForBinding, 1);
+    }
+    var index = node.data.segmentValueSetBindings.indexOf(binding);
+    if (index >= 0) {
+      node.data.segmentValueSetBindings.splice(index, 1);
+    }
+  }
 
   makeEditModeDT(node){
     node.data.obj.datatype.options = [];

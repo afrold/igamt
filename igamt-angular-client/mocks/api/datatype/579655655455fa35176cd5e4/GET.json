@@ -26,7 +26,17 @@
     "label": "XXX_BR",
     "ext": "BR",
     "purposeAndUse": "",
-    "valueSetBindings": [],
+    "valueSetBindings": [
+        {
+            "type": "valueset",
+            "id": null,
+            "location": "1",
+            "tableId": "588f2d3f84ae56b0b8a40907",
+            "usage": "R",
+            "bindingLocation": null,
+            "bindingStrength": "R"
+        }
+    ],
     "comments": [],
     "singleElementValues": [],
     "components": [

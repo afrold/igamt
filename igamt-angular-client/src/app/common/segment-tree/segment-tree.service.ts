@@ -72,8 +72,10 @@ export class SegmentTreeNodeService {
   }
 
   populateSegmentBinding(segment, node){
+    node.data.segmentValueSetBindings = [];
+    node.data.fieldDTValueSetBindings = [];
+    node.data.componentDTValueSetBindings = [];
     if(segment && segment.valueSetBindings){
-      node.data.segmentValueSetBindings = [];
       for(let binding of segment.valueSetBindings){
         if(node.data.path === binding.location){
           if(binding.type === 'valueset'){
@@ -91,9 +93,11 @@ export class SegmentTreeNodeService {
   }
 
   populateFieldDTBinding(fieldDT, node){
+    node.data.segmentValueSetBindings = [];
+    node.data.fieldDTValueSetBindings = [];
+    node.data.componentDTValueSetBindings = [];
     this.getDatatype(fieldDT.id).subscribe(fieldDT => {
       if(fieldDT && fieldDT.valueSetBindings) {
-        node.data.fieldDTValueSetBindings = [];
         for(let binding of fieldDT.valueSetBindings){
           var pathSplit = node.data.path.split(".");
           if(pathSplit.length === 2){
@@ -123,9 +127,11 @@ export class SegmentTreeNodeService {
   }
 
   populateComponentDTBinding(componentDT, node){
+    node.data.segmentValueSetBindings = [];
+    node.data.fieldDTValueSetBindings = [];
+    node.data.componentDTValueSetBindings = [];
     this.getDatatype(componentDT.id).subscribe(componentDT => {
       if(componentDT && componentDT.valueSetBindings) {
-        node.data.componentDTValueSetBindings = [];
         for(let binding of componentDT.valueSetBindings){
           var pathSplit = node.data.path.split(".");
           if(pathSplit[2] === binding.location){

@@ -22,7 +22,18 @@
   background-color: #221010;
 }
 
-
 .ui-treetable thead th, .ui-treetable tbody td, .ui-treetable tfoot td{
   background-color: #221010;
+}
+
+.label-segment-binding-icon {
+  color: blue !important;
+}
+
+.label-field-binding-icon {
+  color:purple !important;
+}
+
+.label-component-binding-icon {
+  color:#d400d4 !important;
 }
