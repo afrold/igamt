@@ -4,6 +4,7 @@
 
 angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService, CompositeMessageService, VersionAndUseService, ValidationService, orderByFilter, $mdDialog) {
   $scope.loading = false;
+  $scope.loadingReferences=false;
   $scope.tocView = 'views/toc.html';
   $scope.uiGrid = {};
   $rootScope.igs = [];
@@ -1435,8 +1436,12 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
                       } catch (e) {
 
                       }
+                      $scope.loadingReferences = true;
+
                       var crossRefPromise = SegmentService.crossRef($rootScope.segment.id,$rootScope.igdocument.id);
                       crossRefPromise.then (function (result) {
+                          $scope.loadingReferences = false;
+
                           $rootScope.crossRef = result;
                       }, function (error) {
                           $scope.loadingSelection = false;
@@ -1594,9 +1599,11 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 
               }
               $rootScope.crossRef = null;
+                $scope.loadingReferences = true;
 
               DatatypeService.crossRef($rootScope.datatype.id,$rootScope.igdocument.id).then(function (result) {
-                $rootScope.crossRef = result;
+                  $scope.loadingReferences = false;
+                  $rootScope.crossRef = result;
                 console.log($rootScope.crossRef);
 
               }, function (error) {
@@ -2152,11 +2159,12 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
   $scope.selectTable = function (t) {
     $rootScope.Activate(t.id);
     $rootScope.subview = "EditValueSets.html";
-    $scope.loadingSelection = true;
     blockUI.start();
+
     try {
           TableService.getOneInLibrary(t.id,$rootScope.tableLibrary.id).then(function (tbl) {
               $rootScope.searchObject = {};
+              $rootScope.crossRef = {};
               $rootScope.table = angular.copy(tbl);
               $rootScope.$emit("event:initTable");
               $rootScope.currentData = $rootScope.table;
@@ -2168,8 +2176,10 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
               blockUI.stop();
               $scope.clearTableScope();
               $rootScope.clearChanges();
+              $scope.loadingReferences = true;
               TableService.crossRef($rootScope.table, $rootScope.igdocument.id).then(function (result) {
                   $rootScope.crossRef = result;
+                  $scope.loadingReferences = false;
               }, function (error) {
                   $scope.loadingSelection = false;
                   $rootScope.msg().text = error.data.text;
