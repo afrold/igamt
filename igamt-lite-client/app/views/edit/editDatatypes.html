@@ -2256,12 +2256,12 @@
                                             SHALL contain the constant value '
                                             <md-input-container>
                                                 <label>Code</label>
-                                                <input ng-model="b.code.value"/>
+                                                <input ng-model="b.code.value" ng-change="setChanged()"/>
                                             </md-input-container>
                                             ' drawn from the code system '
                                             <md-input-container>
                                                 <label>Code System</label>
-                                                <input ng-model="b.code.codeSystem"/>
+                                                <input ng-model="b.code.codeSystem" ng-change="setChanged()"/>
                                             </md-input-container>
                                             '.
                                         </td>
