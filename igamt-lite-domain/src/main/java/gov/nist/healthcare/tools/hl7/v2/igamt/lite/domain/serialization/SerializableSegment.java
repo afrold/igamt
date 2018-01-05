@@ -595,6 +595,7 @@ public class SerializableSegment extends SerializableSection {
 	                	}
 	  	              	td2.appendChild(line.children.get(0).getKey());
                  		td2.addAttribute(new Attribute("colspan",String.valueOf(line.children.get(0).getColspan())));
+                 		td2.addAttribute(new Attribute("class","alignCenter"));
                 		if(line.children.get(0).getColspan()==1){
     	  	              	td3.appendChild(line.children.get(0).getValue());
     	  	              	tr1.appendChild(td3);
@@ -619,7 +620,8 @@ public class SerializableSegment extends SerializableSection {
 	    	                 		if(line.children.get(j).getColspan()<2){
 	    	                 			trtemp.addAttribute(new Attribute("class","greenContent"));
 	    	                 		}else{
-	    	                 			trtemp.addAttribute(new Attribute("class","greenHeader"));
+	    	                 			trtemp.addAttribute(new Attribute("class","greenHeader alignCenter"));
+
 
 	    	                 		}
 
