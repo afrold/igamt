@@ -155,55 +155,57 @@ public class SerializableSection extends SerializableElement {
         for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : valueSetOrSingleCodeBindings){
             if(valueSetOrSingleCodeBinding!=null) {
                 Element valueSetBindingElement = new Element("ValueSetBinding");
-                Table table = findTable(tables,valueSetOrSingleCodeBinding.getTableId());
-                if(table!=null) {
-                    if(table.getBindingIdentifier()!=null){
-                        valueSetBindingElement.addAttribute(new Attribute("BindingIdentifier",table.getBindingIdentifier()));
-                    }
-                    if(table.getName()!=null){
-                        valueSetBindingElement.addAttribute(new Attribute("Name", table.getName()));
-                    }
-                    if (valueSetOrSingleCodeBinding.getLocation() != null) {
-                        String location = "";
-                        if(locationPathMap.containsKey(valueSetOrSingleCodeBinding.getLocation())){
-                        	location = locationPathMap.get(valueSetOrSingleCodeBinding.getLocation());
-                        } else {
-	                        if (locationPrefix != null && !locationPrefix.isEmpty()) {
-	                            location += locationPrefix + "-";
-	                        }
-	                        location += valueSetOrSingleCodeBinding.getLocation();
+                if(valueSetOrSingleCodeBinding instanceof SingleCodeBinding){
+                    valueSetBindingElement.addAttribute(new Attribute("Type","SC"));
+                    if(((SingleCodeBinding) valueSetOrSingleCodeBinding).getCode()!=null) {
+                        if(((SingleCodeBinding) valueSetOrSingleCodeBinding).getCode()
+                            .getValue()!=null) {
+                            valueSetBindingElement.addAttribute(new Attribute("CodeValue", ((SingleCodeBinding) valueSetOrSingleCodeBinding).getCode()
+                                .getValue()));
                         }
-                        valueSetBindingElement.addAttribute(new Attribute("Location", location));
-                        valueSetBindingElement.addAttribute(new Attribute("SortLocation", valueSetOrSingleCodeBinding.getLocation()));
-                    }
-                    if(valueSetOrSingleCodeBinding instanceof ValueSetBinding) {
-                        valueSetBindingElement.addAttribute(new Attribute("Type","VS"));
-                        if (((ValueSetBinding) valueSetOrSingleCodeBinding).getBindingLocation() != null) {
-                            valueSetBindingElement.addAttribute(new Attribute("BindingLocation",
-                                ((ValueSetBinding) valueSetOrSingleCodeBinding).getBindingLocation()));
-                        }
-                        if (((ValueSetBinding) valueSetOrSingleCodeBinding).getBindingStrength() != null) {
-                            valueSetBindingElement.addAttribute(new Attribute("BindingStrength",
-                                ((ValueSetBinding) valueSetOrSingleCodeBinding).getBindingStrength().value()));
-                        }
-                    } else if(valueSetOrSingleCodeBinding instanceof SingleCodeBinding){
-                        valueSetBindingElement.addAttribute(new Attribute("Type","SC"));
-                        if(((SingleCodeBinding) valueSetOrSingleCodeBinding).getCode()!=null) {
-                            if(((SingleCodeBinding) valueSetOrSingleCodeBinding).getCode()
-                                .getValue()!=null) {
-                                valueSetBindingElement.addAttribute(new Attribute("CodeValue", ((SingleCodeBinding) valueSetOrSingleCodeBinding).getCode()
-                                    .getValue()));
-                            }
-                            if(((SingleCodeBinding) valueSetOrSingleCodeBinding).getCode()
-                                .getCodeSystem()!=null) {
-                                valueSetBindingElement.addAttribute(new Attribute("CodeSystem", ((SingleCodeBinding) valueSetOrSingleCodeBinding).getCode()
-                                    .getCodeSystem()));
-                            }
+                        if(((SingleCodeBinding) valueSetOrSingleCodeBinding).getCode()
+                            .getCodeSystem()!=null) {
+                            valueSetBindingElement.addAttribute(new Attribute("CodeSystem", ((SingleCodeBinding) valueSetOrSingleCodeBinding).getCode()
+                                .getCodeSystem()));
                         }
                     }
-                    valueSetBindingListElement.appendChild(valueSetBindingElement);
                 } else {
-                    throw new TableNotFoundException(valueSetOrSingleCodeBinding.getTableId());
+	                Table table = findTable(tables,valueSetOrSingleCodeBinding.getTableId());
+	                if(table!=null) {
+	                    if(table.getBindingIdentifier()!=null){
+	                        valueSetBindingElement.addAttribute(new Attribute("BindingIdentifier",table.getBindingIdentifier()));
+	                    }
+	                    if(table.getName()!=null){
+	                        valueSetBindingElement.addAttribute(new Attribute("Name", table.getName()));
+	                    }
+	                    if (valueSetOrSingleCodeBinding.getLocation() != null) {
+	                        String location = "";
+	                        if(locationPathMap.containsKey(valueSetOrSingleCodeBinding.getLocation())){
+	                        	location = locationPathMap.get(valueSetOrSingleCodeBinding.getLocation());
+	                        } else {
+		                        if (locationPrefix != null && !locationPrefix.isEmpty()) {
+		                            location += locationPrefix + "-";
+		                        }
+		                        location += valueSetOrSingleCodeBinding.getLocation();
+	                        }
+	                        valueSetBindingElement.addAttribute(new Attribute("Location", location));
+	                        valueSetBindingElement.addAttribute(new Attribute("SortLocation", valueSetOrSingleCodeBinding.getLocation()));
+	                    }
+	                    if(valueSetOrSingleCodeBinding instanceof ValueSetBinding) {
+	                        valueSetBindingElement.addAttribute(new Attribute("Type","VS"));
+	                        if (((ValueSetBinding) valueSetOrSingleCodeBinding).getBindingLocation() != null) {
+	                            valueSetBindingElement.addAttribute(new Attribute("BindingLocation",
+	                                ((ValueSetBinding) valueSetOrSingleCodeBinding).getBindingLocation()));
+	                        }
+	                        if (((ValueSetBinding) valueSetOrSingleCodeBinding).getBindingStrength() != null) {
+	                            valueSetBindingElement.addAttribute(new Attribute("BindingStrength",
+	                                ((ValueSetBinding) valueSetOrSingleCodeBinding).getBindingStrength().value()));
+	                        }
+	                    }
+	                    valueSetBindingListElement.appendChild(valueSetBindingElement);
+	                } else {
+	                    throw new TableNotFoundException(valueSetOrSingleCodeBinding.getTableId());
+	                }
                 }
             }
         }
