@@ -7,7 +7,7 @@ angular.module('igl').controller('AddDynamicMappingCtrlInPc', function($scope, $
   $scope.node = angular.copy(node);
   console.log($rootScope.dynamicMappingTable);
   $scope.changed = false;
-  $rootScope.recordChanged  = function() {
+  $scope.setChanged  = function() {
     $scope.changed = true;
   };
   $scope.findDynamicMapping = function(node) {
@@ -71,7 +71,7 @@ angular.module('igl').controller('AddDynamicMappingCtrlInPc', function($scope, $
     var index = $scope.dynamicMappingDefinition.dynamicMappingItems.indexOf(item);
     if (index >= 0) {
       $scope.dynamicMappingDefinition.dynamicMappingItems.splice(index, 1);
-      $rootScope.recordChanged ();
+      $scope.setChanged();
     }
   };
 
@@ -81,7 +81,7 @@ angular.module('igl').controller('AddDynamicMappingCtrlInPc', function($scope, $
     newItem.secondReferenceValue = null;
     newItem.datatypeId = null;
     $scope.dynamicMappingDefinition.dynamicMappingItems.push(newItem);
-    $rootScope.recordChanged ();
+    $scope.setChanged();
   };
 
   $scope.getDefaultStatus = function(code) {

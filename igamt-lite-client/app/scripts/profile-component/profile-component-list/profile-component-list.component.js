@@ -366,8 +366,8 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
       if (mapping) {
         console.log(mapping);
         node.attributes.dynamicMappingDefinition = mapping;
-        $rootScope.recordChanged()
-        $scope.editForm.$pristine=false;
+        $rootScope.recordChanged();
+        console.log("calling")
       }
     });
   };
