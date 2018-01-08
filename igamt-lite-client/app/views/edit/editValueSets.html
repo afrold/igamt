@@ -233,6 +233,7 @@
                                                                             ng-model="table.codeSystems"
                                                                             readonly="true"
                                                                             md-removable="false"
+
                                                                             placeholder="Add Code">
                                                                     </md-chips>
 
@@ -331,8 +332,7 @@
                                                                                 ng-model="codeSystemToApply.label"
                                                                                 ng-if="selectedCodes.length>0">
                                                                             <md-option
-                                                                                    ng-repeat="cs in table.codeSystems track by $index"
-                                                                                    ng-click="applyAllCodeSys(cs)"
+                                                                                    ng-repeat="cs in table.codeSystems"
                                                                                     ng-value="cs">{{cs}}</md-option>
                                                                         </md-select>
 
@@ -346,8 +346,7 @@
                                                                                    placeholder="Apply Code System For Selected Codes"
                                                                                    ng-model="codeSystemToApply.label">
                                                                             <md-option
-                                                                                    ng-repeat="cs in table.codeSystems track by $index"
-                                                                                    ng-click="applyAllCodeSys(cs)"
+                                                                                    ng-repeat="cs in table.codeSystems"
                                                                                     ng-value="cs">{{cs}}</md-option>
                                                                         </md-select>
 
@@ -531,8 +530,7 @@
                                                                                                 no-dirty-check
                                                                                                 ng-model="c.codeSystem">
                                                                                             <md-option
-                                                                                                    ng-repeat="cs in table.codeSystems track by $index"
-                                                                                                    ng-value="cs">
+                                                                                                    ng-repeat="cs in table.codeSystems" ng-value="cs">
                                                                                                 {{cs}}
                                                                                             </md-option>
                                                                                         </md-select>
