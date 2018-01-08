@@ -104,7 +104,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
                     defPostText = serializationUtil.cleanRichtext(datatype.getDefPostText());
                 }
                 if (datatype.getUsageNote() != null && !datatype.getUsageNote().isEmpty()) {
-                    usageNote = serializationUtil.cleanRichtext(datatype.getDefPreText());
+                    usageNote = serializationUtil.cleanRichtext(datatype.getUsageNote());
                 }
                 Map<Component, Datatype> componentDatatypeMap = new HashMap<>();
                 Map<Component, List<ValueSetOrSingleCodeBinding>> componentValueSetBindingsMap = new HashMap<>();

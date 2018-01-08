@@ -212,7 +212,7 @@ public class SerializableDatatype extends SerializableSection {
                             datatypeElement.appendChild(this.createTextElement("DefPostText", this.defPostText));
                         }
                     }
-                    if (this.usageNote != null && !this.usageNote.isEmpty()) {
+                    if (this.usageNote != null && !this.usageNote.trim().isEmpty()) {
                         datatypeElement
                             .appendChild(this.createTextElement("UsageNote", this.usageNote));
                     }
