@@ -9,6 +9,8 @@ angular.module('igl').factory('DatatypeService', function($rootScope, ViewSettin
                 if (parent && parent != null) {
                     if (parent.datatype) {
                         var dt = $rootScope.datatypesMap[parent.datatype.id];
+                        dt.components = $filter('orderBy')(dt.components, 'position');
+
                         children = angular.copy(dt.components);
                         for (var i = 0, len = children.length; i < len; i++) {
                             children[i].path = parent.path + "." + children[i].position;
@@ -29,6 +31,8 @@ angular.module('igl').factory('DatatypeService', function($rootScope, ViewSettin
                     }
                 } else {
                     if (root != null) {
+
+                        root.components=$filter('orderBy')(root.components, 'position');
                         children = root.components;
                         for (var i = 0, len = children.length; i < len; i++) {
                             children[i].path = children[i].position;
