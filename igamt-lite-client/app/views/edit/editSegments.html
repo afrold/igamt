@@ -837,7 +837,8 @@
                                     <i class="fa fa-link" aria-hidden="true"></i>Cross-References
                                 </md-tab-label>
                                 <md-tab-body>
-                                <div class="el-def metadata-scroll" style="margin-top:20px">
+                                <div class="el-def metadata-scroll" style="margin-top:20px" ng-show="!loadingReferences">
+">
 
 
                                     <div ng-show="crossRef.messageFounds != null && crossRef.messageFounds.length > 0">
