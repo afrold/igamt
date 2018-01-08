@@ -36,6 +36,7 @@
         <xsl:text>.requiredDTM{background-color:#6495ed!important;}</xsl:text>
         <xsl:text>.greyCell{background-color:#808080;}</xsl:text>
         <xsl:text>.greenHeader{background-color:rgb(76, 175, 80);}</xsl:text>
+   		<xsl:text>.alignCenter{text-align:center;}</xsl:text>
         <xsl:text>.greenContent{background-color:#a7d6a9;}</xsl:text>
         
         <xsl:text>.codeParagraph{display: block;padding: 9.5px;margin: 0 0 10px;line-height: 1.428571429;word-break: break-all;word-wrap: break-word;color: #333;background-color: #f5f5f5;border: 1px solid #ccc;border-radius: 4px;}</xsl:text>
