@@ -5714,14 +5714,13 @@
 
 
     <span ng-if="element.hl7Version=='*'">
-
-            <span  class="badge" ng-class="{'label-HL7' : getScopeLabel(element)==='HL7',
+        <span  class="badge" ng-class="{'label-HL7' : getScopeLabel(element)==='HL7',
          'label-USE':  getScopeLabel(element)==='USR','label-MASTER':getScopeLabel(element)==='MAS','label-PRL':getScopeLabel(element)==='PRL','label-DRV':getScopeLabel(element)==='DRV'}">
                 {{getScopeLabel(element)}}
 
         <span ng-if="element.publicationVersion&&element.status==='PUBLISHED'" class="version-badge">v{{element.publicationVersion}}</span>
 
-    </span>
+        </span>
     <span>{{getLabel(element)}}</span>
     <span ng-if="description">{{getDescriptionLabel(element)}}</span>
     <div>

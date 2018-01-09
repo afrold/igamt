@@ -5,7 +5,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
   function($scope, $http, $rootScope, $q, $modal, $timeout, TableService, ngTreetableParams, DatatypeLibraryDocumentSvc, TableLibrarySvc, DatatypeService, DatatypeLibrarySvc,IGDocumentSvc, TableService, ViewSettings, userInfoService, blockUI,CompareService,VersionAndUseService,$mdDialog) {
     //  $scope.initLibrary();
     $rootScope.filteringModeON = false;
-
+    $scope.searchObject={};
     $rootScope.showToc=true;
     $scope.ttype="USER";
     // $rootScope.config = { "usages": ["R", "B", "RE", "C", "W", "X", "O"], "codeUsages": ["P", "R", "E"], "codeSources": ["HL7", "Local", "Redefined", "SDO"], "tableStabilities": ["Dynamic", "Static"], "tableExtensibilities": ["Close", "Open"], "constraintVerbs": ["SHALL be", "SHALL NOT be", "is", "is not"], "constraintTypes": ["valued", "one of list values", "formatted value", "a literal value", "identical to the another node"], "predefinedFormats": ["YYYYMMDDhhmmss.sss", "ISO-compliant OID", "YYYYMMDDhhmm+-ZZZZ", "YYYYMMDDhh", "YYYY+-ZZZZ", "YYYY", "YYYYMMDDhhmm", "YYYYMM", "YYYYMMDDhhmmss+-ZZZZ", "Alphanumeric", "YYYYMM+-ZZZZ", "YYYYMMDDhhmmss", "YYYYMMDD+-ZZZZ", "YYYYMMDDhh+-ZZZZ", "YYYYMMDDhhmmss.sss+-ZZZZ", "YYYYMMDD"], "statuses": ["Draft", "Active", "Withdrawn", "Superceded"], "domainVersions": ["2.0", "2.1", "2.2", "2.3", "2.4", "2.5", "2.5.1", "2.6", "2.7", "2.3.1", "2.8"], "schemaVersions": ["1.0", "2.0", "1.5", "2.5"] }
@@ -201,6 +201,19 @@ angular.module('igl').controller('DatatypeLibraryCtl',
       $timeout( function(){
         $('#deltaTable').treetable('expandAll');
       }, 100 );
+    };
+
+
+    $scope.resetFilter=function () {
+        $scope.searchObject={};
+    }
+    $scope.searchFliter=function (obj) {
+        if($scope.searchObject.status && obj.status !==$scope.searchObject.status){
+            return false;
+
+        }else {
+            return true;
+        }
     };
     $scope.selectCellAfterCheck=function(dt,version){
       if($scope.selectedRow && dt===$scope.selectedRow){
