@@ -214,13 +214,18 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     if(data){
       if(def.path=='2'){
         if(def.constraintType === "dmr"){
-          if(!data.valueData.value || data.valueData.value === '') return 'Missing OBX-2 value';
-          var found = _.find(dynamicMappingTableCodes, function(code){ return code.value === data.valueData.value; });
-          if(!found) return 'Missing OBX-2 value';
+          // if(!data.valueData.value || data.valueData.value === '') return 'Missing OBX-2 value';
+          // var found = _.find(dynamicMappingTableCodes, function(code){ return code.value === data.valueData.value; });
+          // if(!found) return 'Missing OBX-2 value';
         }else if(def.constraintType === "dmf"){
-          if(!data.datatypeId || data.datatypeId === '') return 'Missing OBX-5 datatype definition';
-          var found = _.find(dtLib, function(link){ return link.id === data.datatypeId; });
-          if(!found) return 'Missing OBX-5 datatype definition';
+          if(data.valueData.value){
+            var foundName = _.find(dynamicMappingTableCodes, function(code){ return code.value === data.valueData.value; });
+            if(foundName) {
+                if(!data.datatypeId || data.datatypeId === '') return 'Missing datatype';
+                var found = _.find(dtLib, function(link){ return link.id === data.datatypeId; });
+                if(!found) return 'Missing datatype';
+            }
+          }
         }
       }else {
         if(def.constraintType === 'valueset' && data.valueSets && data.valueSets.length > 0) {
@@ -1239,6 +1244,9 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     }
   };
 
+  $scope.isValidCoConstraints = function() {
+    return false;
+  }
 
 
   $scope.cleanState = function() {

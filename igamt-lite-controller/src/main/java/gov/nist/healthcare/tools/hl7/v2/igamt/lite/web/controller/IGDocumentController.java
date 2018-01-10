@@ -735,32 +735,15 @@ public class IGDocumentController extends CommonController {
                 }
               }
             }
-          }
-        }
-      }
-
-      if (s.getCoConstraints() != null) {
-        if (s.getCoConstraints().getConstraints() != null) {
-          for (CoConstraint cc : s.getCoConstraints().getConstraints()) {
-            if (cc.getValues() != null) {
-              for (CCValue v : cc.getValues()) {
-                if (v.getValue() != null) {
-                  if (tableIdChangeMap.containsKey(v.getValue())) {
-                    v.setValue(tableIdChangeMap.get(v.getValue()));
-                  }
-                }
+            if(data != null && data.getDatatypeId() != null) {
+              if(datatypeIdChangeMap.containsKey(data.getDatatypeId())){
+                data.setDatatypeId(datatypeIdChangeMap.get(data.getDatatypeId()));
               }
             }
           }
         }
       }
-
-      for (Mapping map : s.getDynamicMapping().getMappings()) {
-        for (Case c : map.getCases()) {
-          if (c.getDatatype() != null && datatypeIdChangeMap.containsKey(c.getDatatype()))
-            c.setDatatype(datatypeIdChangeMap.get(c.getDatatype()));
-        }
-      }
+      
       segmentService.save(s);
     }
 
