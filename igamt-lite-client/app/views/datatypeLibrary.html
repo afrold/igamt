@@ -542,169 +542,139 @@ if (self === top) {
 
 </div>
 <script type="text/ng-template" id="LibraryMetaData.html">
-    <div class="row" style="margin-left:0px; margin-right: 20px" ng-init="preventNullDesc(datatypeLibMetaDataCopy)">
 
-        <div class="page-header" style="margin-bottom: 20px">
-            <span class="header4"> Library Metadata</span>
-            <span class="pull-right">
+    <div class="page-header" style="margin-bottom: 20px">
+        <span class="header4"> Library Metadata</span>
+        <span class="pull-right">
 
           <button type="button" class="btn btn-raised btn-sm btn-success"
                   ng-disabled="editForm.$invalid || !editForm.$dirty"
                   ng-hide="readOnly"
                   ng-click="saveMetaDataOfLibrary();editForm.$dirty=false;">
 
-           <span><i class="fa fa-check fa-fw" ng-hide="readOnly"></i> Save</span>
+                <span><i class="fa fa-check fa-fw" ng-hide="readOnly"></i> Save</span>
                 </button>
                 <button title="Discard changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!editForm.$dirty||readOnly" ng-click="resetMetaDataOfLibrary()">
                     <span><i class="fa fa-times fa-fw"></i>Reset</span>
                 </button>
-                </span>
-        </div>
+        </span>
+    </div>
+    <md-tabs>
+        <md-tab>
+            <md-tab-label>
+                Data Type Library Meta Data
+            </md-tab-label>
 
+        <md-tab-body>
 
-        <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
-            <md-content layout-padding>
+            <div class="row" style="margin-left:0px; margin-right: 20px" ng-init="preventNullDesc(datatypeLibMetaDataCopy)">
+                <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
+                    <md-content layout-padding>
 
-                <label class="input-left igamt-label">Title</label>
-                <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                    <input type="text" ng-disabled="viewSettings.tableReadonly"
-                           name="title"
-                           ng-model="datatypeLibMetaDataCopy.name"
-                           required>
-                    <div ng-messages="editForm.name.$error">
-                        <div ng-message="required">Title is required.</div>
-                    </div>
-                </md-input-container>
+                        <label class="input-left igamt-label">Title</label>
+                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
+                            <input type="text" ng-disabled="viewSettings.tableReadonly"
+                                   name="title"
+                                   ng-model="datatypeLibMetaDataCopy.name"
+                                   required>
+                            <div ng-messages="editForm.name.$error">
+                                <div ng-message="required">Title is required.</div>
+                            </div>
+                        </md-input-container>
 
-                <label class="input-left igamt-label">Steward</label>
+                        <label class="input-left igamt-label">Steward</label>
 
-                <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                    <input type="text" ng-disabled="viewSettings.tableReadonly"
-                           name="orgName"
-                           ng-model="datatypeLibMetaDataCopy.orgName">
-                    <div ng-messages="editForm.orgName.$error">
-                    </div>
-                </md-input-container>
+                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
+                            <input type="text" ng-disabled="viewSettings.tableReadonly"
+                                   name="orgName"
+                                   ng-model="datatypeLibMetaDataCopy.orgName">
+                            <div ng-messages="editForm.orgName.$error">
+                            </div>
+                        </md-input-container>
 
-
-                <!--<md-input-container class="md-block" flex-gt-sm>-->
-                    <!--<label class="input-left">Extension</label>-->
-                    <!--<input type="text" ng-disabled="viewSettings.tableReadonly"-->
-                           <!--ng-change="setDirty()"-->
-                           <!--name="ext"-->
-                           <!--ng-model="datatypeLibMetaDataCopy.ext">-->
-                    <!--<div ng-messages="editForm.ext.$error">-->
-                    <!--</div>-->
-                <!--</md-input-container>-->
-
-                <!--<md-input-container class="md-block" flex-gt-sm>-->
-                    <!--<label class="input-left">Specification</label>-->
-                    <!--<input type="text" ng-disabled="viewSettings.tableReadonly"-->
-                           <!--ng-change="setDirty()"-->
-                           <!--name="specificationName"-->
-                           <!--ng-model="datatypeLibMetaDataCopy.specificationName"-->
-                    <!--&gt;-->
-                    <!--<div ng-messages="editForm.specificationName.$error">-->
-                    <!--</div>-->
-                <!--</md-input-container>-->
-
-
-                <!--<md-input-container class="md-block" flex-gt-sm>-->
-                    <!--<label class="input-left">Status</label>-->
-                    <!--<input type="text" ng-disabled="viewSettings.tableReadonly"-->
-                           <!--ng-change="setDirty()"-->
-                           <!--name="status"-->
-                           <!--ng-model="datatypeLibMetaDataCopy.status"-->
-                    <!--&gt;-->
-                    <!--<div ng-messages="editForm.status.$error">-->
-                    <!--</div>-->
-                <!--</md-input-container>-->
-
-                <label class="input-left igamt-label" style="margin-bottom: 20px">Description </label>
-                <!--<md-input-container class="md-block igamt-input-block" flex-gt-sm >-->
-                                                          <!--<textarea froala="froalaEditorOptions"  no-dirty-check-->
-                                                                   <!--ng-model="datatypeLibMetaDataCopy.description" name="description" ng-change="recordChanged()"-->
-                                                                   <!--id="description"></textarea>-->
-                 <!--</md-input-container>-->
-
-
-                <md-input-container class="md-block igamt-input-block" flex-gt-sm style="margin-top:20px">
-                    <div  ng-show="!viewSettings.tableReadonly">
+                        <label class="input-left igamt-label" style="margin-bottom: 20px">Description </label>
+                        <md-input-container class="md-block igamt-input-block" flex-gt-sm style="margin-top:20px">
+                            <div  ng-show="!viewSettings.tableReadonly">
                                                          <textarea froala="froalaEditorOptions" no-dirty-check
                                                                    ng-model="datatypeLibMetaDataCopy.description" name="desc" ng-change="recordChanged()"
                                                                    id="desc"></textarea>
-                    </div>
-                    <div class="fr-view" ng-show="viewSettings.tableReadonly">
-                        <div froala-view="datatypeLibMetaDataCopy.description"></div>
-                    </div>
-                </md-input-container>
-            </md-content>
-        </div>
-    </div>
+                            </div>
+                            <div class="fr-view" ng-show="viewSettings.tableReadonly">
+                                <div froala-view="datatypeLibMetaDataCopy.description"></div>
+                            </div>
+                        </md-input-container>
+                    </md-content>
+                </div>
+            </div>
+        </md-tab-body>
 
+        </md-tab>
+        <md-tab>
+            <md-tab-label>
+                Summary
+            </md-tab-label>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!--<div ng-show="datatypeLibMetaDataCopy !== null">-->
-
-            <!--<div class="container">-->
-                <!--<div class="form-group" ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">-->
-                    <!--<label class="col-md-2 control-label">Name</label>-->
-                    <!--<div class="col-md-10">-->
-                        <!--<input class="form-control" type="text" ng-disabled="readOnly" name="title" ng-model="datatypeLibMetaDataCopy.name" ng-change="setDirty()" required id="title" required>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-group" ng-class="{'igl-has-error' : editForm.orgName.$invalid}">-->
-                    <!--<label class="col-md-2 control-label" for="orgName">Steward</label>-->
-                    <!--<div class="col-md-10">-->
-                        <!--<input type="text" id ="orgName" name="orgName"  ng-change="recordChanged()" class="form-control" ng-model="datatypeLibMetaDataCopy.orgName">-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label class="col-md-2 control-label">Description</label>-->
-                    <!--<div class="col-md-10">-->
-                        <!--<textArea type="text" name="description" id="description" ng-change="recordChanged()" class="form-control" ng-model="datatypeLibMetaDataCopy.description" >-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label class="col-md-2 control-label">Date</label>-->
-                    <!--<div class="col-md-10">-->
-                        <!--<input type="text" name="date" id="date" disabled ng-change="recordChanged()" class="form-control" ng-model="datatypeLibMetaDataCopy.date" required>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-
-
-
-
-
-
-
-
-
+        <md-tab-body ng-init="resetFilter()">
+            <div class="col-md-12">
+                <md-content style="margin-top: 15px">
+                    <button class="pull-right btn btn-xs btn-default" ng-click="resetFilter()"><i
+                            class="fa fa-times">Clear All Filters</i></button>
+                    <table  st-safe-src="datatypes"
+                            st-table="displayCollection"
+                           class="table table-stripped table-bordered table-condensed fixed-header">
+                        <thead class="fixed-header">
+                        <tr class="fixed-header">
+                            <th  class="col-md-2">
+                                <md-input-container style="margin: 0px">
+                                    <input no-dirty-check ng-model="searchObject.name">
+                                </md-input-container>
+                            </th>
+                            <th class="col-md-2">
+                                <md-input-container style="margin: 0px">
+                                    <input no-dirty-check ng-model="searchObject.description">
+                                </md-input-container>
+                            </th>
+                            <th  class="col-md-2"></th>
+                            <th  class="col-md-2">
+                                <md-select  no-dirty-check ng-model="searchObject.status">
+                                    <md-option  ng-value="'PUBLISHED'"> Published </md-option>
+                                    <md-option ng-value="'UNPUBLISHED'"> UnPublished</md-option>
+                                </md-select>
+                            </th>
+                            <th  class="col-md-1"></th>
+                            <th  class="col-md-3"></th>
+                        </tr>
+                        <tr class="tbl-header fixed-header">
+                            <th  class="col-md-2"></th>
+                            <th  class="col-md-2">Description</th>
+                            <th  class="col-md-2"> Compatibility Versions </th>
+                            <th  class="col-md-2"> Publication  Status </th>
+                            <th  class="col-md-1"> Publication  Version </th>
+                            <th  class="col-md-3">Purpose and Use</th>
+                        </tr>
+                        </thead>
+                        <tbody class="fixed-header">
+                        <tr ng-repeat="row in displayCollection|orderBy :name |filter:searchObject|filter:searchFliter" class="fixed-header">
+                            <td st-sort="row.name" class="col-md-2">
+                                <span  class="badge" ng-class="{'label-HL7' : getScopeLabel(row)==='HL7',
+                                 'label-USE':  getScopeLabel(row)==='USR','label-MASTER':getScopeLabel(row)==='MAS'}">
+                                      {{getScopeLabel(row)}}
+                                </span>
+                                {{getDatatypeLabel(row)}}
+                             </td>
+                             <td st-sort="row.name" class="col-md-2">{{row.description}}</td>
+                             <td  class="col-md-2"> <span ng-repeat="v in row.hl7versions" class="badge">{{v}} </span> </td>
+                             <td  class="col-md-2"> {{row.status}}</td>
+                             <td  class="col-md-1"> <span class="badge" ng-if="row.publicationVersion!==0">{{row.publicationVersion}} </span> </td>
+                             <td st-sort="row.purposeAndUse" class="col-md-3">{{row.purposeAndUse}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </md-content>
+            </div>
+        </md-tab-body>
+        </md-tab>
+    </md-tabs>
 </script>
 <script type="text/ng-template" id="DatatypeList.html">
     <div ui-tree ng-controller="TreeCtrl" style="margin-left:5px;">
