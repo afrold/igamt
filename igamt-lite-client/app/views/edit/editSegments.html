@@ -25,7 +25,7 @@
                         <span class="header4">Segment: {{getSegmentLabel(segment)}}</span>
                         <span class="pull-right">
                             <md-button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                                    ng-disabled="editForm.$invalid || !editForm.$dirty"
+                                    ng-disabled="editForm.$invalid || !editForm.$dirty || !isValidCoConstraints()"
                                     ng-hide="viewSettings.tableReadonly || segment.scope !== 'USER'"
                                     ng-click="save()">
                                 <span><i class="fa fa-check fa-fw"></i> Save</span>
@@ -365,7 +365,8 @@
                                                                 <table style="table-layout: fixed; border: 0;" class="table table-bordered table-fix-header table-condensed profile-table" ng-if="!viewSettings.tableReadonly || segment.coConstraintsTable.rowSize !== 0">
                                                                     <thead>
                                                                     <tr>
-                                                                        <th bgcolor="white" rowspan="2" style="overflow: hidden;width: 20px;text-align:center;border:0;">
+                                                                        <th bgcolor="white" rowspan="2" bgcolor="#4b4b4b" style="border:0; font-weight: bold;color:white;text-align:center;overflow: hidden;width: 50px;">
+                                                                            #
                                                                         </th>
                                                                         <th ng-if="!segment.coConstraintsTable.ifColumnDefinition" bgcolor="#1565c0" style="font-weight: bold;color:white;text-align:center;overflow: hidden;width: 200px;">
                                                                             If Column<sup>*</sup>
@@ -407,7 +408,6 @@
                                                                             <span ng-if="columnDefinition.type=='component'" class="label label-component label-icon">C</span>
                                                                             <span ng-if="columnDefinition.type=='subcomponent'" class="label label-sub-component-icon label-icon">C</span>
                                                                             <span style="color:black">{{segment.name}}-{{columnDefinition.path}}</span>
-                                                                            <span ng-if="columnDefinition.path=='2' || columnDefinition.path=='5'" style="color:black"><sup>*</sup></span>
                                                                             <span ng-if="columnDefinition.constraintType=='value'" class="label label-icon">Value</span>
                                                                             <span ng-if="columnDefinition.constraintType=='valueset'" class="label label-icon">ValueSet</span>
                                                                             <span ng-if="columnDefinition.constraintType=='dmr'" class="label label-icon">Value</span>
@@ -430,11 +430,12 @@
                                                                     </thead>
                                                                     <tbody ui-sortable="coConSortableOption" ng-model="coConRowIndexList">
                                                                     <tr style="cursor: move;" ng-if="segment.coConstraintsTable.rowSize > 0" ng-repeat="rowObject in coConRowIndexList track by $index">
-                                                                        <td style="border: 0;">
+                                                                        <td style="font-weight: bold;overflow: hidden;width: 200px;text-align:center;background-color: #f6f6f6 !important;">
+                                                                            {{$index + 1}}
                                                                             <div ng-if="segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].isNew">
-                                                                        <span title="This is NEW!!!!!" class="badge" style="background-color:yellow; color:black;">
-                                                                                <span><i class="fa fa-flag fa-fw"></i></span>
-                                                                            </span>
+                                                                                <span title="This is NEW!!!!!" class="badge" style="background-color:yellow; color:black;">
+                                                                                    <span><i class="fa fa-flag fa-fw"></i></span>
+                                                                                </span>
                                                                             </div>
                                                                         </td>
 
@@ -444,6 +445,7 @@
                                                                                        ng-change="setDirty();"
                                                                                        style="font-weight: bold;"
                                                                                        class="form-control"
+                                                                                       ng-class="{ 'has-error' : checkIfDataDuplicated(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value, segment.coConstraintsTable.ifColumnData) || isEmpty(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value)}"
                                                                                        ng-disabled="viewSettings.tableReadonly">
                                                                                 <select ng-if="!segment.coConstraintsTable.ifColumnDefinition.primitive" class="form-control" placeholder="Select BindingLocation" ng-model='segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.bindingLocation' ng-change="setDirty()" ng-disabled="viewSettings.tableReadonly">
                                                                                     <option ng-repeat="option in findOptions(segment.coConstraintsTable.ifColumnDefinition.dtId) track by $index" ng-value="option">
@@ -457,7 +459,7 @@
 
                                                                         <td ng-if="!segment.coConstraintsTable.ifColumnDefinition" style="font-weight: bold;overflow: hidden;width: 200px;background-color: #b1daff !important;"/>
 
-                                                                        <td ng-repeat="columnDefinition in segment.coConstraintsTable.thenColumnDefinitionListForDisplay track by $index" colspan="4" style="overflow: hidden;width: 200px;text-align:center;">
+                                                                        <td ng-class="{'emptyCol':columnDefinition.constraintType === 'dmf' && !segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value}" ng-repeat="columnDefinition in segment.coConstraintsTable.thenColumnDefinitionListForDisplay track by $index" colspan="4" style="overflow: hidden;width: 200px;text-align:center;">
                                                                             <div ng-if="isDual(columnDefinition)">
                                                                                 <div ng-if="!viewSettings.tableReadonly && (!segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueSets || segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueSets.length === 0) && (!segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData || !segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value)">
                                                                                     <span ng-click="editValueSetForVaries(columnDefinition.id, rowObject.rowIndex)" class="label label-icon">ValueSet</span>
@@ -540,6 +542,7 @@
                                                                                             ng-model="segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].datatypeId"
                                                                                             ng-change="setDirty()"
                                                                                             class="form-control"
+                                                                                            ng-class="{ 'has-error' : checkThenData(columnDefinition, segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex], dynamicMappingTable.codes, igdocument.profile.datatypeLibrary.children, tablesMap)}"
                                                                                             ng-disabled="viewSettings.tableReadonly">
                                                                                         <option ng-repeat="link in igdocument.profile.datatypeLibrary.children| filter: {name: segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value}: true track by $index" ng-value="link.id">
                                                                                             {{getDatatypeLabel(datatypesMap[link.id])}}
