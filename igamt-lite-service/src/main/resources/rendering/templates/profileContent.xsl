@@ -9,9 +9,13 @@
     <xsl:import href="/rendering/templates/profile/valueSet.xsl"/>
     <xsl:import href="/rendering/templates/profile/constraints.xsl"/>
     <xsl:import href="/rendering/templates/profile/constraint.xsl"/>
+    <xsl:import href="/rendering/templates/profile/datatypeLibrarySummary.xsl"/>
     <xsl:template name="displayProfileContent">
         <xsl:param name="inlineConstraint"/>
         <xsl:choose>
+        	<xsl:when test="count(DatatypeLibrarySummary) &gt; 0">
+                <xsl:apply-templates select="DatatypeLibrarySummary"></xsl:apply-templates>
+            </xsl:when>
             <xsl:when test="count(ProfileComponent) &gt; 0">
                 <xsl:apply-templates select="ProfileComponent">
                     <xsl:sort select="@position" data-type="number"></xsl:sort>
