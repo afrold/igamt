@@ -1312,8 +1312,34 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     $rootScope.$emit("event:openSegDelta");
   };
 
+  $scope.save=function () {
 
-  $scope.save = function() {
+      if($rootScope.segment.name=='OBX'&& !$scope.isValidCoConstraints()){
+          $mdDialog.show({
+              templateUrl:"CoConstraintError.html",
+
+              locals: {
+                  items: $scope.items
+              },
+              controller: DialogController
+          });
+          function DialogController($scope, $mdDialog) {
+
+              $scope.close = function() {
+                  $mdDialog.hide();
+              }
+          }
+
+      }else{
+          $scope.processSave();
+      }
+
+
+
+
+  };
+
+  $scope.processSave = function() {
     $scope.saving = true;
     var segment = $rootScope.segment;
     $rootScope.$emit("event:saveSegForDelta");
@@ -1358,8 +1384,10 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
       $rootScope.msg().show = true;
     });
 
-    $rootScope.saveBindingForSegment();
+    // $rootScope.saveBindingForSegment();
   };
+
+
 
 
   var searchById = function(id) {

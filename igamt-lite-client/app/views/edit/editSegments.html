@@ -24,12 +24,19 @@
                     <div class="page-header">
                         <span class="header4">Segment: {{getSegmentLabel(segment)}}</span>
                         <span class="pull-right">
+                            <!--<md-button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"-->
+                                    <!--ng-disabled="editForm.$invalid || !editForm.$dirty || !isValidCoConstraints()"-->
+                                    <!--ng-hide="viewSettings.tableReadonly || segment.scope !== 'USER'"-->
+                                    <!--ng-click="save()">-->
+                                <!--<span><i class="fa fa-check fa-fw"></i> Save</span>-->
+                        <!--</md-button>-->
                             <md-button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                                    ng-disabled="editForm.$invalid || !editForm.$dirty || !isValidCoConstraints()"
-                                    ng-hide="viewSettings.tableReadonly || segment.scope !== 'USER'"
-                                    ng-click="save()">
-                                <span><i class="fa fa-check fa-fw"></i> Save</span>
-                        </md-button>
+                            ng-disabled="editForm.$invalid || !editForm.$dirty"
+                            ng-hide="viewSettings.tableReadonly || segment.scope !== 'USER'"
+                            ng-click="save()">
+                            <span><i class="fa fa-check fa-fw"></i> Save</span>
+                            </md-button>
+
                         <md-button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty" ng-show="segment.scope !== 'USER'" ng-click="saveBindingForSegment();cleanState();">
                                 <span><i class="fa fa-check fa-fw"></i> Save</span>
                             </md-button>
