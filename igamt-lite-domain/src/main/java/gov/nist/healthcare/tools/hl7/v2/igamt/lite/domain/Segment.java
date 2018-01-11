@@ -527,7 +527,7 @@ public class Segment extends DataModelWithConstraints
       
       
       if (definitionThen.isPrimitive()) {
-        thenAssertion = "<ValueSet Path=\"" + definitionThen.getConstraintPath() + "\" ValueSetID=\"" + bid + "\" BindingStrength=\"" + thenData.getValueSets().get(0).getBindingStrength() + "\"/>";
+        thenAssertion = "<ValueSet Path=\"" + definitionThen.getConstraintPath() + "\" ValueSetID=\"" + bid   + "\" BindingLocation=\"1\" BindingStrength=\"" + thenData.getValueSets().get(0).getBindingStrength() + "\"/>";
       }else {
         if (thenData.getValueSets().get(0).getBindingLocation() == null) {
           thenAssertion = "<ValueSet Path=\"" + definitionThen.getConstraintPath() + "\" ValueSetID=\"" + bid + "\" BindingLocation=\"1\" BindingStrength=\"" + thenData.getValueSets().get(0).getBindingStrength() + "\"/>";
