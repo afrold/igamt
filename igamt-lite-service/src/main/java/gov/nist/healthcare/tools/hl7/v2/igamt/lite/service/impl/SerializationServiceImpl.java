@@ -177,8 +177,20 @@ public class SerializationServiceImpl implements SerializationService {
           new SerializableMetadata(datatypeLibraryDocument.getMetaData(), datatypeLibraryDocument.getDateUpdated());
       serializableStructure.addSerializableElement(serializableMetadata);
       SerializableSections serializableSections = new SerializableSections();
-      this.bindedDatatypes = new ArrayList<>(datatypeLibraryDocument.getDatatypeLibrary().getChildren());
       HashMap<DatatypeLink,Datatype> datatypeLinkDatatypeMap = getDatatypeLinkDatatypeMap(datatypeLibraryDocument.getDatatypeLibrary());
+      if(exportConfig.isDatatypeLibraryIncludeDerived()){
+    		  this.bindedDatatypes = new ArrayList<>(datatypeLibraryDocument.getDatatypeLibrary().getChildren());
+      } else {
+    	  this.bindedDatatypes = new ArrayList<>();
+    	  for(DatatypeLink datatypeLink : datatypeLibraryDocument.getDatatypeLibrary().getChildren()){
+    		  if(datatypeLinkDatatypeMap.containsKey(datatypeLink)){
+    			  Datatype datatype = datatypeLinkDatatypeMap.get(datatypeLink);
+    			  if(datatype != null && datatype.getScope() != null && datatype.getScope().equals(datatypeLibraryDocument.getDatatypeLibrary().getScope())){
+    				  this.bindedDatatypes.add(datatypeLink);
+    			  }
+    		  }
+    	  }
+      }
       int datatypeSectionPosition = 1;
       if (datatypeLibraryDocument.getMetaData().getDescription() != null && !datatypeLibraryDocument
           .getMetaData().getDescription().trim().isEmpty()) {
@@ -192,9 +204,8 @@ public class SerializationServiceImpl implements SerializationService {
           new SerializableSection("datatypeLibrarySection", String.valueOf(datatypeSectionPosition),
               String.valueOf(datatypeSectionPosition), "1", "Datatype Library");
       int currentSectionPosition = 1;
-      //TODO replace by configuration
       SerializableSection datatypeLibrarySummarySection = null;
-      if(true){
+      if(exportConfig.isDatatypeLibraryIncludeSummary()){
     	  datatypeLibrarySummarySection = this.createDatatypeLibrarySummary(datatypeLibraryDocument.getDatatypeLibrary(), currentSectionPosition, datatypeLinkDatatypeMap);
     	  currentSectionPosition ++;
       }

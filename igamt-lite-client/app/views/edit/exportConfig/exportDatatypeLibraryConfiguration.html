@@ -1,26 +1,26 @@
 <div layout="column">
 
-    <div flex layout="row" layout-margin layout-align="end center">
-        <div>
-            <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                       ng-disabled="!changed"
-                       ng-click="saveUserExportFontConfig(userExportFontConfig); ">
-                <span><i class="fa fa-check fa-fw"></i>Apply</span>
-            </button>
-        </div>
-        <div>
-            <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!changed"
-                       ng-click="resetUserExportFontConfig()">
-                <span><i class="fa fa-times fa-fw"></i> Reset</span>
-            </button>
-        </div>
-        <div>
-            <button title="Restore Default" type="button" class="btn btn-raised btn-sm btn-default"
-                       ng-click="restoreDefaultExportFontConfig()">
-                <span><i class="fa fa-refresh" aria-hidden="true"></i> Restore Default</span>
-            </button>
-        </div>
-    </div>
+	<md-content flex layout="row" layout-margin layout-align="end center">
+	    <md-content>
+	        <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
+	                ng-disabled="!changed || exportStyleForm.$invalid"
+	                ng-click="saveExportConfig(); ">
+	            <span><i class="fa fa-check fa-fw"></i>Apply</span>
+	        </button>
+	    </md-content>
+	    <md-content>
+	        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!changed"
+	                ng-click="resetExportConfig()">
+	            <span><i class="fa fa-times fa-fw"></i> Reset</span>
+	        </button>
+	    </md-content>
+	    <md-content>
+	        <button title="Restore Default" type="button" class="btn btn-raised btn-sm btn-default"
+	                ng-click="restoreDefaultExportFontConfig()">
+	            <span><i class="fa fa-refresh" aria-hidden="true"></i> Restore Default</span>
+	        </button>
+	    </md-content>
+	</md-content>
 
     <div flex layout="row" layout-xs="column" layout-align="center start" style="min-width:100%">
         <div flex="100" class="">
