@@ -554,7 +554,11 @@ public class Segment extends DataModelWithConstraints
       thenAssertion = thenAssertion + "</EXIST>";
     }
     if (definitionThen.isPrimitive()) {
-      thenAssertion = "<OR><NOT><Presence Path=\"" + definitionThen.getConstraintPath() + "\"/></NOT>" + thenAssertion + "</OR>";
+      if(isOBX5(definitionThen.getPath())){
+        thenAssertion = "<OR><NOT><Presence Path=\"" + definitionThen.getConstraintPath() + ".1[1]\"/></NOT>" + thenAssertion + "</OR>";
+      }else {
+        thenAssertion = "<OR><NOT><Presence Path=\"" + definitionThen.getConstraintPath() + "\"/></NOT>" + thenAssertion + "</OR>";  
+      }
     }else {
       if (thenData.getValueSets().get(0).getBindingLocation() == null) {
         thenAssertion = "<OR><NOT><Presence Path=\"" + definitionThen.getConstraintPath() + ".1[1]\"/></NOT>" + thenAssertion + "</OR>";
