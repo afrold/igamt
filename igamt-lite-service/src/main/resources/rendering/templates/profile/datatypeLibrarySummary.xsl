@@ -31,6 +31,7 @@
 			</xsl:element>
 			<xsl:element name = "tbody">
 				<xsl:for-each select="DatatypeLibrarySummaryItem">
+				<xsl:sort select="@label"/>
 					<xsl:element name = "tr">
 						<xsl:element name = "td">
 							<xsl:value-of select="@label"></xsl:value-of>
