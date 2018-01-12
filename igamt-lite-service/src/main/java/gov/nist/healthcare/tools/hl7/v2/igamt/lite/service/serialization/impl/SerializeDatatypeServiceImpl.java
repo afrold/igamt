@@ -65,17 +65,40 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
         }
         return null;
     }
+    
+    @Override
+    public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, Datatype datatype, String prefix,
+        Integer position, UsageConfig datatypeUsageConfig) throws DatatypeSerializationException {
+        if(datatype!=null) {
+            String headerLevel = String.valueOf(3);
+            return serializeDatatype(datatype,headerLevel,prefix,position,datatypeUsageConfig, false,null);
+        }
+        return null;
+    }
 
+    @Override
+    public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, Datatype datatype, String prefix,
+        Integer position, UsageConfig datatypeUsageConfig, boolean includeTemporary) throws DatatypeSerializationException {
+        if(datatype!=null) {
+        	if(!includeTemporary && datatype.isTemporary()){
+            	return null;
+            }
+            String headerLevel = String.valueOf(3);
+            return serializeDatatype(datatype,headerLevel,prefix,position,datatypeUsageConfig, false,null);
+        }
+        return null;
+    }
+    
     @Override
     public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix,
         Integer position, UsageConfig datatypeUsageConfig,
-        Map<String, Datatype> componentProfileDatatypes, boolean includeTemporay) throws DatatypeSerializationException {
+        Map<String, Datatype> componentProfileDatatypes, boolean includeTemporary) throws DatatypeSerializationException {
         if(datatypeLink!=null && datatypeLink.getId()!=null) {
             Datatype datatype = componentProfileDatatypes.get(datatypeLink.getId());
             if(datatype == null){
                 throw new DatatypeSerializationException(new DatatypeNotFoundException(datatypeLink.getId()),datatypeLink.getLabel());
             }
-            if(!includeTemporay&&datatype.isTemporary()){
+            if(!includeTemporary && datatype.isTemporary()){
             	return null;
             }
 

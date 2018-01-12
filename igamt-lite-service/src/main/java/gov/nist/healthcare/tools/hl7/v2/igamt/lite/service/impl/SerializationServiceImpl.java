@@ -49,11 +49,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstrai
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.exception.DatatypeNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.exception.ProfileComponentNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableCompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableDatatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableDatatypeLibrarySummary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableElement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableMessage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableMetadata;
@@ -175,12 +177,20 @@ public class SerializationServiceImpl implements SerializationService {
           new SerializableMetadata(datatypeLibraryDocument.getMetaData(), datatypeLibraryDocument.getDateUpdated());
       serializableStructure.addSerializableElement(serializableMetadata);
       SerializableSections serializableSections = new SerializableSections();
-      this.bindedDatatypes = new ArrayList<>(datatypeLibraryDocument.getDatatypeLibrary().getChildren());
-      this.bindedTables = new HashSet<>();
-      for (TableLink tableLink : datatypeLibraryDocument.getTableLibrary().getChildren()) {
-        doBindTable(tableLink.getId());
+      HashMap<DatatypeLink,Datatype> datatypeLinkDatatypeMap = getDatatypeLinkDatatypeMap(datatypeLibraryDocument.getDatatypeLibrary());
+      if(exportConfig.isDatatypeLibraryIncludeDerived()){
+    		  this.bindedDatatypes = new ArrayList<>(datatypeLibraryDocument.getDatatypeLibrary().getChildren());
+      } else {
+    	  this.bindedDatatypes = new ArrayList<>();
+    	  for(DatatypeLink datatypeLink : datatypeLibraryDocument.getDatatypeLibrary().getChildren()){
+    		  if(datatypeLinkDatatypeMap.containsKey(datatypeLink)){
+    			  Datatype datatype = datatypeLinkDatatypeMap.get(datatypeLink);
+    			  if(datatype != null && datatype.getScope() != null && datatype.getScope().equals(datatypeLibraryDocument.getDatatypeLibrary().getScope())){
+    				  this.bindedDatatypes.add(datatypeLink);
+    			  }
+    		  }
+    	  }
       }
-
       int datatypeSectionPosition = 1;
       if (datatypeLibraryDocument.getMetaData().getDescription() != null && !datatypeLibraryDocument
           .getMetaData().getDescription().trim().isEmpty()) {
@@ -193,12 +203,21 @@ public class SerializationServiceImpl implements SerializationService {
       SerializableSection datatypeLibrarySection =
           new SerializableSection("datatypeLibrarySection", String.valueOf(datatypeSectionPosition),
               String.valueOf(datatypeSectionPosition), "1", "Datatype Library");
+      int currentSectionPosition = 1;
+      SerializableSection datatypeLibrarySummarySection = null;
+      if(exportConfig.isDatatypeLibraryIncludeSummary()){
+    	  datatypeLibrarySummarySection = this.createDatatypeLibrarySummary(datatypeLibraryDocument.getDatatypeLibrary(), currentSectionPosition, datatypeLinkDatatypeMap);
+    	  currentSectionPosition ++;
+      }
       SerializableSection datatypeSection =
-          this.serializeDatatypes(datatypeLibraryDocument.getDatatypeLibrary(), 1, true);
+          this.serializeDatatypes(datatypeLibraryDocument.getDatatypeLibrary(), currentSectionPosition, true, datatypeLinkDatatypeMap);
       // datatypeSection.setTitle("Data Types");
       // SerializableSection valueSetsSection =
       // this.serializeValueSets(datatypeLibraryDocument.getTableLibrary(),2);
       // valueSetsSection.setTitle("Value Sets");
+      if(datatypeLibrarySummarySection != null){
+    	  datatypeLibrarySection.addSection(datatypeLibrarySummarySection);
+      }
       datatypeLibrarySection.addSection(datatypeSection);
       // datatypeLibrarySection.addSection(valueSetsSection);
       serializableSections.addSection(datatypeLibrarySection);
@@ -209,7 +228,44 @@ public class SerializationServiceImpl implements SerializationService {
     }
   }
 
-  @Override
+  private HashMap<DatatypeLink, Datatype> getDatatypeLinkDatatypeMap(DatatypeLibrary datatypeLibrary) throws DatatypeSerializationException {
+	HashMap<DatatypeLink, Datatype> datatypeLinkDatatypeMap = new HashMap<>();
+	List<DatatypeLink> datatypeLinkList = new ArrayList<>(datatypeLibrary.getChildren());
+	Collections.sort(datatypeLinkList);
+	for(DatatypeLink datatypeLink : datatypeLinkList){
+		if(!datatypeLinkDatatypeMap.containsKey(datatypeLink)){
+			try {
+				Datatype datatype = datatypeService.findById(datatypeLink.getId());
+				if(datatype == null){
+					throw new DatatypeNotFoundException(datatypeLink.getId());
+				} else {
+					datatypeLinkDatatypeMap.put(datatypeLink, datatype);
+				}
+			} catch (Exception e){
+				throw new DatatypeSerializationException(e, datatypeLink.getLabel());
+			}
+		}
+	}
+	return datatypeLinkDatatypeMap;
+}
+
+private SerializableSection createDatatypeLibrarySummary(DatatypeLibrary datatypeLibrary, int sectionPosition, HashMap<DatatypeLink,Datatype> datatypeLinkDatatypeMap) {
+  	String id = datatypeLibrary.getId()+"_summary";
+	String position, prefix;
+	if (datatypeLibrary.getSectionPosition() != null) {
+	  prefix = String.valueOf(sectionPosition) + "."
+	      + String.valueOf(datatypeLibrary.getSectionPosition() + 1);
+	} else {
+	  prefix = String.valueOf(sectionPosition);
+	}
+	position = String.valueOf(sectionPosition);
+	String headerLevel = String.valueOf(2);
+	String title = "Datatype Library Summary";
+	SerializableDatatypeLibrarySummary datatypeLibrarySummarySection = new SerializableDatatypeLibrarySummary("datatypeLibrarySummary", prefix, position, headerLevel, title, datatypeLinkDatatypeMap,datatypeLibrary.getScope());
+	return datatypeLibrarySummarySection;
+  }
+
+@Override
   public Document serializeElement(SerializableElement element) throws SerializationException {
     SerializableStructure serializableStructure = new SerializableStructure();
     serializableStructure.addSerializableElement(element);
@@ -347,7 +403,7 @@ public class SerializationServiceImpl implements SerializationService {
         serializeMaster = false;
       }
       SerializableSection datatypeSection =
-          this.serializeDatatypes(profile.getDatatypeLibrary(), currentPosition, serializeMaster);
+          this.serializeDatatypes(profile.getDatatypeLibrary(), currentPosition, serializeMaster, null);
       if (exportConfig.isIncludeDatatypeTable() && datatypeSection != null) {
         profileSection.addSection(datatypeSection);
         currentPosition++;
@@ -554,7 +610,7 @@ public class SerializationServiceImpl implements SerializationService {
   }
 
   private SerializableSection serializeDatatypes(DatatypeLibrary datatypeLibrary,
-      int sectionPosition, boolean serializeMaster) throws DatatypeSerializationException {
+      int sectionPosition, boolean serializeMaster, HashMap<DatatypeLink,Datatype> datatypeLinkDatatypeMap) throws DatatypeSerializationException {
     String id = datatypeLibrary.getId();
     String position, prefix;
     if (datatypeLibrary.getSectionPosition() != null) {
@@ -577,7 +633,7 @@ public class SerializationServiceImpl implements SerializationService {
           .addSectionContent(serializationUtil.cleanRichtext(datatypeLibrary.getSectionContents()));
     }
     List<DatatypeLink> datatypeLinkList = new ArrayList<>(datatypeLibrary.getChildren());
-    Collections.sort(datatypeLinkList);
+	Collections.sort(datatypeLinkList);
     UsageConfig datatypeComponentsUsageConfig = this.exportConfig.getComponentExport();
     if (bindedDatatypes != null && !bindedDatatypes.isEmpty()) {
       Iterator<DatatypeLink> itr = bindedDatatypes.iterator();
@@ -587,17 +643,22 @@ public class SerializationServiceImpl implements SerializationService {
           itr.remove();
         } else {
           CompositeProfile compositeProfile = getDatatypeCompositeProfile(entry);
+          Datatype datatype = null;
+          if(datatypeLinkDatatypeMap!=null && !datatypeLinkDatatypeMap.isEmpty() && datatypeLinkDatatypeMap.containsKey(entry)){
+        	  datatype = datatypeLinkDatatypeMap.get(entry);
+          }
           SerializableDatatype serializableDatatype = null;
           if (compositeProfile != null) {
-
-            serializableDatatype = serializeDatatypeService.serializeDatatype(entry,
+    		  serializableDatatype = serializeDatatypeService.serializeDatatype(entry,
                 prefix + "." + String.valueOf(datatypeLinkList.indexOf(entry) + 1),
                 datatypeLinkList.indexOf(entry), datatypeComponentsUsageConfig,
                 compositeProfile.getDatatypesMap(),exportConfig.isIncludeDerived());
           } else {
-            serializableDatatype = serializeDatatypeService.serializeDatatype(entry,
-               prefix + "." + String.valueOf(datatypeLinkList.indexOf(entry) + 1),
-             datatypeLinkList.indexOf(entry), datatypeComponentsUsageConfig);
+        	  if(datatype != null){
+        		  serializableDatatype = serializeDatatypeService.serializeDatatype(entry, datatype, prefix + "." + String.valueOf(datatypeLinkList.indexOf(entry) + 1), datatypeLinkList.indexOf(entry), datatypeComponentsUsageConfig);
+        	  } else {
+        		  serializableDatatype = serializeDatatypeService.serializeDatatype(entry, prefix + "." + String.valueOf(datatypeLinkList.indexOf(entry) + 1), datatypeLinkList.indexOf(entry), datatypeComponentsUsageConfig);
+        	  }
           }
           // This "if" is only useful if we want to display only user datatypes
           // if(serializeMaster||!(serializableDatatype.getDatatype().getScope().equals(Constant.SCOPE.HL7STANDARD))){

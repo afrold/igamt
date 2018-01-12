@@ -1,0 +1,47 @@
+<div layout="column">
+
+	<md-content flex layout="row" layout-margin layout-align="end center">
+	    <md-content>
+	        <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
+	                ng-disabled="!changed || exportStyleForm.$invalid"
+	                ng-click="saveExportConfig(); ">
+	            <span><i class="fa fa-check fa-fw"></i>Apply</span>
+	        </button>
+	    </md-content>
+	    <md-content>
+	        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!changed"
+	                ng-click="resetExportConfig()">
+	            <span><i class="fa fa-times fa-fw"></i> Reset</span>
+	        </button>
+	    </md-content>
+	    <md-content>
+	        <button title="Restore Default" type="button" class="btn btn-raised btn-sm btn-default"
+	                ng-click="restoreDefaultExportFontConfig()">
+	            <span><i class="fa fa-refresh" aria-hidden="true"></i> Restore Default</span>
+	        </button>
+	    </md-content>
+	</md-content>
+
+    <div flex layout="row" layout-xs="column" layout-align="center start" style="min-width:100%">
+        <div flex="100" class="">
+            <md-content>
+                <md-card>
+                    <md-card-content>
+                        <h2>Datatype Library</h2>
+                        <hr/>
+                        <div layout="column">
+                        	<md-checkbox class="md-primary"
+                               ng-model="config.datatypeLibraryIncludeSummary"
+                               ng-change="setChanged()" ><label style="color: black">Include Summary</label></md-checkbox>
+                             <md-checkbox class="md-primary"
+                               ng-model="config.datatypeLibraryIncludeDerived"
+                               ng-change="setChanged()" ><label style="color: black">Include Derived Datatypes</label></md-checkbox>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </md-content>
+        </div>
+
+    </div>
+
+</div>

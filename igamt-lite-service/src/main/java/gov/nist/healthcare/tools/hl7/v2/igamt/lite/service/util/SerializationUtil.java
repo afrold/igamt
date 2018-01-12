@@ -51,6 +51,7 @@ public class SerializationUtil {
     richtext = richtext.replace("<p ", "<div ");
     richtext = richtext.replace("<p>", "<div>");
     richtext = richtext.replace("</p>", "</div>");
+    //richtext = richtext.replace("&reg;","&amp;reg;");
     richtext = richtext.replace("&lsquo;", "&#39;");
     richtext = richtext.replaceAll("[^\\p{Print}]", "?");
     org.jsoup.nodes.Document doc = Jsoup.parse(richtext);

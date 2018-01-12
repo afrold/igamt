@@ -69,6 +69,10 @@ public class ExportConfig {
   private ValueSetMetadataConfig valueSetsMetadata;
   private final static int MAX_CODE = 500;
   private int maxCodeNumber = MAX_CODE;
+  
+  //DatatypeLibrary Config
+  private boolean datatypeLibraryIncludeSummary = true;
+  private boolean datatypeLibraryIncludeDerived = false;
 
 
 
@@ -472,4 +476,21 @@ public CoConstraintExportMode getCoConstraintExportMode() {
 public void setCoConstraintExportMode(CoConstraintExportMode coConstraintExportMode) {
 	this.coConstraintExportMode = coConstraintExportMode;
 }
+
+public boolean isDatatypeLibraryIncludeSummary() {
+	return datatypeLibraryIncludeSummary;
+}
+
+public void setDatatypeLibraryIncludeSummary(boolean datatypeLibraryIncludeSummary) {
+	this.datatypeLibraryIncludeSummary = datatypeLibraryIncludeSummary;
+}
+
+public boolean isDatatypeLibraryIncludeDerived() {
+	return datatypeLibraryIncludeDerived;
+}
+
+public void setDatatypeLibraryIncludeDerived(boolean datatypeLibraryIncludeDerived) {
+	this.datatypeLibraryIncludeDerived = datatypeLibraryIncludeDerived;
+}
+
 }
