@@ -11,6 +11,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
 
   $scope.discard = function() {
     var data = $rootScope.currentData;
+      $rootScope.saveError=false;
     if (data.type && data.type === "message") {
       MessageService.reset();
 
@@ -232,6 +233,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
           segment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
         }
         SegmentService.save($rootScope.segment).then(function(result) {
+            $rootScope.saveError=false;
           var oldLink = SegmentLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.segmentLibrary.children);
           var newLink = SegmentService.getSegmentLink(result);
           SegmentLibrarySvc.updateChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function(link) {
