@@ -27,7 +27,10 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
   };
 
   $scope.initSegment = function() {
-    $scope.accordStatus = {
+    console.log("called Init");
+      $rootScope.saveError=false;
+
+      $scope.accordStatus = {
       isCustomHeaderOpen: false,
       isFirstOpen: false,
       isSecondOpen: true,
@@ -1244,56 +1247,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     }
   };
 
-  $scope.isValidCoConstraints = function() {
-    if($rootScope.segment.coConstraintsTable){
-      if($rootScope.segment.coConstraintsTable.ifColumnDefinition && $rootScope.segment.coConstraintsTable.ifColumnData){
-        var tempIfData = [];
-        for(var i = 0; i < $rootScope.segment.coConstraintsTable.ifColumnData.length; i++){
-          if($rootScope.segment.coConstraintsTable.ifColumnData[i]){
-            if($rootScope.segment.coConstraintsTable.ifColumnData[i].valueData){
-              if($rootScope.segment.coConstraintsTable.ifColumnData[i].valueData.value){
-                if($rootScope.segment.coConstraintsTable.ifColumnData[i].valueData.value === '') return false;
 
-                else{
-                  if(tempIfData.indexOf($rootScope.segment.coConstraintsTable.ifColumnData[i].valueData.value) > -1) return false;
-                  tempIfData.push($rootScope.segment.coConstraintsTable.ifColumnData[i].valueData.value);
-                }
-              } else return false;
-            } else return false;
-          } else return false;
-        }
-      } else return false;
-
-      if($rootScope.segment.coConstraintsTable.thenColumnDefinitionList){
-        for(var i in $rootScope.segment.coConstraintsTable.thenColumnDefinitionList){
-          var def = $rootScope.segment.coConstraintsTable.thenColumnDefinitionListForDisplay[i];
-          if(def && def.id){
-            if(def.path === '2'){
-              if(def.constraintType === 'dmf'){
-                var thenDataList = $rootScope.segment.coConstraintsTable.thenMapData[def.id];
-                if(thenDataList){
-                  for(var j = 0; j < thenDataList.length; j++){
-                    var data = thenDataList[j];
-                    if(data){
-                      if(data.valueData.value){
-                        var foundName = _.find($rootScope.dynamicMappingTable.codes, function(code){ return code.value === data.valueData.value; });
-                        if(foundName) {
-                          if(!data.datatypeId || data.datatypeId === '') return false;
-                          var found = _.find($rootScope.igdocument.profile.datatypeLibrary.children, function(link){ return link.id === data.datatypeId; });
-                          if(!found) return false;
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    return true;
-  };
 
 
   $scope.cleanState = function() {
@@ -1314,33 +1268,21 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
   $scope.save=function () {
 
-      if($rootScope.segment.name=='OBX'&& !$scope.isValidCoConstraints()){
-          $mdDialog.show({
-              templateUrl:"CoConstraintError.html",
-
-              locals: {
-                  items: $scope.items
-              },
-              controller: DialogController
-          });
-          function DialogController($scope, $mdDialog) {
-
-              $scope.close = function() {
-                  $mdDialog.hide();
-              }
-          }
+      if($rootScope.segment.name=='OBX'&& !$rootScope.isValidCoConstraints()){
+          $rootScope.saveError=true;
 
       }else{
           $scope.processSave();
       }
-
-
-
-
   };
 
+    $scope.hideSaveError=function () {
+        $rootScope.saveError=false;
+    };
   $scope.processSave = function() {
-    $scope.saving = true;
+      $rootScope.saveError=false;
+
+      $scope.saving = true;
     var segment = $rootScope.segment;
     $rootScope.$emit("event:saveSegForDelta");
     var ext = segment.ext;

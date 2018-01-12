@@ -61,7 +61,19 @@
                     <span ng-if="segment.publicationVersion"> Version: {{segment.publicationVersion}}</span>
 
                 </div>
+
+
                     <div class="" ng-controller="cmpSegmentCtrl as cmp">
+                        <div style="margin:5px 5px 5px 5px" ng-show="saveError">
+                            <div class="row"  style="margin-right: 15px;margin-left: 5px;">
+                                <div class="alert has-error" >
+                                    <button type="button" ng-click="hideSaveError();" class="close" aria-label="Close"><span>&times;</span></button>
+                                    Unable to save because of Co-Constraints errors. Please verify your co-Constraints table
+                                </div>
+                            </div>
+
+                        </div>
+
                         <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">
                             <md-tab md-on-select="setDeltaToF()">
                                 <md-tab-label>
@@ -201,7 +213,7 @@
                                                         <button type="button" ng-click="setErrorNotification();" class="close" aria-label="Close"><span>&times;</span></button>{{errorCount(segment.id)}} Errors
 
                                                          </div>
-                                                    </div>
+                                                       </div>
 
                                                      </div>
                                                 <div class="igl-def-table-container panel-primary" style="overflow-x: scroll">
@@ -359,11 +371,11 @@
                                                         <div>
                                                             <div ng-if="!viewSettings.tableReadonly" class="col-md-12" style="margin-bottom:20px">
                                                                 <div class="pull-right" >
-                                                                    <md-button class="md-primary md-raised" md-autofocus ng-click="addCoConstraintRow();">
-                                                                        <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add CoConstraint Row</span>
+                                                                    <md-button class="md-primary md-raised btn-sm" md-autofocus ng-click="addCoConstraintRow();">
+                                                                        <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Row</span>
                                                                     </md-button>
-                                                                    <md-button class="md-warn md-raised" md-autofocus ng-click="deleteCoConstraints();">
-                                                                        <span><i class="fa fa-trash fa-fw">&nbsp; </i>Delete CoConstraints Table</span>
+                                                                    <md-button class="md-warn md-raised btn-sm" md-autofocus ng-click="deleteCoConstraints();">
+                                                                        <span><i class="fa fa-trash fa-fw">&nbsp; </i>Delete Table</span>
                                                                     </md-button>
                                                                 </div>
                                                             </div>
@@ -606,7 +618,7 @@
                                                     <div class="col-md-12">
                                                         <span class="header3">
                                                             <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
-                                                            Dynamic Datatype Field: {{segment.dynamicMappingDefinition.mappingStructure.segmentName}}-{{segment.dynamicMappingDefinition.mappingStructure.targetLocation}}
+                                                            Dynamic Data Type Field: {{segment.dynamicMappingDefinition.mappingStructure.segmentName}}-{{segment.dynamicMappingDefinition.mappingStructure.targetLocation}}
                                                         </span>
                                                         <br/>
                                                         <span class="header3">
