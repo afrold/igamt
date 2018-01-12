@@ -953,9 +953,25 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     if ($scope.segmentsParams) {
       $scope.segmentsParams.refresh();
     }
-    SegmentService.initRowIndexForCocon($rootScope.segment.coConstraintsTable).then(function(result) {
-      $rootScope.coConRowIndexList = result;
-    });
+
+
+    // SegmentService.initRowIndexForCocon($rootScope.segment.coConstraintsTable).then(function(result) {
+    //   $rootScope.coConRowIndexList = result;
+    // });
+
+      if($rootScope.segment.scope === 'USER' && $rootScope.segment.name === 'OBX'){
+          SegmentService.updateDynamicMappingInfo().then (function (dynamicMappingTable) {
+              $rootScope.dynamicMappingTable = dynamicMappingTable;
+              SegmentService.initCoConstraintsTable($rootScope.segment).then (function (coConstraintsTable) {
+                  $rootScope.segment.coConstraintsTable = coConstraintsTable;
+                  SegmentService.initRowIndexForCocon($rootScope.segment.coConstraintsTable).then (function (coConRowIndexList) {
+                      $rootScope.coConRowIndexList = coConRowIndexList;
+                  });
+              });
+          });
+      }
+
+
     blockUI.stop();
   };
 
