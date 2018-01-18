@@ -5,6 +5,7 @@
     <xsl:import href="/rendering/templates/profile/DateTimeDatatype.xsl"/>
     <xsl:import href="/rendering/templates/profile/valueSetBindingList.xsl"/>
     <xsl:import href="/rendering/templates/profile/commentList.xsl"/>
+    <xsl:import href="/rendering/templates/profile/datatypeMetadata.xsl"/>
     <xsl:template match="Datatype">
         <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0">
             <xsl:call-template name="definitionText">
@@ -13,6 +14,10 @@
                 </xsl:with-param>
             </xsl:call-template>
             <xsl:element name="br"/>
+        </xsl:if>
+        <xsl:if test="$datatypeMetadata.display = 'true'">
+        	<xsl:apply-templates select="DatatypeMetadata" />
+        	<xsl:element name="br"/>
         </xsl:if>
         <xsl:if test="@Name = 'DTM'">
             <xsl:apply-templates select="DateTimeDatatype"/>

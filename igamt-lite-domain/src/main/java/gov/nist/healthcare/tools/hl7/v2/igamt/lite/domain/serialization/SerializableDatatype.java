@@ -71,7 +71,13 @@ public class SerializableDatatype extends SerializableSection {
         Element datatypeElement = new Element("Datatype");
         if (this.datatype != null) {
             try {
-                datatypeElement.addAttribute(new Attribute("ID", datatype.getId() + ""));
+            	Element datatypeMetadata = new Element("DatatypeMetadata");
+            	datatypeMetadata.addAttribute(new Attribute("HL7Version",datatype.getHl7Version() == null ? "" : datatype.getHl7Version()));
+            	datatypeMetadata.addAttribute(new Attribute("PublicationDate",datatype.getPublicationDate() == null ? "" : datatype.getPublicationDate()));
+            	datatypeMetadata.addAttribute(new Attribute("PublicationVersion",String.valueOf(datatype.getPublicationVersion())));
+            	datatypeMetadata.addAttribute(new Attribute("Scope",datatype.getScope() == null ? "" : datatype.getScope().name()));
+            	datatypeElement.appendChild(datatypeMetadata);
+            	datatypeElement.addAttribute(new Attribute("ID", datatype.getId() + ""));
                 datatypeElement.addAttribute(new Attribute("Name", datatype.getName()));
                 datatypeElement.addAttribute(new Attribute("Label", datatype.getLabel()));
                 datatypeElement
