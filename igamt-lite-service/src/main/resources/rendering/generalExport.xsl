@@ -127,6 +127,16 @@
     <xsl:variable name="valueSetMetadata.oid" select="$valueSetMetadataOid"/>
     <xsl:param name="valueSetMetadataType" select="'true'"/>
     <xsl:variable name="valueSetMetadata.type" select="$valueSetMetadataType"/>
+    <xsl:param name="datatypeMetadataDisplay" select="'false'"/>
+    <xsl:variable name="datatypeMetadata.display" select="$datatypeMetadataDisplay"/>
+    <xsl:param name="datatypeMetadataHL7Version" select="'false'"/>
+    <xsl:variable name="datatypeMetadata.hl7Version" select="$datatypeMetadataHL7Version"/>
+    <xsl:param name="datatypeMetadataPublicationDate" select="'false'"/>
+    <xsl:variable name="datatypeMetadata.publicationDate" select="$datatypeMetadataPublicationDate"/>
+    <xsl:param name="datatypeMetadataPublicationVersion" select="'false'"/>
+    <xsl:variable name="datatypeMetadata.publicationVersion" select="$datatypeMetadataPublicationVersion"/>
+    <xsl:param name="datatypeMetadataScope" select="'false'"/>
+    <xsl:variable name="datatypeMetadata.scope" select="$datatypeMetadataScope"/>
     
 <!--     <xsl:output method="html" doctype-system="http://www.w3.org/TR/html4/loose.dtd"
    doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" />

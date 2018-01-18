@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeMetadataConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NameAndPositionAndPresence;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetMetadataConfig;
@@ -35,6 +36,7 @@ public class ExportParameters {
     private List<NameAndPositionAndPresence> dataTypeColumns;
     private List<NameAndPositionAndPresence> valueSetColumns;
     private ValueSetMetadataConfig valueSetMetadataConfig;
+    private DatatypeMetadataConfig datatypeMetadataConfig;
     private ExportFontConfig exportFontConfig;
     private String appVersion;
 
@@ -45,7 +47,7 @@ public class ExportParameters {
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
         String documentTitle,String imageLogo, String appVersion) {
-        this(inlineConstraints,includeTOC,targetFormat,documentTitle,imageLogo,null,null,null,null,null,null,null,null, appVersion);
+        this(inlineConstraints,includeTOC,targetFormat,documentTitle,imageLogo,null,null,null,null,null,null,null,null,null, appVersion);
     }
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
@@ -56,6 +58,7 @@ public class ExportParameters {
         List<NameAndPositionAndPresence> dataTypeColumns,
         List<NameAndPositionAndPresence> valueSetColumns,
         ValueSetMetadataConfig valueSetMetadataConfig,
+        DatatypeMetadataConfig datatypeMetadataConfig,
         ExportFontConfig exportFontConfig, String appVersion) {
         this.inlineConstraints = inlineConstraints;
         this.includeTOC = includeTOC;
@@ -69,6 +72,7 @@ public class ExportParameters {
         this.dataTypeColumns = dataTypeColumns;
         this.valueSetColumns = valueSetColumns;
         this.valueSetMetadataConfig = valueSetMetadataConfig;
+        this.datatypeMetadataConfig = datatypeMetadataConfig;
         this.exportFontConfig = exportFontConfig;
         this.appVersion = appVersion;
     }
@@ -159,6 +163,14 @@ public class ExportParameters {
             params.put("valueSetMetadataContentDefinition",String.valueOf(valueSetMetadataConfig.isContentDefinition()));
             params.put("valueSetMetadataOid",String.valueOf(valueSetMetadataConfig.isOid()));
             params.put("valueSetMetadataType",String.valueOf(valueSetMetadataConfig.isType()));
+        }
+        if(datatypeMetadataConfig != null){
+        	boolean hasDatatypeMetadata = datatypeMetadataConfig.isHl7version() || datatypeMetadataConfig.isPublicationDate() || datatypeMetadataConfig.isPublicationVersion() || datatypeMetadataConfig.isScope() ? true : false;
+        	params.put("datatypeMetadataDisplay", String.valueOf(hasDatatypeMetadata));
+        	params.put("datatypeMetadataHL7Version", String.valueOf(datatypeMetadataConfig.isHl7version()));
+        	params.put("datatypeMetadataPublicationDate", String.valueOf(datatypeMetadataConfig.isPublicationDate()));
+        	params.put("datatypeMetadataPublicationVersion", String.valueOf(datatypeMetadataConfig.isPublicationVersion()));
+        	params.put("datatypeMetadataScope", String.valueOf(datatypeMetadataConfig.isScope()));
         }
         if(exportFontConfig!=null) {
             params.put("userFontFamily", exportFontConfig.getExportFont().getValue());

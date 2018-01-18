@@ -22,7 +22,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "exportConfig")
 public class ExportConfig {
-  private static final long serialVersionUID = 734059059225906039L;
 
   @Id
   private String id;
@@ -67,6 +66,7 @@ public class ExportConfig {
   private ColumnsConfig datatypeColumn;
   private ColumnsConfig valueSetColumn;
   private ValueSetMetadataConfig valueSetsMetadata;
+  private DatatypeMetadataConfig datatypeMetadataConfig;
   private final static int MAX_CODE = 500;
   private int maxCodeNumber = MAX_CODE;
   
@@ -124,6 +124,9 @@ public class ExportConfig {
     ValueSetMetadataConfig valueSetMetadataConfig =
         new ValueSetMetadataConfig(true, true, true, true, true);
     defaultConfiguration.setValueSetsMetadata(valueSetMetadataConfig);
+    
+    DatatypeMetadataConfig datatypeMetadataConfig = new DatatypeMetadataConfig(false, false, false, false);
+    defaultConfiguration.setDatatypeMetadataConfig(datatypeMetadataConfig);
 
     // Default column
     ArrayList<NameAndPositionAndPresence> messageColumnsDefaultList =
@@ -413,6 +416,18 @@ public class ExportConfig {
 
   public void setValueSetsMetadata(ValueSetMetadataConfig valueSetsMetadata) {
     this.valueSetsMetadata = valueSetsMetadata;
+  }
+
+  public DatatypeMetadataConfig getDatatypeMetadataConfig() {
+	return datatypeMetadataConfig;
+  }
+
+  public void setDatatypeMetadataConfig(DatatypeMetadataConfig datatypeMetadataConfig) {
+	this.datatypeMetadataConfig = datatypeMetadataConfig;
+  }
+
+  public static int getMaxCode() {
+	return MAX_CODE;
   }
 
   public boolean isDuplicateOBXDataTypeWhenFlavorNull() {
