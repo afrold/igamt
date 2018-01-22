@@ -56,6 +56,8 @@ public class XMLConfig {
     // CE, CF, CWE, CNE, CSU
     // HD, AUI, CK, CN, CNN, CX, EI, ERL, ELD, PLN, PPN, XCN
 
+    
+    
     config.setValueSetAllowedDTs(toSet(new String[] {"ID", "IS", "CE", "CF", "CWE", "CNE", "CSU","HD"}));
     
     //"AUI", "CK", "CN", "CNN", "CX", "EI", "ERL", "ELD", "PLN", "PPN", "XCN"  ==> go to valueSetAllowedComponents
