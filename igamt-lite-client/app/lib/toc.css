@@ -130,4 +130,6 @@ label-inter{
 span {
 	cursor: pointer;
 	font-weight: normal;
+	break-word:unset !important;
+
 }

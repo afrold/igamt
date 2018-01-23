@@ -1,7 +1,3 @@
-
-
-
-
 angular.module('igl')
     .directive('displayLabel', function () {
         return {
@@ -19,5 +15,4 @@ angular.module('igl')
             link: function ($scope, element, attrs) {
 
             } //DOM manipulation
-        }
-    });
+        }});
