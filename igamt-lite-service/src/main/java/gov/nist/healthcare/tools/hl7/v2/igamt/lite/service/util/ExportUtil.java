@@ -254,6 +254,7 @@ public class ExportUtil {
 	public ByteArrayOutputStream cleanHtml(InputStream html) {
 			Properties oProps = new Properties();
 			oProps.setProperty("new-blocklevel-tags", "figcaption");
+			oProps.setProperty("char-encoding", "utf8");
 			Tidy tidy = new Tidy();
 			tidy.setConfigurationFromProps(oProps);
 		tidy.setWraplen(Integer.MAX_VALUE);
