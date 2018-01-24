@@ -1487,23 +1487,31 @@
                                                     </div>
 
                                                     <div ng-if="selectedValueSetBindings.length > 0 &&  selectedValueSetBindings[0].type == 'valueset'" layout="column">
-                                                        <md-input-container flex="50">
-                                                            <label>Binding Strength</label>
-                                                            <md-select ng-model='bindingStrengthValue' ng-change="updateBindingStrength(bindingStrengthValue)">
-                                                                <md-option value="R">Required</md-option>
-                                                                <md-option value="S">Suggested</md-option>
-                                                                <md-option value="U">Unspecified</md-option>
-                                                            </md-select>
-                                                        </md-input-container>
-
-                                                        <md-input-container flex="50" ng-if="listOfBindingLocations">
-                                                            <label>Binding Location</label>
-                                                            <md-select ng-model='bindingLocationValue' ng-change="updateBindingLocation(bindingLocationValue)">
-                                                                <md-option ng-repeat="bl in listOfBindingLocations track by $index" ng-value="bl">
-                                                                    {{bl}}
-                                                                </md-option>
-                                                            </md-select>
-                                                        </md-input-container>
+                                                        <table>
+                                                            <tr>
+                                                                <td style="width: 150px">
+                                                                    <label>Binding Strength:</label>
+                                                                </td>
+                                                                <td style="width: 300px">
+                                                                    <md-select style="margin: 20px 0 10px !important;" ng-model='bindingStrengthValue' ng-change="updateBindingStrength(bindingStrengthValue)">
+                                                                        <md-option value="R">Required</md-option>
+                                                                        <md-option value="S">Suggested</md-option>
+                                                                        <md-option value="U">Unspecified</md-option>
+                                                                    </md-select>
+                                                                </td>
+                                                                <td style="width: 100px"></td>
+                                                                <td style="width: 150px">
+                                                                    <label ng-if="listOfBindingLocations">Binding Location:</label>
+                                                                </td>
+                                                                <td style="width: 300px">
+                                                                    <md-select style="margin: 20px 0 10px !important;" ng-if="listOfBindingLocations" ng-model='bindingLocationValue' ng-change="updateBindingLocation(bindingLocationValue)">
+                                                                        <md-option ng-repeat="bl in listOfBindingLocations track by $index" ng-value="bl">
+                                                                            {{bl}}
+                                                                        </md-option>
+                                                                    </md-select>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
 
                                                         <table st-table="displayedSelectedValueSetBindings" st-safe-src="selectedValueSetBindings" class="table table-striped table-bordered normal-table" ng-show="selectedValueSetBindings.length > 0">
                                                             <thead>
