@@ -1,16 +1,16 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-public class DatatypeMetadataConfig {
+public class MetadataConfig {
 	private boolean hl7version = false;
 	private boolean publicationDate = false;
 	private boolean publicationVersion = false;
 	private boolean scope = false;
 	
-	public DatatypeMetadataConfig() {
+	public MetadataConfig() {
 		super();
 	}
 	
-	public DatatypeMetadataConfig(boolean hl7version, boolean publicationDate, boolean publicationVersion,
+	public MetadataConfig(boolean hl7version, boolean publicationDate, boolean publicationVersion,
 			boolean scope) {
 		super();
 		this.hl7version = hl7version;

@@ -220,7 +220,7 @@ public class ExportUtil {
 				exportConfig.getMessageColumn().getColumns(), exportConfig.getCompositeProfileColumn().getColumns(),
 				exportConfig.getProfileComponentColumn().getColumns(), exportConfig.getSegmentColumn().getColumns(),
 				exportConfig.getDatatypeColumn().getColumns(), exportConfig.getValueSetColumn().getColumns(),exportConfig.getValueSetsMetadata(),
-				exportConfig.getDatatypeMetadataConfig(),exportFontConfig,appInfo.getVersion());
+				exportConfig.getDatatypeMetadataConfig(), exportConfig.getSegmentMetadataConfig(), exportConfig.getMessageMetadataConfig(), exportConfig.getCompositeProfileMetadataConfig(), exportFontConfig,appInfo.getVersion());
 	}
 
 	// Private methods, alphabetically ordered

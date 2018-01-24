@@ -66,7 +66,10 @@ public class ExportConfig {
   private ColumnsConfig datatypeColumn;
   private ColumnsConfig valueSetColumn;
   private ValueSetMetadataConfig valueSetsMetadata;
-  private DatatypeMetadataConfig datatypeMetadataConfig;
+  private MetadataConfig datatypeMetadataConfig;
+  private MetadataConfig segmentMetadataConfig;
+  private MetadataConfig messageMetadataConfig;
+  private MetadataConfig compositeProfileMetadataConfig;
   private final static int MAX_CODE = 500;
   private int maxCodeNumber = MAX_CODE;
   
@@ -125,9 +128,12 @@ public class ExportConfig {
         new ValueSetMetadataConfig(true, true, true, true, true);
     defaultConfiguration.setValueSetsMetadata(valueSetMetadataConfig);
     
-    DatatypeMetadataConfig datatypeMetadataConfig = new DatatypeMetadataConfig(false, false, false, false);
-    defaultConfiguration.setDatatypeMetadataConfig(datatypeMetadataConfig);
-
+    MetadataConfig metadataDefaultConfig = new MetadataConfig(false, false, false, false);
+    defaultConfiguration.setDatatypeMetadataConfig(metadataDefaultConfig);
+    defaultConfiguration.setSegmentMetadataConfig(metadataDefaultConfig);
+    defaultConfiguration.setMessageMetadataConfig(metadataDefaultConfig);
+    defaultConfiguration.setCompositeProfileMetadataConfig(metadataDefaultConfig);
+    
     // Default column
     ArrayList<NameAndPositionAndPresence> messageColumnsDefaultList =
         new ArrayList<NameAndPositionAndPresence>();
@@ -418,12 +424,36 @@ public class ExportConfig {
     this.valueSetsMetadata = valueSetsMetadata;
   }
 
-  public DatatypeMetadataConfig getDatatypeMetadataConfig() {
+  public MetadataConfig getDatatypeMetadataConfig() {
 	return datatypeMetadataConfig;
   }
 
-  public void setDatatypeMetadataConfig(DatatypeMetadataConfig datatypeMetadataConfig) {
+  public void setDatatypeMetadataConfig(MetadataConfig datatypeMetadataConfig) {
 	this.datatypeMetadataConfig = datatypeMetadataConfig;
+  }
+	
+  public MetadataConfig getSegmentMetadataConfig() {
+	return segmentMetadataConfig;
+  }
+	
+  public void setSegmentMetadataConfig(MetadataConfig segmentMetadataConfig) {
+	  this.segmentMetadataConfig = segmentMetadataConfig;
+  }
+
+  public MetadataConfig getMessageMetadataConfig() {
+	  return messageMetadataConfig;
+  }
+
+  public void setMessageMetadataConfig(MetadataConfig messageMetadataConfig) {
+	  this.messageMetadataConfig = messageMetadataConfig;
+  }
+
+  public MetadataConfig getCompositeProfileMetadataConfig() {
+	  return compositeProfileMetadataConfig;
+  }
+
+  public void setCompositeProfileMetadataConfig(MetadataConfig compositeProfileMetadataConfig) {
+	  this.compositeProfileMetadataConfig = compositeProfileMetadataConfig;
   }
 
   public static int getMaxCode() {
