@@ -1941,24 +1941,40 @@
                         <md-content>
                             <div ng-show="selectedValueSetBindings.length > 0">
                                 <div ng-show="selectedValueSetBindings[0].type == 'singlecode'">
-                                    <h4>Single Code selected</h4>
+                                    <h4>Current binding(s) : Single Code</h4>
                                 </div>
                                 <div ng-show="selectedValueSetBindings[0].type == 'valueset'">
-                                    <h4>{{selectedValueSetBindings.length}} Value Set(s) selected</h4>
+                                    <h4>Current binding(s) : {{selectedValueSetBindings.length}} Value Set(s)</h4>
                                 </div>
                             </div>
                             <div ng-show="selectedValueSetBindings.length == 0">
-                                <h4>No Value Set or Single Code selected</h4>
+                                <h4>No Binding currently</h4>
                             </div>
-                            <div ng-if="selectedValueSetBindings.length > 0 &&  selectedValueSetBindings[0].type == 'valueset'">
+                            <div ng-if="selectedValueSetBindings.length > 0 &&  selectedValueSetBindings[0].type == 'valueset'" layout="column">
+                                <md-input-container flex="50">
+                                    <label>Binding Strength</label>
+                                    <md-select ng-model='bindingStrengthValue' ng-change="updateBindingStrength(bindingStrengthValue)">
+                                        <md-option value="R">Required</md-option>
+                                        <md-option value="S">Suggested</md-option>
+                                        <md-option value="U">Unspecified</md-option>
+                                    </md-select>
+                                </md-input-container>
+
+                                <md-input-container flex="50" ng-if="listOfBindingLocations">
+                                    <label>Binding Location</label>
+                                    <md-select ng-model='bindingLocationValue' ng-change="updateBindingLocation(bindingLocationValue)">
+                                        <md-option ng-repeat="bl in listOfBindingLocations track by $index" ng-value="bl">
+                                            {{bl}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+
                                 <table st-table="displayedSelectedValueSetBindings" st-safe-src="selectedValueSetBindings" class="table table-striped table-bordered normal-table" ng-show="selectedValueSetBindings.length > 0">
                                     <thead>
                                     <tr class="tbl-header">
                                         <th class="col-md-1">Scope/Version</th>
                                         <th class="col-md-4">Binding Identifier</th>
                                         <th class="col-md-6">Name</th>
-                                        <!--<th class="col-md-2">Binding Strength</th>-->
-                                        <!--<th class="col-md-2">Binding Location</th>-->
                                         <th class="col-md-1"></th>
                                     </tr>
                                     </thead>
@@ -1973,22 +1989,6 @@
                                         <td class="col-md-6">
                                             {{tablesMap[b.tableId].name}}
                                         </td>
-                                        <!--
-                                        <td class="col-md-2">
-                                            <md-select ng-model='b.bindingStrength' ng-change="setChanged()">
-                                                <md-option value="R">Required</md-option>
-                                                <md-option value="S">Suggested</md-option>
-                                                <md-option value="U">Unspecified</md-option>
-                                            </md-select>
-                                        </td>
-                                        <td class="col-md-2">
-                                            <md-select ng-show="listOfBindingLocations" ng-model='b.bindingLocation'  ng-change="setChanged()">
-                                                <md-option ng-repeat="bl in listOfBindingLocations track by $index" ng-value="bl">
-                                                    {{bl}}
-                                                </md-option>
-                                            </md-select>
-                                        </td>
-                                        -->
                                         <td class="col-md-1" align="center">
                                             <a ng-click="deleteBinding(b)" class="point">
                                                 <span title="Delete ValueSet Binding"><i class="icon-size-15 fa-times fa"></i></span>
@@ -1997,25 +1997,6 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <div layout="row" layout-align="start" ng-if="selectedValueSetBindings && selectedValueSetBindings.length > 0" flex>
-                                    <md-input-container flex="50">
-                                        <label>Binding Strength</label>
-                                        <md-select ng-model='bindingStrengthValue' ng-change="updateBindingStrength(bindingStrengthValue)">
-                                            <md-option value="R">Required</md-option>
-                                            <md-option value="S">Suggested</md-option>
-                                            <md-option value="U">Unspecified</md-option>
-                                        </md-select>
-                                    </md-input-container>
-
-                                    <md-input-container flex="50">
-                                        <label>Binding Location</label>
-                                        <md-select ng-show="listOfBindingLocations" ng-model='bindingLocationValue' ng-change="updateBindingLocation(bindingLocationValue)">
-                                            <md-option ng-repeat="bl in listOfBindingLocations track by $index" ng-value="bl">
-                                                {{bl}}
-                                            </md-option>
-                                        </md-select>
-                                    </md-input-container>
-                                </div>
                             </div>
                             <div ng-if="selectedValueSetBindings.length > 0 && selectedValueSetBindings[0].type == 'singlecode'">
                                 <table st-table="displayedSelectedValueSetBindings" st-safe-src="selectedValueSetBindings" class="table table-striped table-bordered normal-table">
@@ -2054,13 +2035,11 @@
                             <br/>
 
                             <span ng-show="isSingleValueSetAllowed">
-                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
-                                Allowed to select a Value Set or a Single Code.
+                                <h4>Select a value set or single code</h4>
                             </span>
 
                             <span ng-show="!isSingleValueSetAllowed">
-                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
-                                Allowed to select one or more Value Set(s).
+                                <h4>Select one or more value set(s)</h4>
                             </span>
 
                             <md-tabs md-dynamic-height md-border-bottom>
@@ -2105,7 +2084,7 @@
                                         </table>
                                     </md-content>
                                 </md-tab>
-                                <md-tab label="Single Code" ng-disabled="!isSingleValueSetAllowed" md-on-select="singleCodeInit();">
+                                <md-tab label="Single Code" ng-if="isSingleValueSetAllowed" md-on-select="singleCodeInit();">
                                     <md-content class="md-padding">
                                         <div ng-if="selectedValueSetBindings.length == 0 || selectedValueSetBindings[0].type == 'valueset'">
                                             <md-button ng-click="addManualCode()" class="md-primary">
