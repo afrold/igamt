@@ -556,7 +556,7 @@
                                                                     <button class="btn btn-raised btn-danger btn-xxs"
                                                                             ng-click="deleteConformanceStatementFromList(c);"
                                                                             ng-disabled="viewSettings.tableReadonly">
-                                                                        <span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span>
+                                                                        <span><i class="fa fa-trash fa-fw"></i></span>
                                                                     </button>
                                                                 </td>
                                                             </tr>
@@ -2166,7 +2166,7 @@
         <form ng-cloak role="form">
             <md-toolbar>
                 <div class="md-toolbar-tools">
-                    <h2> Bind Value Set to {{::datatype.name}}.{{::currentNode.path}} </h2>
+                    <h2> {{::datatype.name}}.{{::currentNode.path}} Value Set/SingleCode Bindings</h2>
                     <span flex></span>
                     <md-button class="md-icon-button" ng-click="ok()">
                         <i class="material-icons">clear</i>
@@ -2181,8 +2181,7 @@
                                     <h4 >Single Code selected</h4>
                                 </div>
                                 <div ng-show="selectedValueSetBindings[0].type == 'valueset'">
-                                    <h4>{{selectedValueSetBindings.length}} Value Set(s)
-                                        selected</h4>
+                                    <h4>{{selectedValueSetBindings.length}} Value Set(s) selected</h4>
                                 </div>
                             </div>
                             <div ng-show="selectedValueSetBindings.length == 0">
@@ -2195,7 +2194,7 @@
                                     <thead>
                                     <tr class="tbl-header">
                                         <th class="col-md-1">Scope/Version</th>
-                                        <th class="col-md-2">Mapping Identifier</th>
+                                        <th class="col-md-2">Binding Identifier</th>
                                         <th class="col-md-4">Name</th>
                                         <th class="col-md-2">Binding Strength</th>
                                         <th class="col-md-2">Binding Location</th>
@@ -2214,21 +2213,21 @@
                                         <td class="col-md-4">
                                             {{tablesMap[b.tableId].name}}
                                         </td>
-                                        <td class="col-md-2">
-                                            <md-select ng-model='b.bindingStrength'
-                                                    ng-change="setChanged()">
-                                                <md-option value="R">Required</md-option>
-                                                <md-option value="S">Suggested</md-option>
-                                                <md-option value="U">Unspecified</md-option>
-                                            </md-select>
-                                        </td>
-                                        <td class="col-md-2">
-                                            <md-select ng-show="listOfBindingLocations" ng-model='b.bindingLocation' ng-change="setChanged()">
-                                                <md-option ng-repeat="bl in listOfBindingLocations track by $index" ng-value="bl">
-                                                    {{bl}}
-                                                </md-option>
-                                            </md-select>
-                                        </td>
+                                        <!--<td class="col-md-2">-->
+                                            <!--<md-select ng-model='b.bindingStrength'-->
+                                                    <!--ng-change="setChanged()">-->
+                                                <!--<md-option value="R">Required</md-option>-->
+                                                <!--<md-option value="S">Suggested</md-option>-->
+                                                <!--<md-option value="U">Unspecified</md-option>-->
+                                            <!--</md-select>-->
+                                        <!--</td>-->
+                                        <!--<td class="col-md-2">-->
+                                            <!--<md-select ng-show="listOfBindingLocations" ng-model='b.bindingLocation' ng-change="setChanged()">-->
+                                                <!--<md-option ng-repeat="bl in listOfBindingLocations track by $index" ng-value="bl">-->
+                                                    <!--{{bl}}-->
+                                                <!--</md-option>-->
+                                            <!--</md-select>-->
+                                        <!--</td>-->
                                         <td class="col-md-1" align="center">
                                             <a ng-click="deleteBinding(b)" class="point">
                                                 <span title="Delete ValueSet Binding"><i
