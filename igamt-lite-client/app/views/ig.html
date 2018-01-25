@@ -72,17 +72,6 @@
 
 
                         <div>
-                            <!--<div class="col-md-12">
-                    <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                        <label class="btn btn-raised btn-info btn-xs"
-                               ng-click="loadIGDocumentsByVersion(hl7Version)"
-                               ng-class="{ 'active':vr===selectedHL7Version}" ng-repeat="vr in hl7Versions">
-                            <input type="radio" ng-value="vr" ng-model="hl7Version">{{vr}}</input>
-                        </label>
-                    </div>
-            </div>-->
-
-
                             <md-tabs md-dynamic-height md-border-bottom>
                                 <md-tab md-active="tabs[0].active" md-on-select="make_active(0)"
                                         ng-if="clickSource==='btn'">
@@ -129,29 +118,6 @@
                                                     <input type="text" name="ext" id="ext"
                                                            ng-model="hl7VersionsDlgForm.metaData.ext">
                                                 </md-input-container>
-
-                                                <!--<md-input-container class="md-block" flex-gt-sm>-->
-                                                    <!--<label class="input-left">Specification</label>-->
-                                                    <!--<input type="text" name="specificationName"-->
-                                                           <!--ng-model="hl7VersionsDlgForm.metaData.specificationName">-->
-
-                                                <!--</md-input-container>-->
-
-                                                <!--<md-input-container class="md-block" flex-gt-sm>-->
-                                                    <!--<label class="input-left">Status</label>-->
-                                                    <!--<input type="text" name="specificationName"-->
-                                                           <!--ng-model="hl7VersionsDlgForm.metaData.status">-->
-
-                                                <!--</md-input-container>-->
-
-                                                <!--<md-input-container class="md-block" flex-gt-sm>-->
-                                                    <!--<label class="input-left">Topics</label>-->
-                                                    <!--<input type="text" name="specificationName"-->
-                                                           <!--ng-model="hl7VersionsDlgForm.metaData.topics">-->
-
-                                                <!--</md-input-container>-->
-
-
                                             </md-content>
 
                                         </div>

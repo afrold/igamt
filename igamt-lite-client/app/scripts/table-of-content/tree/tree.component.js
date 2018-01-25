@@ -966,7 +966,6 @@ angular
                 }
               } else {
                 //can't delete because it's used
-                console.log("notHEEEEEEEREEEE");
                 $rootScope.cantDeletePc(profileComponent);
               }
             });

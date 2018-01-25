@@ -1613,24 +1613,6 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
 					elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
 					elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
-					if (f.getTables() != null && !f.getTables().isEmpty()) {
-						String temp = "";
-						if (f.getTables().size() > 1) {
-							for (TableLink t : f.getTables()) {
-								String bdInd = tableService.findById(t.getId()) == null ? null
-										: tableService.findById(t.getId()).getBindingIdentifier();
-								temp += (bdInd != null && !bdInd.equals("")) ? "," + bdInd
-										: ", ! DEBUG: COULD NOT FIND binding identifier " + t.getBindingIdentifier();
-							}
-						} else {
-							String bdInd = tableService.findById(f.getTables().get(0).getId()) == null ? null
-									: tableService.findById(f.getTables().get(0).getId()).getBindingIdentifier();
-							temp = (bdInd != null && !bdInd.equals("")) ? bdInd
-									: "! DEBUG: COULD NOT FIND binding identifier "
-											+ f.getTables().get(0).getBindingIdentifier();
-						}
-						elmField.addAttribute(new Attribute("Binding", temp));
-					}
 					if (f.getItemNo() != null && !f.getItemNo().equals(""))
 						elmField.addAttribute(new Attribute("ItemNo", f.getItemNo()));
 					if (f.getComment() != null && !f.getComment().isEmpty())
@@ -1866,18 +1848,6 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 						if (c.getText() != null & !c.getText().isEmpty()) {
 							elmComponent.appendChild(this.serializeRichtext("Text", c.getText()));
 						}
-
-						if (c.getTables() != null && (c.getTables().size() > 0)) {
-							String temp = "";
-							for (TableLink t : c.getTables()) {
-								if (t.getId() != null && tableService.findById(t.getId()) != null) {
-									String bdInd = tableService.findById(t.getId()).getBindingIdentifier();
-									temp = !temp.equals("") ? temp + "," + bdInd : bdInd;
-								}
-							}
-							elmComponent.addAttribute(new Attribute("Binding", temp));
-						}
-
 						elmDatatype.appendChild(elmComponent);
 					}
 					if (d.getComponents().size() == 0) {

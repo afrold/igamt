@@ -43,11 +43,6 @@ public abstract class DataElement extends DataModel
   // //@ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = {
   // CascadeType.PERSIST, CascadeType.MERGE })
   // //@JoinColumn(name = "TABLE_ID")
-  @Deprecated
-  protected TableLink table;
-
-  @Deprecated
-  protected List<TableLink> tables = new ArrayList<TableLink>();
 
 
   // //@JsonIgnore
@@ -181,22 +176,12 @@ public abstract class DataElement extends DataModel
     this.hide = hide;
   }
 
-  @Deprecated
-  public List<TableLink> getTables() {
-    return tables;
-  }
 
-  @Deprecated
-  public void setTables(List<TableLink> tables) {
-    this.tables = tables;
-  }
 
   @Override
   protected DataElement clone() throws CloneNotSupportedException {
     DataElement de = (DataElement) super.clone();
     List<TableLink> links = new ArrayList<TableLink>();
-    de.setTables(links);
-    Collections.copy(links, this.tables);
     // de.setDatatype(this.datatype.clone());
     de.setDatatype(this.datatype.clone()); // Changed by Harold
 

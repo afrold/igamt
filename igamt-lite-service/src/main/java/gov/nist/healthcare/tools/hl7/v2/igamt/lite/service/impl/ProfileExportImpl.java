@@ -301,7 +301,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 									: datatypes.findOne(f.getDatatype()).getLabel())),
 					f.getUsage().value(), "[" + String.valueOf(f.getMin()) + ".." + String.valueOf(f.getMax()) + "]",
 					"[" + String.valueOf(f.getMinLength()) + ".." + String.valueOf(f.getMaxLength()) + "]",
-					(tablesToString(f.getTables())), f.getComment() == null ? "" : f.getComment());
+					(tablesToString(null)), f.getComment() == null ? "" : f.getComment());
 			rows.add(row);
 
 			if (inlineConstraints) {
@@ -335,7 +335,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 										: datatypes.findOne(c.getDatatype()).getLabel()),
 						c.getUsage().value(),
 						"[" + String.valueOf(c.getMinLength()) + ".." + String.valueOf(c.getMaxLength()) + "]",
-						(tablesToString(c.getTables())), c.getComment());
+						(tablesToString(null)), c.getComment());
 				rows.add(row);
 				List<Constraint> constraints = this.findConstraints(c.getPosition(), predicates, conformanceStatements);
 				if (!constraints.isEmpty()) {

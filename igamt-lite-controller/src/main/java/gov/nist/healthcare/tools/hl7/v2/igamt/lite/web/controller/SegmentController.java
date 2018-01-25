@@ -119,26 +119,26 @@ public class SegmentController extends CommonController {
 
   }
   
-  @RequestMapping(value = "/updateTableBinding", method = RequestMethod.POST)
-  public void updateTableBinding(@RequestBody List<BindingParametersForSegment> bindingParametersList) throws SegmentSaveException, ForbiddenOperationException, DataNotFoundException {
-	  for(BindingParametersForSegment paras : bindingParametersList){
-		  Segment segment = this.segmentService.findById(paras.getSegmentId());
-		  if (!SCOPE.HL7STANDARD.equals(segment.getScope())) {
- 			  Field targetField = segment.getFields().get(this.indexOfField(paras.getFieldId(), segment));
-			  TableLink tableLink = paras.getTableLink();
-			  if(tableLink != null && tableLink.getBindingIdentifier() != null && !tableLink.getBindingIdentifier().equals("")) {
-				  tableLink.setBindingIdentifier(tableService.findById(tableLink.getId()).getBindingIdentifier());
-				  targetField.getTables().add(paras.getTableLink());
-			  }
-			  if(paras.getKey() != null){
-				  this.deleteTable(targetField, paras.getKey());  
-			  }
-			  segmentService.save(segment);
-		  } else {
-			  throw new ForbiddenOperationException("FORBIDDEN_SAVE_SEGMENT");  
-		  }
-	  }
-  }
+//  @RequestMapping(value = "/updateTableBinding", method = RequestMethod.POST)
+//  public void updateTableBinding(@RequestBody List<BindingParametersForSegment> bindingParametersList) throws SegmentSaveException, ForbiddenOperationException, DataNotFoundException {
+//	  for(BindingParametersForSegment paras : bindingParametersList){
+//		  Segment segment = this.segmentService.findById(paras.getSegmentId());
+//		  if (!SCOPE.HL7STANDARD.equals(segment.getScope())) {
+// 			  Field targetField = segment.getFields().get(this.indexOfField(paras.getFieldId(), segment));
+//			  TableLink tableLink = paras.getTableLink();
+//			  if(tableLink != null && tableLink.getBindingIdentifier() != null && !tableLink.getBindingIdentifier().equals("")) {
+//				  tableLink.setBindingIdentifier(tableService.findById(tableLink.getId()).getBindingIdentifier());
+//				  targetField.getTables().add(paras.getTableLink());
+//			  }
+//			  if(paras.getKey() != null){
+//				  this.deleteTable(targetField, paras.getKey());  
+//			  }
+//			  segmentService.save(segment);
+//		  } else {
+//			  throw new ForbiddenOperationException("FORBIDDEN_SAVE_SEGMENT");  
+//		  }
+//	  }
+//  }
   @RequestMapping(value = "/updateDatatypeBinding", method = RequestMethod.POST)
   public void updateDatatypeBinding(@RequestBody List<BindingParametersForSegment> bindingParametersList) throws SegmentSaveException, ForbiddenOperationException, DataNotFoundException {
 	  for(BindingParametersForSegment paras : bindingParametersList){
@@ -166,17 +166,6 @@ public class SegmentController extends CommonController {
 	  }
 }
   
-  private void deleteTable(Field targetField, String key) throws DataNotFoundException {
-	  TableLink found = null;
-	  for(TableLink tl:targetField.getTables()){
-		  if(tl.getId().equals(key)) found = tl;
-	  }
-	  if(found != null){
-		  targetField.getTables().remove(found);
-	  }else {
-		  throw new DataNotFoundException("tableLinkNotFound");
-	  }
-}
 
 @RequestMapping(value = "/saveSegs", method = RequestMethod.POST)
   public List<Segment> save(@RequestBody List<Segment> segments) throws SegmentSaveException,

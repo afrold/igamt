@@ -476,46 +476,8 @@ public class DatatypeController extends CommonController {
 
 
 
-  @RequestMapping(value = "/updateTableBinding", method = RequestMethod.POST)
-  public void updateTableBinding(
-      @RequestBody List<BindingParametersForDatatype> bindingParametersList)
-      throws DatatypeSaveException, ForbiddenOperationException, DataNotFoundException {
-    for (BindingParametersForDatatype paras : bindingParametersList) {
-      Datatype datatype = this.datatypeService.findById(paras.getDatatypeId());
-      if (!SCOPE.HL7STANDARD.equals(datatype.getScope())) {
-        datatype.setDate(DateUtils.getCurrentTime());
-        Component targetComponent =
-            datatype.getComponents().get(this.indexOfComponent(paras.getComponentId(), datatype));
-        TableLink tableLink = paras.getTableLink();
-        if (tableLink != null && tableLink.getBindingIdentifier() != null
-            && !tableLink.getBindingIdentifier().equals("")) {
-          tableLink.setBindingIdentifier(
-              tableService.findById(tableLink.getId()).getBindingIdentifier());
-          targetComponent.getTables().add(paras.getTableLink());
-        }
-        if (paras.getKey() != null) {
-          this.deleteTable(targetComponent, paras.getKey());
-        }
-        datatypeService.save(datatype);
-      } else {
-        throw new ForbiddenOperationException("FORBIDDEN_SAVE_SEGMENT");
-      }
-    }
-  }
 
-  private void deleteTable(Component targetComponent, String key) throws DataNotFoundException {
-    TableLink found = null;
-    for (TableLink tl : targetComponent.getTables()) {
-      if (tl.getId().equals(key))
-        found = tl;
-    }
-    if (found != null) {
-      targetComponent.getTables().remove(found);
-    } else {
-      throw new DataNotFoundException("tableLinkNotFound");
-    }
 
-  }
 
   @RequestMapping(value = "/updateDatatypeBinding", method = RequestMethod.POST)
   public void updateDatatypeBinding(

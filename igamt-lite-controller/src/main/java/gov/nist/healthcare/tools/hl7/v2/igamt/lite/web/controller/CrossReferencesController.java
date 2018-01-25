@@ -347,8 +347,9 @@ public class CrossReferencesController {
       if (s.getDynamicMappingDefinition() != null
           && !s.getDynamicMappingDefinition().getDynamicMappingItems().isEmpty()) {
         DynamicMappingDefinition df = s.getDynamicMappingDefinition();
+        
         for (DynamicMappingItem item : df.getDynamicMappingItems()) {
-          if (item.getDatatypeId().equals(wrapper.getDatatypeId())) {
+          if (item.getDatatypeId()!=null&&item.getDatatypeId().equals(wrapper.getDatatypeId())) {
             DynamicMappingFound found = new DynamicMappingFound();
             SegmentFound segFound = new SegmentFound();
             segFound.setDescription(s.getDescription());

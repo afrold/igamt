@@ -20,7 +20,7 @@ public class Component extends DataElement implements Cloneable {
   public String toString() {
     return "Component [position=" + position + ", id=" + id + ", datatype=" + datatype + ", name="
         + name + ", usage=" + usage + ", minLength=" + minLength + ", maxLength=" + maxLength
-        + ", confLength=" + confLength + ", table=" + table + "]";
+        + ", confLength=" + confLength + "]";
   }
 
   public String getId() {
