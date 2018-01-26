@@ -331,11 +331,53 @@ public class Bootstrap implements InitializingBean {
       //testNotification();
      //2.0.0-beta10
     //makePhinvadsExternal(); 
-	  //reMapp();
+	  //reMapp() //saves all datatypes and segments and tables to remove the old to get rid of old attributes ;
+	  addVersionToProfile();
   }
   
+  private void addVersionToProfile(){
+	  List<Message> messages = messageService.findAll();
+	  for(Message m : messages){
+		if(m.getHl7Version()==null||m.getHl7Version().isEmpty()){
+			m.setHl7Version(findMessageVersion(m));
+			messageService.save(m);
+		}  
+	  }
+  }
   
-  private void testNotification() {
+  private String findMessageVersion(Message m) {
+	// TODO Auto-generated method stub
+	  for(SegmentRefOrGroup sog : m.getChildren()){
+		  String v=segmentOrgroupVersion(sog);
+		  if(v !=null){
+			  return segmentOrgroupVersion(sog);
+		  }
+	  }
+	  return null;
+}
+
+private String segmentOrgroupVersion(SegmentRefOrGroup sog) {
+	if(sog instanceof SegmentRef){
+		SegmentRef ref = (SegmentRef)sog;
+		if(ref.getRef().getId()!=null){
+			Segment s =segmentService.findById(ref.getRef().getId());
+			if(s !=null && s.getHl7Version() !=null){
+				return s.getHl7Version();
+
+			}
+		}
+		
+	}else if(sog instanceof Group){
+		Group ref = (Group)sog;
+		for(SegmentRefOrGroup child : ref.getChildren()){
+			segmentOrgroupVersion(child);
+		}
+	}
+	return null;
+	// TODO Auto-generated method stub
+}
+
+private void testNotification() {
     Notification item = new Notification();
     
     item.setByWhom("JY Woo");
@@ -356,6 +398,9 @@ public class Bootstrap implements InitializingBean {
     notificationsRepository.save(notifications);
     
   }
+  
+  
+  
 
   private void reMapp(){
 	 List<Segment> list= segmentService.findAll();
@@ -417,6 +462,7 @@ public class Bootstrap implements InitializingBean {
     // System.out.println(IGUsedLargeTableLISTCSV);
   }
 
+  
   private void makePhinvadsExternal() {
     List<Table> allPhvs = tableService.findByScope(SCOPE.PHINVADS.name());
 
