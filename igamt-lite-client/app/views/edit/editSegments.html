@@ -1036,12 +1036,12 @@
             </span>
         </td>
         <td ng-class="{'has-validation-error':hasCardinalityError(node.id)}" data-toggle="tooltip" title="{{displayMessageError(node.id,'CARDINALITY')}}">
-
                 <ng-form name="{{formName}}"  layout="row" class="form-inline" layout-align="center center" ng-controller="FormRowCtrl" ng-init="init(node)" >
                         <md-input-container flex="50" class="withoutMargin">
-                                                <input
-                                                       type="text"
+                                                <input type="text"
                                                        name="min"
+                                                       attach-form
+                                                       form-source="editForm" input-name="formName"
                                                        ng-change="setDirty()"
                                                        ng-pattern="/^\d+$/"
                                                        ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
@@ -1051,6 +1051,8 @@
                          <md-input-container flex="50" class="withoutMargin">
                                                 <input name="max"
                                                        type="text"
+                                                       attach-form
+                                                       form-source="editForm" input-name="formName"
                                                        ng-change="setDirty()"
                                                        ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
@@ -1067,6 +1069,8 @@
                     <md-input-container flex="40" class="withoutMargin">
                                                 <input name="minLength"
                                                        ng-change="setDirty()"
+                                                       attach-form
+                                                       form-source="editForm" input-name="formName"
                                                        ng-pattern="/^\d+$|^NA$/"
                                                        ng-class="{ 'has-error' : {{formName}}.minLength.$invalid}"
                                                        ng-model="node.minLength" required ng-minlength="1">
@@ -1074,6 +1078,8 @@
                     <md-input-container flex="40" class="withoutMargin">
                                                 <input type="text"
                                                        name="maxLength"
+                                                       attach-form
+                                                       form-source="editForm" input-name="formName"
                                                        ng-change="setDirty()"
                                                        ng-class="{ 'has-error' : {{formName}}.maxLength.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$|^NA$/"
@@ -1098,6 +1104,8 @@
                                                    name="confLength"
                                                    style="width:50px"
                                                    ng-change="setDirty()"
+                                                   attach-form
+                                                   form-source="editForm" input-name="formName"
                                                    ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
                                                    ng-pattern="confLengthPattern"
                                                    ng-model="node.confLength">

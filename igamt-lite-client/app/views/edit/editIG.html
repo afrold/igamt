@@ -250,13 +250,13 @@
         <div>
             <form name="editForm" id="editForm" class="form-horizontal" novalidate unsaved-warning-form ng-show="isEditing" ng-controller="EditAreaCtrl" ng-init="init" ng-cloak>
 
-            <div class="row">
-                <div  ng-show="showToc" class="col-md-3">
+            <div layout="row">
+                <div  ng-show="showToc" flex="30">
                     <div class="tree-fixed">
                     <div ng-include="tocView"></div>
                     </div>
                 </div>
-                <div ng-class="{'col-md-12': !showToc, 'col-md-9': showToc}" class="col-md-9" >
+                <div flex="{{!showToc ? 100: 70}}">
 
                             <div id="edit" ng-show="subview" >
                                 <div ng-include="subview"></div>
