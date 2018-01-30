@@ -64,6 +64,10 @@ public class SerializableMessage extends SerializableSection {
     @Override public Element serializeElement() throws MessageSerializationException {
         try {
             Element messageElement = new Element("Message");
+            Element messageMetadata = super.createMetadataElement(message);
+        	if(messageMetadata!=null){
+        		messageElement.appendChild(messageMetadata);
+        	}
             messageElement.addAttribute(new Attribute("ID", this.message.getId() + ""));
             messageElement.addAttribute(new Attribute("Name", this.message.getName() + ""));
             messageElement.addAttribute(new Attribute("Type", this.message.getMessageType()));

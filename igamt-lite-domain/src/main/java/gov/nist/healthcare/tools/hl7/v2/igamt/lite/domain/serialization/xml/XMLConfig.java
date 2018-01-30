@@ -55,12 +55,24 @@ public class XMLConfig {
     // ID, IS
     // CE, CF, CWE, CNE, CSU
     // HD, AUI, CK, CN, CNN, CX, EI, ERL, ELD, PLN, PPN, XCN
+    
+    /*
+     * 
+     (Pre) need to find why we did exclude multiple valuesets for coded elements DT.
+CE, CF, CWE, CNE, CSU could have multiple Value Sets
+2.1 ID, IS, HD, ST, NM should have a single value set
+For each element Multiple Value Sets bindings should have a single binding location.
+XML should be :
+bindingIdentifier='A:B' bindingLocation="1:4"
+bindingIdentifier='A:B' bindingLocation="1"
+bindingIdentifier='A:B' bindingLocation="4"
+     */
 
     config.setValueSetAllowedDTs(toSet(new String[] {"ID", "IS", "CE", "CF", "CWE", "CNE", "CSU","HD"}));
     
     //"AUI", "CK", "CN", "CNN", "CX", "EI", "ERL", "ELD", "PLN", "PPN", "XCN"  ==> go to valueSetAllowedComponents
     config.setCodedElementDTs(toSet(new String[] {"CE", "CF", "CWE", "CNE", "CSU"}));
-    config.setSingleValueSetDTs(toSet(new String[] {"ID", "IS", "ST", "NM", "CE", "CF", "CWE", "CNE", "CSU"})); // ST and NM are
+    config.setSingleValueSetDTs(toSet(new String[] {"ID", "IS", "ST", "NM", "HD"})); // ST and NM are
                                                                                // partial
     Set<DTComponent> valueSetAllowedComponents = new HashSet<DTComponent>();
     valueSetAllowedComponents.add(new DTComponent("AD", 3));

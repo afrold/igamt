@@ -6,6 +6,7 @@
     <xsl:include href="/rendering/templates/profile/valueSetBindingList.xsl"/>
     <xsl:include href="/rendering/templates/profile/commentList.xsl"/>
     <xsl:include href="/rendering/templates/profile/definitionText.xsl"/>
+    <xsl:include href="/rendering/templates/profile/metadata.xsl"/>
     <xsl:template match="CompositeProfile">
             <xsl:if test="count(./@Composition) &gt; 0">
    
@@ -26,6 +27,23 @@
                 </xsl:with-param>
             </xsl:call-template>
             <xsl:element name="br"/>
+        </xsl:if>
+        <xsl:if test="$compositeProfileMetadata.display = 'true'">
+        	<xsl:apply-templates select="Metadata">
+        		<xsl:with-param name="hl7Version">
+        			<xsl:value-of select="$compositeProfileMetadata.hl7Version"></xsl:value-of>
+        		</xsl:with-param>
+        		<xsl:with-param name="publicationDate">
+        			<xsl:value-of select="$compositeProfileMetadata.publicationDate"></xsl:value-of>
+        		</xsl:with-param>
+        		<xsl:with-param name="publicationVersion">
+        			<xsl:value-of select="$compositeProfileMetadata.publicationVersion"></xsl:value-of>
+        		</xsl:with-param>
+        		<xsl:with-param name="scope">
+        			<xsl:value-of select="$compositeProfileMetadata.scope"></xsl:value-of>
+        		</xsl:with-param>
+        	</xsl:apply-templates>
+        	<xsl:element name="br"/>
         </xsl:if>
         <xsl:element name="span">
             <xsl:element name="b">

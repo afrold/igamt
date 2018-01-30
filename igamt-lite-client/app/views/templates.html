@@ -6802,12 +6802,12 @@
                     <!--</md-select>-->
                         </div>
                     <div ng-if="newTable.sourceType">
-                    <label class="input-left igamt-label">Mapping Identifier*</label>
+                    <label class="input-left igamt-label">Binding Identifier*</label>
 
                     <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                         <input  type="text" id="tableIdentifier" name="tableIdentifier" ng-model="newTable.bindingIdentifier" required>
                         <div ng-messages="newTableForm.tableIdentifier.$error">
-                            <div ng-message="required">Mapping Identifier is required.</div>
+                            <div ng-message="required">Binding Identifier is required.</div>
                         </div>
                         <span ng-if="duplicated(newTable)" style="color :red;">
                             <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Binding Identifier Already exist

@@ -49,6 +49,39 @@
                         </div>
                     </md-card-content>
                 </md-card>
+                <md-content>
+                <md-card>
+                    <md-card-content>
+                        <h4>Metadata</h4>
+                        <hr/>
+                        <div layout="column">
+                            <div class="config-checkbox">
+                                <md-checkbox class="md-primary"
+                                         ng-model="config.compositeProfileMetadataConfig.hl7version"
+                                         ng-change="setChanged()"> <label
+                                    style="color: black">HL7 Version</label></md-checkbox>
+                            </div>
+                            <div class="config-checkbox">
+                                <md-checkbox class="md-primary"
+                                     ng-model="config.compositeProfileMetadataConfig.publicationDate"
+                                     ng-change="setChanged()"> <label
+                                     style="color: black">Publication Date</label></md-checkbox>
+                            </div>
+                            <div class="config-checkbox">
+                                <md-checkbox class="md-primary"
+                                    ng-model="config.compositeProfileMetadataConfig.publicationVersion"
+                                    ng-change="setChanged()"> <label
+                                    style="color: black">Publication Version</label></md-checkbox>
+                            </div>
+                            <div class="config-checkbox">
+                                <md-checkbox class="md-primary"
+                                     ng-model="config.compositeProfileMetadataConfig.scope"
+                                     ng-change="setChanged()"> <label
+                                     style="color: black">Scope</label></md-checkbox>
+                            </div>
+                        </div>
+                    </md-card-content>
+                </md-card>
             </md-content>
         </div>
         <!-- Columns card-->
@@ -67,15 +100,18 @@
                         </div>
                     </md-card-content>
                 </md-card>
+                <md-card>
+                	<div flex layout="row">
+			            <md-checkbox ng-model="config.includeComposition" ng-change="setChanged()"><label style="color: black">Include Composition</label></md-checkbox>
+			        </div>
+			        <div flex layout="row">
+			            <md-checkbox ng-model="config.includeDerived" ng-change="setChanged()"><label style="color: black">Include Generated Flavors</label></md-checkbox>
+			        </div>
+                </md-card>
             </md-content>
         </div>
         </div>
-        <div flex layout="row">
-            <md-checkbox ng-model="config.includeComposition" ng-change="setChanged()"><label style="color: black">Include Composition</label></md-checkbox>
-        </div>
-        <div flex layout="row">
-            <md-checkbox ng-model="config.includeDerived" ng-change="setChanged()"><label style="color: black">Include Generated Flavors</label></md-checkbox>
-        </div>
+        
 
     </div>
 </md-card-content>
