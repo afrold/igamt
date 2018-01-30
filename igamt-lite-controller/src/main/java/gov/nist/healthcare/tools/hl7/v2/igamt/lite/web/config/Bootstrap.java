@@ -34,6 +34,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
@@ -331,9 +332,171 @@ public class Bootstrap implements InitializingBean {
       //testNotification();
      //2.0.0-beta10
     //makePhinvadsExternal(); 
+    
+//    investigateMutipleValueSets();
   }
   
   
+  private void investigateMutipleValueSets() {
+    List<IGDocument> allIGs = documentService.findAll();
+    String report = "";
+    for (IGDocument ig : allIGs) {
+      
+      if(ig.getScope().equals(IGDocumentScope.USER)){
+        Profile p = ig.getProfile();
+        for(Message m:p.getMessages().getChildren()){
+          if(m.getValueSetBindings() != null){
+            Set<String> valueSetLocation = new HashSet<String>();
+            for(ValueSetOrSingleCodeBinding vsscb:m.getValueSetBindings()){
+              if(vsscb instanceof ValueSetBinding){
+                ValueSetBinding vsb = (ValueSetBinding)vsscb;
+                
+                if(valueSetLocation.contains(vsb.getLocation())){
+                  report = report + "##########FOUND###########\n";
+                  report = report + "IG Document ID: " + ig.getId() + "\n";
+                  report = report + "IG Document Account ID: " + ig.getAccountId() + "\n";
+//                  if(ig.getAccountId() != null){
+//                    Account account = accountRepository.findOne(ig.getAccountId());
+//                    if(account != null){
+//                      report = report + "IG Document Account email: " + account.getEmail() + "\n";  
+//                    }else {
+//                      report = report + "Account Info is not FOUND!!!!" + "\n";
+//                    }  
+//                  }else {
+//                    report = report + "Account ID is null!!!!" + "\n";
+//                  }
+                  report = report + "Message ID: " + m.getId() + "\n";
+                  report = report + "Message Name: " + m.getName() + "\n";
+                  report = report + "Message Identifier: " + m.getIdentifier() + "\n";
+                  report = report + "Multiple Value Set Location: " + vsb.getLocation() + "\n";
+                  Table table = tableService.findById(vsb.getTableId());
+                  if(table != null){
+                    report = report + "Multiple Value Set Id: " + vsb.getTableId() + "\n";
+                    report = report + "Multiple Value Set Binding Identifier: " + table.getBindingIdentifier() + "\n";     
+                  }else {
+                    report = report + "Table is not FOUND!!!!" + "\n";
+                  }
+                  report = report + "##########END###########" + "\n";         
+
+                }else {
+                  valueSetLocation.add(vsb.getLocation());
+                }
+              }
+            }  
+          }
+        }
+        for(SegmentLink sl:p.getSegmentLibrary().getChildren()){
+          if(sl.getId() != null){
+            Segment s = segmentService.findById(sl.getId());
+            if(s != null){
+              if(s.getValueSetBindings() != null){
+                Set<String> valueSetLocation = new HashSet<String>();
+                for(ValueSetOrSingleCodeBinding vsscb:s.getValueSetBindings()){
+                  if(vsscb instanceof ValueSetBinding){
+                    ValueSetBinding vsb = (ValueSetBinding)vsscb;
+                    
+                    if(valueSetLocation.contains(vsb.getLocation())){
+                      
+                      
+                      
+                      report = report + "##########FOUND###########" + "\n"; 
+                      report = report + "IG Document ID: " + ig.getId() + "\n"; 
+                      report = report + "IG Document Account ID: " + ig.getAccountId() + "\n";
+                      
+//                      if(ig.getAccountId() != null){
+//                        Account account = accountRepository.findOne(ig.getAccountId());
+//                        if(account != null){
+//                          report = report + "IG Document Account email: " + account.getEmail() + "\n";   
+//                        }else {
+//                          report = report + "Account Info is not FOUND!!!!" + "\n"; 
+//                        }  
+//                      }else {
+//                        report = report + "Account ID is null!!!!" + "\n"; 
+//                      }
+                      
+                      report = report + "Segment ID: " + s.getId() + "\n"; 
+                      report = report + "Segment Label: " + s.getLabel() + "\n"; 
+                      report = report + "Multiple Value Set Location: " + vsb.getLocation() + "\n"; 
+                      Table table = tableService.findById(vsb.getTableId());
+                      if(table != null){
+                        report = report + "Multiple Value Set Id: " + vsb.getTableId() + "\n"; 
+                        report = report + "Multiple Value Set Binding Identifier: " + table.getBindingIdentifier() + "\n";       
+                      }else {
+                        report = report + "Table is not FOUND!!!!" + "\n"; 
+                      }
+                      report = report + "##########END###########" + "\n";           
+
+                    }else {
+                      valueSetLocation.add(vsb.getLocation());
+                    }
+                  }
+                }  
+              }
+            }  
+          }else {
+            report = report + "SegmentLink ID is null. IG id :" + ig.getId() + "\n";    
+          }
+          
+        }
+        for(DatatypeLink dl:p.getDatatypeLibrary().getChildren()){
+          if(dl.getId() != null){
+            Datatype d = datatypeService.findById(dl.getId());
+            
+            if(d != null){
+              if(d.getValueSetBindings() != null){
+                Set<String> valueSetLocation = new HashSet<String>();
+                for(ValueSetOrSingleCodeBinding vsscb:d.getValueSetBindings()){
+                  if(vsscb instanceof ValueSetBinding){
+                    ValueSetBinding vsb = (ValueSetBinding)vsscb;
+                    
+                    if(valueSetLocation.contains(vsb.getLocation())){
+                      report = report + "##########FOUND###########" + "\n"; 
+                      report = report + "IG Document ID: " + ig.getId() + "\n"; 
+                      report = report + "IG Document Account ID: " + ig.getAccountId() + "\n";
+//                      if(ig.getAccountId() != null){
+//                        Account account = accountRepository.findOne(ig.getAccountId());
+//                        if(account != null){
+//                          report = report + "IG Document Account email: " + account.getEmail() + "\n";   
+//                        }else {
+//                          report = report + "Account Info is not FOUND!!!!" + "\n"; 
+//                        }  
+//                      }else {
+//                        report = report + "Account ID is null!!!!" + "\n"; 
+//                      }
+                      report = report + "Datatype ID: " + d.getId() + "\n"; 
+                      report = report + "Datatype Label: " + d.getLabel() + "\n"; 
+                      report = report + "Multiple Value Set Location: " + vsb.getLocation() + "\n"; 
+                      Table table = tableService.findById(vsb.getTableId());
+                      if(table != null){
+                        report = report + "Multiple Value Set Id: " + vsb.getTableId() + "\n"; 
+                        report = report + "Multiple Value Set Binding Identifier: " + table.getBindingIdentifier() + "\n";         
+                      }else {
+                        report = report + "Table is not FOUND!!!!" + "\n"; 
+                      }
+                      report = report + "##########END###########" + "\n";           
+
+                    }else {
+                      valueSetLocation.add(vsb.getLocation());
+                    }
+                  }
+                }  
+              }
+            }  
+          }else {
+            report = report + "DatatypeLink ID is null. IG id :" + ig.getId() + "\n";  
+          }
+        }
+      }
+      
+      
+      
+    }
+    report = report + "##################" + "END MultipleValue Set binding investigation" + "\n"; 
+    
+    System.out.println(report);
+  }
+
+
   private void testNotification() {
     Notification item = new Notification();
     
