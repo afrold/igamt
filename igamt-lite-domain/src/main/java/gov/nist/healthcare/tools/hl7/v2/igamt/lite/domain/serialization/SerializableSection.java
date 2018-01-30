@@ -211,6 +211,15 @@ public class SerializableSection extends SerializableElement {
         }
         return valueSetBindingListElement;
     }
+    
+    protected Element createMetadataElement(DataModelWithConstraints dataModelWithConstraints){
+    	Element metadata = new Element("Metadata");
+    	metadata.addAttribute(new Attribute("HL7Version",dataModelWithConstraints.getHl7Version() == null ? "" : dataModelWithConstraints.getHl7Version()));
+    	metadata.addAttribute(new Attribute("PublicationDate",dataModelWithConstraints.getPublicationDate() == null ? "" : dataModelWithConstraints.getPublicationDate()));
+    	metadata.addAttribute(new Attribute("PublicationVersion",String.valueOf(dataModelWithConstraints.getPublicationVersion())));
+    	metadata.addAttribute(new Attribute("Scope",dataModelWithConstraints.getScope() == null ? "" : dataModelWithConstraints.getScope().name()));
+    	return metadata;
+    }
 
     protected Table findTable(List<Table> tables, String tableId) throws TableNotFoundException{
         if(tableId!=null && !tableId.isEmpty()) {

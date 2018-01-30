@@ -65,6 +65,10 @@ public class SerializableCompositeProfile extends SerializableSection {
     public Element serializeElement() throws CompositeProfileSerializationException {
         try {
             Element compositeProfileElement = new Element("CompositeProfile");
+            Element compositeProfileMetadata = super.createMetadataElement(compositeProfile);
+        	if(compositeProfileMetadata!=null){
+        		compositeProfileElement.appendChild(compositeProfileMetadata);
+        	}
             if(this.composition!=null && !this.composition.isEmpty()){
                 compositeProfileElement
                 .addAttribute(new Attribute("Composition", this.composition + ""));	

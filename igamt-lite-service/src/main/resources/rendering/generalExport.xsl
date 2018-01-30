@@ -127,6 +127,49 @@
     <xsl:variable name="valueSetMetadata.oid" select="$valueSetMetadataOid"/>
     <xsl:param name="valueSetMetadataType" select="'true'"/>
     <xsl:variable name="valueSetMetadata.type" select="$valueSetMetadataType"/>
+    <xsl:param name="datatypeMetadataDisplay" select="'false'"/>
+    <xsl:variable name="datatypeMetadata.display" select="$datatypeMetadataDisplay"/>
+    <xsl:param name="datatypeMetadataHL7Version" select="'false'"/>
+    <xsl:variable name="datatypeMetadata.hl7Version" select="$datatypeMetadataHL7Version"/>
+    <xsl:param name="datatypeMetadataPublicationDate" select="'false'"/>
+    <xsl:variable name="datatypeMetadata.publicationDate" select="$datatypeMetadataPublicationDate"/>
+    <xsl:param name="datatypeMetadataPublicationVersion" select="'false'"/>
+    <xsl:variable name="datatypeMetadata.publicationVersion" select="$datatypeMetadataPublicationVersion"/>
+    <xsl:param name="datatypeMetadataScope" select="'false'"/>
+    <xsl:variable name="datatypeMetadata.scope" select="$datatypeMetadataScope"/>
+    
+    <xsl:param name="segmentMetadataDisplay" select="'false'"/>
+    <xsl:variable name="segmentMetadata.display" select="$segmentMetadataDisplay"/>
+    <xsl:param name="segmentMetadataHL7Version" select="'false'"/>
+    <xsl:variable name="segmentMetadata.hl7Version" select="$segmentMetadataHL7Version"/>
+    <xsl:param name="segmentMetadataPublicationDate" select="'false'"/>
+    <xsl:variable name="segmentMetadata.publicationDate" select="$segmentMetadataPublicationDate"/>
+    <xsl:param name="segmentMetadataPublicationVersion" select="'false'"/>
+    <xsl:variable name="segmentMetadata.publicationVersion" select="$segmentMetadataPublicationVersion"/>
+    <xsl:param name="segmentMetadataScope" select="'false'"/>
+    <xsl:variable name="segmentMetadata.scope" select="$segmentMetadataScope"/>
+    
+    <xsl:param name="messageMetadataDisplay" select="'false'"/>
+    <xsl:variable name="messageMetadata.display" select="$messageMetadataDisplay"/>
+    <xsl:param name="messageMetadataHL7Version" select="'false'"/>
+    <xsl:variable name="messageMetadata.hl7Version" select="$messageMetadataHL7Version"/>
+    <xsl:param name="messageMetadataPublicationDate" select="'false'"/>
+    <xsl:variable name="messageMetadata.publicationDate" select="$messageMetadataPublicationDate"/>
+    <xsl:param name="messageMetadataPublicationVersion" select="'false'"/>
+    <xsl:variable name="messageMetadata.publicationVersion" select="$messageMetadataPublicationVersion"/>
+    <xsl:param name="messageMetadataScope" select="'false'"/>
+    <xsl:variable name="messageMetadata.scope" select="$messageMetadataScope"/>
+    
+    <xsl:param name="compositeProfileMetadataDisplay" select="'false'"/>
+    <xsl:variable name="compositeProfileMetadata.display" select="$compositeProfileMetadataDisplay"/>
+    <xsl:param name="compositeProfileMetadataHL7Version" select="'false'"/>
+    <xsl:variable name="compositeProfileMetadata.hl7Version" select="$compositeProfileMetadataHL7Version"/>
+    <xsl:param name="compositeProfileMetadataPublicationDate" select="'false'"/>
+    <xsl:variable name="compositeProfileMetadata.publicationDate" select="$compositeProfileMetadataPublicationDate"/>
+    <xsl:param name="compositeProfileMetadataPublicationVersion" select="'false'"/>
+    <xsl:variable name="compositeProfileMetadata.publicationVersion" select="$compositeProfileMetadataPublicationVersion"/>
+    <xsl:param name="compositeProfileMetadataScope" select="'false'"/>
+    <xsl:variable name="compositeProfileMetadata.scope" select="$compositeProfileMetadataScope"/>
     
 <!--     <xsl:output method="html" doctype-system="http://www.w3.org/TR/html4/loose.dtd"
    doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" />
