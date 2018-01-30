@@ -328,11 +328,13 @@ public class Bootstrap implements InitializingBean {
 
     
    //This is just test.
-      //testNotification();
-     //2.0.0-beta10
-    //makePhinvadsExternal(); 
-	  //reMapp() //saves all datatypes and segments and tables to remove the old to get rid of old attributes ;
-	  addVersionToProfile();
+         //testNotification();
+        //2.0.0-beta10
+       //makePhinvadsExternal(); 
+	  //reMapp() //saves all datatypes and segments and tables to remove the old to get rid of the old attributes ;
+	 //add the hl7Version to the pro.
+
+   //addVersionToProfile();
   }
   
   private void addVersionToProfile(){

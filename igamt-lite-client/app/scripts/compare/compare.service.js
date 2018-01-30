@@ -11,8 +11,6 @@ angular.module('igl').factory('CompareService',
           return list;
         return $filter('orderBy')(list, criteria);
       },
-
-
       getNodes: function(parent, root) {
         if (!parent || parent == null) {
           return root.children;
@@ -59,8 +57,7 @@ angular.module('igl').factory('CompareService',
       },
       cmpMessage: function(msg1, msg2, dtList1, dtList2, segList1, segList2) {
         msg1.children = CompareService.orderBy(msg1.children, 'position');
-        msg1.children =  CompareService.orderBy(msg2.children, 'position');
-
+        msg2.children =  CompareService.orderBy(msg2.children, 'position');
         var msg1 = CompareService.fMsg(msg1, dtList1, segList1);
         var msg2 = CompareService.fMsg(msg2, dtList2, segList2);
         var diff = ObjectDiff.diffOwnProperties(msg1, msg2);
@@ -73,12 +70,9 @@ angular.module('igl').factory('CompareService',
           }
         }
         var isEmpty = true;
-
         var result = [];
         for (var i = 0; i < dataList.length; i++) {
-
           if (!_.isEmpty(dataList[i])) {
-
             result.push(dataList[i]);
             isEmpty = false;
           }
@@ -88,8 +82,6 @@ angular.module('igl').factory('CompareService',
         } else {
             return result;
         }
-
-
       },
       cmpSegment: function(segment1, segment2, dtList1, dtList2, segList1, segList2) {
 
@@ -98,6 +90,34 @@ angular.module('igl').factory('CompareService',
 
         var seg1 = CompareService.fSegment(segment1, dtList1, segList1);
         var seg2 = CompareService.fSegment(segment2, dtList2, segList2);
+
+          for(i=0;i<seg1.valueSetBindings.length; i++){
+              if(seg1.valueSetBindings[i].location){
+                  var location = parseInt(seg1.valueSetBindings[i].location);
+                  if(seg1.components[location]){
+                      if(seg1.components[location].tables){
+                          seg1.components[location].tables.push({id:seg1.valueSetBindings[i].tableId});
+                      }else{
+                          seg1.components[location].tables=[];
+                          seg1.components[location].tables.push({id:seg1.valueSetBindings[i].tableId});
+                      }
+                  }
+              }
+          }
+          for(i=0;i<seg2.valueSetBindings.length; i++){
+              if(seg2.valueSetBindings[i].location){
+                  var location = parseInt(seg2.valueSetBindings[i].location);
+                  if(seg2.components[location]){
+                      if(seg2.components[location].tables){
+                          seg2.components[location].tables.push({id:seg2.valueSetBindings[i].tableId});
+                      }else{
+                          seg2.components[location].tables=[];
+                          seg2.components[location].tables.push({id:datatype2.valueSetBindings[i].tableId});
+                      }
+                  }
+              }
+          }
+
         //var diff = ObjectDiff.diffOwnProperties(seg1, seg2);
         var diff = ObjectDiff.diff(seg1, seg2);
 
@@ -111,20 +131,64 @@ angular.module('igl').factory('CompareService',
       },
       cmpDatatype: function(datatype1, datatype2, dtList1, dtList2, segList1, segList2) {
 
+          datatype1.components = CompareService.orderBy(datatype1.components, 'position');
+          datatype2.components = CompareService.orderBy(datatype2.components, 'position');
 
-        datatype1.components = CompareService.orderBy(datatype1.components, 'position');
-        datatype2.components = CompareService.orderBy(datatype2.components, 'position');
 
-        var dt1 = CompareService.fDatatype(datatype1, dtList1, segList1);
-        var dt2 = CompareService.fDatatype(datatype2, dtList2, segList2);
-        var diff = ObjectDiff.diffOwnProperties(dt1, dt2);
-        var dataList = [];
+          angular.forEach(datatype1.components,function (component) {
+            component.tables=[];
+          });
+          angular.forEach(datatype2.components,function (c) {
+              c.tables=[];
+          });
+
+          angular.forEach(datatype1.valueSetBindings,function (binding) {
+            if(binding.location && binding.location !=="" ){
+              var location = parseInt(binding.location)-1;
+
+                var tableId1 = binding.tableId;
+
+                if(tableId1 && tableId1 !==""){
+                    var link = {};
+                    link.id=tableId1;
+                    link.bindingIdentifier=$rootScope.tablesMap[tableId1].bindingIdentifier;
+
+                    datatype1.components[location].tables.push(link);
+                    console.log("component dt1");
+                    console.log(JSON.stringify(link));
+                    console.log(JSON.stringify(datatype1.components[location].tables));
+
+                }
+
+            }
+          });
+          angular.forEach(datatype2.valueSetBindings,function (binding) {
+              if(binding.location && binding.location !==""){
+                  var location = parseInt(binding.location)-1;
+
+                  var tableId2 = binding.tableId;
+                  if(tableId2 && tableId2 !==""){
+                      var link = {id:tableId2};
+                      link.bindingIdentifier=$rootScope.tablesMap[tableId2].bindingIdentifier;
+                      datatype2.components[location].tables.push(link);
+                      console.log("component dt2");
+                      console.log(datatype2.components);
+
+                  }
+
+              }
+          });
+          console.log(datatype1);
+          console.log(datatype2);
+
+          var dt1 = CompareService.fDatatype(datatype1, dtList1, segList1);
+          var dt2 = CompareService.fDatatype(datatype2, dtList2, segList2);
+          var diff = ObjectDiff.diffOwnProperties(dt1, dt2);
+          var dataList = [];
         if (diff.changed === "object change") {
           var array = CompareService.objToArray(diff);
           var arraySeg = CompareService.objToArray(array[1]);
           CompareService.writettTable(arraySeg[0], dataList);
-          // }
-
         }
         return dataList;
 
@@ -178,11 +242,9 @@ angular.module('igl').factory('CompareService',
       },
       fDatatype: function(datatype, datatypeList, segmentList) {
         var elements = [];
-
         if (datatype.type === "datatype") {
           elements.push(datatype);
         }
-
         return CompareService.fElements(elements, datatypeList, segmentList);
       },
 
@@ -231,7 +293,6 @@ angular.module('igl').factory('CompareService',
             result.push(elements[i]);
           } else if (elements[i].type === 'component') {
             //elements[i].fields = $scope.fFields(elements[i].fields, datatypeList, segmentList);
-
           }
         };
         return result;
@@ -262,9 +323,7 @@ angular.module('igl').factory('CompareService',
           fields[i].dateUpdated = null;
           for (var j = 0; j < datatypeList.length; j++) {
             if (fields[i].datatype.id === datatypeList[j].id) {
-
               fields[i].components = CompareService.fFields(datatypeList[j].components, datatypeList, segmentList);
-
             }
           };
           if (fields[i].datatype.ext === "") {
@@ -272,15 +331,13 @@ angular.module('igl').factory('CompareService',
           }
           fields[i].datatype.id = "";
           for (var k = 0; k < fields[i].tables.length; k++) {
-            fields[i].tables[k].id = "";
+            if(fields[i].tables[k].id ==null && fields[i].tables[k].id ==""){
+                fields[i].tables[k].id = "";
+
+            }
           }
-
         };
-
-
-        return fields;
-
-
+          return fields;
       },
       writettTable: function(childArray, dataArray) {
         var result = {};
@@ -569,40 +626,40 @@ angular.module('igl').factory('CompareService',
               }
             } else if (childArray.value.type.value === "code") {
 
-              if (childArray.value.codeSystem && childArray.value.codeSystem.changed === "primitive change") {
-                result.codeSystem = {
-                  element1: childArray.value.codeSystem.removed,
-                  element2: childArray.value.codeSystem.added
-                };
-              }
-              if (childArray.value.codeUsage && childArray.value.codeUsage.changed === "primitive change") {
-                result.codeUsage = {
-                  element1: childArray.value.codeUsage.removed,
-                  element2: childArray.value.codeUsage.added
-                };
-              }
-              if (childArray.value.label && childArray.value.label.changed === "primitive change") {
-                result.description = {
-                  element1: childArray.value.label.removed,
-                  element2: childArray.value.label.added
-                };
-              } else if (childArray.value.label && childArray.value.label.changed === "equal") {
-                result.description = {
-                  element: childArray.value.label.value,
+                if (childArray.value.codeSystem && childArray.value.codeSystem.changed === "primitive change") {
+                    result.codeSystem = {
+                        element1: childArray.value.codeSystem.removed,
+                        element2: childArray.value.codeSystem.added
+                    };
+                }
+                if (childArray.value.codeUsage && childArray.value.codeUsage.changed === "primitive change") {
+                    result.codeUsage = {
+                        element1: childArray.value.codeUsage.removed,
+                        element2: childArray.value.codeUsage.added
+                    };
+                }
+                if (childArray.value.label && childArray.value.label.changed === "primitive change") {
+                    result.description = {
+                        element1: childArray.value.label.removed,
+                        element2: childArray.value.label.added
+                    };
+                } else if (childArray.value.label && childArray.value.label.changed === "equal") {
+                    result.description = {
+                        element: childArray.value.label.value,
 
-                };
-              }
-              if (childArray.value.value && childArray.value.value.changed === "primitive change") {
-                result.label = {
-                  element1: childArray.value.value.removed,
-                  element2: childArray.value.value.added
-                };
-              } else if (childArray.value.value && childArray.value.value.changed === "equal") {
-                result.label = {
-                  element: childArray.value.value.value,
+                    };
+                }
+                if (childArray.value.value && childArray.value.value.changed === "primitive change") {
+                    result.label = {
+                        element1: childArray.value.value.removed,
+                        element2: childArray.value.value.added
+                    };
+                } else if (childArray.value.value && childArray.value.value.changed === "equal") {
+                    result.label = {
+                        element: childArray.value.value.value,
 
-                };
-              }
+                    };
+                }
             }
           } else if (childArray.value.type.changed === "primitive change") {
             result.label = {
