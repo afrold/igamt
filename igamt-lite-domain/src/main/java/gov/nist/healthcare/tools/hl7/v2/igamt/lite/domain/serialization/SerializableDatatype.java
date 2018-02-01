@@ -71,7 +71,11 @@ public class SerializableDatatype extends SerializableSection {
         Element datatypeElement = new Element("Datatype");
         if (this.datatype != null) {
             try {
-                datatypeElement.addAttribute(new Attribute("ID", datatype.getId() + ""));
+            	Element datatypeMetadata = super.createMetadataElement(datatype);
+            	if(datatypeMetadata!=null){
+            		datatypeElement.appendChild(datatypeMetadata);
+            	}
+            	datatypeElement.addAttribute(new Attribute("ID", datatype.getId() + ""));
                 datatypeElement.addAttribute(new Attribute("Name", datatype.getName()));
                 datatypeElement.addAttribute(new Attribute("Label", datatype.getLabel()));
                 datatypeElement

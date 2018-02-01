@@ -92,6 +92,10 @@ public class SerializableSegment extends SerializableSection {
   @Override
   public Element serializeElement() throws SegmentSerializationException {
     Element segmentElement = new Element("Segment");
+    Element segmentMetadata = super.createMetadataElement(segment);
+	if(segmentMetadata!=null){
+		segmentElement.appendChild(segmentMetadata);
+	}
     try {
       if (segment != null) {
         segmentElement.addAttribute(new Attribute("id", segment.getId()));

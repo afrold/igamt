@@ -34,6 +34,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
@@ -335,6 +336,11 @@ public class Bootstrap implements InitializingBean {
 	 //add the hl7Version to the pro.
 
    //addVersionToProfile();
+      //testNotification();
+     //2.0.0-beta10
+    //makePhinvadsExternal(); 
+    
+//    investigateMutipleValueSets();
   }
   
   private void addVersionToProfile(){
@@ -379,7 +385,9 @@ private String segmentOrgroupVersion(SegmentRefOrGroup sog) {
 	// TODO Auto-generated method stub
 }
 
-private void testNotification() {
+
+
+  private void testNotification() {
     Notification item = new Notification();
     
     item.setByWhom("JY Woo");

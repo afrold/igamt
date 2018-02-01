@@ -4,6 +4,7 @@
     <xsl:import href="/rendering/templates/profile/valueSetBindingList.xsl"/>
     <xsl:import href="/rendering/templates/profile/commentList.xsl"/>
     <xsl:import href="/rendering/templates/profile/dynamicMapping.xsl"/>
+    <xsl:import href="/rendering/templates/profile/metadata.xsl"/>
     <xsl:template match="Segment" mode="toc">
         <xsl:element name="a">
             <xsl:attribute name="href">
@@ -23,6 +24,23 @@
                 </xsl:with-param>
             </xsl:call-template>
             <xsl:element name="br"/>
+        </xsl:if>
+        <xsl:if test="$segmentMetadata.display = 'true'">
+        	<xsl:apply-templates select="Metadata">
+        		<xsl:with-param name="hl7Version">
+        			<xsl:value-of select="$segmentMetadata.hl7Version"></xsl:value-of>
+        		</xsl:with-param>
+        		<xsl:with-param name="publicationDate">
+        			<xsl:value-of select="$segmentMetadata.publicationDate"></xsl:value-of>
+        		</xsl:with-param>
+        		<xsl:with-param name="publicationVersion">
+        			<xsl:value-of select="$segmentMetadata.publicationVersion"></xsl:value-of>
+        		</xsl:with-param>
+        		<xsl:with-param name="scope">
+        			<xsl:value-of select="$segmentMetadata.scope"></xsl:value-of>
+        		</xsl:with-param>
+        	</xsl:apply-templates>
+        	<xsl:element name="br"/>
         </xsl:if>
         <xsl:element name="span">
             <xsl:element name="span">

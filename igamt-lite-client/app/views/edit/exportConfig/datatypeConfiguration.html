@@ -83,6 +83,40 @@
                     </md-card-content>
                 </md-card>
             </md-content>
+            <md-content>
+                <md-card>
+                    <md-card-content>
+                        <h4>Metadata</h4>
+                        <hr/>
+                        <div layout="column">
+                            <div class="config-checkbox">
+                                <md-checkbox class="md-primary"
+                                         ng-model="config.datatypeMetadataConfig.hl7version"
+                                         ng-change="setChanged()"> <label
+                                    style="color: black">HL7 Version</label></md-checkbox>
+                            </div>
+                            <div class="config-checkbox">
+                                <md-checkbox class="md-primary"
+                                     ng-model="config.datatypeMetadataConfig.publicationDate"
+                                     ng-change="setChanged()"> <label
+                                     style="color: black">Publication Date</label></md-checkbox>
+                            </div>
+                            <div class="config-checkbox">
+                                <md-checkbox class="md-primary"
+                                    ng-model="config.datatypeMetadataConfig.publicationVersion"
+                                    ng-change="setChanged()"> <label
+                                    style="color: black">Publication Version</label></md-checkbox>
+                            </div>
+                            <div class="config-checkbox">
+                                <md-checkbox class="md-primary"
+                                     ng-model="config.datatypeMetadataConfig.scope"
+                                     ng-change="setChanged()"> <label
+                                     style="color: black">Scope</label></md-checkbox>
+                            </div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </md-content>
         </div>
         <!-- Columns card-->
         <div flex>

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MetadataConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NameAndPositionAndPresence;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetMetadataConfig;
 
@@ -35,6 +36,10 @@ public class ExportParameters {
     private List<NameAndPositionAndPresence> dataTypeColumns;
     private List<NameAndPositionAndPresence> valueSetColumns;
     private ValueSetMetadataConfig valueSetMetadataConfig;
+    private MetadataConfig datatypeMetadataConfig;
+    private MetadataConfig segmentMetadataConfig;
+    private MetadataConfig messageMetadataConfig;
+    private MetadataConfig compositeProfileMetadataConfig;
     private ExportFontConfig exportFontConfig;
     private String appVersion;
 
@@ -45,7 +50,7 @@ public class ExportParameters {
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
         String documentTitle,String imageLogo, String appVersion) {
-        this(inlineConstraints,includeTOC,targetFormat,documentTitle,imageLogo,null,null,null,null,null,null,null,null, appVersion);
+        this(inlineConstraints,includeTOC,targetFormat,documentTitle,imageLogo,null,null,null,null,null,null,null,null,null,null,null,null, appVersion);
     }
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
@@ -56,6 +61,10 @@ public class ExportParameters {
         List<NameAndPositionAndPresence> dataTypeColumns,
         List<NameAndPositionAndPresence> valueSetColumns,
         ValueSetMetadataConfig valueSetMetadataConfig,
+        MetadataConfig datatypeMetadataConfig,
+        MetadataConfig segmentMetadataConfig,
+        MetadataConfig messageMetadataConfig,
+        MetadataConfig compositeProfileMetadataConfig,
         ExportFontConfig exportFontConfig, String appVersion) {
         this.inlineConstraints = inlineConstraints;
         this.includeTOC = includeTOC;
@@ -69,6 +78,10 @@ public class ExportParameters {
         this.dataTypeColumns = dataTypeColumns;
         this.valueSetColumns = valueSetColumns;
         this.valueSetMetadataConfig = valueSetMetadataConfig;
+        this.datatypeMetadataConfig = datatypeMetadataConfig;
+        this.segmentMetadataConfig = segmentMetadataConfig;
+        this.messageMetadataConfig = messageMetadataConfig;
+        this.compositeProfileMetadataConfig = compositeProfileMetadataConfig;
         this.exportFontConfig = exportFontConfig;
         this.appVersion = appVersion;
     }
@@ -160,12 +173,44 @@ public class ExportParameters {
             params.put("valueSetMetadataOid",String.valueOf(valueSetMetadataConfig.isOid()));
             params.put("valueSetMetadataType",String.valueOf(valueSetMetadataConfig.isType()));
         }
+        if(datatypeMetadataConfig != null){
+        	params.put("datatypeMetadataDisplay", String.valueOf(hasMetadata(datatypeMetadataConfig)));
+        	params.put("datatypeMetadataHL7Version", String.valueOf(datatypeMetadataConfig.isHl7version()));
+        	params.put("datatypeMetadataPublicationDate", String.valueOf(datatypeMetadataConfig.isPublicationDate()));
+        	params.put("datatypeMetadataPublicationVersion", String.valueOf(datatypeMetadataConfig.isPublicationVersion()));
+        	params.put("datatypeMetadataScope", String.valueOf(datatypeMetadataConfig.isScope()));
+        }
+        if(segmentMetadataConfig != null){
+        	params.put("segmentMetadataDisplay", String.valueOf(hasMetadata(segmentMetadataConfig)));
+        	params.put("segmentMetadataHL7Version", String.valueOf(segmentMetadataConfig.isHl7version()));
+        	params.put("segmentMetadataPublicationDate", String.valueOf(segmentMetadataConfig.isPublicationDate()));
+        	params.put("segmentMetadataPublicationVersion", String.valueOf(segmentMetadataConfig.isPublicationVersion()));
+        	params.put("segmentMetadataScope", String.valueOf(segmentMetadataConfig.isScope()));
+        }
+        if(messageMetadataConfig != null){
+        	params.put("messageMetadataDisplay", String.valueOf(hasMetadata(messageMetadataConfig)));
+        	params.put("messageMetadataHL7Version", String.valueOf(messageMetadataConfig.isHl7version()));
+        	params.put("messageMetadataPublicationDate", String.valueOf(messageMetadataConfig.isPublicationDate()));
+        	params.put("messageMetadataPublicationVersion", String.valueOf(messageMetadataConfig.isPublicationVersion()));
+        	params.put("messageMetadataScope", String.valueOf(messageMetadataConfig.isScope()));
+        }
+        if(compositeProfileMetadataConfig != null){
+        	params.put("compositeProfileMetadataDisplay", String.valueOf(hasMetadata(compositeProfileMetadataConfig)));
+        	params.put("compositeProfileMetadataHL7Version", String.valueOf(compositeProfileMetadataConfig.isHl7version()));
+        	params.put("compositeProfileMetadataPublicationDate", String.valueOf(compositeProfileMetadataConfig.isPublicationDate()));
+        	params.put("compositeProfileMetadataPublicationVersion", String.valueOf(compositeProfileMetadataConfig.isPublicationVersion()));
+        	params.put("compositeProfileMetadataScope", String.valueOf(compositeProfileMetadataConfig.isScope()));
+        }
         if(exportFontConfig!=null) {
             params.put("userFontFamily", exportFontConfig.getExportFont().getValue());
             params.put("userFontSize", String.valueOf(exportFontConfig.getFontSize()));
         }
         params.put("appCurrentVersion", this.appVersion);
         return params;
+    }
+    
+    private boolean hasMetadata(MetadataConfig metadataConfig){
+    	return (metadataConfig.isHl7version() || metadataConfig.isPublicationDate() || metadataConfig.isPublicationVersion() || metadataConfig.isScope());
     }
 
     public void setImageLogo(String imageLogo) {
