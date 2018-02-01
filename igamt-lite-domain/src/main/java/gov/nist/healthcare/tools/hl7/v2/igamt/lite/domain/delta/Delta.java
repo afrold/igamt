@@ -1,8 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.delta;
 
 public class Delta {
-	String _old; 
-	String _new;
+	String _old=null; 
+	String _new=null;
 	public String getOld() {
 		return _old;
 	}

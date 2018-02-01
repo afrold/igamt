@@ -3,13 +3,14 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.delta;
 import java.util.List;
 
 public class DeltaNode {
-
+	private Delta name;
 	private Delta usage;
 	private Delta cardmin;
 	private Delta cardMax;
 	private Delta minLength;
 	private Delta maxLength;
 	private Delta confLength;
+	private Delta datatypeLabel;
 	private List<Delta> valueSetOrSingleCode;
 	private List<Delta> definitionText;
 	
@@ -60,6 +61,18 @@ public class DeltaNode {
 	}
 	public void setDefinitionText(List<Delta> definitionText) {
 		this.definitionText = definitionText;
+	}
+	public Delta getName() {
+		return name;
+	}
+	public void setName(Delta name) {
+		this.name = name;
+	}
+	public Delta getDatatypeLabel() {
+		return datatypeLabel;
+	}
+	public void setDatatypeLabel(Delta datatypeLabel) {
+		this.datatypeLabel = datatypeLabel;
 	}
 
 }
