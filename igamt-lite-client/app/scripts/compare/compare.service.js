@@ -6,6 +6,19 @@ angular.module('igl').factory('CompareService',
   function($rootScope, ViewSettings, ElementUtils, $q, $http, FilteringSvc, SegmentLibrarySvc, TableLibrarySvc, DatatypeLibrarySvc, ObjectDiff,$filter) {
     var CompareService = {
 
+
+
+
+
+
+
+
+
+
+
+
+
+
       orderBy: function(list, criteria) {
         if(list == null || list == undefined)
           return list;
@@ -129,68 +142,27 @@ angular.module('igl').factory('CompareService',
         }
         return dataList;
       },
-      cmpDatatype: function(datatype1, datatype2, dtList1, dtList2, segList1, segList2) {
+      cmpDatatype: function(datatype1, datatype2) {
 
           datatype1.components = CompareService.orderBy(datatype1.components, 'position');
           datatype2.components = CompareService.orderBy(datatype2.components, 'position');
 
+          var delay = $q.defer();
+          var wrapper = {};
+          wrapper.d1=datatype1;
+          wrapper.d2=datatype2;
 
-          angular.forEach(datatype1.components,function (component) {
-            component.tables=[];
+          console.log(wrapper);
+
+          $http.post('api/diff/datatype', wrapper).then(function(response) {
+              var ref = angular.fromJson(response.data);
+              console.log(ref);
+              delay.resolve(ref);
+          }, function(error) {
+              delay.reject(error);
           });
-          angular.forEach(datatype2.components,function (c) {
-              c.tables=[];
-          });
+          return delay.promise;
 
-          angular.forEach(datatype1.valueSetBindings,function (binding) {
-            if(binding.location && binding.location !=="" ){
-              var location = parseInt(binding.location)-1;
-
-                var tableId1 = binding.tableId;
-
-                if(tableId1 && tableId1 !==""){
-                    var link = {};
-                    link.id=tableId1;
-                    link.bindingIdentifier=$rootScope.tablesMap[tableId1].bindingIdentifier;
-
-                    datatype1.components[location].tables.push(link);
-                    console.log("component dt1");
-                    console.log(JSON.stringify(link));
-                    console.log(JSON.stringify(datatype1.components[location].tables));
-
-                }
-
-            }
-          });
-          angular.forEach(datatype2.valueSetBindings,function (binding) {
-              if(binding.location && binding.location !==""){
-                  var location = parseInt(binding.location)-1;
-
-                  var tableId2 = binding.tableId;
-                  if(tableId2 && tableId2 !==""){
-                      var link = {id:tableId2};
-                      link.bindingIdentifier=$rootScope.tablesMap[tableId2].bindingIdentifier;
-                      datatype2.components[location].tables.push(link);
-                      console.log("component dt2");
-                      console.log(datatype2.components);
-
-                  }
-
-              }
-          });
-          console.log(datatype1);
-          console.log(datatype2);
-
-          var dt1 = CompareService.fDatatype(datatype1, dtList1, segList1);
-          var dt2 = CompareService.fDatatype(datatype2, dtList2, segList2);
-          var diff = ObjectDiff.diffOwnProperties(dt1, dt2);
-          var dataList = [];
-        if (diff.changed === "object change") {
-          var array = CompareService.objToArray(diff);
-          var arraySeg = CompareService.objToArray(array[1]);
-          CompareService.writettTable(arraySeg[0], dataList);
-        }
-        return dataList;
 
       },
       cmpValueSet: function(table1, table2) {

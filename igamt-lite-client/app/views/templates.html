@@ -1256,223 +1256,15 @@
         </form>
     </md-dialog>
 </script>
-<script type="text/ng-template" id="tree_node">
 
-    <tr tt-node is-branch="node.fields!==undefined || node.segments!==undefined ||(node.components.length!==0 && node.components!==undefined)">
-        <td class="col-md-1" style="width:14%">
-            <span ng-bind="node.position.element"></span>
-        </td>
-        <td class="col-md-2" style="width:37%">
-            <table class=" table-borderless" ng-show="(node.label.element && (node.ext.element||node.ext.element===null) )||(node.label.element && !node.ext)">
-                <tr>
-                    <td class="col-sm-1">
-                        <span ng-show="node.type.element==='segmentRef'" class="label label-segment label-icon lb-sm">S</span>
-                        <span ng-show="node.type.element==='segment'" class="label label-segment label-icon lb-sm">S</span>
-                        <span ng-show="node.type.element==='group'" class="label label-success label-icon lb-sm">G</span>
-                        <span ng-show="node.type.element==='field'" class="label label-field label-icon lb-sm">F</span>
-                        <span ng-show="node.type.element==='component'" class="label label-component label-icon lb-sm">C</span>
-                        <span ng-bind="node.label.element"></span><span ng-show="node.description.element">:<span ng-bind="node.description.element"></span></span>
-                    </td>
-                </tr>
-            </table>
-            <table class=" table-borderless" ng-show="(node.label.element1 && node.label.element2) || (node.label.element && (node.ext.element1 || node.ext.element2)) ||(node.label.element1 || node.label.element2)">
-                <tr style="background-color:#B5F7EC">
-                    <td class="col-sm-1">
-                        <span ng-show="node.type.element==='segmentRef'" class="label label-segment label-icon lb-sm" align="center">S</span>
-                        <span ng-show="node.type.element==='segment'" class="label label-segment label-icon lb-sm" align="center">S</span>
-                        <span ng-show="node.type.element==='group'" class="label label-success label-icon lb-sm">G</span>
-                        <span ng-show="node.type.element==='field'" class="label label-field label-icon lb-sm">F</span>
-                        <span ng-show="node.type.element1==='field'" class="label label-field label-icon lb-sm">F</span>
-
-                        <span ng-show="node.type.element==='component'" class="label label-component label-icon lb-sm">C</span>
-                        <span ng-show="node.type.element1==='group'" class="label label-success label-icon lb-sm">G</span>
-                        <span ng-show="node.type.element1==='segmentRef'" class="label label-segment label-icon lb-sm">S</span>
-                        <span ng-bind="node.label.element"></span>
-                        <span ng-bind="node.label.element1"></span>
-                        <span ng-show="node.ext.element1|| node.ext.element">_
-                        <span ng-show="node.ext.element1" ng-bind="node.ext.element1"></span>
-                        <span ng-show="node.ext.element" ng-bind="node.ext.element"></span>
-                        </span>
-                        <span ng-show="node.description">:
-                        <span ng-show="node.description.element1" ng-bind="node.description.element1"></span>
-                        <span ng-show="node.description.element" ng-bind="node.description.element"></span>
-                        </span>
-                    </td>
-                </tr>
-                <tr style="background-color:#EDE1AF">
-                    <td class="col-sm-1">
-                        <span ng-show="node.type.element==='segmentRef'" class="label label-segment label-icon lb-sm" align="center">S</span>
-                        <span ng-show="node.type.element==='segment'" class="label label-segment label-icon lb-sm" align="center">S</span>
-                        <span ng-show="node.type.element==='group'" class="label label-success label-icon lb-sm">G</span>
-                        <span ng-show="node.type.element==='field'" class="label label-field label-icon lb-sm">F</span>
-                        <span ng-show="node.type.element2==='field'" class="label label-field label-icon lb-sm">F</span>
-
-                        <span ng-show="node.type.element==='component'" class="label label-component label-icon lb-sm">C</span>
-                        <span ng-show="node.type.element2==='group'" class="label label-success label-icon lb-sm">G</span>
-                        <span ng-show="node.type.element2==='segmentRef'" class="label label-segment label-icon lb-sm">S</span>
-                        <span ng-show="node.type.element2==='segment'" class="label label-segment label-icon lb-sm">S</span>
-                        <span ng-bind="node.label.element"></span>
-                        <span ng-bind="node.label.element2"></span>
-                        <span ng-show="node.ext.element2||node.ext.element">_
-                        <span ng-show="node.ext.element2" ng-bind="node.ext.element2"></span>
-                        <span ng-show="node.ext.element" ng-bind="node.ext.element"></span>
-                        </span>
-                        <span ng-show="node.description">:
-                        <span ng-show="node.description.element2" ng-bind="node.description.element2"></span>
-                        <span ng-show="node.description.element" ng-bind="node.description.element"></span>
-                        </span>
-                    </td>
-                </tr>
-            </table>
-        </td>
-        <td class="col-md-1" ng-show="node.usage" style="width:2%">
-            <div align="center">
-                <table class=" table-borderless">
-                    <tr>
-                        <td class="col-md-1" style="background-color:#B5F7EC">
-                            <div align="center"> <span ng-bind="node.usage.element1"></span></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-1" style="background-color:#EDE1AF">
-                            <div align="center"> <span ng-bind="node.usage.element2"></span></div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </td>
-        <td class="col-md-1" ng-show="!node.usage" style="width:2%">
-            <div align="center"> - </div>
-        </td>
-        <td class="col-md-1" ng-show="node.minCard" style="width:2%">
-            <table class=" table-borderless">
-                <tr>
-                    <td class="col-md-1" style="background-color:#B5F7EC">
-                        <div align="center"> <span ng-bind="node.minCard.element1"></span></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-1" style="background-color:#EDE1AF">
-                        <div align="center"> <span ng-bind="node.minCard.element2"></span></div>
-                    </td>
-                </tr>
-            </table>
-        </td>
-        <td class="col-md-1 c" ng-show="!node.minCard" style="width:2%">
-            <div align="center"> - </div>
-        </td>
-        <td class="col-md-1" ng-show="node.maxCard" style="width:2%">
-            <table class="table-borderless">
-                <tr>
-                    <td class="col-md-1" style="background-color:#B5F7EC">
-                        <div align="center"> <span ng-bind="node.maxCard.element1"></span></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-1" style="background-color:#EDE1AF">
-                        <div align="center"> <span ng-bind="node.maxCard.element2"></span></div>
-                    </td>
-                </tr>
-            </table>
-        </td>
-        <td class="col-md-1" ng-show="!node.maxCard" style="width:2%">
-            <div align="center"> - </div>
-        </td>
-        <td class="col-md-1" ng-show="node.minLength" style="width:2%">
-            <table class=" table-borderless">
-                <tr>
-                    <td class="col-md-1" style="background-color:#B5F7EC">
-                        <div align="center"> <span ng-bind="node.minLength.element1"></span></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-1" style="background-color:#EDE1AF">
-                        <div align="center"> <span ng-bind="node.minLength.element2"></span></div>
-                    </td>
-                </tr>
-            </table>
-        </td>
-        <td class="col-md-1" ng-show="!node.minLength" style="width:2%">
-            <div align="center"> - </div>
-        </td>
-        <td class="col-md-1" ng-show="node.maxLength" style="width:2%">
-            <table class=" table-borderless">
-                <tr>
-                    <td class="col-md-1" style="background-color:#B5F7EC">
-                        <div align="center"> <span ng-bind="node.maxLength.element1"></span></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-1" style="background-color:#EDE1AF">
-                        <div align="center"> <span ng-bind="node.maxLength.element2"></span></div>
-                    </td>
-                </tr>
-            </table>
-        </td>
-        <td class="col-md-1" ng-show="!node.maxLength" style="width:2%">
-            <div align="center"> - </div>
-        </td>
-        <td class="col-md-1 col-fixed-20" ng-show="node.confLength" style="width:2%">
-            <table class=" table-borderless">
-                <tr>
-                    <td class="col-md-1" style="background-color:#B5F7EC">
-                        <div align="center"> <span ng-bind="node.confLength.element1"></span></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-1" style="background-color:#EDE1AF">
-                        <div align="center"> <span ng-bind="node.confLength.element2"></span></div>
-                    </td>
-                </tr>
-            </table>
-        </td>
-        <td class="col-md-1" ng-show="!node.confLength" style="width:2%">
-            <div align="center"> - </div>
-        </td>
-        <td class="col-md-1 col-fixed-20" ng-show="node.datatype" style="width:21%">
-            <table class=" table-borderless">
-                <tr>
-                    <td class="col-md-1" style="background-color:#B5F7EC">
-                        <div align="center"> <span ng-bind="node.datatype.element1"></span></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-1" style="background-color:#EDE1AF">
-                        <div align="center"> <span ng-bind="node.datatype.element2"></span></div>
-                    </td>
-                </tr>
-            </table>
-        </td>
-        <td class="col-md-1" ng-show="!node.datatype" style="width:21%">
-            <div align="center"> - </div>
-        </td>
-        <td class="col-md-1" ng-show="node.valueset" style="width:16%">
-            <table class=" table-borderless">
-                <tr>
-                    <td class="col-md-1" style="background-color:#B5F7EC">
-                        <div align="center"> <span ng-bind="node.valueset.element1"></span></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-1" style="background-color:#EDE1AF">
-                        <div align="center"> <span ng-bind="node.valueset.element2"></span></div>
-                    </td>
-                </tr>
-            </table>
-        </td>
-        <td class="col-md-1" ng-show="!node.valueset" style="width:16%">
-            <div align="center"> - </div>
-        </td>
-    </tr>
-</script>
 <script type="text/ng-template" id="ConfirmIGDocumentUnshareCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Remove Participant Confirmation
         </h3>
     </div>
     <div class="modal-body">
-        <p ng-if="shareParticipant.id===g etAccountID()">Are you sure you want to be removed from the IG Document:"{{::igdocumentSelected.metaData.title}}"?</p>
-        <p ng-if="shareParticipant.id !==g etAccountID()">Are you sure you want to remove '{{shareParticipant.fullname}}' from the IG Document:"{{::igdocumentSelected.metaData.title}}"?</p>
+        <p ng-if="shareParticipant.id===getAccountID()">Are you sure you want to be removed from the IG Document:"{{::igdocumentSelected.metaData.title}}"?</p>
+        <p ng-if="shareParticipant.id !==getAccountID()">Are you sure you want to remove '{{shareParticipant.fullname}}' from the IG Document:"{{::igdocumentSelected.metaData.title}}"?</p>
 
         <div class="row" ng-if="error !=null">
             <div class="col-md-12">
@@ -6951,5 +6743,18 @@
         </form>
     </md-dialog>
 </script>
+<script type="text/ng-template" id="deltaElement.html">
+
+    <tr tt-node is-branch="node.children&&node.children.length>0">
+        <td>
+            {{node.name.old}}
+        </td>
+        <td>AAAAA</td>
+
+    </tr>
+
+</script>
+
+
 
 

@@ -24,6 +24,7 @@ public class Datatype extends DataModelWithConstraints
 
   public Datatype() {
     super();
+
     this.type = Constant.DATATYPE;
   }
 

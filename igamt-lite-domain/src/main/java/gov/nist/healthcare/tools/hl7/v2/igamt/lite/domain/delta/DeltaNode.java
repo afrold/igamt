@@ -13,6 +13,8 @@ public class DeltaNode {
 	private Delta datatypeLabel;
 	private List<Delta> valueSetOrSingleCode;
 	private List<Delta> definitionText;
+	private Delta predicate;
+	
 	
 	public Delta getUsage() {
 		return usage;
@@ -74,6 +76,13 @@ public class DeltaNode {
 	public void setDatatypeLabel(Delta datatypeLabel) {
 		this.datatypeLabel = datatypeLabel;
 	}
+	public Delta getPredicate() {
+		return predicate;
+	}
+	public void setPredicate(Delta predicate) {
+		this.predicate = predicate;
+	}
+
 
 }
 

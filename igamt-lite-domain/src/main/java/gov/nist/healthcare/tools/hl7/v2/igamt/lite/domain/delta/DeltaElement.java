@@ -1,14 +1,24 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.delta;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DeltaElement {
-	protected String name; 
+	protected Delta name; 
 	protected String type;
 	protected DeltaNode data;
 	protected State state;
+	protected String path; //1.2.2 
 	
-	List<DeltaElement>  children;
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	List<DeltaElement>  children = new ArrayList<DeltaElement>();
 
 	public List<DeltaElement> getChildren() {
 		return children;
@@ -36,10 +46,10 @@ public class DeltaElement {
 	public void setData(DeltaNode data) {
 		this.data = data;
 	}
-	public String getName() {
+	public Delta getName() {
 		return name;
 	}
-	public void setName(String name) {
+	public void setName(Delta name) {
 		this.name = name;
 	}
 	public String getType() {

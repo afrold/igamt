@@ -11,6 +11,7 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
     $scope.isDeltaCalled = false;
   }
 
+  $scope.dataList={};
 
 
   $scope.scopes = [{
@@ -203,28 +204,19 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
 
   $scope.dynamicDt_params = new ngTreetableParams({
     getNodes: function(parent) {
-      if ($scope.dataList !== undefined) {
-
-        //return parent ? parent.fields : $scope.test;
-        if (parent) {
-          if (parent.fields) {
-            return parent.fields;
-          } else if (parent.components) {
-            return parent.components;
-          } else if (parent.segments) {
-            return parent.segments;
-          } else if (parent.codes) {
-            return parent.codes;
-          }
-
-        } else {
-          return $scope.dataList;
-        }
-
+      if(parent){
+          return parent.children;
       }
+      else{
+        return $scope.dataList.children;
+      }
+
+
+
+
     },
     getTemplate: function(node) {
-      return 'tree_node';
+      return "deltaElement.html";
     }
   });
   $scope.cmpDatatype = function(datatype1, datatype2) {
@@ -232,14 +224,19 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
     $scope.loadingSelection = true;
     $scope.dtChanged = false;
     $scope.vsTemplate = false;
-    $scope.dataList = CompareService.cmpDatatype(datatype1, datatype2, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
-    $scope.loadingSelection = false;
-    if ($scope.dynamicDt_params) {
-      $scope.showDelta = true;
-      $scope.status.isSecondOpen = true;
-      $scope.dynamicDt_params.refresh();
-    }
-    $scope.deltaTabStatus.active = 1;
+
+  CompareService.cmpDatatype(datatype1, datatype2).then(function (result) {
+      $scope.dataList =      result;
+      $scope.loadingSelection = false;
+      if ($scope.dynamicDt_params) {
+          $scope.showDelta = true;
+          $scope.status.isSecondOpen = true;
+          $scope.dynamicDt_params.refresh();
+      }
+      console.log($scope.dynamicDt_params);
+      $scope.deltaTabStatus.active = 1;
+
+  });
 
   };
 });
