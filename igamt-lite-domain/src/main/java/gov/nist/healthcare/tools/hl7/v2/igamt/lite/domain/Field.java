@@ -26,15 +26,9 @@ public class Field extends DataElement implements java.io.Serializable, Cloneabl
   private String itemNo;
   private Integer min;
   private String max;
-  private String added;
+  private boolean added=false;
 
-  public String getAdded() {
-    return added;
-  }
 
-  public void setAdded(String added) {
-    this.added = added;
-  }
 
   public String getItemNo() {
     return itemNo;
@@ -100,6 +94,7 @@ public class Field extends DataElement implements java.io.Serializable, Cloneabl
     clonedField.setPosition(position);
     clonedField.setText(text);
     clonedField.setUsage(usage);
+    clonedField.setAdded(added);
 
     return clonedField;
   }
@@ -119,4 +114,12 @@ public class Field extends DataElement implements java.io.Serializable, Cloneabl
     Field rhs = (Field) obj;
     return new EqualsBuilder().append(id, rhs.id).isEquals();
   }
+
+public boolean isAdded() {
+	return added;
+}
+
+public void setAdded(boolean added) {
+	this.added = added;
+}
 }

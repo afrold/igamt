@@ -963,10 +963,10 @@
 <script type="text/ng-template" id="SegmentFieldEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF)" ng-class="{ 'new': isChildNew(node), 'selected': isChildSelected(node)}">
         <td ng-controller="FormRowCtrl">
-            <a ng-show="editableField!==node.id" ng-if="node.added==='yes'" ng-click="editField(node)" class="point">
+            <a ng-show="editableField!==node.id" ng-if="node.added" ng-click="editField(node)" class="point">
                 <span><i class="fa fa-pencil fa-fw"></i></span>
             </a>
-            <a ng-show="editableField!==node.id" ng-if="node.added==='yes'" ng-click="deleteField(node,segment)" class="point">
+            <a ng-show="editableField!==node.id" ng-if="node.added" ng-click="deleteField(node,segment)" class="point">
                 <span><i class="glyphicon glyphicon-trash"></i></span>
             </a>
             <ng-form name="{{formName}}" class="form-inline">
@@ -1720,14 +1720,6 @@
                         <div ng-message="required">Name is required.</div>
                     </div>
                 </md-input-container>
-                            <label class="input-left igamt-label">Position *</label>
-
-                            <md-input-container ng-class="{'igl-has-error has-feedback': !addFieldForm.inputPosition.$valid}" class="md-block igamt-input-block" flex-gt-sm>
-
-                        <md-select ng-model="position" name="inputPosition" id="inputPosition" ng-change="selectPos()" required>
-                            <md-option ng-repeat="field in segment.fields track by $index" ng-value="{{::field.position}}"> {{::field.position}}</md-option>
-                            <md-option ng-value="{{::segment.fields.length+1}}">{{::segment.fields.length+1}}</md-option>
-                        </md-select>
 
                 </md-input-container>
                             <label class="input-left igamt-label">Usage*</label>
@@ -1737,17 +1729,32 @@
                             <md-option ng-repeat="usage in config.usages track by $index" ng-value="usage">{{usage}}</md-option>
                         </md-select>
 
-                </md-input-container>
+                          </md-input-container>
                             <label class="input-left igamt-label">Cardinality*</label>
 
                             <div layout="row" layout-align="start start">
-                             <md-input-container flex  ng-class="{'igl-has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }" class="md-block igamt-input-block" flex-gt-sm>
+                                <md-input-container flex  ng-class="{'igl-has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }" class="md-block igamt-input-block" flex-gt-sm>
                             <input name="cardMin"  id="cardMin"  ng-pattern="/^\d+$/" ng-model="newField.min" ng-disabled="disableMin" required>
 
                             </md-input-container>
                             <md-input-container  ng-class="{'igl-has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }" class="md-block igamt-input-block" flex-gt-sm>
                                      <input  type="text"  name="cardMax" id="cardMax"  ng-pattern="/^\d+$|^\*?$/" ng-model="newField.max" ng-disabled="disableMax" required>
                             </md-input-container>
+                            </div>
+                            <label class="input-left igamt-label">Length*</label>
+
+                            <div layout="row" layout-align="start start">
+                                <md-input-container flex flex-gt-sm>
+                                    <input name="minLength"
+                                           ng-pattern="/^\d+$/"
+                                           ng-model="newField.minLength" required ng-minlength="1">
+                                </md-input-container>
+                                <md-input-container flex flex-gt-sm>
+                                    <input type="text"
+                                           name="maxLength"
+                                           ng-pattern="/^\d+$|^\*?$/"
+                                           ng-model="newField.maxLength" required>
+                                </md-input-container>
                             </div>
 
                             <label class="input-left igamt-label"> Data Type </label>
