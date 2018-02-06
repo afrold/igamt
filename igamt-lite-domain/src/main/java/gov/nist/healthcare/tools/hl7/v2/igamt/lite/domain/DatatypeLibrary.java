@@ -187,5 +187,9 @@ public class DatatypeLibrary extends TextbasedSectionModel
   public void setMetaData(DatatypeLibraryMetaData metaData) {
     this.metaData = metaData;
   }
+  
+  public boolean contains(DatatypeLink datatypeLink){
+	  return this.children.contains(datatypeLink);
+  }
 
 }
