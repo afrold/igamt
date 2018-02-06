@@ -363,6 +363,7 @@ public class Message extends DataModelWithConstraints implements java.io.Seriali
 		clonedMessage.setUsageNote(usageNote);
 		clonedMessage.setMessageID(messageID);
 		clonedMessage.setType(type);
+		clonedMessage.setHl7Version(hl7Version);
 		clonedMessage.setConformanceStatements(new ArrayList<ConformanceStatement>());
 		for (ConformanceStatement cs : this.conformanceStatements) {
 			clonedMessage.addConformanceStatement(cs.clone());

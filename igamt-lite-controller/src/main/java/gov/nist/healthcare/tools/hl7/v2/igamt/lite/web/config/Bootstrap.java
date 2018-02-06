@@ -332,11 +332,53 @@ public class Bootstrap implements InitializingBean {
       //testNotification();
      //2.0.0-beta10
     //makePhinvadsExternal(); 
+	  //reMapp() //saves all datatypes and segments and tables to remove the old to get rid of old attributes ;
+	  addVersionToProfile();
     
 //    investigateMutipleValueSets();
   }
   
+  private void addVersionToProfile(){
+	  List<Message> messages = messageService.findAll();
+	  for(Message m : messages){
+		if(m.getHl7Version()==null||m.getHl7Version().isEmpty()){
+			m.setHl7Version(findMessageVersion(m));
+			messageService.save(m);
+		}  
+	  }
+  }
   
+  private String findMessageVersion(Message m) {
+	// TODO Auto-generated method stub
+	  for(SegmentRefOrGroup sog : m.getChildren()){
+		  String v=segmentOrgroupVersion(sog);
+		  if(v !=null){
+			  return segmentOrgroupVersion(sog);
+		  }
+	  }
+	  return null;
+}
+
+private String segmentOrgroupVersion(SegmentRefOrGroup sog) {
+	if(sog instanceof SegmentRef){
+		SegmentRef ref = (SegmentRef)sog;
+		if(ref.getRef().getId()!=null){
+			Segment s =segmentService.findById(ref.getRef().getId());
+			if(s !=null && s.getHl7Version() !=null){
+				return s.getHl7Version();
+
+			}
+		}
+		
+	}else if(sog instanceof Group){
+		Group ref = (Group)sog;
+		for(SegmentRefOrGroup child : ref.getChildren()){
+			segmentOrgroupVersion(child);
+		}
+	}
+	return null;
+	// TODO Auto-generated method stub
+}
   private void investigateMutipleValueSets() {
     List<IGDocument> allIGs = documentService.findAll();
     String report = "";
@@ -518,7 +560,16 @@ public class Bootstrap implements InitializingBean {
     notificationsRepository.save(notifications);
     
   }
+  
+  
+  
 
+  private void reMapp(){
+	 List<Segment> list= segmentService.findAll();
+		 segmentService.save(list);
+		 List<Datatype> dts= datatypeService.findAll();
+		 datatypeService.save(dts);
+  }
   private void updateTableForNumOfCodesANDSourceType() {
     List<Table> allTables = tableService.findAll();
     // String largeTableLISTCSV = "\"ID\"," + "\"Binding Identifier\"," + "\"Name\"," + "\"Code
@@ -573,6 +624,7 @@ public class Bootstrap implements InitializingBean {
     // System.out.println(IGUsedLargeTableLISTCSV);
   }
 
+  
   private void makePhinvadsExternal() {
     List<Table> allPhvs = tableService.findByScope(SCOPE.PHINVADS.name());
 
@@ -1673,59 +1725,10 @@ public class Bootstrap implements InitializingBean {
     }
   }
 
-  private void fixDuplicateValueSets() throws IGDocumentException {
-    List<IGDocument> igDocuments = documentService.findAllByScope(IGDocumentScope.USER);
-    for (IGDocument document : igDocuments) {
-      fixDuplicateValueSets(document);
-    }
-    igDocuments = documentService.findAllByScope(IGDocumentScope.PRELOADED);
-    for (IGDocument document : igDocuments) {
-      fixDuplicateValueSets(document);
-    }
-  }
 
-  private void fixDuplicateValueSets(IGDocument document) throws IGDocumentException {
-    DatatypeLibrary datatypeLibrary = document.getProfile().getDatatypeLibrary();
-    SegmentLibrary segmentLibrary = document.getProfile().getSegmentLibrary();
-    TableLibrary tableLibrary = document.getProfile().getTableLibrary();
-    List<TableLink> unusedDuplicates =
-        collectUnusedDuplicates(tableLibrary, datatypeLibrary, segmentLibrary);
-    if (!unusedDuplicates.isEmpty()) {
-      for (TableLink tableLink : unusedDuplicates) {
-        TableLink found = findTableLink(tableLibrary.getChildren(), tableLink);
-        if (found != null && found.getId() != null) {
-          tableLibrary.getChildren().remove(found);
-        }
-      }
-    }
-    tableLibraryRepository.save(tableLibrary);
-  }
 
-  private List<TableLink> collectUnusedDuplicates(TableLibrary tableLibrary,
-      DatatypeLibrary datatypeLibrary, SegmentLibrary segmentLibrary) {
-    List<TableLink> unusedDuplicates = new ArrayList<TableLink>();
-    if (tableLibrary.getChildren() != null && !tableLibrary.getChildren().isEmpty()) {
-      List<TableLink> tableLinks = new ArrayList<TableLink>();
-      tableLinks.addAll(tableLibrary.getChildren());
-      Set<String> segmentIds = new HashSet<String>();
-      for (SegmentLink segmentLink : segmentLibrary.getChildren()) {
-        segmentIds.add(segmentLink.getId());
-      }
-      List<Segment> segments = segmentService.findByIds(segmentIds);
-      Set<String> datatypeIds = new HashSet<String>();
-      for (DatatypeLink datatypeLink : datatypeLibrary.getChildren()) {
-        datatypeIds.add(datatypeLink.getId());
-      }
-      List<Datatype> datatypes = datatypeService.findByIds(datatypeIds);
-      for (int i = 0; i < tableLinks.size(); i++) {
-        if (isTableDuplicated(tableLinks.get(i), tableLinks)
-            && !isTableUsed(segments, datatypes, tableLinks.get(i))) {
-          unusedDuplicates.add(tableLinks.get(i));
-        }
-      }
-    }
-    return unusedDuplicates;
-  }
+
+
 
   private TableLink findTableLink(Set<TableLink> tableLinks, TableLink link) {
     if (tableLinks != null && !tableLinks.isEmpty() && link != null && link.getId() != null) {
@@ -1763,46 +1766,9 @@ public class Bootstrap implements InitializingBean {
     return table2 != null && table.getScope().equals(table2.getScope());
   }
 
-  private boolean isTableUsed(List<Segment> segments, List<Datatype> datatypes,
-      TableLink tableLink) {
-    for (Segment segment : segments) {
-      if (isTableUsed(segment, tableLink)) {
-        return true;
-      }
-    }
-    for (Datatype datatype : datatypes) {
-      if (isTableUsed(datatype, tableLink)) {
-        return true;
-      }
-    }
-    return false;
-  }
 
-  private boolean isTableUsed(Segment segment, TableLink tableLink) {
-    for (Field field : segment.getFields()) {
-      if (field.getTables() != null && !field.getTables().isEmpty()) {
-        for (TableLink t : field.getTables()) {
-          if (t.getId().equals(tableLink.getId())) {
-            return true;
-          }
-        }
-      }
-    }
-    return false;
-  }
 
-  private boolean isTableUsed(Datatype datatype, TableLink tableLink) {
-    for (Component component : datatype.getComponents()) {
-      if (component.getTables() != null && !component.getTables().isEmpty()) {
-        for (TableLink t : component.getTables()) {
-          if (t.getId().equals(tableLink.getId())) {
-            return true;
-          }
-        }
-      }
-    }
-    return false;
-  }
+
 
   private void updateInitAndCreateCommentsForMessage() {
     List<Message> allMsgs = messageService.findAll();
@@ -1840,121 +1806,84 @@ public class Bootstrap implements InitializingBean {
     }
   }
 
-  private void updateInitAndCreateBindingAndCommentsVSForSegment() {
-    List<Segment> allSegs = segmentService.findAll();
-    for (Segment s : allSegs) {
-      s.setValueSetBindings(new ArrayList<ValueSetOrSingleCodeBinding>());
-      s.setComments(new ArrayList<Comment>());
-      for (Field f : s.getFields()) {
-        if (f.getTables() != null) {
-          for (TableLink tl : f.getTables()) {
-            Table t = tableService.findById(tl.getId());
-            if (t != null) {
-              ValueSetBinding vsb = new ValueSetBinding();
-              vsb.setBindingLocation(tl.getBindingLocation());
-              vsb.setBindingStrength(tl.getBindingStrength());
-              vsb.setLocation(f.getPosition() + "");
-              vsb.setTableId(t.getId());
-              vsb.setUsage(f.getUsage());
+//  private void updateInitAndCreateBindingAndCommentsVSForSegment() {
+//    List<Segment> allSegs = segmentService.findAll();
+//    for (Segment s : allSegs) {
+//      s.setValueSetBindings(new ArrayList<ValueSetOrSingleCodeBinding>());
+//      s.setComments(new ArrayList<Comment>());
+//      for (Field f : s.getFields()) {
+//        if (f.getTables() != null) {
+//          for (TableLink tl : f.getTables()) {
+//            Table t = tableService.findById(tl.getId());
+//            if (t != null) {
+//              ValueSetBinding vsb = new ValueSetBinding();
+//              vsb.setBindingLocation(tl.getBindingLocation());
+//              vsb.setBindingStrength(tl.getBindingStrength());
+//              vsb.setLocation(f.getPosition() + "");
+//              vsb.setTableId(t.getId());
+//              vsb.setUsage(f.getUsage());
+//
+//              s.addValueSetBinding(vsb);
+//            }
+//          }
+//          // f.setTables(null);
+//        }
+//        if (f.getComment() != null && !f.getComment().equals("")) {
+//          Comment comment = new Comment();
+//          comment.setDescription(f.getComment());
+//          comment.setLastUpdatedDate(new Date());
+//          comment.setLocation(f.getPosition() + "");
+//
+//          s.addComment(comment);
+//          // s.setComment(null);
+//        }
+//      }
+//
+//      segmentService.save(s);
+//    }
+//  }
 
-              s.addValueSetBinding(vsb);
-            }
-          }
-          // f.setTables(null);
-        }
-        if (f.getComment() != null && !f.getComment().equals("")) {
-          Comment comment = new Comment();
-          comment.setDescription(f.getComment());
-          comment.setLastUpdatedDate(new Date());
-          comment.setLocation(f.getPosition() + "");
+//  private void updateInitAndCreateBindingAndCommentsVSForDatatype() {
+//    List<Datatype> allDts = datatypeService.findAll();
+//    for (Datatype d : allDts) {
+//      d.setValueSetBindings(new ArrayList<ValueSetOrSingleCodeBinding>());
+//      d.setComments(new ArrayList<Comment>());
+//      for (Component c : d.getComponents()) {
+//        if (c.getTables() != null) {
+//          for (TableLink tl : c.getTables()) {
+//            Table t = tableService.findById(tl.getId());
+//            if (t != null) {
+//              ValueSetBinding vsb = new ValueSetBinding();
+//              vsb.setBindingLocation(tl.getBindingLocation());
+//              vsb.setBindingStrength(tl.getBindingStrength());
+//              vsb.setLocation(c.getPosition() + "");
+//              vsb.setUsage(c.getUsage());
+//              vsb.setTableId(t.getId());
+//
+//              d.addValueSetBinding(vsb);
+//            }
+//          }
+//          // c.setTables(null);
+//        }
+//        if (c.getComment() != null && !c.getComment().equals("")) {
+//          Comment comment = new Comment();
+//          comment.setDescription(c.getComment());
+//          comment.setLastUpdatedDate(new Date());
+//          comment.setLocation(c.getPosition() + "");
+//
+//          d.addComment(comment);
+//          // c.setComment(null);
+//        }
+//      }
+//      datatypeService.save(d);
+//    }
+//  }
 
-          s.addComment(comment);
-          // s.setComment(null);
-        }
-      }
 
-      segmentService.save(s);
-    }
-  }
 
-  private void updateInitAndCreateBindingAndCommentsVSForDatatype() {
-    List<Datatype> allDts = datatypeService.findAll();
-    for (Datatype d : allDts) {
-      d.setValueSetBindings(new ArrayList<ValueSetOrSingleCodeBinding>());
-      d.setComments(new ArrayList<Comment>());
-      for (Component c : d.getComponents()) {
-        if (c.getTables() != null) {
-          for (TableLink tl : c.getTables()) {
-            Table t = tableService.findById(tl.getId());
-            if (t != null) {
-              ValueSetBinding vsb = new ValueSetBinding();
-              vsb.setBindingLocation(tl.getBindingLocation());
-              vsb.setBindingStrength(tl.getBindingStrength());
-              vsb.setLocation(c.getPosition() + "");
-              vsb.setUsage(c.getUsage());
-              vsb.setTableId(t.getId());
 
-              d.addValueSetBinding(vsb);
-            }
-          }
-          // c.setTables(null);
-        }
-        if (c.getComment() != null && !c.getComment().equals("")) {
-          Comment comment = new Comment();
-          comment.setDescription(c.getComment());
-          comment.setLastUpdatedDate(new Date());
-          comment.setLocation(c.getPosition() + "");
 
-          d.addComment(comment);
-          // c.setComment(null);
-        }
-      }
-      datatypeService.save(d);
-    }
-  }
 
-  private void fixMissingData() {
-    List<IGDocument> igDocuments = documentService.findAll();
-    for (IGDocument document : igDocuments) {
-      fixMissingData(document);
-    }
-  }
-
-  private void fixMissingData(IGDocument document) {
-    DatatypeLibrary datatypeLibrary = document.getProfile().getDatatypeLibrary();
-    SegmentLibrary segmentLibrary = document.getProfile().getSegmentLibrary();
-    TableLibrary tableLibrary = document.getProfile().getTableLibrary();
-
-    for (SegmentLink segLink : segmentLibrary.getChildren()) {
-      if (segLink.getId() != null) {
-        Segment segment = segmentService.findById(segLink.getId());
-        for (Field field : segment.getFields()) {
-          fixMissingData(field.getTables(), tableLibrary);
-          fixMissingData(field.getDatatype(), tableLibrary, datatypeLibrary);
-        }
-      }
-    }
-    daatypeLibraryRepository.save(datatypeLibrary);
-    tableLibraryRepository.save(tableLibrary);
-  }
-
-  private void fixMissingData(DatatypeLink datatypeLink, TableLibrary tableLibrary,
-      DatatypeLibrary dtLib) {
-    if (datatypeLink.getId() != null) {
-      if (!contains(datatypeLink, dtLib)) {
-        dtLib.addDatatype(datatypeLink);
-      }
-      Datatype datatype = datatypeService.findById(datatypeLink.getId());
-      if (datatype.getComponents() != null && !datatype.getComponents().isEmpty()) {
-        for (Component c1 : datatype.getComponents()) {
-          if (c1.getDatatype() != null && !datatypeLink.getId().equals(c1.getDatatype().getId())) {
-            fixMissingData(c1.getDatatype(), tableLibrary, dtLib);
-          }
-          fixMissingData(c1.getTables(), tableLibrary);
-        }
-      }
-    }
-  }
 
   private void fixMissingData(List<TableLink> tableLinks, TableLibrary tableLibrary) {
     if (tableLinks != null && !tableLinks.isEmpty()) {

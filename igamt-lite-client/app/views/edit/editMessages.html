@@ -39,11 +39,9 @@
 					Updated {{message.dateUpdated | date:dateFormat}}
                      <span ng-if="message.owner" style="font-style: italic;">
                          <i class="fa fa-user" aria-hidden="true"></i>
-                         ,{{datatype.owner}}
+                         ,{{message.owner}}
                     </span>
-                    <span ng-if="message.hl7Version">,HL7 Version: {{message.hl7Version}}</span>
-                    <span ng-if="message.publicationVersion">,Version: {{message.publicationVersion}}</span>
-
+                     ,HL7 Version: {{message.hl7Version}}
                 </div>
                     <div class="" ng-controller="cmpMessageCtrl as cmpMsg">
                         <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">

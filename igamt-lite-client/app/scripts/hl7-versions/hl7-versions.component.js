@@ -11,7 +11,6 @@ angular.module('igl').controller(
     $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
 
     $scope.create = function(clickSource) {
-      console.log("called");
       $rootScope.clickSource = clickSource;
       if ($rootScope.hasChanges()) {
         $rootScope.openConfirmLeaveDlg().then(function() {
@@ -74,7 +73,6 @@ angular.module('igl').controller(
             hl7Version: function() {
               console.log("$rootScope.clickSource=" + $rootScope.clickSource);
               if ($rootScope.clickSource === "ctx") {
-                console.log("hl7Version=" + $rootScope.igdocument.profile.metaData.hl7Version);
                 return $rootScope.igdocument.profile.metaData.hl7Version;
               } else {
                 return null;
@@ -82,17 +80,6 @@ angular.module('igl').controller(
             }
           }
         }).then(function(result) {
-          console.log(result);
-          if(result){
-            $rootScope
-              .$emit(
-                'event:openIGDocumentRequest',
-                result);
-            $rootScope.$broadcast('event:IgsPushed',
-              result);
-
-          }
-
         });
       }, function(response) {
         $rootScope.msg().text = "Cannot load the versions. Please try again";

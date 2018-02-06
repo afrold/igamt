@@ -188,9 +188,6 @@ public class DatatypeLibraryExportImpl implements DatatypeLibraryExportService {
           elmComponent.appendChild(this.serializeRichtext("Text", c.getText()));
         }
 
-        if (c.getTables() != null && !c.getTables().isEmpty()) {
-          elmComponent.addAttribute(new Attribute("Binding", tablesToString(c.getTables())));
-        }
 
         List<Constraint> constraints =
             findConstraints(i, d.getPredicates(), d.getConformanceStatements());

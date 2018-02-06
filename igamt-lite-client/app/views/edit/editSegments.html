@@ -645,7 +645,7 @@
                                                             <tbody>
                                                             <tr ng-repeat="item in displayItems track by $index">
                                                                 <td class="col-md-3">
-                                                                    <md-select ng-model="item.firstReferenceValue" placeholder="Select DT Base Name" ng-disabled="viewSettings.tableReadonly || segment.scope !== 'USER'" ng-change="setDirty();">
+                                                                    <md-select ng-model="item.firstReferenceValue" placeholder="Select DT Base Name" ng-disabled="viewSettings.tableReadonly || segment.scope !== 'USER'" ng-change="setDirty();" required>
                                                                         <md-option ng-repeat="c in dynamicMappingTable.codes | orderBy:'value' track by $index" value="{{c.value}}">
                                                                             {{c.value}}({{c.label}})
                                                                         </md-option>
@@ -654,7 +654,7 @@
                                                                     <span ng-if="checkDuplicatedDM(item)" style="color:red">*Duplicated</span>
                                                                 </td>
                                                                 <td class="col-md-5">
-                                                                    <md-select ng-model="item.datatypeId"
+                                                                    <md-select ng-model="item.datatypeId" required
                                                                                ng-show="item.firstReferenceValue"
                                                                                placeholder="Select DT Flavor"
                                                                                ng-change="setDirty()"

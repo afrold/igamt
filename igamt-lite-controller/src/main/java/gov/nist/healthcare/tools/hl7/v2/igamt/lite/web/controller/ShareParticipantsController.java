@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.itextpdf.tool.xml.html.head.Link;
+
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
@@ -32,6 +34,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermis
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission.Permission;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
@@ -248,21 +252,26 @@ public class ShareParticipantsController {
           }
         }
 
-        if (!c.getTables().isEmpty()) {
-          for (TableLink link : c.getTables()) {
-            try {
-              Table temp = tableService.findById(link.getId());
-              temp.getShareParticipantIds()
-                  .add(new ShareParticipantPermission(accountId, Permission.VIEW, false));
-              tableService.save(temp);
-            } catch (Exception e) {
-              log.error("", e);
-            }
 
-          }
-        }
       }
     }
+    
+    if (!d.getValueSetBindings().isEmpty()) {
+    	
+        for (ValueSetOrSingleCodeBinding binding : d.getValueSetBindings()) {
+        	if(binding instanceof  ValueSetBinding){
+          try {
+            Table temp = tableService.findById(binding.getTableId());
+            temp.getShareParticipantIds()
+                .add(new ShareParticipantPermission(accountId, Permission.VIEW, false));
+            tableService.save(temp);
+          } catch (Exception e) {
+            log.error("", e);
+          }
+
+        }
+      }
+        }
   }
 
 

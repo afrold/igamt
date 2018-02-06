@@ -72,6 +72,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguratio
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageAddReturn;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.PositionComparator;
@@ -86,6 +87,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SectionMap;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipant;
@@ -95,6 +97,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentAtt
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.comparator.IgDocumentComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CCValue;
@@ -707,13 +710,7 @@ public class IGDocumentController extends CommonController {
         if (f.getDatatype() != null && f.getDatatype().getId() != null
             && datatypeIdChangeMap.containsKey(f.getDatatype().getId()))
           f.getDatatype().setId(datatypeIdChangeMap.get(f.getDatatype().getId()));
-        if (f.getTables() != null && !f.getTables().isEmpty()) {
-          for (TableLink tableLink : f.getTables()) {
-            if (tableLink != null && tableLink.getId() != null
-                && tableIdChangeMap.containsKey(tableLink.getId()))
-              tableLink.setId(tableIdChangeMap.get(tableLink.getId()));
-          }
-        }
+
       }
 
       for (ValueSetOrSingleCodeBinding binding : s.getValueSetBindings()) {
@@ -758,14 +755,7 @@ public class IGDocumentController extends CommonController {
       for (Component c : d.getComponents()) {
         if (c.getDatatype() != null && c.getDatatype().getId() != null
             && datatypeIdChangeMap.containsKey(c.getDatatype().getId()))
-          c.getDatatype().setId(datatypeIdChangeMap.get(c.getDatatype().getId()));
-        if (c.getTables() != null && !c.getTables().isEmpty()) {
-          for (TableLink tableLink : c.getTables()) {
-            if (tableLink != null && tableLink.getId() != null
-                && tableIdChangeMap.containsKey(tableLink))
-              tableLink.setId(tableIdChangeMap.get(tableLink.getId()));
-          }
-        }
+          c.getDatatype().setId(datatypeIdChangeMap.get(c.getDatatype().getId())); 
       }
       for (ValueSetOrSingleCodeBinding binding : d.getValueSetBindings()) {
         if (binding.getTableId() != null) {
@@ -1607,9 +1597,10 @@ public class IGDocumentController extends CommonController {
   }
 
   @RequestMapping(value = "/{id}/findAndAddMessages", method = RequestMethod.POST)
-  public List<Message> findAndAddMessages(@PathVariable("id") String id,
+  public MessageAddReturn findAndAddMessages(@PathVariable("id") String id,
       @RequestBody List<EventWrapper> eventWrapper) throws IOException, IGDocumentNotFoundException,
       IGDocumentException, CloneNotSupportedException {
+	  MessageAddReturn ret = new MessageAddReturn();
 
     List<Message> newMessages = new ArrayList<Message>();
     IGDocument d = igDocumentService.findOne(id);
@@ -1628,6 +1619,8 @@ public class IGDocumentController extends CommonController {
         Message m1 = null;
         m1 = newMessage.clone();
         m1.setId(null);
+        processMessage(d,m1,ret);
+        
         m1.setScope(Constant.SCOPE.USER);
         String name = m1.getMessageType() + "^" + nands.getName() + "^" + m1.getStructID();
         log.debug("Message.name=" + name);
@@ -1635,27 +1628,151 @@ public class IGDocumentController extends CommonController {
         int position = messageService.findMaxPosition(msgs);
         m1.setPosition(++position);
         messageRepository.save(m1);
+        processMessage(d,m1,ret);
+        // add segment to the library
+        for ( Segment s : ret.getSegments()){
+        	p.getSegmentLibrary().addSegment(s);
+        }
+        for(Datatype dt : ret.getDatatypes()){
+        	p.getDatatypeLibrary().addDatatype(dt);
+        
+        }
+        
+        for(Table t : ret.getTables()){
+        	p.getTableLibrary().addTable(t);
+        }
+        
         msgsToadd.add(m1);
+        ret.setMsgsToadd(msgsToadd);
         msgs.addMessage(m1);
       }
+      segmentLibraryService.save(p.getSegmentLibrary());
+      datatypeLibraryService.save(p.getDatatypeLibrary());
+      tableLibraryService.save(p.getTableLibrary());
       p.setMessages(msgs);
       d.setProfile(p);
       igDocumentService.save(d);
-      if (newMessages.isEmpty()) {
-        throw new NotFoundException("Message not found for event=" + eventWrapper.toString());
-      }
     } catch (Exception e) {
       log.error("", e);
     }
+	return ret;
 
-    // for(Message m : newMessages){
-    //
-    // }
 
-    return msgsToadd;
   }
 
-  @RequestMapping(value = "/{id}/addMessages", method = RequestMethod.POST)
+  private void processMessage(IGDocument d, Message m1, MessageAddReturn ret) {
+
+		 HashMap<String,Boolean> segmentMap = new HashMap<String,Boolean>(); 
+		 HashMap<String,Boolean> datatypesMap = new HashMap<String,Boolean>(); 
+		 HashMap<String,Boolean> tablesMap = new HashMap<String,Boolean>(); 
+	 for(ValueSetOrSingleCodeBinding c: m1.getValueSetBindings()){
+		  if(c instanceof ValueSetBinding){
+			  if(c.getTableId()!=null && !tablesMap.containsKey(c.getTableId())){
+				 Table t= tableService.findOneShortById(c.getTableId());
+				 if(t!=null ){
+					 ret.addTable(t); 
+					 tablesMap.put(t.getId(), true);
+				 }
+				
+			  }
+		  }
+	 }
+
+	 for(SegmentLink s : d.getProfile().getSegmentLibrary().getChildren()){
+		 segmentMap.put(s.getId(), true);
+	 }
+	 for(DatatypeLink dt : d.getProfile().getDatatypeLibrary().getChildren()){
+		 datatypesMap.put(dt.getId(), true);
+	 }
+	 for(TableLink table : d.getProfile().getTableLibrary().getChildren()){
+		 tablesMap.put(table.getId(), true);
+	 }
+
+	 for( SegmentRefOrGroup child : m1.getChildren()){
+		 processSegmentOrGroup(child,ret,segmentMap,datatypesMap,tablesMap);
+	 }
+	 
+	
+  }
+
+
+private void processSegmentOrGroup(SegmentRefOrGroup child, MessageAddReturn ret, HashMap<String, Boolean> segmentMap, HashMap<String, Boolean> datatypesMap, HashMap<String, Boolean> tablesMap) {
+	// TODO Auto-generated method stub
+	
+	if(child instanceof SegmentRef){
+		SegmentRef ref =(SegmentRef) child;
+		if(ref.getRef().getId() !=null && !segmentMap.containsKey(ref.getRef().getId())){
+		Segment segment = segmentService.findById(ref.getRef().getId());
+		if(segment!=null){
+			processSegment(segment,ret,segmentMap,datatypesMap,tablesMap);
+		 }
+		}
+		
+	}else if(child instanceof Group){
+		Group ref = (Group)child;
+		for( SegmentRefOrGroup child1: ref.getChildren()){
+		processSegmentOrGroup(child1,ret,segmentMap,datatypesMap, tablesMap);
+			}
+		}
+	
+}
+
+
+private void processSegment(Segment segment, MessageAddReturn ret, HashMap<String, Boolean> segmentMap,
+		HashMap<String, Boolean> datatypesMap, HashMap<String, Boolean> tablesMap) {
+	
+	ret.addSegment(segment);
+	segmentMap.put(segment.getId(), true);
+	for(ValueSetOrSingleCodeBinding c: segment.getValueSetBindings()){
+		  if(c instanceof ValueSetBinding){
+			  if(c.getTableId()!=null && !tablesMap.containsKey(c.getTableId())){
+				 Table t= tableService.findOneShortById(c.getTableId());
+				 if(t!=null ){
+					 ret.addTable(t); 
+					 tablesMap.put(t.getId(), true);
+				 }
+				
+			  }
+		  }
+	 }
+	for( Field f : segment.getFields()){
+		if(f.getDatatype().getId()!=null && !datatypesMap.containsKey(f.getDatatype().getId())){
+			Datatype d = datatypeService.findById(f.getDatatype().getId());
+			if(d !=null){
+				processDatatype(d,ret,datatypesMap,tablesMap);
+			}
+		}
+	}
+	// TODO Auto-generated method stub
+	
+}
+
+private void processDatatype(Datatype d, MessageAddReturn ret,
+		HashMap<String, Boolean> datatypesMap, HashMap<String, Boolean> tablesMap) {
+	ret.addDatatype(d);
+	datatypesMap.put(d.getId(), true);
+	for(ValueSetOrSingleCodeBinding c: d.getValueSetBindings()){
+		  if(c instanceof ValueSetBinding){
+			  if(c.getTableId()!=null && !tablesMap.containsKey(c.getTableId())){
+				 Table t= tableService.findOneShortById(c.getTableId());
+				 if(t!=null ){
+					 ret.addTable(t); 
+					 tablesMap.put(t.getId(), true);
+				 }
+			  }
+		  }
+	 }
+	for( Component c : d.getComponents()){
+		if(c.getDatatype().getId()!=null && !datatypesMap.containsKey(c.getDatatype().getId())){
+			Datatype sub = datatypeService.findById(c.getDatatype().getId());
+			if(sub !=null){
+				processDatatype(sub,ret,datatypesMap,tablesMap);
+			}
+		}
+	}	
+}
+
+@RequestMapping(value = "/{id}/addMessages", method = RequestMethod.POST)
   public Long addMessages(@PathVariable("id") String id, @RequestBody Set<String> messageIds)
       throws IOException, IGDocumentNotFoundException, IGDocumentException,
       CloneNotSupportedException {

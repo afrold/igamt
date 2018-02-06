@@ -9,9 +9,10 @@ angular.module('igl').controller(
     $scope.hl7Versions = hl7Versions;
     $scope.hl7Version = hl7Version;
     $scope.messageEventsParams=null;
-    // $scope.hl7VersionsDlgForm={
-    // }
-    // $scope.hl7VersionsDlgForm.metaData={};
+    $scope.usedSegsLink = [];
+    $scope.usedDtLink = [];
+    $scope.usedVsLink = [];
+    $scope.usedValueSetsId=[];
     $scope.selectedHL7Version = hl7Version;
     $scope.okDisabled = true;
     $scope.messageIds = [];
@@ -39,23 +40,7 @@ angular.module('igl').controller(
 
     };
 
-    //
-    // $scope.getMessageEvents=function(){
-    //    var messageParm = new ngTreetableParams({
-    //         getNodes: function(parent) {
-    //             return parent && parent != null ? parent.children : $scope.hl7Version != null ? MessageEventsSvc.getMessageEvents($scope.hl7Version) : [];
-    //         },
-    //         getTemplate: function(node) {
-    //             return 'MessageEventsNode.html';
-    //         }
-    //     });
-    //     return messageParm;
-    // }
-
-
-
     $scope.loadIGDocumentsByVersion = function(hl7Version) {
-      console.log($scope.messageEventsParams);
       $scope.loading = true;
       $scope.eventList = [];
       $scope.selectedHL7Version = hl7Version;
@@ -69,7 +54,6 @@ angular.module('igl').controller(
           $scope.loading = false;
         });
       }else {
-        console.log("creating"+$scope.hl7Version);
 
         $scope.messageEventsParams= new ngTreetableParams({
           getNodes: function (parent) {
@@ -136,17 +120,6 @@ angular.module('igl').controller(
       }
     };
 
-
-    //        $scope.$watch(function () {
-    //            return $rootScope.igdocument.id;
-    //        }, function (newValue, oldValue) {
-    //            if ($rootScope.clickSource === "ctx") {
-    //                $scope.hl7Version = $rootScope.hl7Version;
-    //                $scope.messageIds = ProfileAccessSvc.Messages().getMessageIds();
-    //                $scope.loadIGDocumentsByVersion();
-    //            }
-    //        });
-
     $scope.ok = function() {
       // create new ig doc submitted.
       $scope.messageEvents = messageEvents;
@@ -167,8 +140,6 @@ angular.module('igl').controller(
     };
 
     var createIGDocument = function(hl7Version, msgEvts) {
-      console.log("create Ig called");
-      console.log($scope.hl7VersionsDlgForm);
       var iprw = {
         "hl7Version": hl7Version,
         "msgEvts": msgEvts,
@@ -182,6 +153,11 @@ angular.module('igl').controller(
           function(response) {
             var igdocument = angular
               .fromJson(response.data);
+              $rootScope.$emit(
+                  'event:openIGDocumentRequest',
+                  igdocument);
+              $rootScope.$broadcast('event:IgsPushed',
+                  igdocument);
             $mdDialog.hide(igdocument);
           },
           function(response) {
@@ -198,20 +174,9 @@ angular.module('igl').controller(
      * @param msgIds
      */
     var updateIGDocument = function(msgEvts) {
-      $rootScope.usedSegsLink = [];
-      $rootScope.usedDtLink = [];
-      $rootScope.usedVsLink = [];
 
-
-      var events = [];
-
-      var scope = "HL7STANDARD";
-      var version = $scope.hl7Version;
-      console.log($rootScope.igdocument);
-
-
-      console.log("update Ig called");
-      console.log(msgEvts);
+        var events = [];
+        var version = $scope.hl7Version;
       for (var i = 0; i < msgEvts.length; i++) {
         events.push({
           name: msgEvts[i].children[0].name,
@@ -221,132 +186,51 @@ angular.module('igl').controller(
 
         });
       }
-      console.log("namesAndSctruct");
-      console.log(events);
-
       IgDocumentService.findAndAddMessages($rootScope.igdocument.id, events).then(function(result) {
-        console.log(events);
 
-        var msgsId = [];
-        for (var i = 0; i < result.length; i++) {
-          if (result[i].id) {
-            msgsId.push(result[i].id);
-          }
+          angular.forEach(result.datatypes, function (datatype) {
+              $rootScope.datatypes.push(datatype);
+              $rootScope.datatypesMap[datatype.id]=datatype;
+              $rootScope.igdocument.profile.datatypeLibrary.children.push({name: datatype.name, id : datatype.id});
 
-        }
-        for (var i = 0; i < result.length; i++) {
-          console.log("result[i]==========");
-          console.log(result[i]);
-          //result[i].id = new ObjectId().toString();
-          $rootScope.igdocument.profile.messages.children.push(result[i]);
-          $rootScope.messagesMap[result[i].id] = result[i];
-          $rootScope.fillMaps(result[i]);
-          console.log($rootScope.usedSegsLink);
-          console.log($rootScope.usedDtLink);
-          console.log($rootScope.usedVsLink);
-        }
-        var usedSegsId = _.map($rootScope.usedSegsLink, function(num, key) {
-          return num.id;
-        });
-        var newSegmentsLink = _.difference($rootScope.usedSegsLink, $rootScope.igdocument.profile.segmentLibrary.children);
-
-        SegmentLibrarySvc.addChildren($rootScope.igdocument.profile.segmentLibrary.id, newSegmentsLink).then(function() {
-            $rootScope.igdocument.profile.segmentLibrary.children=_.union(newSegmentsLink,$rootScope.igdocument.profile.segmentLibrary.children);
-            SegmentService.findByIds(usedSegsId).then(function(segments) {
-            for (var j = 0; j < segments.length; j++) {
-              if (!$rootScope.segmentsMap[segments[j].id]) {
-                $rootScope.fillMaps(segments[j]);
-                $rootScope.segmentsMap[segments[j].id] = segments[j];
-                $rootScope.segments.push(segments[j]);
-              }
-            }
-            var usedDtId = _.map($rootScope.usedDtLink, function(num, key) {
-              return num.id;
-            });
-            DatatypeService.get(usedDtId).then(function(datatypes) {
-              for (var j = 0; j < datatypes.length; j++) {
-
-                $rootScope.fillMaps(datatypes[j]);
-
-              }
-              var usedDtId1 = _.map($rootScope.usedDtLink, function(num, key) {
-                return num.id;
-              });
-              var newDatatypesLink = _.difference($rootScope.usedDtLink, $rootScope.igdocument.profile.datatypeLibrary.children);
-
-
-              DatatypeLibrarySvc.addChildren($rootScope.igdocument.profile.datatypeLibrary.id, newDatatypesLink).then(function() {
-                  $rootScope.igdocument.profile.datatypeLibrary.children=_.union($rootScope.igdocument.profile.datatypeLibrary.children,newDatatypesLink);
-                  DatatypeService.get(usedDtId1).then(function(datatypes) {
-                  for (var j = 0; j < datatypes.length; j++) {
-                    if (!$rootScope.datatypesMap[datatypes[j].id]) {
-                      $rootScope.datatypesMap[datatypes[j].id] = datatypes[j];
-                      $rootScope.datatypes.push(datatypes[j]);
-                      console.log($rootScope.datatypesMap[datatypes[j].id]);
-                    }
-                  }
-
-                  var usedVsId = _.map($rootScope.usedVsLink, function(num, key) {
-                    return num.id;
-                  });
-                  var newTablesLink = _.difference($rootScope.usedVsLink, $rootScope.igdocument.profile.tableLibrary.children);
-                  TableLibrarySvc.addChildren($rootScope.igdocument.profile.tableLibrary.id, newTablesLink).then(function() {
-                      $rootScope.igdocument.profile.tableLibrary.children=_.union( $rootScope.igdocument.profile.tableLibrary.children,newTablesLink);
-                    TableService.get(usedVsId).then(function(tables) {
-                      for (var j = 0; j < tables.length; j++) {
-                        if (!$rootScope.tablesMap[tables[j].id]) {
-                          $rootScope.tablesMap[tables[j].id] = tables[j];
-                          $rootScope.tables.push(tables[j]);
-                        }
-                      }
-                      for (var i = 0; i < result.length; i++) {
-                        console.log("=+++++result");
-                        console.log(result);
-                        $rootScope.processMessageTree(result[i]);
-
-                        $mdDialog.hide($rootScope.igdocument);
-                      }
-                    });
-                  });
-                });
-              });
-            });
           });
-        });
-      }, function(response) {
-        $rootScope.msg().text = response.data;
-        $rootScope.msg().type = "danger";
-        $rootScope.msg().show = true;
-        $scope.okDisabled = false;
-      });
-      $scope.okDisabled = true;
-      var iprw = {
-        "igdocument": $rootScope.igdocument,
-        "msgEvts": msgEvts,
-        "timeout": 60000
-      };
-      // $http.post('api/igdocuments/updateIntegrationProfile', iprw)
-      //     .then(
-      //     function (response) {
-      //         var igdocument = angular
-      //             .fromJson(response.data);
-      //         $mdDialog.hide(igdocument);
-      //     }, function (response) {
-      //         $rootScope.msg().text = response.data;
-      //         $rootScope.msg().type = "danger";
-      //         $rootScope.msg().show = true;
-      //         $scope.okDisabled = false;
-      //     });
-    };
+          angular.forEach(result.tables, function (table) {
+              $rootScope.tables.push(table);
+              $rootScope.tablesMap[table.id]=table;
+              $rootScope.igdocument.profile.tableLibrary.children.push({name: table.bindingIdentifier, id : table.id});
 
-    if ($scope.hl7Version != null) {
-      $scope.loadIGDocumentsByVersion($scope.hl7Version);
-    }
+          });
+
+          angular.forEach(result.segments, function (segment) {
+              $rootScope.segments.push(segment);
+              $rootScope.segmentsMap[segment.id]=segment;
+              $rootScope.igdocument.profile.segmentLibrary.children.push({name: segment.bindingIdentifier, id : segment.id});
+
+          });
+
+          angular.forEach(result.msgsToadd, function (msg) {
+
+              $rootScope.igdocument.profile.messages.children.push(msg);
+              $rootScope.messagesMap[msg.id]=msg;
+          });
+
+          $mdDialog.hide($rootScope.igdocument);
+          $rootScope.msg().type = "danger";
+          $rootScope.msg().show = true;
+          $scope.okDisabled = false;
+
+      },function (error) {
+              $scope.okDisabled = true;
+
+          }
+      );
+    };
 
     $scope.cancel = function() {
-      console.log("Hiding ")
-      $mdDialog.hide();
+        $mdDialog.hide();
     };
+
+
 
 
 
