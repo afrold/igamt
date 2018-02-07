@@ -6,8 +6,7 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $mdDialog, dat
   $scope.datatypes = datatypes;
 
   $scope.newField = {
-    comment: "",
-    confLength: "",
+    confLength: "NA",
     datatype: {
       ext: null,
       id: "",
@@ -15,7 +14,7 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $mdDialog, dat
       name: ""
     },
     hide: false,
-    added: "yes",
+    added: true,
     id: "",
     itemNo: "",
     max: "",
@@ -24,17 +23,9 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $mdDialog, dat
     minLength: "",
     name: "",
     position: "",
-    table: {
-      bindingIdentifier: "",
-      bindingLocation: null,
-      bindingStrength: null,
-      id: ""
-    },
     text: "",
     type: "field",
     usage: ""
-
-
   };
   $scope.datatypes = datatypes;
   $scope.querySearch=function (query) {
@@ -67,28 +58,7 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $mdDialog, dat
       $scope.newField.datatype.name = $scope.DT.name;
     }
   }, true);
-  $scope.loadVS = function($query) {
-
-
-    return valueSets.filter(function(table) {
-      return table.bindingIdentifier.toLowerCase().indexOf($query.toLowerCase()) != -1;
-    });
-
-  };
   $scope.tableList = [];
-  $scope.tagAdded = function(tag) {
-    $scope.vsChanged = true;
-    // $scope.tableList.push({
-    //     id: tag.id,
-    //     bindingIdentifier: tag.bindingIdentifier,
-    //     bindingLocation: null,
-    //     bindingStrength: null
-    // });
-
-
-    //$scope.log.push('Added: ' + tag.text);
-  };
-
   $scope.tagRemoved = function(tag) {
     $scope.vsChanged = true;
 
@@ -182,35 +152,20 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $mdDialog, dat
 
   $scope.addField = function() {
     blockUI.start();
-    if ($rootScope.segment.fields.length !== 0) {
-      $scope.newField.position = $rootScope.segment.fields[$rootScope.segment.fields.length - 1].position + 1;
 
-    } else {
-      $scope.newField.position = 1
-    }
+    $scope.newField.position = $rootScope.segment.fields.length+1;
+
+    console.log($scope.newField);
     $scope.newField.id = new ObjectId().toString();
-    // if($rootScope.segment.valueSetBindings){
-    //     angular.forEach($scope.tableList, function(binding){
-    //         $rootScope.segment.valueSetBindings.push({tableId:binding.id, usage:$scope.newField.usage,location: $scope.newField.position,type:"valueset"});
-    //
-    //     })
-    // }
-    //$scope.newField.tables = $scope.tableList;
-
-    if ($rootScope.segment != null) {
-      if (!$rootScope.segment.fields || $rootScope.segment.fields === null)
-        $rootScope.segment.fields = [];
-      $rootScope.segment.fields.push($scope.newField);
-      MessageService.updatePosition(segment.fields, $scope.newField.position - 1, $scope.position - 1);
-      console.log($rootScope.segment);
-      $rootScope.processElement($rootScope.segment);
+    $rootScope.segment.fields.push($scope.newField);
+    $rootScope.recordChanged();
+    $rootScope.processElement($rootScope.segment);
 
 
       if ($scope.segmentsParams) {
         $scope.segmentsParams.refresh();
       }
 
-    }
     blockUI.stop();
     $mdDialog.hide();
 

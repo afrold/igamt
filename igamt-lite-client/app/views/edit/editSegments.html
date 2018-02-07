@@ -835,47 +835,67 @@
 </script>
 <script type="text/ng-template" id="SegmentFieldEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF)" ng-class="{ 'new': isChildNew(node), 'selected': isChildSelected(node)}">
-        <td ng-controller="FormRowCtrl">
-            <a ng-show="editableField!==node.id" ng-if="node.added==='yes'" ng-click="editField(node)" class="point">
-                <span><i class="fa fa-pencil fa-fw"></i></span>
-            </a>
-            <a ng-show="editableField!==node.id" ng-if="node.added==='yes'" ng-click="deleteField(node,segment)" class="point">
-                <span><i class="glyphicon glyphicon-trash"></i></span>
-            </a>
+        <td ng-controller="FormRowCtrl" class="col-fixed-name trunc-name">
+
+
+
+
             <ng-form name="{{formName}}" class="form-inline">
                 <span ng-show="hasError(node.id) && validationResult && isSegmentValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
                 <span ng-show="!hasError(node.id) && validationResult && isSegmentValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
                 <span class="label label-field label-icon">F</span>
-                <span ng-show="editableField!==node.id">
-                    <span ng-hide="isChildNew(node)"
-                      tooltip-html="getFieldNodeName(node)" tooltip-append-to-body="true"
-                      tooltip-class="constraints-tooltip" ng-bind-html="getFieldNodeName(node)" tooltip-trigger
-                      tooltip-animation="false" tooltip-placement="left"></span>
-                    <span ng-show="isChildNew(node)">{{node.position}}.
-                        <input
-                            class="form-control focus"
-                            autofocus
-                            style="width:65%"
-                            name="name"
-                            ng-change="recordDatatypeChange( 'field', 'edit',node.id, 'name', node.name)"
-                            ng-class="{ 'has-error has-feedback' : {{formName}}.name.$invalid}"
-                            ng-model="node.name" required/>
-                    </span>
+                <span>.{{node.position}}</span>
+                <span ng-if="node.added"><i class="glyphicon glyphicon-exclamation-sign" style="color: green"></i>
+                        <md-tooltip md-direction="right" >
+                            <span> This Field will be ignored by the validation since it is not a part of the original segment</span>
+                </md-tooltip>
                 </span>
-                <span ng-show="editableField===node.id">
-                    <select ng-model="position" ng-change="selectPos()" style="width:15%" class="form-control input-sm">
-                        <option ng-repeat="child in segment.fields track by $index" ng-selected="node.position===child.position">{{child.position}}</option>
-                    </select>
-                    <input style="width:55%" class="form-control" ng-model="fieldName" type="text"/>
+
+                <span>
+                    <md-tooltip md-direction="center">
+                <span> {{node.name}}</span>
+            </md-tooltip>
+                    {{node.name}}
+
                 </span>
-                <div align="center">
-                    <a ng-show="editableField===node.id && fieldName" ng-click="applyField(segment,node,fieldName,position)" class="point">
-                        <span><i class="glyphicon glyphicon-ok"></i></span>
+
+
+
+
+                <!--<span ng-show="editableField!==node.id">-->
+                    <!--<span ng-hide="isChildNew(node)"-->
+                      <!--tooltip-html="getFieldNodeName(node)" tooltip-append-to-body="true"-->
+                      <!--tooltip-class="constraints-tooltip" ng-bind-html="getFieldNodeName(node)" tooltip-trigger-->
+                      <!--tooltip-animation="false" tooltip-placement="left"></span>-->
+                    <!--<span ng-show="isChildNew(node)">-->
+                        <!--<input-->
+                            <!--class="form-control focus"-->
+                            <!--autofocus-->
+                            <!--style="width:65%"-->
+                            <!--name="name"-->
+                            <!--ng-change="recordDatatypeChange( 'field', 'edit',node.id, 'name', node.name)"-->
+                            <!--ng-class="{ 'has-error has-feedback' : {{formName}}.name.$invalid}"-->
+                            <!--ng-model="node.name" required/>-->
+                    <!--</span>-->
+                <!--</span>-->
+
+
+
+                <div align="right">
+                    <a ng-if="node.added" ng-click="editField(node,segment)" class="point">
+                        <span><i class="fa fa-pencil fa-fw"></i></span>
+                        <md-tooltip md-direction="right" >
+                            <span> Edit Name </span>
+                        </md-tooltip>
                     </a>
-                    <a ng-show="editableField===node.id" ng-click="backField()" class="point">
-                        <span><i class="glyphicon glyphicon-remove"></i></span>
+                    <a ng-click="deleteField(node,segment)" class="point" ng-if="node.added&&node.position==segment.fields.length">
+                        <span style="color: red"><i class="glyphicon glyphicon-trash"></i></span>
+                        <md-tooltip md-direction="right" >
+                            <span> Delete Field </span>
+                        </md-tooltip>
                     </a>
                 </div>
+
             </ng-form>
         </td>
         <td ng-class="hasUsageError(node.id)" data-toggle="tooltip" title="{{displayMessageError(node.id,'USAGE')}}">
@@ -1593,16 +1613,6 @@
                         <div ng-message="required">Name is required.</div>
                     </div>
                 </md-input-container>
-                            <label class="input-left igamt-label">Position *</label>
-
-                            <md-input-container ng-class="{'igl-has-error has-feedback': !addFieldForm.inputPosition.$valid}" class="md-block igamt-input-block" flex-gt-sm>
-
-                        <md-select ng-model="position" name="inputPosition" id="inputPosition" ng-change="selectPos()" required>
-                            <md-option ng-repeat="field in segment.fields track by $index" ng-value="{{::field.position}}"> {{::field.position}}</md-option>
-                            <md-option ng-value="{{::segment.fields.length+1}}">{{::segment.fields.length+1}}</md-option>
-                        </md-select>
-
-                </md-input-container>
                             <label class="input-left igamt-label">Usage*</label>
 
                             <md-input-container ng-class="{'igl-has-error has-feedback': !addFieldForm.inputUsage.$valid}" class="md-block igamt-input-block" flex-gt-sm>
@@ -1610,11 +1620,12 @@
                             <md-option ng-repeat="usage in config.usages track by $index" ng-value="usage">{{usage}}</md-option>
                         </md-select>
 
-                </md-input-container>
+                          </md-input-container>
+
                             <label class="input-left igamt-label">Cardinality*</label>
 
                             <div layout="row" layout-align="start start">
-                             <md-input-container flex  ng-class="{'igl-has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }" class="md-block igamt-input-block" flex-gt-sm>
+                                <md-input-container flex  ng-class="{'igl-has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }" class="md-block igamt-input-block" flex-gt-sm>
                             <input name="cardMin"  id="cardMin"  ng-pattern="/^\d+$/" ng-model="newField.min" ng-disabled="disableMin" required>
 
                             </md-input-container>
@@ -1622,11 +1633,27 @@
                                      <input  type="text"  name="cardMax" id="cardMax"  ng-pattern="/^\d+$|^\*?$/" ng-model="newField.max" ng-disabled="disableMax" required>
                             </md-input-container>
                             </div>
+                            <label class="input-left igamt-label">Length*</label>
+
+                            <div layout="row" layout-align="start start">
+                                <md-input-container flex flex-gt-sm>
+                                    <input name="minLength"
+                                           ng-pattern="/^\d+$/"
+                                           ng-model="newField.minLength" required ng-minlength="1">
+                                </md-input-container>
+                                <md-input-container flex flex-gt-sm>
+                                    <input type="text"
+                                           name="maxLength"
+                                           ng-pattern="/^\d+$|^\*?$/"
+                                           ng-model="newField.maxLength" required>
+                                </md-input-container>
+                            </div>
 
                             <label class="input-left igamt-label"> Data Type </label>
                             <md-content layout-padding>
-                                <md-autocomplete
+                                <md-autocomplete name="datatype"
                             md-selected-item="DT"
+                            required
 
                             md-search-text="searchText"
                             md-items="item in querySearch(searchText)"
@@ -1644,29 +1671,6 @@
 
                             </md-content>
 
-
-                <!--<md-input-container class="md-block" flex-gt-sm>-->
-                    <!--<span class="input-left" style="margin:auto; font-weight: bold">Value Sets</span>-->
-                    <!--<div class="md-padding autocomplete">-->
-                        <!--<md-contact-chips style="width: 100%"-->
-                                          <!--ng-model="tableList"-->
-                                          <!--md-contacts="loadVS($query)"-->
-                                          <!--md-contact-name="bindingIdentifier"-->
-                                          <!--md-require-match="true"-->
-                                          <!--md-highlight-flags="i"-->
-                                          <!--placeholder="Search By Binding Identifier">-->
-                        <!--</md-contact-chips>-->
-                    <!--</div>-->
-
-
-                <!--</md-input-container>-->
-                <!--<md-input-container class="md-block" flex-gt-sm>-->
-                    <!--<label class="input-left">Comment</label>-->
-                    <!--<input ng-model="newField.comment">-->
-                        <!--</input>-->
-                <!--</md-input-container>-->
-
-                        <!--</md-content>-->
                     </div>
                 </div>
             </md-dialog-content>
@@ -1704,6 +1708,41 @@
                 <md-button class="md-primary md-raised btn-danger" ng-click="delete()"><span><i
                         class="fa fa-check">
                 &nbsp; </i>Delete </span>
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
+
+<script type="text/ng-template" id="EditField.html">
+    <md-dialog aria-label="Delete Field">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Change Field name</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+
+                <div class="md-dialog-content" >
+                    <label class="input-left igamt-label"> New Name</label>
+
+                    <md-input-container style="min-width: 400px" >
+                        <input ng-model="name">
+                    </md-input-container>
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+
+                <md-button class="md-primary md-raised btn-danger" ng-click="ok()"><span><i
+                        class="fa fa-check">
+                &nbsp; </i>Confirm </span>
                 </md-button>
             </md-dialog-actions>
         </form>
