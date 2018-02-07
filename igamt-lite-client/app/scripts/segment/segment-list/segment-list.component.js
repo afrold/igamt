@@ -482,8 +482,26 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
   };
   $scope.editableField = '';
   $scope.editField = function(field) {
-    $scope.editableField = field.id;
-    $scope.fieldName = field.name;
+
+
+
+      var modalInstance = $mdDialog.show({
+          templateUrl: 'EditField.html',
+          controller: 'EditFieldCtrl',
+          locals: {
+              name: field.name
+          },
+      });
+      modalInstance.then(function(result) {
+          if(result&&result!=='cancel'){
+              $scope.setDirty();
+              field.name=result;
+
+              if ($scope.segmentsParams)
+                  $scope.segmentsParams.refresh();
+          }
+
+      });
 
   };
 
@@ -578,6 +596,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     blockUI.stop();
 
   };
+
 
 
 
@@ -1750,4 +1769,20 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
       return 'empty';
     }
   };
+});
+
+angular.module('igl').controller('EditFieldCtrl', function($scope, $mdDialog,name, $rootScope, blockUI) {
+    $scope.loading = false;
+    $scope.name=name;
+
+    $scope.ok = function() {
+        $mdDialog.hide($scope.name);
+    };
+
+
+    $scope.cancel = function() {
+        $mdDialog.hide('cancel');
+    };
+
+
 });

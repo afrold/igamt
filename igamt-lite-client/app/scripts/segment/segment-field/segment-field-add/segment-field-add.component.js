@@ -26,8 +26,6 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $mdDialog, dat
     text: "",
     type: "field",
     usage: ""
-
-
   };
   $scope.datatypes = datatypes;
   $scope.querySearch=function (query) {
@@ -60,28 +58,7 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $mdDialog, dat
       $scope.newField.datatype.name = $scope.DT.name;
     }
   }, true);
-  $scope.loadVS = function($query) {
-
-
-    return valueSets.filter(function(table) {
-      return table.bindingIdentifier.toLowerCase().indexOf($query.toLowerCase()) != -1;
-    });
-
-  };
   $scope.tableList = [];
-  $scope.tagAdded = function(tag) {
-    $scope.vsChanged = true;
-    // $scope.tableList.push({
-    //     id: tag.id,
-    //     bindingIdentifier: tag.bindingIdentifier,
-    //     bindingLocation: null,
-    //     bindingStrength: null
-    // });
-
-
-    //$scope.log.push('Added: ' + tag.text);
-  };
-
   $scope.tagRemoved = function(tag) {
     $scope.vsChanged = true;
 
@@ -177,6 +154,8 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $mdDialog, dat
     blockUI.start();
 
     $scope.newField.position = $rootScope.segment.fields.length+1;
+
+    console.log($scope.newField);
     $scope.newField.id = new ObjectId().toString();
     $rootScope.segment.fields.push($scope.newField);
     $rootScope.recordChanged();
