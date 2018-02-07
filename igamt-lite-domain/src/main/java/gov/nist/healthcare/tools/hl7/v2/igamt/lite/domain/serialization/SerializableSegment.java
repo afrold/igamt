@@ -53,7 +53,7 @@ public class SerializableSegment extends SerializableSection {
   private Boolean showConfLength;
   private Map<String, Datatype> dynamicMappingDatatypeMap;
   private Boolean showInnerLinks;
-  private Boolean duplicateOBXDataTypeWhenFlavorNull;
+  private Boolean greyOutOBX2FlavorColumn;
   private String host;
   CoConstraintExportMode coConstraintExportMode;
 
@@ -63,7 +63,7 @@ public class SerializableSegment extends SerializableSection {
       Map<Field, Datatype> fieldDatatypeMap,
       Map<Field, List<ValueSetOrSingleCodeBinding>> fieldValueSetBindingsMap, List<Table> tables,
       Map<String, Table> coConstraintValueTableMap, Map<String, Datatype> dynamicMappingDatatypeMap,
-      Boolean showConfLength, Boolean showInnerLinks, Boolean duplicateOBXDataTypeWhenFlavorNull, String host,
+      Boolean showConfLength, Boolean showInnerLinks, Boolean greyOutOBX2FlavorColumn, String host,
       Map<String, Datatype> coConstraintDatatypeMap, CoConstraintExportMode coConstraintExportMode) {
     super(id, prefix, position, headerLevel, title);
     this.segment = segment;
@@ -81,7 +81,7 @@ public class SerializableSegment extends SerializableSection {
     this.dynamicMappingDatatypeMap = dynamicMappingDatatypeMap;
     this.showConfLength = showConfLength;
     this.showInnerLinks = showInnerLinks;
-    this.duplicateOBXDataTypeWhenFlavorNull = duplicateOBXDataTypeWhenFlavorNull;
+    this.greyOutOBX2FlavorColumn = greyOutOBX2FlavorColumn;
     this.host = host;
     this.coConstraintDatatypeMap = coConstraintDatatypeMap;
     this.coConstraintExportMode= coConstraintExportMode;
@@ -415,24 +415,29 @@ public class SerializableSegment extends SerializableSection {
                           .get(i);
                   td = new Element("td");
                   Element td2 = new Element("td");
-                  if (coConstraintTHENColumnData.getValueData() == null
-                      || coConstraintTHENColumnData.getValueData().getValue() == null || coConstraintTHENColumnData.getValueData().getValue().isEmpty()) {
+                  String valueData = null;
+                  if (coConstraintTHENColumnData.getValueData() != null
+                          && coConstraintTHENColumnData.getValueData().getValue() != null && !coConstraintTHENColumnData.getValueData().getValue().isEmpty()) {
+                	  valueData = coConstraintTHENColumnData.getValueData().getValue();
+                  }
+                  if (valueData == null) {
                     td.addAttribute(new Attribute("class", "greyCell"));
                   } else {
                     td.appendChild(coConstraintTHENColumnData.getValueData().getValue());
                   }
-                  if (coConstraintTHENColumnData.getDatatypeId() == null) {
-                    if (this.duplicateOBXDataTypeWhenFlavorNull
-                        && coConstraintTHENColumnData.getValueData() != null
-                        && coConstraintTHENColumnData.getValueData().getValue() != null && !coConstraintTHENColumnData.getValueData().getValue().isEmpty()) {
-                      td2.appendChild(coConstraintTHENColumnData.getValueData().getValue());
-                    } else {
-                      td2.addAttribute(new Attribute("class", "greyCell"));
-                    }
-                  } else {
-                    td2.appendChild(coConstraintDatatypeMap.get(coConstraintTHENColumnData.getDatatypeId())
-                            .getLabel());
-                  }
+                  Datatype flavorDatatype = coConstraintDatatypeMap.get(coConstraintTHENColumnData.getDatatypeId());
+                  if(flavorDatatype != null){
+	                  String flavorLabel = flavorDatatype.getLabel();
+	                  if (valueData != null && flavorLabel.equals(valueData)) {
+	                    if (this.greyOutOBX2FlavorColumn) {
+	                    	td2.addAttribute(new Attribute("class", "greyCell"));
+	                    } else {
+	                    	td2.appendChild(flavorLabel);
+	                    }
+	                  } else {
+	                    td2.appendChild(flavorLabel);
+	                  }
+              	  }
                   tr.appendChild(td);
                   tr.appendChild(td2);
                 } else {
@@ -696,22 +701,10 @@ public class SerializableSegment extends SerializableSection {
 		                	  line.children.add(row1);
 		                	  rowsPan++;
 		                  }
-		                  if (coConstraintTHENColumnData.getDatatypeId() == null) {
-		                    if (this.duplicateOBXDataTypeWhenFlavorNull
-		                        && coConstraintTHENColumnData.getValueData() != null
-		                        && coConstraintTHENColumnData.getValueData().getValue() != null && !coConstraintTHENColumnData.getValueData().getValue().isEmpty()) {
-		                      row2.setValue(coConstraintTHENColumnData.getValueData().getValue());
-		                      rowsPan++;
-		                      line.children.add(row2);
-		                    } else {
-		                      //td2.addAttribute(new Attribute("class", "greyCell"));
-		                    }
-		                  } else {
-		                	  row2.setValue(coConstraintDatatypeMap.get(coConstraintTHENColumnData.getDatatypeId())
-		                            .getLabel());
-		                	  rowsPan++;
-		                      line.children.add(row2);
-		                      }
+	                	  row2.setValue(coConstraintDatatypeMap.get(coConstraintTHENColumnData.getDatatypeId())
+	                            .getLabel());
+	                	  rowsPan++;
+	                      line.children.add(row2);
 	        	   	}else{
 	        	   		CoConstraintRow row = new CoConstraintRow();
 	        	   		row.setType("then");
