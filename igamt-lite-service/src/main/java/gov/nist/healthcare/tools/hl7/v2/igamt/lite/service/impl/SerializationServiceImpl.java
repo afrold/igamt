@@ -391,7 +391,7 @@ private SerializableSection createDatatypeLibrarySummary(DatatypeLibrary datatyp
       UsageConfig fieldsUsageConfig = exportConfig.getFieldsExport();
       SerializableSection segmentsSection =
           this.serializeSegments(profile, fieldsUsageConfig, serializationLayout, currentPosition,
-              exportConfig.isDuplicateOBXDataTypeWhenFlavorNull());
+              exportConfig.isGreyOutOBX2FlavorColumn());
       if (exportConfig.isIncludeSegmentTable() && !serializationLayout.equals(SerializationLayout.PROFILE) && segmentsSection != null) {
         profileSection.addSection(segmentsSection);
         currentPosition++;
