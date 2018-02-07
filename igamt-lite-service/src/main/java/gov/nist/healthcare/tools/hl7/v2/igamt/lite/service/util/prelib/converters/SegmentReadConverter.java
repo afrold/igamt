@@ -168,7 +168,7 @@ public class SegmentReadConverter extends AbstractReadConverter<DBObject, Segmen
     f.setMaxLength((String) source.get(MAX_LENGTH));
     f.setConfLength(getConfLength(source));
     f.setPosition((Integer) source.get(POSITION));
-    f.setTables((tableLinks((BasicDBList) source.get(TABLES))));
+//    f.setTables((tableLinks((BasicDBList) source.get(TABLES))));
     f.setUsage(Usage.valueOf((String) source.get(USAGE)));
     f.setItemNo((String) source.get(ITEM_NO));
     f.setMin((Integer) source.get(MIN));

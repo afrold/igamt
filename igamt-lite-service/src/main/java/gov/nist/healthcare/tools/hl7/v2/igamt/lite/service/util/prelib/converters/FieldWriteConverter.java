@@ -38,7 +38,7 @@ public class FieldWriteConverter implements Converter<Field, DBObject> {
     dbo.put("minLength", source.getMinLength());
     dbo.put("maxLength", source.getMaxLength());
     dbo.put("confLength", source.getConfLength());
-    dbo.put("tables", source.getTables());
+//    dbo.put("tables", source.getTables());
     dbo.put("position", source.getPosition());
     dbo.put("comment", source.getComment());
     dbo.put("text", source.getText());
