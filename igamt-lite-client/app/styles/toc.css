@@ -131,3 +131,14 @@ span {
 	cursor: pointer;
 	font-weight: normal;
 }
+
+.angular-ui-tree-handle {
+	margin-left: 0px;
+	cursor: move;
+	text-decoration: none;
+	text-decoration-color: -moz-use-text-color;
+	text-decoration-line: none;
+	text-decoration-style: solid;
+	font-weight: 700;
+	white-space: nowrap !important;
+}
