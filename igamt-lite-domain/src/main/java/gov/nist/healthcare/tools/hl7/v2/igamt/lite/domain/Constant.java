@@ -58,6 +58,9 @@ public class Constant {
   public final static String Internal = "Internal-IGAMT Manager";
 
   public final static String External = "External-Exteranlly Managed";
+  public final static String YES="yes";
+  public final static String NO="No";
+
 
 
   public final static SimpleDateFormat mdy = new SimpleDateFormat("MMMM dd, yyyy");

@@ -196,20 +196,19 @@
                                                             Component
                                                         </div>
                                                         <div flex class="pull-right">
-                                                                <button ng-click="addSegmentModal(message)" class="btn btn-raised btn-sm menu-table menu-table-add pull-right" title="Add Segment">
-                                                                    <i class="fa fa-plus fa-fw"></i> Add
+                                                                <button ng-click="addSegmentModal(message)" class="btn btn-raised btn-sm menu-table menu-table-add pull-right ">
+                                                                    <i class="fa fa-plus fa-fw"></i> ADD
                                                                 </button>
-                                                                <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
                                                                 <button ng-if="message.scope!=='HL7STANDARD'" title="Verify Message" type="button" ng-click="validateMessage()" class="btn btn-raised btn-sm pull-right menu-table menu-table-verify"><i class="fa fa-check fa-fw"></i> Verify</button>
 
 
-
-                                                                <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
-                                                            <md-select class="pull-right"  ng-model="viewSettings.visibleColumns"  md-selected-text="viewSettings.getPlaceHolder()" multiple ng-model-options="{trackBy: '$value.id'}" no-dirty-check>
+                                                            <span class="pull-right" flex layout="row">
+                                                            <md-select  flex ng-model="viewSettings.visibleColumns"  md-selected-text="viewSettings.getPlaceHolder()" multiple ng-model-options="{trackBy: '$value.id'}" no-dirty-check>
                                                                 <md-optgroup label="Columns">
                                                                     <md-option ng-repeat="opt in  viewSettings.columnOptions track by $index" ng-value="opt">{{opt.label}}</md-option>
                                                                 </md-optgroup>
                                                             </md-select>
+                                                            </span>
 
                                                         </div>
 
@@ -237,7 +236,7 @@
                                                     <tr class="tbl-header" style="">
                                                         <th class="col-fixed-name">Name</th>
                                                         <th class="col-fixed-usage" style="text-align:center">Usage
-                                                            <button type="button" ng-show="(message.scope === 'USER') && !viewSettings.tableReadonly && (message.children.length>0)" class="btn btn-raised btn-info btn-xs" ng-click="OtoX(message)">O to X</button>
+                                                            <button type="button" ng-show="(message.scope === 'USER') && !viewSettings.tableReadonly && (message.children.length>0)" class="btn btn-raised btn-default btn-xs" ng-click="OtoX(message)">O to X</button>
                                                         </th>
                                                         <th class="col-fixed-cardinality" style="text-align:center">Cardinality</th>
                                                         <th class="col-fixed-length" style="text-align:center" ng-show="viewSettings.isVisibleColumn('length')">Length</th>
@@ -368,41 +367,43 @@
 <script type="text/ng-template" id="MessageSegmentRefEditTree.html">
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
         <td>
-            <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-            <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
-            <a ng-show="editableSeg!==node.obj.id" ng-click="editSgmt(node,message)" class="point">
-                <span><i class="fa fa-pencil fa-fw"></i></span>
-            </a>
-            <a ng-show="editableSeg!==node.obj.id" ng-click="deleteSeg(node)" class="point">
-                <span><i class="fa fa-trash fa-fw"></i></span>
-            </a>
+            <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()" && node.obj.added !=='yes'"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()&& node.obj.added !=='yes'"><i class="fa fa-check-circle" style="color:green;"></i></span>
+            <span ng-show="validationResult && isMessageValidated()&& node.obj.added =='yes'"><i class="glyphicon glyphicon-exclamation-sign" style="color: blue"></i>
+                    <md-tooltip md-direction="right" >
+                    <span> This Segment is ignored by the validation since it is not a part of the original message</span>
+                    </md-tooltip>
+            </span>
+
             <ng-form class="form-inline">
-                <span id="segEditTree" class="label label-segment label-icon">S</span>
-                <a ng-show="editableSeg!==node.obj.id" ng-click="redirectSeg(node.obj.ref)" class="point">{{getSegmentRefNodeName(node.obj)}}</a>
-                <!--<select ng-show="editableSeg===node.obj.id" ng-model="position" ng-change="selectPos(node,position)" style="width:15%" class="form-control input-sm">
-                    <option ng-repeat="child in $root.segParent.children"  ng-selected="node.obj.position===child.position"> {{child.position}}</option>
-                </select>-->
-                <select ng-show="editableSeg===node.obj.id" ng-model="segmentRef" ng-change="selectSeg(node,segmentRef)" style="width:40%" class="form-control input-sm">
-                    <option ng-repeat="segmentRef in tmpResults track by $index" value="{{segmentRef}}"  ng-selected="node.obj.ref.id===segmentRef.id"> {{getSegmentLabel(segmentRef)}} {{::segmentRef.hl7Version}}</option>
-                </select>
 
+                <a ng-show="editableSeg!==node.obj.id" ng-click="redirectSeg(node.obj.ref)" class="point">
+                    <span id="segEditTree" class="label label-segment label-icon">S</span>{{node.position}}. {{getSegmentLabel(segmentsMap[node.obj.ref.id])}}:{{segmentsMap[node.obj.ref.id].description}}
+                </a>
+                <span ng-show="editableSeg!==node.obj.id" ng-click="editSgmt(node,message)" class="point">
+                    <span ><i class="fa fa-pencil fa-fw"></i></span>
+                </span>
 
-
-
-                <!--<md-select ng-show="editableSeg===node.obj.id" ng-model="position" ng-change="selectPos(node,position)" style="width:15%"">-->
-                    <!--<md-option ng-repeat="child in $root.segParent.children"  ng-selected="node.obj.position===child.position">-->
-                      <!--{{child.position}}-->
-                    <!--</md-option>-->
-                <!--</md-select>-->
-                <!--<md-select ng-show="editableSeg===node.obj.id" ng-model="segmentRef" ng-change="selectSeg(node,segmentRef)" style="width:40%"">-->
-                    <!--<md-option ng-value="segmentRef" ng-repeat="segmentRef in tmpResults">-->
-                        <!--<display-label of="segmentsMap[segmentRef.id]" desc="false"></display-label>-->
-                    <!--</md-option>-->
-                <!--</md-select>-->
+                <span ng-if="node.obj.added=='yes'&&(!validationResult || !isMessageValidated())"><i class="glyphicon glyphicon-exclamation-sign" style="color: blue">
+                    <md-tooltip>
+                        <span> This Segment will be ignored by the validation since it is not a part of the original message </span>
+                    </md-tooltip>
+                </i></span>
+                <span ng-show="editableSeg!==node.obj.id&& node.obj.added=='yes'" ng-click="deleteSeg(node)" class="point">
+                    <span style="color: red;"><i class="fa fa-trash fa-fw"></i></span>
+                </span>
+                <md-select ng-show="editableSeg===node.obj.id" ng-model="segmentRef" ng-change="selectSeg(node,segmentRef)" placeholder="Select Segment Flavor">
+                    <md-option ng-repeat="segmentRef in tmpResults track by $index" ng-value="segmentRef">  <display-label of="segmentsMap[segmentRef.id]" desc="true"></display-label></md-option>
+                </md-select>
 
                 <div align="center">
                     <a ng-show="editableSeg===node.obj.id" ng-click="backSeg()">
-                        <span><i align="center" class="glyphicon glyphicon-remove"></i></span>
+                        <span><i align="center" class="glyphicon glyphicon-remove"></i>
+                              <md-tooltip md-direction="right" >
+                                <span> cancel</span>
+                                </md-tooltip>
+
+                        </span>
                     </a>
                 </div>
             </ng-form>
@@ -545,12 +546,9 @@
         <td context-menu="segOption">
             <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
             <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
-            <a ng-show="editableGrp!==node.obj.id" ng-click="editGrp(node,message)" class="point">
-                <span><i class="fa fa-pencil fa-fw"></i></span>
-            </a>
-            <a ng-show="editableGrp!==node.obj.id" ng-click="deleteSeg(node)" class="point">
-                <span><i class="fa fa-trash fa-fw"></i></span>
-            </a>
+            <!--<a ng-show="editableGrp!==node.obj.id" ng-click="editGrp(node,message)" class="point">-->
+                <!--<span><i class="fa fa-pencil fa-fw"></i></span>-->
+            <!--</a>-->
             <ng-form class="form-inline">
                 <span class="label label-success label-icon">G</span>
                 <span ng-if="editableGrp!==node.obj.id" context-menu="segOption" ng-bind="getGroupNodeName(node.obj)" />

@@ -29,7 +29,7 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, s
   };
 
   $scope.newSegment = {
-      added:true,
+      added:"yes",
       accountId: null,
       comment: "",
       conformanceStatements: [],

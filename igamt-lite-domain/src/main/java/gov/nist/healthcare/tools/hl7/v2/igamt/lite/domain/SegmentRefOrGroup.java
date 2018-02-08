@@ -31,7 +31,7 @@ public abstract class SegmentRefOrGroup extends DataModelWithConstraints impleme
   @Deprecated
   protected String comment = "";
   
-  private boolean added=false;
+  private String added= Constant.NO;
 
   public Usage getUsage() {
     return usage;
@@ -88,11 +88,12 @@ public abstract class SegmentRefOrGroup extends DataModelWithConstraints impleme
     return this.getPosition() - o.getPosition();
   }
 
-public boolean isAdded() {
+public String getAdded() {
 	return added;
 }
 
-public void setAdded(boolean added) {
+public void setAdded(String added) {
 	this.added = added;
 }
+
 }

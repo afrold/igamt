@@ -2938,15 +2938,9 @@ md-ink-bar{
 .menu-table{
     width: 68px !important;
     min-width: 90px !important;
-    padding: 0px !important;
     height: 20px !important;
     min-height: 17px !important;
-    font-size: inherit !important;
-    padding-top: initial !important;
     line-height: inherit;
-    color: white;
-    text-transform: initial;
-
 }
 
 .menu-table-display{

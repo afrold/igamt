@@ -184,13 +184,11 @@
                                                         </div>
                                                         <div flex class="pull-right">
 
-                                                                <button ng-click="addFieldModal(segment)" class="btn btn-sm btn-raised menu-table menu-table-add pull-right" ng-if="segment.scope=='USER'">
-                                                                    <i class="fa fa-plus fa-fw"></i> ADD
-                                                                </button>
+                                                            <button ng-click="addFieldModal(segment)" class="btn btn-sm btn-raised menu-table btn-default menu-table-add pull-right" ng-if="segment.scope=='USER'">
+                                                                <i class="fa fa-plus fa-fw"></i> Add
+                                                            </button>
                                                             <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
-
-
-                                                            <button ng-if="segment.scope!=='HL7STANDARD'" class="pull-right btn btn-sm btn-raised menu-table menu-table-verify" title="Validate Segment" type="button"
+                                                            <button ng-if="segment.scope!=='HL7STANDARD'" class="pull-right btn btn-sm btn default btn-raised menu-table menu-table-verify" title="Validate Segment" type="button"
                                                                     ng-click="validateSegment()">
                                                                 <i class="fa fa-check fa-fw"></i> Verify
                                                             </button>
@@ -222,7 +220,7 @@
                                                             <tr class="tbl-header" style="">
                                                                 <th class="col-fixed-name">Name</th>
                                                                 <th class="col-fixed-usage">Usage
-                                                                    <button type="button" ng-show="(segment.scope === 'USER') && !viewSettings.tableReadonly && (segment.fields.length>0)" class="btn btn-raised btn-info btn-xs" ng-click="OtoX(segment)">O to X
+                                                                    <button type="button" ng-show="(segment.scope === 'USER') && !viewSettings.tableReadonly && (segment.fields.length>0)" class="btn btn-raised btn-xs" ng-click="OtoX(segment)">O to X
                                                                     </button>
                                                                 </th>
                                                                 <th  style="text-align:left" class="col-fixed-cardinality">Cardinality
@@ -835,66 +833,45 @@
 </script>
 <script type="text/ng-template" id="SegmentFieldEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF)" ng-class="{ 'new': isChildNew(node), 'selected': isChildSelected(node)}">
-        <td ng-controller="FormRowCtrl" class="col-fixed-name trunc-name">
+        <td ng-controller="FormRowCtrl">
 
 
 
 
             <ng-form name="{{formName}}" class="form-inline">
-                <span ng-show="hasError(node.id) && validationResult && isSegmentValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-                <span ng-show="!hasError(node.id) && validationResult && isSegmentValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
-                <span class="label label-field label-icon">F</span>
-                <span>.{{node.position}}</span>
-                <span ng-if="node.added"><i class="glyphicon glyphicon-exclamation-sign" style="color: green"></i>
+                <span ng-show="hasError(node.id) && validationResult && isSegmentValidated()&&node.added!=='yes'"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+                <span ng-show="!hasError(node.id) && validationResult && isSegmentValidated()&&node.added!=='yes'"><i class="fa fa-check-circle" style="color:green;"></i></span>
+                <span ng-if="node.added=='yes'&& validationResult && isSegmentValidated()"><i class="glyphicon glyphicon-exclamation-sign" style="color: blue"></i>
                         <md-tooltip md-direction="right" >
-                            <span> This Field will be ignored by the validation since it is not a part of the original segment</span>
-                </md-tooltip>
+                            <span> This Field is ignored by the validation since it is not a part of the original segment</span>
+                        </md-tooltip>
                 </span>
+                <span class="label label-field label-icon">F</span>
+                <span>{{node.position}}.</span>
+
 
                 <span>
-                    <md-tooltip md-direction="center">
-                <span> {{node.name}}</span>
-            </md-tooltip>
                     {{node.name}}
 
                 </span>
-
-
-
-
-                <!--<span ng-show="editableField!==node.id">-->
-                    <!--<span ng-hide="isChildNew(node)"-->
-                      <!--tooltip-html="getFieldNodeName(node)" tooltip-append-to-body="true"-->
-                      <!--tooltip-class="constraints-tooltip" ng-bind-html="getFieldNodeName(node)" tooltip-trigger-->
-                      <!--tooltip-animation="false" tooltip-placement="left"></span>-->
-                    <!--<span ng-show="isChildNew(node)">-->
-                        <!--<input-->
-                            <!--class="form-control focus"-->
-                            <!--autofocus-->
-                            <!--style="width:65%"-->
-                            <!--name="name"-->
-                            <!--ng-change="recordDatatypeChange( 'field', 'edit',node.id, 'name', node.name)"-->
-                            <!--ng-class="{ 'has-error has-feedback' : {{formName}}.name.$invalid}"-->
-                            <!--ng-model="node.name" required/>-->
-                    <!--</span>-->
-                <!--</span>-->
-
-
-
-                <div align="right">
-                    <a ng-if="node.added" ng-click="editField(node,segment)" class="point">
+                    <a ng-if="node.added=='yes'" ng-click="editField(node,segment)" class="point">
                         <span><i class="fa fa-pencil fa-fw"></i></span>
                         <md-tooltip md-direction="right" >
                             <span> Edit Name </span>
                         </md-tooltip>
                     </a>
-                    <a ng-click="deleteField(node,segment)" class="point" ng-if="node.added&&node.position==segment.fields.length">
+                    <span ng-if="(!validationResult ||! isSegmentValidated())&&node.added=='yes'"><i class="glyphicon glyphicon-exclamation-sign" style="color: blue"></i>
+                        <md-tooltip md-direction="right" >
+                            <span> This Field will be ignored by the validation since it is not a part of the original segment</span>
+                        </md-tooltip>
+                    </span>
+                    <a ng-click="deleteField(node,segment)" class="point" ng-if="node.added=='yes'"&&node.position==segment.fields.length">
                         <span style="color: red"><i class="glyphicon glyphicon-trash"></i></span>
                         <md-tooltip md-direction="right" >
                             <span> Delete Field </span>
                         </md-tooltip>
                     </a>
-                </div>
+
 
             </ng-form>
         </td>

@@ -26,7 +26,7 @@ public class Field extends DataElement implements java.io.Serializable, Cloneabl
   private String itemNo;
   private Integer min;
   private String max;
-  private boolean added=false;
+  private String added=Constant.NO;
 
 
 
@@ -94,7 +94,7 @@ public class Field extends DataElement implements java.io.Serializable, Cloneabl
     clonedField.setPosition(position);
     clonedField.setText(text);
     clonedField.setUsage(usage);
-    clonedField.setAdded(added);
+    clonedField.setAdded(this.added);
 
     return clonedField;
   }
@@ -115,11 +115,27 @@ public class Field extends DataElement implements java.io.Serializable, Cloneabl
     return new EqualsBuilder().append(id, rhs.id).isEquals();
   }
 
-public boolean isAdded() {
+//public  Boolean isAdded() {
+//	return added.equals(Constant.YES);
+//}
+//
+//
+//public void setAdded(boolean bool) {
+//	if(bool){
+//	this.added=Constant.YES;
+//	}else{
+//		this.added=Constant.NO;
+//
+//	}
+//	
+//}
+
+public String getAdded() {
 	return added;
 }
 
-public void setAdded(boolean added) {
+public void setAdded(String added) {
 	this.added = added;
 }
+
 }
