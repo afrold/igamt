@@ -210,7 +210,7 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
           this.getService().getValueSetVersionsByValueSetOid(vs.getOid()).getValueSetVersions();
       table.setBindingIdentifier(vs.getCode());
       // table.setDescription(vs.getDefinitionText());
-      table.setDefPreText(vs.getDefinitionText());
+      table.setDefPreText(vs.getDefinitionText().replaceAll("\u0019s", " "));
       table.setName(vs.getName());
       table.setOid(vs.getOid());
       table.setVersion("" + vsvByVSOid.get(0).getVersionNumber());

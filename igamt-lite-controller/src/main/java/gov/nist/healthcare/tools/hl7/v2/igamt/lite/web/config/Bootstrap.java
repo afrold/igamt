@@ -336,8 +336,37 @@ public class Bootstrap implements InitializingBean {
 	  addVersionToProfile();
     
 //    investigateMutipleValueSets();
+	  
+	  
+	  fixValueSetDataDB();
   }
   
+  private void fixValueSetDataDB() {
+    List<Table> tables = tableService.findByScope("PHINVADS");
+    
+    for(Table t:tables){          
+      String description = t.getDescription();
+      if(description == null) description = "";
+      else{
+        description = description.replaceAll("\u0019s", " ");
+      }
+      String defPostText = t.getDefPostText();
+      if(defPostText == null) defPostText = "";
+      else{
+        defPostText = defPostText.replaceAll("\u0019s", " ");
+      }
+      String defPreText = t.getDefPreText();
+      if(defPreText == null) defPreText = "";
+      else{
+        defPreText = defPreText.replaceAll("\u0019s", " ");
+      }
+      
+      
+      tableService.updateAllDescription(t.getId(), description, defPostText, defPreText);
+    }
+    
+  }
+
   private void addVersionToProfile(){
 	  List<Message> messages = messageService.findAll();
 	  for(Message m : messages){
