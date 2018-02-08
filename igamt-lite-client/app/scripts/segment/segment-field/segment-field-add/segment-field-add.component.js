@@ -14,7 +14,7 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $mdDialog, dat
       name: ""
     },
     hide: false,
-    added: true,
+    added: "yes",
     id: "",
     itemNo: "",
     max: "",

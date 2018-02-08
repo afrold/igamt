@@ -414,16 +414,15 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
     console.log(segmentRef);
 
 
-    segmentRef.obj.ref.id = JSON.parse(segment).id;
-    segmentRef.obj.ref.ext = JSON.parse(segment).ext;
-    segmentRef.obj.ref.label = JSON.parse(segment).label;
-    segmentRef.obj.ref.name = JSON.parse(segment).name;
+    segmentRef.obj.ref.id = segment.id;
+    segmentRef.obj.ref.ext = segment.ext;
+    segmentRef.obj.ref.label = segment.label;
+    segmentRef.obj.ref.name = segment.name;
 
 
 
     console.log(segmentRef);
     $scope.setDirty();
-    var ref = $rootScope.segmentsMap[segmentRef.obj.ref.id];
     $rootScope.processMessageTree($rootScope.message);
 
 
@@ -491,23 +490,15 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
     ['Add segment',
       function($itemScope) {
         $scope.addSegmentModal($itemScope.node);
-        /*
-         console.log($itemScope);
-         $itemScope.node.children.push($rootScope.messageTree.children[0]);
-         if ($scope.messagesParams) {
-         $scope.messagesParams.refresh();
-         }
-         */
-
-      }
-    ],
-    null, ['Add group',
-      function($itemScope) {
-        $scope.addGroupModal($itemScope.node);
-        //$itemScope.node.children.push($rootScope.messageTree.children[3]);
-        //$scope.messagesParams.refresh();
       }
     ]
+    // null, ['Add group',
+    //   function($itemScope) {
+    //     $scope.addGroupModal($itemScope.node);
+    //     //$itemScope.node.children.push($rootScope.messageTree.children[3]);
+    //     //$scope.messagesParams.refresh();
+    //   }
+    // ]
 
   ];
 
