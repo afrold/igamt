@@ -205,6 +205,12 @@ public class TableServiceImpl implements TableService {
     // TODO Auto-generated method stub
     tableRepository.updateDescription(id, description);
   }
+  
+  @Override
+  public void updateAllDescription(String id, String description, String defPreText, String defPostText){
+    // TODO Auto-generated method stub
+    tableRepository.updateAllDescription(id, description, defPreText, defPostText);
+  }
 
   /*
    * (non-Javadoc)

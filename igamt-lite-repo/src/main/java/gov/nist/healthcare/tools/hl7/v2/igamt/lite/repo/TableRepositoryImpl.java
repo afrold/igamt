@@ -198,6 +198,21 @@ public class TableRepositoryImpl implements TableOperations {
     mongo.updateFirst(query, update, Table.class);
 
   }
+  
+  @Override
+  public void updateAllDescription(String id, String description, String defPreText, String defPostText) {
+    // TODO Auto-generated method stub
+    Query query = new Query();
+    query.addCriteria(Criteria.where("id").is(id));
+    query.fields().include("description");
+    query.fields().include("defPreText");
+    query.fields().include("defPostText");
+    Update update = new Update();
+    update.set("description", description);
+    update.set("defPreText", defPreText);
+    update.set("defPostText", defPostText);
+    mongo.updateFirst(query, update, Table.class);
+  }
 
   /*
    * (non-Javadoc)
