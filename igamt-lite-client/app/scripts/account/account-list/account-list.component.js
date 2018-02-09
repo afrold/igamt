@@ -3,8 +3,8 @@
  */
 
 angular.module('igl')
-  .controller('AccountsListCtrl', ['$scope', 'MultiAuthorsLoader', 'MultiSupervisorsLoader','Account', '$modal', '$resource','AccountLoader','userInfoService','$location',
-    function ($scope, MultiAuthorsLoader, MultiSupervisorsLoader, Account, $modal, $resource, AccountLoader, userInfoService, $location) {
+  .controller('AccountsListCtrl', ['$scope', 'MultiAuthorsLoader', 'MultiSupervisorsLoader','Account', '$mdDialog', '$resource','AccountLoader','userInfoService','$location',
+    function ($scope, MultiAuthorsLoader, MultiSupervisorsLoader, Account, $mdDialog, $resource, AccountLoader, userInfoService, $location) {
 
       //$scope.accountTypes = [{ 'name':'Author', 'type':'author'}, {name:'Supervisor', type:'supervisor'}];
       //$scope.accountType = $scope.accountTypes[0];
@@ -75,19 +75,19 @@ angular.module('igl')
       };
 
       $scope.confirmDelete = function (accountToDelete) {
-        var modalInstance = $modal.open({
-          templateUrl: 'ConfirmAccountDeleteCtrl.html',
-          controller: 'ConfirmAccountDeleteCtrl',
-          resolve: {
-            accountToDelete: function () {
-              return accountToDelete;
-            },
-            accountList: function () {
-              return $scope.accountList;
+        var modalInstance = $mdDialog.show({
+            templateUrl: 'ConfirmAccountDeleteCtrl.html',
+            controller: 'ConfirmAccountDeleteCtrl',
+            preserveScope:true,
+            locals:{
+
+                accountToDelete: accountToDelete,
+                accountList:$scope.accountList
+
             }
-          }
+
         });
-        modalInstance.result.then(function (accountToDelete) {
+        modalInstance.then(function (accountToDelete) {
           $scope.accountToDelete = accountToDelete;
           var rowIndex = $scope.accountList.indexOf(accountToDelete);
           if(rowIndex !== -1){

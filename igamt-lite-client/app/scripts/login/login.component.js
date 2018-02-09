@@ -5,7 +5,10 @@ angular.module('igl').controller('LoginCtrl', [ '$rootScope','$scope', '$mdDialo
   $scope.user = user;
   $rootScope.loginOpen=true;
   $scope.cancel = function() {
+
       $scope.errorLogin=null;
+      $rootScope.loginOpen=false;
+
       $mdDialog.hide();
   };
 
