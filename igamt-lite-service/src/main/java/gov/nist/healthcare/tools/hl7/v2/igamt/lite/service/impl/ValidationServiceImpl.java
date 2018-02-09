@@ -273,7 +273,7 @@ public class ValidationServiceImpl implements ValidationService {
     
     List<SegmentRefOrGroup> filteredToBeVal = new ArrayList<>();
 	  for(SegmentRefOrGroup segmentRefOrGroup : toBeValidated.getChildren()){
-		  if(!segmentRefOrGroup.getAdded().equals(Constant.YES)){
+		  if(segmentRefOrGroup.getAdded().equals(Constant.NO)){
 			  filteredToBeVal.add(segmentRefOrGroup);
 		  }
 	  }
@@ -538,7 +538,9 @@ public class ValidationServiceImpl implements ValidationService {
 
     Set<String> dtIds = new HashSet<String>();
     for (Field field : seg.getFields()) {
-      dtIds.add(field.getDatatype().getId());
+    	if(field.getAdded().equals(Constant.NO)){
+    		dtIds.add(field.getDatatype().getId());
+    	}
 
     }
     return dtIds;
@@ -567,10 +569,18 @@ public class ValidationServiceImpl implements ValidationService {
     for (Datatype dt : referenceDts) {
       referenceDtMap.put(dt.getId(), dt);
     }
+    
+    
 
     if (toBeValidated.getName().equals(reference.getName()) && toBeValidated.getFields() != null
         && reference.getFields() != null) {
-
+    	
+    	List<Field> filteredToBeValidatedFields = new ArrayList<>();
+    	for(Field field : toBeValidated.getFields()){
+    		if(field.getAdded().equals(Constant.NO)){
+    			filteredToBeValidatedFields.add(field);
+    		}
+    	}
       // Prerdicate Map
       Map<String, Predicate> predicatesMap = new HashMap<>();
       if (toBeValidated.getPredicates().size() > 0) {
@@ -586,53 +596,53 @@ public class ValidationServiceImpl implements ValidationService {
 
       FieldComparator Comp = new FieldComparator();
       Collections.sort(reference.getFields(), Comp);
-      Collections.sort(toBeValidated.getFields(), Comp);
+      Collections.sort(filteredToBeValidatedFields, Comp);
       for (int i = 0; i < reference.getFields().size(); i++) {
 
-        if (i < toBeValidated.getFields().size()) {
+        if (i < filteredToBeValidatedFields.size()) {
           boolean validateConf = true;
 
-          if (!userDtMap.get(toBeValidated.getFields().get(i).getDatatype().getId()).getComponents()
+          if (!userDtMap.get(filteredToBeValidatedFields.get(i).getDatatype().getId()).getComponents()
               .isEmpty()) {
             validateConf = false;
           }
-          String path = toBeValidated.getFields().get(i).getPosition() + "[1]";
+          String path = filteredToBeValidatedFields.get(i).getPosition() + "[1]";
 
           
           HashMap<String, List<ValidationError>> valE = validateField(reference.getFields().get(i),
-              toBeValidated.getFields().get(i), findPredicate(path, predicatesMap),
+        		  filteredToBeValidatedFields.get(i), findPredicate(path, predicatesMap),
               toBeValidated.getHl7Version(), toBeValidated.getId(), igHl7Version, validateConf);
           if (valE != null) {
             items.putAll(valE);
 
           }
-          if (!userDtMap.get(toBeValidated.getFields().get(i).getDatatype().getId()).getComponents()
+          if (!userDtMap.get(filteredToBeValidatedFields.get(i).getDatatype().getId()).getComponents()
               .isEmpty()) {
 
 
 
             Datatype childDatatype =
-                userDtMap.get(toBeValidated.getFields().get(i).getDatatype().getId());
+                userDtMap.get(filteredToBeValidatedFields.get(i).getDatatype().getId());
             if (!childDatatype.getScope().equals(SCOPE.HL7STANDARD)) {
 
               Datatype childReference =
                   referenceDtMap.get(reference.getFields().get(i).getDatatype().getId());
               ValidationResult block = validateDatatype(childReference, childDatatype,
-                  toBeValidated.getFields().get(i).getId(), igHl7Version,
+            		  filteredToBeValidatedFields.get(i).getId(), igHl7Version,
                   findChildrenPredicates(path, predicatesMap));
 
               if (result.getErrorCount() != null && block.getErrorCount() != null) {
                 result.setErrorCount(result.getErrorCount() + block.getErrorCount());
 
               }
-              blocks.put(toBeValidated.getFields().get(i).getId(), block);
+              blocks.put(filteredToBeValidatedFields.get(i).getId(), block);
 
 
             } else {
               ValidationResult block = new ValidationResult();
               block.setErrorCount(0);
               block.setTargetId(childDatatype.getId());
-              blocks.put(toBeValidated.getFields().get(i).getId(), block);
+              blocks.put(filteredToBeValidatedFields.get(i).getId(), block);
 
             }
 
@@ -640,11 +650,11 @@ public class ValidationServiceImpl implements ValidationService {
 
           } else {
             Datatype childDatatype =
-                userDtMap.get(toBeValidated.getFields().get(i).getDatatype().getId());
+                userDtMap.get(filteredToBeValidatedFields.get(i).getDatatype().getId());
             ValidationResult block = new ValidationResult();
             block.setErrorCount(0);
             block.setTargetId(childDatatype.getId());
-            blocks.put(toBeValidated.getFields().get(i).getId(), block);
+            blocks.put(filteredToBeValidatedFields.get(i).getId(), block);
           }
 
         }
