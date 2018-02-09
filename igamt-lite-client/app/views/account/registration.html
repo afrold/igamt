@@ -25,7 +25,7 @@
 <div class="form-group control-group"
      ng-class="{'has-success has-feedback': addAccountForm.inputFullName.$valid, 'igl-has-error has-feedback': !addAccountForm.inputFullName.$valid}">
     <label class="control-label col-md-5" for="inputFullName">
-         Name *
+        <span msg key='registration.fullname'></span> *
     </label>
     <div class="controls col-md-5">
         <input type="text" class="form-control immediate-help account-input focus" name="inputFullName"
@@ -52,7 +52,8 @@
 <div class="form-group control-group"
      ng-class="{'has-success has-feedback': addAccountForm.inputEmail.$valid, 'igl-has-error has-feedback': !addAccountForm.inputEmail.$valid}">
     <label class="control-label col-md-5" for="inputEmail">
-        Email *
+               <span msg key='registration.email'></span> *
+
     </label>
 
     <div class="controls col-md-5">
@@ -104,7 +105,7 @@
 <div class="form-group control-group"
      ng-class="{'has-success has-feedback': addAccountForm.inputUsername.$valid, 'igl-has-error has-feedback': !addAccountForm.inputUsername.$valid}">
     <label class="control-label col-md-5" for="inputUsername">
-        Username *
+        <span msg key='registration.username'></span> *
     </label>
 
     <div class="controls col-md-5">
@@ -132,7 +133,7 @@
 <div class="form-group control-group"
      ng-class="{'has-success has-feedback': addAccountForm.inputPassword.$valid, 'igl-has-error has-feedback': !addAccountForm.inputPassword.$valid}">
     <label class="control-label col-md-5" for="inputPassword">
-        Password *
+        <span msg key='registration.password'></span> *
     </label>
 
     <div class="controls col-md-5">
@@ -167,7 +168,7 @@
 <div class="form-group control-group"
      ng-class="{'has-success has-feedback': addAccountForm.inputPasswordConfirm.$valid, 'igl-has-error has-feedback': !addAccountForm.inputPasswordConfirm.$valid}">
     <label class="control-label col-md-5" for="inputPasswordConfirm">
-        Confirm Password *
+        <span msg key='registration.passwordConfirm'></span> *
     </label>
 
     <div class="controls col-md-5">

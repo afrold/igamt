@@ -110,7 +110,7 @@
                     <!--</div>-->
                 <!--</div>-->
                 <div class="control-group form-group" ng-class="{'has-success has-feedback': changePasswordForm.inputUserNewPassword.$valid, 'igl-has-error has-feedback': !changePasswordForm.inputUserNewPassword.$valid}">
-                    <label class="control-label col-md-2" for="inputUserNewPassword"><div msg key='account.newPassword'></div></label>
+                    <label class="control-label col-md-2" for="inputUserNewPassword"><span msg key='account.newPassword'></span> *</label>
                     <div class="controls col-md-7">
                         <input type="password" class="form-control immediate-help account-input" name="inputUserNewPassword" id="inputUserNewPassword" ng-model='accountpwd.newPassword' ng-minlength="8" ng-maxlength="20" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" ig-password-validate required>
                         <div class="input-help">
@@ -126,7 +126,7 @@
                     </div>
                 </div>
                 <div class="control-group form-group" ng-class="{'has-success has-feedback': changePasswordForm.inputNewPasswordConfirm.$valid, 'igl-has-error has-feedback': !changePasswordForm.inputNewPasswordConfirm.$valid}">
-                    <label class="control-label col-md-2" for="inputUserNewPasswordConfirm"><div msg key='account.newPasswordConfirm'></div></label>
+                    <label class="control-label col-md-2" for="inputUserNewPasswordConfirm"><span msg key='account.newPasswordConfirm'></span> *</label>
                     <div class="controls col-md-7">
                         <input type="password" class="form-control immediate-help account-input" name="inputUserNewPasswordConfirm" id="inputUserNewPasswordConfirm" ng-model='accountpwd.newPasswordConfirm' ig-check-password="inputUserNewPassword" required>
                         <div class="input-help">
