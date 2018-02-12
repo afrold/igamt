@@ -2512,6 +2512,9 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
       }
     }
 
+
+
+
     SegmentService.updateTableBinding(segmentUpdateParameterList).then(function(result) {}, function(error) {
       $rootScope.msg().text = error.data.text;
       $rootScope.msg().type = error.data.type;

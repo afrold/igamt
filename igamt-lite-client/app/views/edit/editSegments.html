@@ -104,7 +104,7 @@
                                             <label class="input-left igamt-label" ng-if="segment.status=='UNPUBLISHED'">Extension*</label>
 
                                             <md-input-container class="md-block igamt-input-block" flex-gt-sm ng-hide="segment.scope === 'HL7STANDARD'">
-                                                <input type="text" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')" ng-change="setDirty()" name="label" ng-model="segment.ext" required>
+                                                <input type="text" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')" ng-change="updateLabel(segment);recordChanged()" name="label" ng-model="segment.ext" required>
                                                 <div role="alert"  style="color:red" ng-show="isDuplicated(segment,segments)">
                                                     <div class="my-message">Extension is already used.</div>
                                                 </div>
