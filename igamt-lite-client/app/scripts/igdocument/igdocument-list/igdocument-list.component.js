@@ -340,6 +340,12 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
   };
 
 
+  $scope.isOwner=function (ig) {
+
+      return ig.accountId === userInfoService.getAccountID();
+  };
+
+
   $scope.selectIGDocument = function (igdocument) {
     $rootScope.igdocument = igdocument;
     $rootScope.accountId = igdocument.accountId;
