@@ -38,6 +38,7 @@ angular.module('igl')
 
     };
 
+
     $scope.deleteConformanceStatementFromList = function(c) {
       $rootScope.datatype.conformanceStatements.splice($rootScope.datatype.conformanceStatements.indexOf(c), 1);
 
@@ -823,7 +824,14 @@ angular.module('igl')
       $rootScope.recordChangeForEdit2('component', 'edit', node.id, 'table', null);
     };
 
+    $scope.updateLabel=function (obj) {
+          console.log(obj);
+          obj.label=obj.name+"_"+obj.ext;
+
+    };
+
     $scope.managePredicate = function(node) {
+      console.log($rootScope.datatype);
       $mdDialog.show({
         parent: angular.element(document).find('body'),
         templateUrl: 'PredicateDatatypeCtrl.html',

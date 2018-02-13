@@ -119,7 +119,7 @@
                                             <label class="input-left igamt-label" ng-hide="datatype.status==='PUBLISHED'">Extension*</label>
                                             <md-input-container class="md-block igamt-input-block" flex-gt-sm
                                                                 ng-hide="datatype.status==='PUBLISHED'">
-                                                <input type="text" ng-change="recordChanged()"
+                                                <input type="text" ng-change="updateLabel(datatype);recordChanged()"
                                                        ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED'||versionAndUseMap[datatype.id]"
                                                        name="ext" id="ext" ng-model="datatype.ext" required>
                                                 <div role="alert" style="color:red" ng-if="isDuplicated(datatype,datatypes)">

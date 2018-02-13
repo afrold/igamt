@@ -390,7 +390,13 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     });
   };
 
-  $scope.openPredicateDialog = function(node) {
+  $scope.updateLabel=function (obj) {
+        console.log(obj);
+        obj.label=obj.name+"_"+obj.ext;
+  };
+
+
+    $scope.openPredicateDialog = function(node) {
     if (node.usage == 'C') $scope.managePredicate(node);
   };
 
