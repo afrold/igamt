@@ -26,6 +26,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetData;
 import nu.xom.Attribute;
 import nu.xom.Element;
+import nu.xom.Text;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -56,6 +57,8 @@ public class SerializableSegment extends SerializableSection {
   private Boolean greyOutOBX2FlavorColumn;
   private String host;
   CoConstraintExportMode coConstraintExportMode;
+  
+  private static final int BINDING_IDENTIFIER_MAX_LENGTH = 40;
 
   public SerializableSegment(String id, String prefix, String position, String headerLevel,
       String title, Segment segment, String name, String label, String description, String comment,
@@ -450,7 +453,13 @@ public class SerializableSegment extends SerializableSection {
                         || coConstraintTHENColumnData.getValueData().getValue() == null || coConstraintTHENColumnData.getValueData().getValue().isEmpty()) {
                       td.addAttribute(new Attribute("class", "greyCell"));
                     } else {
-                      td.appendChild(coConstraintTHENColumnData.getValueData().getValue());
+                    	String valueSetLabel = coConstraintTHENColumnData.getValueData().getValue();
+                        while(valueSetLabel.length()>BINDING_IDENTIFIER_MAX_LENGTH){
+                        	td.appendChild(new Text(valueSetLabel.substring(0, BINDING_IDENTIFIER_MAX_LENGTH-1)));
+                        	td.appendChild(new Element("br"));
+                    		valueSetLabel = valueSetLabel.substring(BINDING_IDENTIFIER_MAX_LENGTH);
+                    	}
+                        td.appendChild(new Text(valueSetLabel));
                     }
                   } else {
                     ArrayList<String> valueSetsList = new ArrayList<>();
@@ -460,7 +469,13 @@ public class SerializableSegment extends SerializableSection {
                         valueSetsList.add(table.getBindingIdentifier());
                       }
                     }
-                    td.appendChild(StringUtils.join(valueSetsList, ","));
+                    String valueSetLabel = StringUtils.join(valueSetsList, ",");
+                    while(valueSetLabel.length()>BINDING_IDENTIFIER_MAX_LENGTH){
+                    	td.appendChild(new Text(valueSetLabel.substring(0, BINDING_IDENTIFIER_MAX_LENGTH-1)));
+                    	td.appendChild(new Element("br"));
+                		valueSetLabel = valueSetLabel.substring(BINDING_IDENTIFIER_MAX_LENGTH);
+                	}
+                    td.appendChild(new Text(valueSetLabel));
                   }
                   tr.appendChild(td);
                 }
