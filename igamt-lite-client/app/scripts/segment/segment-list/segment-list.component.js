@@ -644,27 +644,25 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
   // };
   $scope.otherDT = function(field) {
-    console.log("Changing a data type from field")
     var modalInstance = $mdDialog.show({
       templateUrl: 'otherDTModal.html',
       controller: 'otherDTCtrl',
       scope: $scope,        // use parent scope in template
       preserveScope: true,
       locals: {
-
-        datatypes:  $rootScope.datatypes,
-
+        datatypes :  $rootScope.datatypes,
         field:  field
       }
-
-
     });
     modalInstance.then(function(field) {
-      $scope.setDirty();
-      $scope.editableDT = '';
-      if ($scope.segmentsParams) {
-        $scope.segmentsParams.refresh();
+      if(field !=='cancel'){
+          $scope.setDirty();
+          if ($scope.segmentsParams) {
+              $scope.segmentsParams.refresh();
+          }
       }
+      $scope.editableDT = '';
+
     });
 
   };
@@ -1032,7 +1030,9 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     if($scope.hasChildren(node)) return false;
     var bindings = $scope.findingBindings(node);
     if(bindings && bindings.length > 0) return false;
-    if($rootScope.datatypesMap[node.datatype.id].name == 'ID' || $rootScope.datatypesMap[node.datatype.id].name == "IS") return false;
+    if(node.datatype &&node.datatype.id){
+        if($rootScope.datatypesMap[node.datatype.id].name == 'ID' || $rootScope.datatypesMap[node.datatype.id].name == "IS") return false;
+    }
     return true;
   };
 
