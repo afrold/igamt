@@ -406,29 +406,6 @@ angular.module('igl')
         $scope.otherDT(field);
       }
     };
-    // $scope.otherDT = function(field) {
-    //     var modalInstance = $modal.open({
-    //         templateUrl: 'otherDTModal.html',
-    //         controller: 'otherDTCtrl',
-    //         windowClass: 'edit-VS-modal',
-    //         resolve: {
-    //             datatypes: function() {
-    //                 return $rootScope.datatypes;
-    //             },
-    //             field: function() {
-    //                 return field;
-    //             }
-    //         }
-    //     });
-    //     modalInstance.result.then(function(field) {
-    //         $scope.setDirty();
-    //         $rootScope.recordChanged();
-    //         $scope.editableDT = '';
-    //         if ($scope.datatypesParams) {
-    //             $scope.datatypesParams.refresh();
-    //         }
-    //     });
-    // };
 
     $scope.otherDT = function(field) {
 

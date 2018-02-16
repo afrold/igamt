@@ -237,14 +237,14 @@ public class IGCollectionReferentialIntegrityTest {
                 if (!(d != null)){
                   analysisRst.append("\t\t\t\tDatatype id: " + f.getDatatype().getId() + " not found.\n");
                 } 
-                List<TableLink> tls = f.getTables();
-                for (TableLink tl: tls){
-                  Table t = tableService.findById(tl.getId());
-                  found = found && (t != null);
-                  if (!(t != null)){
-                    analysisRst.append("\t\t\t\tValue set id: " + tl.getId() + " not found.\n");
-                  } 
-                }
+//                List<TableLink> tls = f.getTables();
+//                for (TableLink tl: tls){
+//                  Table t = tableService.findById(tl.getId());
+//                  found = found && (t != null);
+//                  if (!(t != null)){
+//                    analysisRst.append("\t\t\t\tValue set id: " + tl.getId() + " not found.\n");
+//                  } 
+//                }
                 okStatus = okStatus && found;
                 if (!found){
                   addTextInReport(report, analysisRst.toString(), true);
@@ -289,14 +289,14 @@ public class IGCollectionReferentialIntegrityTest {
         if (!(d != null)){
           analysisRst.append("\t\tDatatype id: " + cpt.getDatatype().getId() + " not found.\n");
         } 
-        List<TableLink> tls = cpt.getTables();
-        for (TableLink tl: tls){
-          Table t = tableService.findById(tl.getId());
-          found = found && (t != null);
-          if (!(t != null)){
-            analysisRst.append("\t\tValue set id: " + tl.getId() + " not found.\n");
-          } 
-        }
+//        List<TableLink> tls = cpt.getTables();
+//        for (TableLink tl: tls){
+//          Table t = tableService.findById(tl.getId());
+//          found = found && (t != null);
+//          if (!(t != null)){
+//            analysisRst.append("\t\tValue set id: " + tl.getId() + " not found.\n");
+//          } 
+//        }
         if (!found){
           addTextInReport(report, analysisRst.toString(), true);
         } 
