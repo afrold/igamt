@@ -865,7 +865,7 @@
                             <span> This Field will be ignored by the validation since it is not a part of the original segment</span>
                         </md-tooltip>
                     </span>
-                    <a ng-click="deleteField(node,segment)" class="point" ng-if="node.added=='yes'"&&node.position==segment.fields.length">
+                    <a ng-click="deleteField(node,segment)" class="point" ng-if="node.added=='yes'&& node.position+''==segment.fields.length+''">
                         <span style="color: red"><i class="glyphicon glyphicon-trash"></i></span>
                         <md-tooltip md-direction="right" >
                             <span> Delete Field </span>
@@ -999,11 +999,11 @@
                     </span>
 
                     <div ng-if="editableDT===node.id" style="text-align:left">
-                        <md-select placeholder="Select Data type"  class="inside-table" ng-model="node.datatype" ng-change="backDT();setDirty()"  ng-controller="FormRowCtrl" ng-init="init(node)">
+                        <md-select placeholder="Select Data type"class="inside-table" ng-model="node.datatype" ng-change="backDT();setDirty()"  ng-controller="FormRowCtrl" ng-init="init(node)">
                             <md-option  ng-repeat="dt in results track by $index" ng-value="dt">
                                 <display-label of="datatypesMap[dt.id]" desc="false"></display-label>
                             </md-option>
-                            <md-option ng-click="otherDT(node)" ng-value="node.datatype"> Change Data Type root</md-option>
+                            <md-option ng-click="otherDT(node)"> Change Data Type root</md-option>
 
                         </md-select>
                     </div>

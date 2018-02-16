@@ -431,7 +431,7 @@ angular.module('igl')
     // };
 
     $scope.otherDT = function(field) {
-      console.log("Changing a data type from field")
+
       var modalInstance = $mdDialog.show({
         templateUrl: 'otherDTModal.html',
         controller: 'otherDTCtrl',
@@ -443,7 +443,6 @@ angular.module('igl')
 
           field:  field
         }
-
 
       });
       modalInstance.then(function(field) {
