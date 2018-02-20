@@ -7,6 +7,7 @@ import {TreeNode} from "primeng/components/common/treenode";
 import {falseIfMissing} from "protractor/built/util";
 // import {ContextMenuModule,MenuItem} from 'primeng/primeng';
 import {ContextMenuComponent} from "ngx-contextmenu";
+import {ActivatedRoute} from "@angular/router";
 
 
 @Component({
@@ -29,7 +30,7 @@ export class TocComponent {
   currentNode: any;
 
   treeData: any;
-  constructor(private _ws : WorkspaceService, private  tocService:TocService){
+  constructor(private _ws : WorkspaceService, private  tocService:TocService,private route : ActivatedRoute){
 
   }
 
@@ -40,9 +41,8 @@ export class TocComponent {
 
   ngOnInit() {
     var ctrl=this;
+      this.ig=this.route.snapshot.data['ig'];
 
-    this.ig = this._ws.getCurrent(Entity.IG).subscribe(data =>{
-      this.ig= data
       this.treeData = this.tocService.buildTreeFromIgDocument(this._ig);
 
 
@@ -79,7 +79,7 @@ export class TocComponent {
 
 
 
-    });
+    );
 
     // this.toc.dragDropService.stopDrag = function (x) {
     //   console.log("HT");

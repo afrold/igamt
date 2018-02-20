@@ -19,6 +19,7 @@ import {MenuItem} from 'primeng/primeng';
 import {IndexedDbService} from "../../service/indexed-db/indexed-db.service";
 import { FormsModule } from '@angular/forms';
 import {ContextMenuModule} from "ngx-contextmenu";
+import {IgdocumentEditResolver} from "./IgdocumentEditResolver";
 
 
 @NgModule({
@@ -47,7 +48,7 @@ import {ContextMenuModule} from "ngx-contextmenu";
 		IgDocumentEditComponent, IgDocumentMetadataComponent, SectionComponent, TocComponent
 	],
   providers : [
-    IgDocumentGuard, TocService,TreeDragDropService
+    IgDocumentGuard, TocService,TreeDragDropService,IgdocumentEditResolver
   ],
   schemas : [ CUSTOM_ELEMENTS_SCHEMA ]
 })

@@ -20,10 +20,13 @@ export class IgDocumentEditComponent {
               private _ws   : WorkspaceService,
               private $http : Http,
               private dbService: IndexedDbService){
-    this.ig = this._ws.getCurrent(Entity.IG).subscribe(data => {this.ig=data
 
-      this.dbService.init(this._ig);
-    });
+
+    this.ig=this.route.snapshot.data['ig'];
+    console.log(this._ig);
+
+    //   this.dbService.init(this._ig);
+    // });
   };
 
   @Input() set ig(doc){
