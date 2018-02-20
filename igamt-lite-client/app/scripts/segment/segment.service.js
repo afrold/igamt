@@ -512,52 +512,6 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
                         if (!segment.coConstraintsTable.thenMapData) segment.coConstraintsTable.thenMapData = {};
                         if (!segment.coConstraintsTable.userMapData) segment.coConstraintsTable.userMapData = {};
                         if (!segment.coConstraintsTable.rowSize) segment.coConstraintsTable.rowSize = 0;
-
-                        /*
-                        var isAdded = false;
-                        if (segment.coConstraintsTable.ifColumnDefinition) {
-                            var newIFData = {};
-                            newIFData.valueData = {};
-                            newIFData.bindingLocation = null;
-
-                            segment.coConstraintsTable.ifColumnData.push(newIFData);
-                            isAdded = true;
-                        }
-
-                        if (segment.coConstraintsTable.thenColumnDefinitionList) {
-                            for (var i = 0, len1 = segment.coConstraintsTable.thenColumnDefinitionList.length; i < len1; i++) {
-                                var thenColumnDefinition = segment.coConstraintsTable.thenColumnDefinitionList[i];
-
-                                var newTHENData = {};
-                                newTHENData.valueData = {};
-                                newTHENData.valueSets = [];
-
-                                if (!segment.coConstraintsTable.thenMapData[thenColumnDefinition.id]) segment.coConstraintsTable.thenMapData[thenColumnDefinition.id] = [];
-
-                                segment.coConstraintsTable.thenMapData[thenColumnDefinition.id].push(newTHENData);
-                                isAdded = true;
-                            }
-                            ;
-                        }
-
-                        if (segment.coConstraintsTable.userColumnDefinitionList) {
-                            for (var i = 0, len1 = segment.coConstraintsTable.userColumnDefinitionList.length; i < len1; i++) {
-                                var userColumnDefinition = segment.coConstraintsTable.userColumnDefinitionList[i];
-
-                                var newUSERData = {};
-                                newUSERData.text = "";
-
-                                if (!segment.coConstraintsTable.userMapData[userColumnDefinition.id]) segment.coConstraintsTable.userMapData[userColumnDefinition.id] = [];
-
-                                segment.coConstraintsTable.userMapData[userColumnDefinition.id].push(newUSERData);
-                                isAdded = true;
-                            }
-                        }
-
-                        if (isAdded) {
-                            segment.coConstraintsTable.rowSize = segment.coConstraintsTable.rowSize + 1;
-                        }
-                        */
                     }
                     if (segment.coConstraintsTable.thenColumnDefinitionList) {
 

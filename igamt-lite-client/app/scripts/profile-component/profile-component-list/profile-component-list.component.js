@@ -394,8 +394,8 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
       parent: angular.element(document).find('body'),
       controller: 'AddCoConstraintCtrlInPc',
       locals: {
-        node: node,
-        context: context
+          node: node,
+          context: context
       }
 
     }).then(function(coCon) {
