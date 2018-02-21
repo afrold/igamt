@@ -38,7 +38,7 @@ public class ExportConfig {
   private boolean includeCompositeProfileTable = true;
   private boolean includeProfileComponentTable = true;
 
-  private boolean duplicateOBXDataTypeWhenFlavorNull = false;
+  private boolean greyOutOBX2FlavorColumn = false;
   
   private CoConstraintExportMode coConstraintExportMode = CoConstraintExportMode.COMPACT;
  
@@ -460,15 +460,15 @@ public class ExportConfig {
 	return MAX_CODE;
   }
 
-  public boolean isDuplicateOBXDataTypeWhenFlavorNull() {
-    return duplicateOBXDataTypeWhenFlavorNull;
-  }
+	public boolean isGreyOutOBX2FlavorColumn() {
+		return greyOutOBX2FlavorColumn;
+	}
+	
+	public void setGreyOutOBX2FlavorColumn(boolean greyOutOBX2FlavorColumn) {
+		this.greyOutOBX2FlavorColumn = greyOutOBX2FlavorColumn;
+	}
 
-  public void setDuplicateOBXDataTypeWhenFlavorNull(boolean duplicateOBXDataTypeWhenFlavorNull) {
-    this.duplicateOBXDataTypeWhenFlavorNull = duplicateOBXDataTypeWhenFlavorNull;
-  }
-
-  /**
+/**
    * @return the includeVaries
    */
   public boolean isIncludeVaries() {

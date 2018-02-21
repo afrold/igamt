@@ -449,9 +449,9 @@
                                                                     <table ng-if="table.sourceType!=='EXTERNAL'|| table.scope=='PHINVADS'"
                                                                            st-safe-src="table.codes"
                                                                            st-table="displayCollection"
-                                                                           class="table table-striped table-condensed table-bordered">
-                                                                        <thead>
-                                                                        <tr class="tbl-header">
+                                                                           class="table table-striped table-condensed table-bordered fixed-header">
+                                                                        <thead class="fixed-header">
+                                                                        <tr class="tbl-header fixed-header" >
                                                                             <th class="col-md-1"
                                                                                 style="text-align:center;"
                                                                                 ng-if="!isNonEditableValueSet(table)&&table.codes.length>0">
@@ -462,7 +462,7 @@
                                                                                         ng-disabled="isNonEditableValueSet(table)"
                                                                                         ng-checked="isAllSelected()"/>
                                                                             </th>
-                                                                            <th st-sort="value" class="col-md-2"
+                                                                            <th st-sort="value"
                                                                                 ng-class="{'col-md-2': !isNonEditableValueSet(table), 'col-md-3': isNonEditableValueSet(table)}">
                                                                                 Value
                                                                             </th>
@@ -475,7 +475,7 @@
                                                                         </tr>
 
                                                                         </thead>
-                                                                        <tbody>
+                                                                        <tbody class="fixed-header">
                                                                         <tr ng-repeat="c in displayCollection  |filter:searchObject track by $index"
                                                                             ng-if="!isNonEditableValueSet(table)">
                                                                             <td class="col-md-1" align="center"
@@ -562,7 +562,6 @@
                                                                                     <md-input-container flex="100"
                                                                                                         class="normal">
                                                                                     <textarea ng-model="c.comments"
-                                                                                              ng-disabled="isNonEditableValueSet(table)"
                                                                                               style="margin-top: 5px;"
                                                                                               md-select-on-focus></textarea>
                                                                                     </md-input-container>
@@ -607,16 +606,6 @@
                                                                             </td>
                                                                         </tr>
                                                                         </tbody>
-                                                                        <tr style="float:center !important;"
-                                                                            ng-show="table.codes.length > itemsByPage">
-                                                                            <td colspan="6" class="text-center"
-                                                                                style="float:center !important;">
-                                                                                <div st-pagination=""
-                                                                                     st-items-by-page="itemsByPage"
-                                                                                     st-displayed-pages="7"
-                                                                                     style="float:center !important;"></div>
-                                                                            </td>
-                                                                        </tr>
                                                                     </table>
                                                                 </div>
                                                             </div>
@@ -645,245 +634,6 @@
                                                 </md-tab-body>
                                             </md-tab>
                                         </md-tabs>
-                                    </div>
-                                </md-tab-body>
-                            </md-tab>
-                            <md-tab md-on-select="callVSDelta()" ng-if="igdocument">
-                                <md-tab-label>
-                                    <i class="fa fa-table fa-fw" aria-hidden="true"></i>Delta
-                                </md-tab-label>
-                                <md-tab-body>
-                                    <div class="panel-body metadata-scroll" style="margin:5px;" ng-controller="cmpTableCtrl">
-                                        <md-tabs md-dynamic-height md-border-bottom md-selected="deltaTabStatus.active">
-                                            <md-tab>
-                                                <md-tab-label>
-                                                    <i class="fa fa-cog fa-fw"></i>Configuration
-                                                </md-tab-label>
-                                                <md-tab-body>
-                                                    <div class="panel-primary">
-                                                        <div style="margin-top: 20px;margin-bottom: 20px;">
-
-                                                        <md-radio-group ng-model="from" layout="row" no-dirty-check>
-
-                                                            <md-radio-button value="Current" class="md-primary"> Current IG Value Sets</md-radio-button>
-                                                            <md-radio-button value="Advanced" class="md-primary">Other Value Sets</md-radio-button>
-
-                                                        </md-radio-group>
-                                                        </div>
-
-                                                        <div class="panel-body" layout="row" ng-show="from=='Advanced'">
-                                                            <div flex>
-                                                            <label class="input-left igamt-label">Scope</label>
-                                                                        <md-select ng-model="scope" no-dirty-check>
-                                                                            <md-option ng-repeat="scope in scopes track by $index" ng-value="scope.name"> {{scope.alias}}</md-option>
-                                                                        </md-select>
-
-                                                            </div>
-
-                                                            <div flex>
-                                                            <label class="input-left igamt-label">Version</label>
-
-                                                                        <md-select ng-model="version" no-dirty-check ng-disabled="!scope ||scope==='PHINVADS'">
-                                                                            <md-option ng-repeat="vr in versions track by $index" ng-value="vr">{{vr}}</md-option>
-                                                                            <md-option ng-if="scope!=='HL7STANDARD'" value="NV"> No Version</md-option>
-                                                                        </md-select>
-                                                            </div>
-                                                            <div flex>
-                                                            <label class="input-left igamt-label">Binding Indentifier</label>
-                                                            <md-input-container>
-                                                                <input no-dirty-check ng-model="bindingIdentifier">
-                                                            </md-input-container>
-
-                                                            </div>
-                                                            <div flex>
-
-                                                                <button ng-click="searchForDelta()"
-                                                                        class="btn btn-raised btn-info btn-md">
-                                                                    <i class="fa fa-check"></i> Search</button>
-                                                            </div>
-                                                        </div>
-                                                        <div>
-
-                                                            <table st-table="tablesToCompare" ng-if="tablesToCompare.length>0"
-                                                                   class="table table-stripped table-bordered table-condensed fixed-header" style="max-height: 250px">
-                                                                <thead class="fixed-header">
-                                                                 <tr class="fixed-header">
-                                                                    <th class="col-md-1">
-                                                                    </th>
-                                                                    <th class="col-md-1">
-                                                                        <md-select ng-model="filter.scope" no-dirty-check>
-                                                                            <md-option ng-repeat="scope in scopes track by $index" ng-value="scope.name"> {{scope.alias}}</md-option>
-                                                                        </md-select>
-                                                                    </th>
-                                                                    <th class="col-md-4">
-                                                                        <md-input-container class="normal">
-                                                                            <md-input-container  style="margin: 0px !important" layout="row">
-                                                                                <input type="search" ng-model="filter.name" no-dirty-check>
-                                                                            </md-input-container>
-                                                                    </th>
-                                                                    <th class="col-md-3">
-                                                                        <md-input-container  class="normal" layout="row">
-                                                                            <input type="search" ng-model="filter.bindingIdentifier" no-dirty-check=""/>
-                                                                        </md-input-container>
-                                                                    </th>
-                                                                    <th class="col-md-1"></th>
-                                                                    <th class="col-md-2">
-                                                                        <md-input-container class="normal">
-                                                                        <md-select ng-model="filter.sourceType" no-dirty-check>
-                                                                            <md-option value="INTERNAL">INTERNAL</md-option>
-                                                                            <md-option value="EXTERNAL">EXTERNAL</md-option>
-                                                                        </md-select>
-                                                                        </md-input-container>
-                                                                    </th>
-
-                                                                </tr>
-
-                                                                <tr class="tbl-header fixed-header">
-                                                                    <th class="col-md-1">
-                                                                    </th>
-                                                                    <th st-sort="row.scope" class="col-md-1">Scope</th>
-                                                                    <th st-sort="row.name" class="col-md-4">Name</th>
-                                                                    <th st-sort="row.bindingIdentifier" class="col-md-3">ID</th>
-                                                                    <th st-sort="row.numberOfCodes" class="col-md-1">#Codes</th>
-                                                                    <th  class="col-md-2">Type</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody class="fixed-header" style="max-height: 500px">
-                                                                    <tr ng-repeat="row in tablesToCompare|filter:filter track by $index" class="fixed-header">
-                                                                    <td class="col-md-1">
-                                                                        <md-checkbox  ng-click="selectTableForDelta(row)"  ng-checked="isSelectedForDelta(row)">
-                                                                    </td>
-
-                                                                    <td class="col-md-1">
-                                                <span style="margin-right: 5px" class="badge"
-                                                                    ng-class="{'label-HL7' : getScopeLabel(row)==='HL7', 'label-USE': getScopeLabel(row)==='USR','label-MASTER':getScopeLabel(row)==='MAS','label-PRL':getScopeLabel(row)==='PRL','label-PVS':getScopeLabel(row)==='PVS'}">{{getScopeLabel(row)}} {{row.hl7Version}}</span>
-                                                                    </td>
-                                                                    <td class="col-md-4">
-                                                                        {{row.name}}
-                                                                    </td>
-                                                                    <td class="col-md-3">{{row.bindingIdentifier}}</td>
-                                                                    <td class="col-md-1">{{row.numberOfCodes}}</td>
-
-                                                                        <td class="col-md-2">{{row.sourceType}}</td>
-
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                        </div>
-                                                        <div layout="row" layout-align="center start" ng-if="selectedTable">
-                                                            <md-button class="md-primary md-raised" ng-click="filter={};cmpTable(table,selectedTable)">Compare</md-button>
-                                                        </div>
-                                                </md-tab-body>
-                                            </md-tab>
-                                            <md-tab ng-if="showResult">
-                                                <md-tab-label>
-                                                    <span><i class="fa fa-time fa-fw"></i> Result </span>
-                                                </md-tab-label>
-                                                <md-tab-body>
-
-                                                    <div layout="column">
-                                                        <div flex>
-                                                            <span class="badge delta1">1</span> <display-label of="table" desc="true"></display-label>
-                                                        </div>
-                                                        <div flex>
-                                                            <span class="badge delta2">2</span> <display-label of="selectedTable" desc="true"></display-label>
-                                                        </div>
-                                                    </div>
-
-
-                                                    <h5>Attributes</h5>
-                                                    <table class="table table-stripped table-bordered table-condensed">
-                                                        <tr class="tbl-header" layout="row">
-                                                            <th flex="20">Type</th>
-                                                            <th flex="20">Extensibility</th>
-                                                            <th flex="20">Stability</th>
-                                                            <th flex="40">Reference URL</th>
-                                                        </tr>
-                                                        <tbody>
-                                                        <tr layout="row">
-                                                            <td flex="20" layout="column">
-                                                                <span flex class="delta1">{{sanitize(table.sourceType)}}</span>
-                                                                <span flex class="delta2">{{sanitize(selectedTable.sourceType)}}</span>
-                                                            </td>
-                                                            <td flex="20" layout="column">
-                                                                <span flex class="delta1">{{sanitize(table.extensibility)}}</span>
-                                                                <span flex class="delta2">{{sanitize(selectedTable.extensibility)}}</span>
-                                                            </td>
-                                                            <td flex="20" layout="column">
-                                                                <span flex class="delta1">{{sanitize(table.stability)}}</span>
-                                                                <span flex class="delta2">{{sanitize(selectedTable.stability)}}</span>
-                                                            </td>
-                                                            <td flex="40" layout="column">
-                                                                <span flex class="delta1">{{sanitize(table.referenceUrl)}}</span>
-                                                                <span flex class="delta2">{{sanitize(selectedTable.referenceUrl)}}</span>
-                                                            </td>
-
-                                                        </tr>
-
-                                                        </tbody>
-
-                                                    </table>
-                                                    <h5>Codes</h5>
-                                                    <table class="table table-stripped table-bordered table-condensed fixed-header" ng-if="table.sourceType=='INTERNAL'&&selectedTable.sourceType=='INTERNAL'">
-                                                        <tr class="tbl-header fixed-header" layout="row">
-                                                            <th flex="20">Value</th>
-                                                            <th flex="20">Code System</th>
-                                                            <th flex="20">Description</th>
-                                                            <th flex="40">Code Usage</th>
-
-                                                        </tr>
-                                                        <tbody style="max-height: 500px; overflow: auto">
-                                                        <tr layout="row" ng-repeat="row in compareCodeResult |orderBy: 'c1.value' track by $index" class="fixed-header">
-                                                            <td flex="20" layout="column" layout-align="center center ">
-                                                                    {{row.c1.value}}
-                                                            </td>
-                                                            <td flex="20" layout="column" layout-align="center center ">
-                                                                {{row.c1.codeSystem}}
-                                                            </td>
-                                                            <td flex="20" layout="column">
-                                                                <span flex class="delta1" ng-if="!row.c1.absent">{{row.c1.label}}</span>
-                                                                <span flex class="delta2" ng-if="!row.c2.absent">{{row.c2.label}}</span>
-                                                            </td>
-                                                            <td flex="40" layout="column">
-                                                                <span flex class="delta1" ng-if="!row.c1.absent">{{row.c1.codeUsage}}</span>
-                                                                <span flex class="delta2" ng-if="!row.c2.absent">{{row.c2.codeUsage}}</span>
-                                                            </td>
-
-                                                        </tr>
-
-                                                        </tbody>
-
-                                                    </table>
-
-                                                    <div style="color:red" ng-if="table.sourceType=='EXTERNAL'||selectedTable.sourceType=='EXTERNAL'"> External Value sets Codes are not managed by IGAMT</div>
-
-
-
-
-
-                                                    <!--<div class="panel-primary" ng-if="dataList">-->
-                                                        <!--<div class="panel-body">-->
-
-                                                            <!--<table tt-table tt-params="dynamicVs_params"-->
-                                                                   <!--class=" table-marginless table-bordered table-condensed">-->
-                                                                <!--<thead>-->
-                                                                <!--<tr class="tbl-header">-->
-                                                                    <!--<th class="col-md-2">Name</th>-->
-                                                                    <!--<th class="col-md-1">Content Definition</th>-->
-
-                                                                    <!--<th class="col-md-1">Code System</th>-->
-                                                                    <!--<th class="col-md-1">Code Usage</th>-->
-                                                                <!--</tr>-->
-                                                                <!--</thead>-->
-                                                                <!--<tbody></tbody>-->
-                                                            <!--</table>-->
-                                                        <!--</div>-->
-                                                    <!--</div>-->
-                                                </md-tab-body>
-                                            </md-tab>
-                                        </md-tabs>
-
                                     </div>
                                 </md-tab-body>
                             </md-tab>

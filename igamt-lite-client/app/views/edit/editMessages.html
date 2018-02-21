@@ -196,35 +196,19 @@
                                                             Component
                                                         </div>
                                                         <div flex class="pull-right">
-                                                            <md-menu class="pull-right">
-                                                                <button ng-click="$mdMenu.open()" class="btn btn-raised btn-sm menu-table menu-table-add">
+                                                                <button ng-click="addSegmentModal(message)" class="btn btn-raised btn-sm menu-table menu-table-add pull-right ">
                                                                     <i class="fa fa-plus fa-fw"></i> ADD
                                                                 </button>
-                                                                <md-menu-content>
-                                                                    <md-menu-item>
-                                                                        <md-button   ng-click="addGroupModal(message)">
-                                                                            Add Group
-                                                                        </md-button>
-                                                                    </md-menu-item>
-                                                                    <md-menu-item>
-                                                                        <md-button ng-click="addSegmentModal(message)" >
-                                                                            Add Segment
-                                                                        </md-button>
-                                                                    </md-menu-item>
-                                                                </md-menu-content>
-
-                                                            </md-menu>
-                                                                <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
                                                                 <button ng-if="message.scope!=='HL7STANDARD'" title="Verify Message" type="button" ng-click="validateMessage()" class="btn btn-raised btn-sm pull-right menu-table menu-table-verify"><i class="fa fa-check fa-fw"></i> Verify</button>
 
 
-
-                                                                <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
-                                                            <md-select class="pull-right"  ng-model="viewSettings.visibleColumns"  md-selected-text="viewSettings.getPlaceHolder()" multiple ng-model-options="{trackBy: '$value.id'}" no-dirty-check>
+                                                            <span class="pull-right" flex layout="row">
+                                                            <md-select  flex ng-model="viewSettings.visibleColumns"  md-selected-text="viewSettings.getPlaceHolder()" multiple ng-model-options="{trackBy: '$value.id'}" no-dirty-check>
                                                                 <md-optgroup label="Columns">
                                                                     <md-option ng-repeat="opt in  viewSettings.columnOptions track by $index" ng-value="opt">{{opt.label}}</md-option>
                                                                 </md-optgroup>
                                                             </md-select>
+                                                            </span>
 
                                                         </div>
 
@@ -252,7 +236,7 @@
                                                     <tr class="tbl-header" style="">
                                                         <th class="col-fixed-name">Name</th>
                                                         <th class="col-fixed-usage" style="text-align:center">Usage
-                                                            <button type="button" ng-show="(message.scope === 'USER') && !viewSettings.tableReadonly && (message.children.length>0)" class="btn btn-raised btn-info btn-xs" ng-click="OtoX(message)">O to X</button>
+                                                            <button type="button" ng-show="(message.scope === 'USER') && !viewSettings.tableReadonly && (message.children.length>0)" class="btn btn-raised btn-default btn-xs" ng-click="OtoX(message)">O to X</button>
                                                         </th>
                                                         <th class="col-fixed-cardinality" style="text-align:center">Cardinality</th>
                                                         <th class="col-fixed-length" style="text-align:center" ng-show="viewSettings.isVisibleColumn('length')">Length</th>
@@ -372,128 +356,7 @@
                                     </md-tabs>
                                 </md-tab-body>
                             </md-tab>
-                            <md-tab md-on-select="callMsgDelta()">
-                                <md-tab-label>
-                                    <i class="fa fa-table fa-fw" aria-hidden="true"></i>Delta
-                                </md-tab-label>
-                                <md-tab-body class="metadata-scroll">
 
-                                 <div class="panel-body metadata-scroll" style="margin:5px;">
-
-                                 <md-tabs md-dynamic-height md-border-bottom md-selected="deltaTabStatus.active">
-                                   <md-tab>
-                                    <md-tab-label>
-                                        <span><i class="fa fa-cog fa-fw"></i> Configuration </span>
-                                    </md-tab-label>
-                                    <md-tab-body>
-
-                                <div class="panel-primary">
-                                 <div class="panel-body">
-                                    <table class="table table-stripped table-borderless table-condensed">
-                                        <thead>
-                                            <tr class="tbl-header">
-                                                <th class="col-md-1"></th>
-                                                <th class="col-md-2">HL7 Version</th>
-                                                <th class="col-md-2">Scope</th>
-                                                <th class="col-md-3">IG Document</th>
-                                                <th class="col-md-4">Message</th>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="col-md-1">
-                                                    <span class="badge badge-delta badge-delta-1">1</span>
-                                                </td>
-                                                <td class="col-md-2">
-                                                    <md-select ng-model="version1"  disabled placeholder="{{version1}}">
-                                                    </md-select>
-                                                </td>
-                                                <td class="col-md-2">
-                                                    <md-select ng-model="scope1"  disabled placeholder="{{scope1}}">
-                                                        </md-select>
-                                                </td>
-                                                <td class="col-md-3">
-                                                    <md-select ng-model="ig1"  disabled placeholder="{{ig1}}">
-                                                        </md-select>
-                                                </td>
-                                                <td class="col-md-4">
-                                                    <md-select ng-model="message1"  disabled placeholder="{{message1.name}}">
-                                                        </md-select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-md-1">
-                                                    <span class="badge badge-delta badge-delta-2">2</span>
-                                                </td>
-                                                <td class="col-md-2">
-                                                    <md-select ng-model="version2" ng-change="setVersion2(version2)" no-dirty-check>
-                                                            <md-option ng-repeat="vr in versions track by $index" value='{{vr}}' ng-selected="vr===version2"> {{::vr}}</md-option>
-                                                        </md-select>
-                                                </td>
-                                                <td class="col-md-2">
-                                                    <md-select ng-model="scope2"  ng-change="setScope2(scope2)" no-dirty-check>
-                                                            <md-option ng-repeat="scope in scopes track by $index" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{::scope.alias}}</md-option>
-                                                        </md-select>
-                                                </td>
-                                                <td class="col-md-3">
-                                                    <md-select  ng-model="ig2" ng-click="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check>
-
-                                                        <md-option ng-repeat="ig in igList2 track by $index" ng-value="ig">{{ig.title}}</md-option>
-                                                    </md-select>
-                                                </td>
-
-                                                <td class="col-md-4">
-                                                    <md-select ng-model="cmpMsg.messageId" ng-change="setMsg2(cmpMsg.messageId)" ng-disabled="!ig2" no-dirty-check>
-                                                            <md-option ng-repeat="message in messages2 track by $index" ng-disabled="disableMsg(message,message1)" ng-hide="hideMsg(message,message1)" value='{{$index}}'> {{::message.name}}</md-option>
-                                                        </md-select>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="" align="center" style="margin-bottom:10px">
-                                        <md-button ng-click="cmpMessage(message1,message2)" ng-disabled="!message1 || cmpMsg.messageId===-1||!msgChanged || !message2" class="btn btn-raised btn-info btn-md"><i class="fa fa-check"></i> View Delta</md-button>
-                                    </div>
-                                </div>
-                            </div>
-                                    </md-tab-body>
-                                </md-tab>
-
-                                     <md-tab>
-                                        <md-tab-label>
-                                            <span><i class="fa fa-check fa-fw"></i> Result </span>
-                                        </md-tab-label>
-                                        <md-tab-body>
-
-                                <div class="panel-primary" >
-                                      <div class="panel-body">
-                                        <table tt-table tt-params="dynamicMsg_params" class=" table-marginless table-bordered table-condensed">
-                                            <thead>
-                                                <tr class="tbl-header">
-                                                    <th class="col-md-1" rowspan="2" style="width:14%;">Position</th>
-                                                    <th class="col-md-2" rowspan="2" style="width:37%;">Name</th>
-                                                    <th class="col-md-1" rowspan="2" style="width:2%">Usage</th>
-                                                    <th class="col-md-1" colspan="2" style="width:4%">Cardinality</th>
-                                                    <th class="col-md-1" colspan="2" style="width:4%" ng-show="viewSettings.isVisibleColumn('length')">Length</th>
-                                                    <th class="col-md-1" rowspan="2" style="width:2%" ng-show="showConfLength() && viewSettings.isVisibleColumn('confLength')">Conformance Length</th>
-                                                    <th class="col-md-1" rowspan="2" style="width:21%">Data Type</th>
-                                                    <th class="col-md-1" rowspan="2" style="width:16%">Value Set</th>
-                                                </tr>
-                                                <tr class="tbl-header">
-                                                    <th class="col-md-1 col-fixed-10" style="width:2%">min</th>
-                                                    <th class="col-md-1 col-fixed-10" style="width:2%">max</th>
-                                                    <th class="col-md-1 col-fixed-10" style="width:2%">min</th>
-                                                    <th class="col-md-1 col-fixed-10" style="width:2%">max</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                        </md-tab-body>
-                                     </md-tab>
-                            </md-tabs>
-                        </div>
-                                </md-tab-body>
-                            </md-tab>
                         </md-tabs>
                 </div>
             </div>
@@ -504,41 +367,43 @@
 <script type="text/ng-template" id="MessageSegmentRefEditTree.html">
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
         <td>
-            <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-            <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
-            <a ng-show="editableSeg!==node.obj.id" ng-click="editSgmt(node,message)" class="point">
-                <span><i class="fa fa-pencil fa-fw"></i></span>
-            </a>
-            <a ng-show="editableSeg!==node.obj.id" ng-click="deleteSeg(node)" class="point">
-                <span><i class="fa fa-trash fa-fw"></i></span>
-            </a>
+            <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()" && node.obj.added !=='yes'"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()&& node.obj.added !=='yes'"><i class="fa fa-check-circle" style="color:green;"></i></span>
+            <span ng-show="validationResult && isMessageValidated()&& node.obj.added =='yes'"><i class="glyphicon glyphicon-exclamation-sign" style="color: blue"></i>
+                    <md-tooltip md-direction="right" >
+                    <span> This Segment is ignored by the validation since it is not a part of the original message</span>
+                    </md-tooltip>
+            </span>
+
             <ng-form class="form-inline">
-                <span id="segEditTree" class="label label-segment label-icon">S</span>
-                <a ng-show="editableSeg!==node.obj.id" ng-click="redirectSeg(node.obj.ref)" class="point">{{getSegmentRefNodeName(node.obj)}}</a>
-                <!--<select ng-show="editableSeg===node.obj.id" ng-model="position" ng-change="selectPos(node,position)" style="width:15%" class="form-control input-sm">
-                    <option ng-repeat="child in $root.segParent.children"  ng-selected="node.obj.position===child.position"> {{child.position}}</option>
-                </select>-->
-                <select ng-show="editableSeg===node.obj.id" ng-model="segmentRef" ng-change="selectSeg(node,segmentRef)" style="width:40%" class="form-control input-sm">
-                    <option ng-repeat="segmentRef in tmpResults track by $index" value="{{segmentRef}}"  ng-selected="node.obj.ref.id===segmentRef.id"> {{getSegmentLabel(segmentRef)}} {{::segmentRef.hl7Version}}</option>
-                </select>
 
+                <a ng-show="editableSeg!==node.obj.id" ng-click="redirectSeg(node.obj.ref)" class="point">
+                    <span id="segEditTree" class="label label-segment label-icon">S</span>{{node.position}}. {{getSegmentLabel(segmentsMap[node.obj.ref.id])}}:{{segmentsMap[node.obj.ref.id].description}}
+                </a>
+                <span ng-show="editableSeg!==node.obj.id" ng-click="editSgmt(node,message)" class="point">
+                    <span ><i class="fa fa-pencil fa-fw"></i></span>
+                </span>
 
-
-
-                <!--<md-select ng-show="editableSeg===node.obj.id" ng-model="position" ng-change="selectPos(node,position)" style="width:15%"">-->
-                    <!--<md-option ng-repeat="child in $root.segParent.children"  ng-selected="node.obj.position===child.position">-->
-                      <!--{{child.position}}-->
-                    <!--</md-option>-->
-                <!--</md-select>-->
-                <!--<md-select ng-show="editableSeg===node.obj.id" ng-model="segmentRef" ng-change="selectSeg(node,segmentRef)" style="width:40%"">-->
-                    <!--<md-option ng-value="segmentRef" ng-repeat="segmentRef in tmpResults">-->
-                        <!--<display-label of="segmentsMap[segmentRef.id]" desc="false"></display-label>-->
-                    <!--</md-option>-->
-                <!--</md-select>-->
+                <span ng-if="node.obj.added=='yes'&&(!validationResult || !isMessageValidated())"><i class="glyphicon glyphicon-exclamation-sign" style="color: blue">
+                    <md-tooltip>
+                        <span> This Segment will be ignored by the validation since it is not a part of the original message </span>
+                    </md-tooltip>
+                </i></span>
+                <span ng-show="editableSeg!==node.obj.id&& node.obj.added=='yes'" ng-click="deleteSeg(node)" class="point">
+                    <span style="color: red;"><i class="fa fa-trash fa-fw"></i></span>
+                </span>
+                <md-select ng-show="editableSeg===node.obj.id" ng-model="segmentRef" ng-change="selectSeg(node,segmentRef)" placeholder="Select Segment Flavor">
+                    <md-option ng-repeat="segmentRef in tmpResults track by $index" ng-value="segmentRef">  <display-label of="segmentsMap[segmentRef.id]" desc="true"></display-label></md-option>
+                </md-select>
 
                 <div align="center">
                     <a ng-show="editableSeg===node.obj.id" ng-click="backSeg()">
-                        <span><i align="center" class="glyphicon glyphicon-remove"></i></span>
+                        <span><i align="center" class="glyphicon glyphicon-remove"></i>
+                              <md-tooltip md-direction="right" >
+                                <span> cancel</span>
+                                </md-tooltip>
+
+                        </span>
                     </a>
                 </div>
             </ng-form>
@@ -681,12 +546,9 @@
         <td context-menu="segOption">
             <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
             <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
-            <a ng-show="editableGrp!==node.obj.id" ng-click="editGrp(node,message)" class="point">
-                <span><i class="fa fa-pencil fa-fw"></i></span>
-            </a>
-            <a ng-show="editableGrp!==node.obj.id" ng-click="deleteSeg(node)" class="point">
-                <span><i class="fa fa-trash fa-fw"></i></span>
-            </a>
+            <!--<a ng-show="editableGrp!==node.obj.id" ng-click="editGrp(node,message)" class="point">-->
+                <!--<span><i class="fa fa-pencil fa-fw"></i></span>-->
+            <!--</a>-->
             <ng-form class="form-inline">
                 <span class="label label-success label-icon">G</span>
                 <span ng-if="editableGrp!==node.obj.id" context-menu="segOption" ng-bind="getGroupNodeName(node.obj)" />
@@ -1530,7 +1392,7 @@
                                                                 </td>
                                                                 <td class="col-md-6">
                                                                     {{tablesMap[b.tableId].name}}
-                                                                </td>
+                                                                 </td>
                                                                 <td class="col-md-1" align="center">
                                                                     <a ng-click="deleteBinding(b)" class="point">
                                                                         <span title="Delete ValueSet Binding"><i class="icon-size-15 fa-times fa"></i></span>

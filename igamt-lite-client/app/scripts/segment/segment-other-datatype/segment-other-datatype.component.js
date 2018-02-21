@@ -91,7 +91,7 @@ angular.module('igl').controller('otherDTCtrl', function($scope, $mdDialog, data
 
   $scope.cancel = function() {
     field.datatype = oldDt;
-    $mdDialog.hide();
+    $mdDialog.hide('cancel');
   };
 
 

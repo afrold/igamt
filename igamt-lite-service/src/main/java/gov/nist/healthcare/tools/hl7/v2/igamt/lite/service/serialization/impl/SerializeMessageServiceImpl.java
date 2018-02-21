@@ -117,7 +117,7 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
                 serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
                 if (serializationLayout.equals(SerializationLayout.PROFILE)) {
                     serializeSegment(segmentRefOrGroup, messageSegments.getPrefix() + ".",
-                        messageSegments, segmentUsageConfig, fieldsUsageConfig, exportConfig.isDuplicateOBXDataTypeWhenFlavorNull(), exportConfig.getCoConstraintExportMode());
+                        messageSegments, segmentUsageConfig, fieldsUsageConfig, exportConfig.isGreyOutOBX2FlavorColumn(), exportConfig.getCoConstraintExportMode());
                 }
             }
             if (!messageSegments.getSerializableSectionList().isEmpty()) {

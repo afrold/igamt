@@ -44,6 +44,8 @@ public interface TableOperations {
   public void updateStatus(String id, STATUS status);
 
   public void updateDescription(String id, String description);
+  
+  public void updateAllDescription(String id, String description, String defPreText, String defPostText);
 
   public void updateCodeSystem(String id, Set<String> codesSystemtoAdd);
 

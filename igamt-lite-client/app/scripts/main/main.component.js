@@ -2512,6 +2512,9 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
       }
     }
 
+
+
+
     SegmentService.updateTableBinding(segmentUpdateParameterList).then(function(result) {}, function(error) {
       $rootScope.msg().text = error.data.text;
       $rootScope.msg().type = error.data.type;
@@ -4144,7 +4147,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
   };
 
   $rootScope.getFieldNodeName = function(node) {
-    return node.position + "." + node.name;
+    return   node.name;
   };
 
   $rootScope.getComponentNodeName = function(node) {

@@ -5,14 +5,6 @@
 
 angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, segments, place, $rootScope, $http, ngTreetableParams, SegmentService, MessageService, blockUI) {
   $scope.segmentParent = place;
-  //console.log(place);
-
-
-  // $scope.segmentss = result.filter(function(current) {
-  //     return segments.filter(function(current_b) {
-  //         return current_b.id == current.id;
-  //     }).length == 0
-  // });
   $scope.searchText="";
   $scope.segments = segments;
   $scope.querySearch=function (query) {
@@ -28,8 +20,6 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, s
 
   }
 
-
-
   $scope.getLowerCaseLabel= function(element) {
     if (!element.ext || element.ext == "") {
       return angular.lowercase(element.name);
@@ -39,31 +29,32 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, s
   };
 
   $scope.newSegment = {
-    accountId: null,
-    comment: "",
-    conformanceStatements: [],
-    date: null,
-    hl7Version: null,
-    id: "",
-    libIds: [],
-    max: "",
-    min: "",
-    participants: [],
-    position: place.children.length+1,
-    predicates: [],
-    ref: {
+      added:"yes",
+      accountId: null,
+      comment: "",
+      conformanceStatements: [],
+      date: null,
+      hl7Version: null,
+      id: "",
+      libIds: [],
+      max: "",
+      min: "",
+      participants: [],
+      position: place.children.length+1,
+      predicates: [],
+      ref: {
       ext: null,
       id: "",
       label: "",
       name: ""
-    },
-    scope: null,
-    status: null,
-    type: "segmentRef",
-    usage: "",
-    version: null
-
+      },
+      scope: null,
+      status: null,
+      type: "segmentRef",
+      usage: "",
+      version: null
   };
+
   $scope.$watch('newSeg', function() {
     if ($scope.newSeg) {
       $scope.newSegment.id = new ObjectId().toString();
@@ -73,6 +64,7 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, s
     }
 
   }, true);
+
   $scope.isInSegs = function(segment) {
     console.log(segment);
     console.log(segments.indexOf(segment));
@@ -81,10 +73,9 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, s
     } else {
       return true;
     }
-
   };
+
   $scope.selectUsage = function(usage) {
-    console.log(usage);
     if (usage === 'X' || usage === 'W') {
       $scope.newSegment.max = 0;
       $scope.newSegment.min = 0;
@@ -105,7 +96,6 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, s
     } else {
       $scope.disableMin = false;
       $scope.disableMax = false;
-
     }
 
   };
@@ -139,18 +129,14 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, s
 
         var path = place.path.replace(/\[[0-9]+\]/g, '');
         path = path.split(".");
-        console.log("inserting in path:" +path);
-
-
         $scope.insertInPath(path, $rootScope.message, $scope.newSegment);
     }
     $rootScope.messageTree = null;
     $rootScope.processMessageTree($rootScope.message);
     blockUI.stop();
     $mdDialog.hide();
-
-
   };
+
   $scope.insertInPath=function(path,messageOrGroup,segment){
     console.log(path);
 

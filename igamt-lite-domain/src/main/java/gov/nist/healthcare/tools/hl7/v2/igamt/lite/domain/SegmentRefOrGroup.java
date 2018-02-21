@@ -30,6 +30,8 @@ public abstract class SegmentRefOrGroup extends DataModelWithConstraints impleme
 
   @Deprecated
   protected String comment = "";
+  
+  private String added= Constant.NO;
 
   public Usage getUsage() {
     return usage;
@@ -85,4 +87,13 @@ public abstract class SegmentRefOrGroup extends DataModelWithConstraints impleme
   public int compareTo(SegmentRefOrGroup o) {
     return this.getPosition() - o.getPosition();
   }
+
+public String getAdded() {
+	return added;
+}
+
+public void setAdded(String added) {
+	this.added = added;
+}
+
 }

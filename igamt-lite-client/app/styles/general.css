@@ -2937,16 +2937,10 @@ md-ink-bar{
 }
 .menu-table{
     width: 68px !important;
-    min-width: 68px !important;
-    padding: 0px !important;
+    min-width: 90px !important;
     height: 20px !important;
     min-height: 17px !important;
-    font-size: inherit !important;
-    padding-top: initial !important;
     line-height: inherit;
-    color: white;
-    text-transform: initial;
-
 }
 
 .menu-table-display{
@@ -3283,4 +3277,11 @@ tfoot.fixed-header td.fixed-header {
 }
 .delta1{
     background-color:#B5F7EC;
+}
+
+.trunc-name{
+    max-width: 190px !important;
+    overflow:hidden !important;
+    white-space:nowrap !important;
+    text-overflow: ellipsis !important;
 }

@@ -390,7 +390,13 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     });
   };
 
-  $scope.openPredicateDialog = function(node) {
+  $scope.updateLabel=function (obj) {
+        console.log(obj);
+        obj.label=obj.name+"_"+obj.ext;
+  };
+
+
+    $scope.openPredicateDialog = function(node) {
     if (node.usage == 'C') $scope.managePredicate(node);
   };
 
@@ -482,8 +488,26 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
   };
   $scope.editableField = '';
   $scope.editField = function(field) {
-    $scope.editableField = field.id;
-    $scope.fieldName = field.name;
+
+
+
+      var modalInstance = $mdDialog.show({
+          templateUrl: 'EditField.html',
+          controller: 'EditFieldCtrl',
+          locals: {
+              name: field.name
+          },
+      });
+      modalInstance.then(function(result) {
+          if(result&&result!=='cancel'){
+              $scope.setDirty();
+              field.name=result;
+
+              if ($scope.segmentsParams)
+                  $scope.segmentsParams.refresh();
+          }
+
+      });
 
   };
 
@@ -582,6 +606,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
 
 
+
   $scope.selectDT = function(field, datatype) {
     if (datatype) {
       $scope.DTselected = true;
@@ -619,27 +644,25 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
   // };
   $scope.otherDT = function(field) {
-    console.log("Changing a data type from field")
     var modalInstance = $mdDialog.show({
       templateUrl: 'otherDTModal.html',
       controller: 'otherDTCtrl',
       scope: $scope,        // use parent scope in template
       preserveScope: true,
       locals: {
-
-        datatypes:  $rootScope.datatypes,
-
+        datatypes :  $rootScope.datatypes,
         field:  field
       }
-
-
     });
     modalInstance.then(function(field) {
-      $scope.setDirty();
-      $scope.editableDT = '';
-      if ($scope.segmentsParams) {
-        $scope.segmentsParams.refresh();
+      if(field !=='cancel'){
+          $scope.setDirty();
+          if ($scope.segmentsParams) {
+              $scope.segmentsParams.refresh();
+          }
       }
+      $scope.editableDT = '';
+
     });
 
   };
@@ -1007,7 +1030,9 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     if($scope.hasChildren(node)) return false;
     var bindings = $scope.findingBindings(node);
     if(bindings && bindings.length > 0) return false;
-    if($rootScope.datatypesMap[node.datatype.id].name == 'ID' || $rootScope.datatypesMap[node.datatype.id].name == "IS") return false;
+    if(node.datatype &&node.datatype.id){
+        if($rootScope.datatypesMap[node.datatype.id].name == 'ID' || $rootScope.datatypesMap[node.datatype.id].name == "IS") return false;
+    }
     return true;
   };
 
@@ -1750,4 +1775,20 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
       return 'empty';
     }
   };
+});
+
+angular.module('igl').controller('EditFieldCtrl', function($scope, $mdDialog,name, $rootScope, blockUI) {
+    $scope.loading = false;
+    $scope.name=name;
+
+    $scope.ok = function() {
+        $mdDialog.hide($scope.name);
+    };
+
+
+    $scope.cancel = function() {
+        $mdDialog.hide('cancel');
+    };
+
+
 });

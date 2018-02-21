@@ -38,6 +38,7 @@ angular.module('igl')
 
     };
 
+
     $scope.deleteConformanceStatementFromList = function(c) {
       $rootScope.datatype.conformanceStatements.splice($rootScope.datatype.conformanceStatements.indexOf(c), 1);
 
@@ -405,32 +406,9 @@ angular.module('igl')
         $scope.otherDT(field);
       }
     };
-    // $scope.otherDT = function(field) {
-    //     var modalInstance = $modal.open({
-    //         templateUrl: 'otherDTModal.html',
-    //         controller: 'otherDTCtrl',
-    //         windowClass: 'edit-VS-modal',
-    //         resolve: {
-    //             datatypes: function() {
-    //                 return $rootScope.datatypes;
-    //             },
-    //             field: function() {
-    //                 return field;
-    //             }
-    //         }
-    //     });
-    //     modalInstance.result.then(function(field) {
-    //         $scope.setDirty();
-    //         $rootScope.recordChanged();
-    //         $scope.editableDT = '';
-    //         if ($scope.datatypesParams) {
-    //             $scope.datatypesParams.refresh();
-    //         }
-    //     });
-    // };
 
     $scope.otherDT = function(field) {
-      console.log("Changing a data type from field")
+
       var modalInstance = $mdDialog.show({
         templateUrl: 'otherDTModal.html',
         controller: 'otherDTCtrl',
@@ -442,7 +420,6 @@ angular.module('igl')
 
           field:  field
         }
-
 
       });
       modalInstance.then(function(field) {
@@ -823,7 +800,14 @@ angular.module('igl')
       $rootScope.recordChangeForEdit2('component', 'edit', node.id, 'table', null);
     };
 
+    $scope.updateLabel=function (obj) {
+          console.log(obj);
+          obj.label=obj.name+"_"+obj.ext;
+
+    };
+
     $scope.managePredicate = function(node) {
+      console.log($rootScope.datatype);
       $mdDialog.show({
         parent: angular.element(document).find('body'),
         templateUrl: 'PredicateDatatypeCtrl.html',

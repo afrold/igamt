@@ -145,7 +145,7 @@ public class DatatypeReadConverter extends AbstractReadConverter<DBObject, Datat
     c.setMaxLength((String) source.get(MAX_LENGTH));
     c.setConfLength(getConfLength(source));
     c.setPosition((Integer) source.get(POSITION));
-    c.setTables((tableLinks((BasicDBList) source.get(Constant.TABLES))));
+//    c.setTables((tableLinks((BasicDBList) source.get(Constant.TABLES))));
     c.setUsage(Usage.valueOf((String) source.get(USAGE)));
     c.setDatatype((datatypeLink((DBObject) source.get(Constant.DATATYPE))));
     return c;

@@ -65,22 +65,22 @@ import javax.xml.crypto.Data;
     @Autowired SerializeConstraintService serializeConstraintService;
 
     @Override
-    public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull,CoConstraintExportMode coConstraintExportMode) throws SegmentSerializationException {
+    public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Boolean greyOutOBX2FlavorColumn,CoConstraintExportMode coConstraintExportMode) throws SegmentSerializationException {
         Segment segment = segmentService.findById(segmentLink.getId());
-        return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,null,null, false, duplicateOBXDataTypeWhenFlavorNull, null, coConstraintExportMode);
+        return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,null,null, false, greyOutOBX2FlavorColumn, null, coConstraintExportMode);
     }
 
     @Override public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix,
         Integer position, Integer headerLevel, UsageConfig segmentUsageConfig,
-        Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean duplicateOBXDataTypeWhenFlavorNull,Boolean includeTemorary,CoConstraintExportMode coConstraintExportMode) throws SegmentSerializationException {
+        Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean greyOutOBX2FlavorColumn,Boolean includeTemorary,CoConstraintExportMode coConstraintExportMode) throws SegmentSerializationException {
         Segment segment = compositeProfileSegments.get(segmentLink.getId());
         if(segment.isTemporary() && !includeTemorary){
         	return null;
         }
-        return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,compositeProfileDatatypes,compositeProfileTables, false, duplicateOBXDataTypeWhenFlavorNull, null, coConstraintExportMode);
+        return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,compositeProfileDatatypes,compositeProfileTables, false, greyOutOBX2FlavorColumn, null, coConstraintExportMode);
         }
 
-    private SerializableSection serializeSegment(Segment segment, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean showInnerLinks, Boolean duplicateOBXDataTypeWhenFlavorNull, String host, CoConstraintExportMode coConstraintExportMode) throws SegmentSerializationException {
+    private SerializableSection serializeSegment(Segment segment, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean showInnerLinks, Boolean greyOutOBX2FlavorColumn, String host, CoConstraintExportMode coConstraintExportMode) throws SegmentSerializationException {
         if (segment != null) {
             try {
                 //Create section node
@@ -253,7 +253,7 @@ import javax.xml.crypto.Data;
                         segment, name, label, description, comment, defPreText, defPostText,
                         constraints, fieldDatatypeMap, fieldValueSetBindingsMap, tables,
                         coConstraintValueTableMap, dynamicMappingDatatypeMap, showConfLength,
-                        showInnerLinks, duplicateOBXDataTypeWhenFlavorNull, host,
+                        showInnerLinks, greyOutOBX2FlavorColumn, host,
                         coConstraintDatatypeMap, coConstraintExportMode);
                 serializableSegmentSection.addSection(serializableSegment);
                 return serializableSegmentSection;

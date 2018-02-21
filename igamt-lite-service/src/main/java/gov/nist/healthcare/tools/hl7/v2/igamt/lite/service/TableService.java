@@ -65,6 +65,8 @@ public interface TableService {
   List<Table> findByScopeAndVersion(String scope, String hl7Version);
 
   public void updateDescription(String id, String description);
+  
+  public void updateAllDescription(String id, String description, String defPreText, String defPostText);
 
   void updateCodeSystem(String id, Set<String> codesSystemtoAdd);
 

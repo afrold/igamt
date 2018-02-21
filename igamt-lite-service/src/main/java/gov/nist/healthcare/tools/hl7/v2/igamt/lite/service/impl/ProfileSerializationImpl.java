@@ -783,14 +783,14 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     filteredProfile.setUsageNote(original.getUsageNote());
     filteredProfile.setMetaData(original.getMetaData());
 
-    for (SegmentLink sl : original.getSegmentLibrary().getChildren()) {
-      if (sl != null) {
-        Segment s = segmentService.findById(sl.getId());
-        if (s != null) {
-          segmentsMap.put(s.getId(), s);
-        }
-      }
-    }
+//    for (SegmentLink sl : original.getSegmentLibrary().getChildren()) {
+//      if (sl != null) {
+//        Segment s = segmentService.findById(sl.getId());
+//        if (s != null) {
+//          segmentsMap.put(s.getId(), s);
+//        }
+//      }
+//    }
 
     for (DatatypeLink dl : original.getDatatypeLibrary().getChildren()) {
       if (dl != null) {
@@ -951,7 +951,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
       Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
     if (seog instanceof SegmentRef) {
       SegmentRef sr = (SegmentRef) seog;
-      Segment s = segmentsMap.get(sr.getRef().getId());
+//      Segment s = segmentsMap.get(sr.getRef().getId());
+      Segment s = segmentService.findById(sr.getRef().getId());
+      segmentsMap.put(s.getId(), s);
 
       if (s.getName().equals("OBX") || s.getName().equals("MFA") || s.getName().equals("MFE")) {
         String reference = null;
