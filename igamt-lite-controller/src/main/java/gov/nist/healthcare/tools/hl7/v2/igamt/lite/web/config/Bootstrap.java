@@ -34,7 +34,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
@@ -125,6 +124,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
@@ -173,6 +173,8 @@ public class Bootstrap implements InitializingBean {
   @Autowired
   DatatypeService datatypeService;
   @Autowired
+  SegmentLibraryService segmentLibraryService;
+  @Autowired
   DatatypeLibraryService datatypeLibraryService;
   @Autowired
   TableLibraryService tableLibraryService;
@@ -193,6 +195,9 @@ public class Bootstrap implements InitializingBean {
 
   @Autowired
   private DatatypeLibraryRepository daatypeLibraryRepository;
+  
+  @Autowired
+  private IGDocumentService iGDocumentService;
 
   @Autowired
   private DeltaService deltaService;
@@ -333,12 +338,12 @@ public class Bootstrap implements InitializingBean {
      //2.0.0-beta10
     //makePhinvadsExternal(); 
 	  //reMapp() //saves all datatypes and segments and tables to remove the old to get rid of old attributes ;
-	  addVersionToProfile();
+	  //addVersionToProfile();
     
 //    investigateMutipleValueSets();
 	  
-	  
-	  fixValueSetDataDB();
+	 fixLibraries();
+	 // fixValueSetDataDB();
   }
   
   private void fixValueSetDataDB() {
@@ -652,6 +657,152 @@ private String segmentOrgroupVersion(SegmentRefOrGroup sog) {
     // System.out.println(largeTableLISTCSV);
     // System.out.println(IGUsedLargeTableLISTCSV);
   }
+  
+	private void fixLibraries() {
+		List<IGDocument> igDocuments = iGDocumentService.findAll();
+		Set<Segment> segments;
+		Set<DatatypeLink> datatypes;
+		Set<TableLink> valueSets;
+		for (IGDocument igDocument : igDocuments) {
+			segments = new HashSet<>();
+			datatypes = new HashSet<>();
+			valueSets = new HashSet<>();
+			for (Message message : igDocument.getProfile().getMessages().getChildren()) {
+				for (SegmentRefOrGroup segmentRefOrGroup : message.getChildren()) {
+					identifyBindedItemsFromSegmentOrGroup(segmentRefOrGroup, segments, datatypes, valueSets);
+				}
+			}
+			boolean changed = false;
+			for(Segment segment : segments){
+				if(!igDocument.getProfile().getSegmentLibrary().contains(segment.getId())){
+					changed = true;
+					igDocument.getProfile().getSegmentLibrary().addSegment(segment);
+				}
+			}
+			if(changed) segmentLibraryService.save(igDocument.getProfile().getSegmentLibrary());
+			changed = false;
+			for(DatatypeLink datatypeLink : datatypes){
+				if(!igDocument.getProfile().getDatatypeLibrary().contains(datatypeLink)){
+					changed = true;
+					igDocument.getProfile().getDatatypeLibrary().addDatatype(datatypeLink);
+				}
+			}
+			if(changed) datatypeLibraryService.save(igDocument.getProfile().getDatatypeLibrary());
+			changed = false;
+			for(TableLink tableLink : valueSets){
+				if(!igDocument.getProfile().getTableLibrary().contains(tableLink)){
+					changed = true;
+					igDocument.getProfile().getTableLibrary().addTable(tableLink);
+					tableLibraryService.save(igDocument.getProfile().getTableLibrary());
+				}
+			}
+			if(changed) tableLibraryService.save(igDocument.getProfile().getTableLibrary());
+			changed = false;
+		}
+	}
+
+	private void identifyBindedItemsFromSegmentOrGroup(SegmentRefOrGroup segmentRefOrGroup, Set<Segment> segments,
+			Set<DatatypeLink> datatypes, Set<TableLink> valueSets) {
+		if (segmentRefOrGroup instanceof SegmentRef) {
+			Segment segment = segmentService.findById(((SegmentRef) segmentRefOrGroup).getRef().getId());
+			if (!segments.contains(segment)) {
+				segments.add(segment);
+			}
+			if (segment != null) {
+				for (Field field : segment.getFields()) {
+					if (field.getDatatype() != null && !datatypes.contains(field.getDatatype())) {
+						datatypes.add(field.getDatatype());
+						Datatype datatype = datatypeService.findById(field.getDatatype().getId());
+						for (ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : datatype.getValueSetBindings()) {
+							if (valueSetOrSingleCodeBinding instanceof ValueSetBinding
+									&& valueSetOrSingleCodeBinding.getTableId() != null
+									&& !valueSets.contains(valueSetOrSingleCodeBinding.getTableId())) {
+								Table table = tableService.findById(valueSetOrSingleCodeBinding.getTableId());
+								if(table.getScope().equals(SCOPE.ARCHIVED) && !table.getStatus().equals(STATUS.PUBLISHED)){
+									
+									table.setScope(SCOPE.USER);
+									tableService.updateAttributes(table.getId(),"scope",SCOPE.USER);
+								
+								}
+								if(table != null){
+									TableLink tableLink = new TableLink(table.getId(), table.getBindingIdentifier());
+									valueSets.add(tableLink);
+								}
+							}
+						}
+						if (datatype != null) {
+							for (Component component : datatype.getComponents()) {
+								if (component.getDatatype() != null && !datatypes.contains(component.getDatatype())) {
+									datatypes.add(component.getDatatype());
+								}
+
+							}
+						}
+					}
+				}
+				for (ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : segment.getValueSetBindings()) {
+					if (valueSetOrSingleCodeBinding instanceof ValueSetBinding
+							&& valueSetOrSingleCodeBinding.getTableId() != null
+							&& !valueSets.contains(valueSetOrSingleCodeBinding.getTableId())) {
+						Table table = tableService.findById(valueSetOrSingleCodeBinding.getTableId());
+						if(table != null){
+							TableLink tableLink = new TableLink(table.getId(), table.getBindingIdentifier());
+							valueSets.add(tableLink);
+						}
+					}
+				}
+				if (segment.getDynamicMappingDefinition() != null
+						&& segment.getDynamicMappingDefinition().getDynamicMappingItems() != null) {
+					for (DynamicMappingItem dynamicMappingItem : segment.getDynamicMappingDefinition()
+							.getDynamicMappingItems()) {
+						if (dynamicMappingItem.getDatatypeId() != null) {
+							Datatype datatype = datatypeService.findById(dynamicMappingItem.getDatatypeId());
+							if (datatype != null) {
+								DatatypeLink datatypeLink = new DatatypeLink(datatype.getId(), datatype.getName(),
+										datatype.getExt());
+								datatypes.add(datatypeLink);
+							}
+						}
+					}
+				}
+
+				if (segment.getCoConstraintsTable() != null
+						&& segment.getCoConstraintsTable().getThenMapData() != null) {
+					for (String key : segment.getCoConstraintsTable().getThenMapData().keySet()) {
+						if (segment.getCoConstraintsTable().getThenMapData().get(key) != null) {
+							for (CoConstraintTHENColumnData coConstraintTHENColumnData : segment.getCoConstraintsTable()
+									.getThenMapData().get(key)) {
+								if (coConstraintTHENColumnData != null) {
+									if (coConstraintTHENColumnData.getDatatypeId() != null) {
+										Datatype datatype = datatypeService
+												.findById(coConstraintTHENColumnData.getDatatypeId());
+										if (datatype != null) {
+											DatatypeLink datatypeLink = new DatatypeLink(datatype.getId(),
+													datatype.getName(), datatype.getExt());
+											datatypes.add(datatypeLink);
+										}
+									} else if (coConstraintTHENColumnData.getValueSets() != null
+											&& !coConstraintTHENColumnData.getValueSets().isEmpty()) {
+										for (ValueSetData valueSetData : coConstraintTHENColumnData.getValueSets()) {
+											Table table = tableService.findById(valueSetData.getTableId());
+											if(table != null){
+												TableLink tableLink = new TableLink(table.getId(), table.getBindingIdentifier());
+												valueSets.add(tableLink);
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		} else if (segmentRefOrGroup instanceof Group) {
+			for (SegmentRefOrGroup children : ((Group) segmentRefOrGroup).getChildren()) {
+				identifyBindedItemsFromSegmentOrGroup(children, segments, datatypes, valueSets);
+			}
+		}
+	}
 
   
   private void makePhinvadsExternal() {

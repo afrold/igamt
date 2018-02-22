@@ -280,5 +280,9 @@ public class TableLibrary extends Library implements java.io.Serializable, Clone
   public void setCodePresence(HashMap<String, Boolean> codePresence) {
     this.codePresence = codePresence;
   }
+  
+  public boolean contains(TableLink tableLink){
+	  return this.children.contains(tableLink);
+  }
 
 }
