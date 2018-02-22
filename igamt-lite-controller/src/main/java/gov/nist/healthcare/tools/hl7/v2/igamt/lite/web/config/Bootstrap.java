@@ -342,8 +342,8 @@ public class Bootstrap implements InitializingBean {
     
 //    investigateMutipleValueSets();
 	  
-	  
-	  fixValueSetDataDB();
+	  fixLibraries();
+	 // fixValueSetDataDB();
   }
   
   private void fixValueSetDataDB() {
