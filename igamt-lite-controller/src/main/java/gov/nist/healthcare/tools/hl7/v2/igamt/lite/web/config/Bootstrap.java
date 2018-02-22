@@ -34,7 +34,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
@@ -43,7 +42,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ColumnsConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
@@ -126,13 +124,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DataCorrectionSectionPosition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 
 @Service
 public class Bootstrap implements InitializingBean {
@@ -174,6 +172,8 @@ public class Bootstrap implements InitializingBean {
   SegmentService segmentService;
   @Autowired
   DatatypeService datatypeService;
+  @Autowired
+  SegmentLibraryService segmentLibraryService;
   @Autowired
   DatatypeLibraryService datatypeLibraryService;
   @Autowired
@@ -338,11 +338,11 @@ public class Bootstrap implements InitializingBean {
      //2.0.0-beta10
     //makePhinvadsExternal(); 
 	  //reMapp() //saves all datatypes and segments and tables to remove the old to get rid of old attributes ;
-	  addVersionToProfile();
+	  //addVersionToProfile();
     
 //    investigateMutipleValueSets();
 	  
-	  fixLibraries();
+	 fixLibraries();
 	 // fixValueSetDataDB();
   }
   
@@ -679,18 +679,25 @@ private String segmentOrgroupVersion(SegmentRefOrGroup sog) {
 					igDocument.getProfile().getSegmentLibrary().addSegment(segment);
 				}
 			}
+			if(changed) segmentLibraryService.save(igDocument.getProfile().getSegmentLibrary());
+			changed = false;
 			for(DatatypeLink datatypeLink : datatypes){
 				if(!igDocument.getProfile().getDatatypeLibrary().contains(datatypeLink)){
 					changed = true;
 					igDocument.getProfile().getDatatypeLibrary().addDatatype(datatypeLink);
 				}
 			}
+			if(changed) datatypeLibraryService.save(igDocument.getProfile().getDatatypeLibrary());
+			changed = false;
 			for(TableLink tableLink : valueSets){
 				if(!igDocument.getProfile().getTableLibrary().contains(tableLink)){
 					changed = true;
 					igDocument.getProfile().getTableLibrary().addTable(tableLink);
+					tableLibraryService.save(igDocument.getProfile().getTableLibrary());
 				}
 			}
+			if(changed) tableLibraryService.save(igDocument.getProfile().getTableLibrary());
+			changed = false;
 		}
 	}
 
@@ -711,6 +718,12 @@ private String segmentOrgroupVersion(SegmentRefOrGroup sog) {
 									&& valueSetOrSingleCodeBinding.getTableId() != null
 									&& !valueSets.contains(valueSetOrSingleCodeBinding.getTableId())) {
 								Table table = tableService.findById(valueSetOrSingleCodeBinding.getTableId());
+								if(table.getScope().equals(SCOPE.ARCHIVED) && !table.getStatus().equals(STATUS.PUBLISHED)){
+									
+									table.setScope(SCOPE.USER);
+									tableService.updateAttributes(table.getId(),"scope",SCOPE.USER);
+								
+								}
 								if(table != null){
 									TableLink tableLink = new TableLink(table.getId(), table.getBindingIdentifier());
 									valueSets.add(tableLink);
