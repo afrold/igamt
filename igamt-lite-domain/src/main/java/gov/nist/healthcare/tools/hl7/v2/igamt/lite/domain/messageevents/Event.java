@@ -21,6 +21,8 @@ public class Event {
   String name;
   String parentStructId;
   final String type = "event";
+  
+  
 
   public Event() {
     super();

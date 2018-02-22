@@ -3,14 +3,15 @@ import {RouterModule} from '@angular/router'
 import {IgDocumentEditComponent} from './igdocument-edit.component';
 import {IgDocumentMetadataComponent} from './igdocument-metadata/igdocument-metadata.component';
 import {SectionComponent} from './section/section.component';
-import {IgDocumentGuard} from "./igdocument-edit.guard";
+// import {IgDocumentGuard} from "./igdocument-edit.guard";
+import {IgdocumentEditResolver} from "./IgdocumentEditResolver";
 
 @NgModule({
 	imports: [
 		RouterModule.forChild([
 			{
 				path: ':id',
-        canActivate : [ IgDocumentGuard ],
+        // canActivate : [ IgDocumentGuard ],
 				component: IgDocumentEditComponent,
         children: [
           { path: 'igdocument-metadata', component: IgDocumentMetadataComponent },
@@ -20,7 +21,11 @@ import {IgDocumentGuard} from "./igdocument-edit.guard";
           // { path: 'datatype', loadChildren: './datatype-edit/datatype-edit.module#DatatypeEditModule' }
 
         ]
-			},
+        ,
+        resolve:{
+          ig: IgdocumentEditResolver
+        }
+			}
       // {
       //   path : '**',
       //   redirectTo: '/'

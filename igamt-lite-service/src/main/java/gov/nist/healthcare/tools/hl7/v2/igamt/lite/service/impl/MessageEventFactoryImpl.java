@@ -14,8 +14,11 @@ import org.springframework.stereotype.Service;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageEventTree;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageEventTreeData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.Event;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageEventFactory;
@@ -37,21 +40,47 @@ public class MessageEventFactoryImpl implements MessageEventFactory {
   }
 
   @Override
-  public List<MessageEvents> createMessageEvents(Messages msgs, String hl7Version) {
+  public List<MessageEventTree> createMessageEvents(Messages msgs, String hl7Version) {
 
     Table tableO354 = getTable0354(hl7Version);
-    List<MessageEvents> list = new ArrayList<MessageEvents>();
+    List<MessageEventTree> list = new ArrayList<MessageEventTree>();
     if (tableO354 != null) {
       for (Message msg : msgs.getChildren()) {
-        String id = msg.getId();
-        String structID = msg.getStructID();
-        Set<String> events = findEvents(structID, tableO354);
-        String description = msg.getDescription();
-        list.add(new MessageEvents(id, structID, events, description));
+    	  MessageEventTree tree= new MessageEventTree();
+    	  MessageEventTreeData data = new MessageEventTreeData();
+    	
+    	  String id = msg.getId();
+    	  String structID = msg.getStructID();
+    	  Set<String> events = findEvents(structID, tableO354);
+    	  String description = msg.getDescription();
+    	  data.setDescription(description);
+    	  data.setType("message");
+    	  data.setId(id);
+    	  data.setName(msg.getName());
+    	  data.setStructId(structID);
+    	  tree.setData(data);
+    	  
+    	  for( String ev : events){
+    		  MessageEventTree branch= new MessageEventTree();
+    		  MessageEventTreeData dataev = new MessageEventTreeData();
+    		  dataev.setName(ev);
+//    		  dataev.setId(structID);
+    		  dataev.setParentStructId(structID);
+    		  dataev.setType("event");
+    		  
+    		  branch.setData(dataev);
+        	  tree.getChildren().add(branch);
+
+    	  }
+    	  list.add(tree);
+
+    	  
       }
     }
+
     return list;
   }
+  
 
   public Set<String> findEvents(String structID, Table tableO354) {
     Set<String> events = new HashSet<String>();

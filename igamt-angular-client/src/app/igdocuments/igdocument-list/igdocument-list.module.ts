@@ -9,13 +9,25 @@ import {IgDocumentListRoutingModule} from './igdocument-list-routing.module';
 import {TabMenuModule} from 'primeng/primeng';
 
 import {OrderListModule} from 'primeng/primeng';
+import {PickListModule} from 'primeng/primeng';
+import { MatButtonModule } from '@angular/material';
+import {MatListModule} from '@angular/material/list';
+
+import {MatIconModule} from '@angular/material/icon';
+
+
 import {IgListService} from "./igdocument-list.service";
+import {MatChipsModule} from '@angular/material/chips';
+
 @NgModule({
 	imports: [
 		CommonModule,
 		IgDocumentListRoutingModule,
 		TabMenuModule,
-    OrderListModule
+    OrderListModule,PickListModule,
+    MatButtonModule,MatListModule,MatIconModule,MatChipsModule
+
+
 	],
 	declarations: [
 		IgDocumentListComponent, MyIgsComponent, PreloadedIgsComponent, SharedIgsComponent, AllIgsComponent

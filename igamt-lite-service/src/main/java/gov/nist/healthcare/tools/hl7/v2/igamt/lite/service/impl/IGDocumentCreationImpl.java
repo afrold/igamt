@@ -40,6 +40,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageEventTree;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
@@ -114,10 +115,10 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	}
 
 	@Override
-	public List<MessageEvents> findMessageEvents(String hl7Version) {
+	public List<MessageEventTree> findMessageEvents(String hl7Version) {
 		List<IGDocument> igds = igdocumentRepository
 				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version);
-		List<MessageEvents> messageEvents = new ArrayList<MessageEvents>();
+		List<MessageEventTree> messageEvents = new ArrayList<MessageEventTree>();
 		if (!igds.isEmpty()) {
 			IGDocument igd = igds.get(0);
 			Messages msgs = igd.getProfile().getMessages();

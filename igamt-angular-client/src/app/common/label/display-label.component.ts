@@ -25,7 +25,7 @@ export class DisplayLabelComponent {
 
   ){}
   ngOnInit(){
-    this._ig = this._ws.getCurrent(Entity.IG);
+   this._ws.getCurrent(Entity.IG).subscribe(data=>{this._ig=data});
 
   }
 
@@ -118,11 +118,18 @@ export class DisplayLabelComponent {
   };
 
   goTo() {
-    console.log("Calling");
     var type=this.elm.type;
     var IgdocumentId=this._ig.id;
-    var link="/ig-documents/igdocuments-edit/"+IgdocumentId+"/"+this.elm.type+"/"+this.elm.id;
-    this.router.navigate([link]);
+
+    this.route.queryParams
+      .subscribe(params => {
+        console.log(params); // {order: "popular"}
+
+
+        var link="/ig-documents/igdocuments-edit/"+IgdocumentId+"/"+this.elm.type+"/"+this.elm.id;
+        this.router.navigate([link], params); // add the parameters to the end
+      });
+
 
 
   }

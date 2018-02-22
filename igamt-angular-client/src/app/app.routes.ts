@@ -4,6 +4,7 @@ import {HomeComponent} from './home/home.component';
 import {AboutComponent} from './about/about.component';
 import {DocumentationComponent} from './documentation/documentation.component';
 import {NotFoundComponent} from "./common/404/404.component";
+import {LoginComponent} from "./login/login.component"
 
 
 export const routes: Routes = [
@@ -16,6 +17,9 @@ export const routes: Routes = [
   {path: 'search', loadChildren: './search/search.module#SearchModule'},
   {path: 'about', component: AboutComponent},
   {path: 'documentation', component: DocumentationComponent},
-  {path : '**', component: NotFoundComponent}
+  {path: '', component: DocumentationComponent},
+  {path: 'login', component: LoginComponent},
+{path : '**', component: NotFoundComponent}
+
 ];
 export const AppRoutes: ModuleWithProviders = RouterModule.forRoot(routes);

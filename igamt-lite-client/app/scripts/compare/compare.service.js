@@ -271,9 +271,9 @@ angular.module('igl').factory('CompareService',
             fields[i].datatype.ext = null;
           }
           fields[i].datatype.id = "";
-          for (var k = 0; k < fields[i].tables.length; k++) {
-            fields[i].tables[k].id = "";
-          }
+          // for (var k = 0; k < fields[i].tables.length; k++) {
+          //   fields[i].tables[k].id = "";
+          // }
 
         };
 

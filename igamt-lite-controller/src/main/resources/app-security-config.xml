@@ -22,6 +22,11 @@
 	<sec:http pattern="/lang/**" security="none" />
 	<sec:http pattern="/scripts/**" security="none" />
 	<sec:http pattern="/styles/**" security="none" />
+	<sec:http pattern="/assets/**" security="none" />
+	<sec:http pattern="/*.css" security="none" />
+	<sec:http pattern="/*.js" security="none" />	
+		
+		
 	<sec:http pattern="/views/**" security="none" />
 	<sec:http pattern="/fonts/**" security="none" />
 	<sec:http pattern="/lib/**" security="none" />

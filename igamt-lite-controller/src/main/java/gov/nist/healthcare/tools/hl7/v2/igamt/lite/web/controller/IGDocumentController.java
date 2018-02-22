@@ -69,6 +69,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageComparator;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageEventTree;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.PositionComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
@@ -1337,24 +1338,27 @@ public class IGDocumentController extends CommonController {
   // method = RequestMethod.POST, produces = "application/json")
   // public List<String[]> getMessageListByVersion(@PathVariable("hl7Version")
   // String hl7Version, MessageByListCommand command) {
-  @RequestMapping(value = "/messageListByVersion", method = RequestMethod.POST,
-      consumes = "application/json", produces = "application/json")
-  public List<MessageEvents> getMessageListByVersion(@RequestBody String hl7Version) {
+  @RequestMapping(value = "/messageListByVersion/", method = RequestMethod.POST,
+     produces = "application/json")
+  public List<MessageEventTree> getMessageListByVersion(@RequestBody String hl7Version) {
     log.info("Fetching messages of version hl7Version=" + hl7Version);
-    List<MessageEvents> messages = igDocumentCreation.findMessageEvents(hl7Version);
+    List<MessageEventTree> messages = igDocumentCreation.findMessageEvents(hl7Version);
     return messages;
   }
 
   @RequestMapping(value = "/createIntegrationProfile", method = RequestMethod.POST,
       consumes = "application/json", produces = "application/json")
   public IGDocument createIG(@RequestBody IntegrationIGDocumentRequestWrapper idrw)
-      throws IGDocumentException {
+      throws IGDocumentException, UserAccountNotFoundException {
     log.info("Creation of IGDocument.");
     log.debug("idrw.getMsgEvts()=" + idrw.getMsgEvts());
     log.debug("idrw.getMsgEvts()=" + idrw.getMetaData());
     log.debug("idrw.getAccountId()=" + idrw.getAccountId());
     User u = userService.getCurrentUser();
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+    if (account == null)
+      throw new UserAccountNotFoundException();
+    
     IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(idrw.getMsgEvts(),
         idrw.getMetaData(), idrw.getHl7Version(), account.getId());
     setUserInfos(igDocument);

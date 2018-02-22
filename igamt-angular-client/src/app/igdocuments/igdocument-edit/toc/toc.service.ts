@@ -8,29 +8,15 @@ import {canChangeSeconds} from "ngx-bootstrap/timepicker/timepicker-controls.uti
 
 @Injectable()
 export  class TocService{
+
   constructor(private http : Http){
   }
 
   buildTreeFromIgDocument=function (igdocument) {
     var treeData= [];
-   //
-   //  var toc={};
-   //  toc["label"]= "Table of Content";
-   //  toc["data"]={sectionTitle: "IG Document",type:"root"};
-   //  toc["expanded"]=true;
-   //
-   //  console.log(igdocument);
-   //
-   //  var narratives= this.convertNarratives(igdocument.childSections);
-   // // var profileSctions=this.processProfile(igdocument.profile);
-   //  var children=narratives;
-   //  toc["children"]=children;
-   //
     igdocument["content"]["data"]["referenceType"]="root";
     igdocument["content"]["expanded"]=true;
     igdocument["content"]["data"]["sectionTitle"]="Table of Content";
-
-
     treeData.push(igdocument["content"]);
 
     return treeData;

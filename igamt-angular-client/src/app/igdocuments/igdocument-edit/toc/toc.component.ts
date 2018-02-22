@@ -1,14 +1,13 @@
 import {Component, Input, ViewChildren} from "@angular/core";
 import {WorkspaceService, Entity} from "../../../service/workspace/workspace.service";
 import {TocService} from "./toc.service";
-import {isNullOrUndefined} from "util";
-import {TreeDragDropService} from "primeng/components/common/treedragdropservice";
 import  {ViewChild} from '@angular/core';
 import {UITreeNode, Tree} from "primeng/components/tree/tree";
 import {TreeNode} from "primeng/components/common/treenode";
 import {falseIfMissing} from "protractor/built/util";
-import {ContextMenuModule,MenuItem} from 'primeng/primeng';
-
+// import {ContextMenuModule,MenuItem} from 'primeng/primeng';
+import {ContextMenuComponent} from "ngx-contextmenu";
+import {ActivatedRoute} from "@angular/router";
 
 
 @Component({
@@ -18,12 +17,20 @@ import {ContextMenuModule,MenuItem} from 'primeng/primeng';
 })
 export class TocComponent {
   @ViewChild(Tree) toc :Tree;
-  rootMenu: MenuItem[];
+  //rootMenu: MenuItem[];
+  public items = [
+    { name: 'John', otherProperty: 'Foo' },
+    { name: 'Joe', otherProperty: 'Bar' }
+  ];
+
+  @ViewChild(ContextMenuComponent) public basicMenu: ContextMenuComponent;
+
 
   _ig : any;
+  currentNode: any;
 
   treeData: any;
-  constructor(private _ws : WorkspaceService, private  tocService:TocService){
+  constructor(private _ws : WorkspaceService, private  tocService:TocService,private route : ActivatedRoute){
 
   }
 
@@ -34,8 +41,45 @@ export class TocComponent {
 
   ngOnInit() {
     var ctrl=this;
+      this.ig=this.route.snapshot.data['ig'];
 
-    this.ig = this._ws.getCurrent(Entity.IG);
+      this.treeData = this.tocService.buildTreeFromIgDocument(this._ig);
+
+
+      // this.rootMenu= [{label: "add Section", command:function(event){
+      //   console.log(event);
+      //   var data= {position: 4, sectionTitle: "New Section", referenceId: "", referenceType: "section", sectionContent: null};
+      //   var node={};
+      //   node["data"]=data;
+      //   ctrl.treeData[0].children.push(node);
+      //
+      //
+      // }}];
+      this.toc.allowDrop = this.allow;
+      // this.toc.draggableNodes = true;
+      // this.toc.droppableNodes = true;
+      this.toc.onNodeDrop.subscribe(x => {
+        for(let a = 0; a<x.dragNode.parent.children.length; a++){
+          x.dragNode.parent.children[a].data.position=a+1;
+        }
+
+        for(let c = 0; c<x.dropNode.children.length; c++){
+          if(x.dropNode.children[c].data){
+            x.dropNode.children[c].data.position=c+1;
+
+          }
+        }
+        for(let b = 0; b<x.dropNode.parent.children.length; b++){
+          x.dropNode.parent.children[b].data.position=b+1;
+        }
+
+      });
+
+
+
+
+
+    );
 
     // this.toc.dragDropService.stopDrag = function (x) {
     //   console.log("HT");
@@ -43,37 +87,13 @@ export class TocComponent {
     // };
 
 
-    this.treeData = this.tocService.buildTreeFromIgDocument(this._ig);
 
 
-    this.rootMenu= [{label: "add Section", command:function(event){
-      console.log(ctrl.treeData);
-      var data= {position: 4, sectionTitle: "New Section", referenceId: "", referenceType: "section", sectionContent: null};
-      var node={};
-      node["data"]=data;
-      ctrl.treeData[0].children.push(node);
 
 
-    }}];
-    this.toc.allowDrop = this.allow;
-    // this.toc.draggableNodes = true;
-    // this.toc.droppableNodes = true;
-     this.toc.onNodeDrop.subscribe(x => {
-       for(let a = 0; a<x.dragNode.parent.children.length; a++){
-         x.dragNode.parent.children[a].data.position=a+1;
-       }
 
-       for(let c = 0; c<x.dropNode.children.length; c++){
-         if(x.dropNode.children[c].data){
-           x.dropNode.children[c].data.position=c+1;
 
-         }
-       }
-         for(let b = 0; b<x.dropNode.parent.children.length; b++){
-           x.dropNode.parent.children[b].data.position=b+1;
-         }
 
-     });
   }
 
   print =function (obj) {
@@ -90,9 +110,6 @@ export class TocComponent {
       }
     }
   };
-
-
-
 
   onDragStart(event,node) {
     console.log(event);
@@ -135,7 +152,23 @@ export class TocComponent {
     }else {
       return false;
     }
+
+
   };
+  setActualNode(node: Node){
+      this._ws.setCurrent(Entity.CURRENTNODE, node);
+     // this.currentNode=node;
+     // console.log(node);
+     // this.currentNode.data.ref.name="test";
+
+  }
+  AddSection(parent:TreeNode){
+      console.log(parent);
+      var data= { position: 4, sectionTitle: "New Section", referenceId: "", referenceType: "section", sectionContent: null};
+      let node:TreeNode ={};
+      node.data=data;
+      parent.children.push(node);
+  }
 
 
 }

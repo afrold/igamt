@@ -264,12 +264,26 @@ export class CoConstraintTableComponent {
   }
 
   readRoute() {
-    let ig = this._ws.getCurrent(Entity.IG);
-    this.tableid = ig.profile.tableLibrary.id;
-    this.segment = this._ws.getCurrent(Entity.SEGMENT);
-    for(let dt of ig.profile.datatypeLibrary.children){
-      this.config.datatypes.push({ label : dt.label, value : dt});
-    }
-    console.log(this.config);
+    this._ws.getCurrent(Entity.IG).subscribe( data =>{
+      let ig =data;
+      this.tableid = ig.profile.tableLibrary.id;
+
+      this._ws.getCurrent(Entity.SEGMENT).subscribe(seg =>{
+        this.segment= seg;
+        for(let dt of ig.profile.datatypeLibrary.children){
+          this.config.datatypes.push({ label : dt.label, value : dt});
+        }
+      })
+    })
+
+    //
+    //
+    // let ig = this._ws.getCurrent(Entity.IG);
+    // this.tableid = ig.profile.tableLibrary.id;
+    // this.segment = this._ws.getCurrent(Entity.SEGMENT);
+    // for(let dt of ig.profile.datatypeLibrary.children){
+    //   this.config.datatypes.push({ label : dt.label, value : dt});
+    // }
+    // console.log(this.config);
   }
 }
