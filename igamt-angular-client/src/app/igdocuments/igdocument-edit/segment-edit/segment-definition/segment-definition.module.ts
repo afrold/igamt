@@ -15,6 +15,7 @@ import {SegmentTreeComponent} from "../../../../common/segment-tree/segment-tree
 import {CoConstraintTableComponent} from "./coconstraint-table/coconstraint-table.component";
 import {TreeModule} from "primeng/components/tree/tree";
 import {ValueSetBindingPickerComponent} from "../../../../common/valueset-binding-picker/valueset-binding-picker.component";
+import {DatatypeBindingPickerComponent} from "../../../../common/datatype-binding-picker/datatype-binding-picker.component"
 import {DataListModule} from "primeng/components/datalist/datalist";
 import {DataTableModule} from "primeng/components/datatable/datatable";
 import {SegmentStructureComponent} from "./segment-structure/segment-structure.component";
@@ -40,7 +41,7 @@ import {UtilsModule} from "../../../../utils/utils.module";
 	],
   providers : [CoConstraintTableService, SegmentTreeNodeService],
 	declarations: [
-    SegmentDefinitionComponent, CoConstraintTableComponent, SegmentTreeComponent, CCHeaderDialogDm, CCHeaderDialogUser, ValueSetBindingPickerComponent, SegmentStructureComponent, SegmentTableComponent
+    SegmentDefinitionComponent, CoConstraintTableComponent, SegmentTreeComponent, CCHeaderDialogDm, CCHeaderDialogUser, ValueSetBindingPickerComponent, SegmentStructureComponent, SegmentTableComponent, DatatypeBindingPickerComponent
 	],
   schemas : [ CUSTOM_ELEMENTS_SCHEMA ]
 })
