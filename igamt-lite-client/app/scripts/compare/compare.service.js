@@ -271,9 +271,9 @@ angular.module('igl').factory('CompareService',
             fields[i].datatype.ext = null;
           }
           fields[i].datatype.id = "";
-          for (var k = 0; k < fields[i].tables.length; k++) {
-            fields[i].tables[k].id = "";
-          }
+          // for (var k = 0; k < fields[i].tables.length; k++) {
+          //   fields[i].tables[k].id = "";
+          // }
 
         };
 
@@ -398,35 +398,35 @@ angular.module('igl').factory('CompareService',
                 return result;
 
               };
-              if (childArray.value.tables && childArray.value.tables.changed === "object change") {
-                result.valuesets = [];
-
-                var tables = objToArray(childArray.value.tables.value);
-                for (var i = 0; i < tables.length; i++) {
-
-                  if (tables[i].changed === "object change") {
-
-                    if (tables[i].value.bindingIdentifier.changed === "primitive change") {
-                      result.valuesets.push({
-                        element1: tables[i].value.bindingIdentifier.removed,
-                        element2: tables[i].value.bindingIdentifier.added
-
-                      });
-                    }
-                  } else if (tables[i].changed === "removed") {
-
-                    result.valuesets.push({
-                      element1: tables[i].value.bindingIdentifier,
-                      element2: ""
-                    });
-                  } else if (tables[i].changed === "added") {
-                    result.valuesets.push({
-                      element1: "",
-                      element2: tables[i].value.bindingIdentifier
-                    });
-                  }
-                }
-              }
+              // if (childArray.value.tables && childArray.value.tables.changed === "object change") {
+              //   result.valuesets = [];
+              //
+              //   var tables = objToArray(childArray.value.tables.value);
+              //   for (var i = 0; i < tables.length; i++) {
+              //
+              //     if (tables[i].changed === "object change") {
+              //
+              //       if (tables[i].value.bindingIdentifier.changed === "primitive change") {
+              //         result.valuesets.push({
+              //           element1: tables[i].value.bindingIdentifier.removed,
+              //           element2: tables[i].value.bindingIdentifier.added
+              //
+              //         });
+              //       }
+              //     } else if (tables[i].changed === "removed") {
+              //
+              //       result.valuesets.push({
+              //         element1: tables[i].value.bindingIdentifier,
+              //         element2: ""
+              //       });
+              //     } else if (tables[i].changed === "added") {
+              //       result.valuesets.push({
+              //         element1: "",
+              //         element2: tables[i].value.bindingIdentifier
+              //       });
+              //     }
+              //   }
+              // }
             } else {
 
               if (childArray.value.minCard && childArray.value.minCard.changed === "primitive change") {

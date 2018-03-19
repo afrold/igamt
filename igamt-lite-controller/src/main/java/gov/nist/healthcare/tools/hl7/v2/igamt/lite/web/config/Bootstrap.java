@@ -288,10 +288,10 @@ public class Bootstrap implements InitializingBean {
 
 
     // To RUN on Production for 2.0.0-rc
-    // CreateCollectionOfUnchanged(); // group datatype by sets of versions
-    // Colorate(); // genenerates the datatypes evolution matrix.
-    // CreateIntermediateFromUnchanged();
-    // MergeComponents();
+//     CreateCollectionOfUnchanged(); // group datatype by sets of versions
+//     Colorate(); // genenerates the datatypes evolution matrix.
+//     CreateIntermediateFromUnchanged();
+//     MergeComponents();
     // fixDatatypeRecursion();
     // fixDuplicateValueSets();
     // createDefaultExportFonts();
@@ -342,7 +342,7 @@ public class Bootstrap implements InitializingBean {
     
 //    investigateMutipleValueSets();
 	  
-	 fixLibraries();
+	// fixLibraries();
 	 // fixValueSetDataDB();
   }
   
