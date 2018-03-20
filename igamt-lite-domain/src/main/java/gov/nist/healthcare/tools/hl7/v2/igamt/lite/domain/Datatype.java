@@ -46,16 +46,16 @@ public class Datatype extends DataModelWithConstraints
   protected List<Component> components = new ArrayList<Component>();
 
   private String name = "";
-  private List<String> hl7versions = new ArrayList<String>();
+  private Set<String> hl7versions = new HashSet<String>();
 
   private Set<ShareParticipantPermission> shareParticipantIds =
       new HashSet<ShareParticipantPermission>();
 
-  public List<String> getHl7versions() {
+  public Set<String> getHl7versions() {
     return hl7versions;
   }
 
-  public void setHl7versions(List<String> hl7versions) {
+  public void setHl7versions(Set<String> hl7versions) {
     this.hl7versions = hl7versions;
   }
 
@@ -401,8 +401,11 @@ public class Datatype extends DataModelWithConstraints
       path = path.substring(1);
 
       String constraintId = this.getLabel() + "." + constant.location;
-      String description = this.getName() + "." + constant.getLocation() + "(" + constant.getName() + ") SHALL contain the constant value '" + constant.getValue() + "'.";
-      String assertion = "<Assertion><AND><Presence Path=\"" + path + "\"/><PlainText Path=\"" + path + "\" Text=\"" + constant.getValue() + "\" IgnoreCase=\"false\"/></AND></Assertion>";
+      String description = this.getName() + "." + constant.getLocation() + "(" + constant.getName()
+          + ") SHALL contain the constant value '" + constant.getValue() + "'.";
+      String assertion =
+          "<Assertion><AND><Presence Path=\"" + path + "\"/><PlainText Path=\"" + path
+              + "\" Text=\"" + constant.getValue() + "\" IgnoreCase=\"false\"/></AND></Assertion>";
       ConformanceStatement cs = new ConformanceStatement();
       cs.setId(ObjectId.get().toString());
       cs.setConstraintId(constraintId);
@@ -430,17 +433,21 @@ public class Datatype extends DataModelWithConstraints
         path = path.substring(1);
 
         String constraintId = this.getLabel() + "." + scb.getLocation();
-        String description = this.getName() + "." + scb.getLocation() + " SHALL contain the constant value '" + scb.getCode().getValue() + "' drawn from the code system '" + scb.getCode().getCodeSystem() + "'.";
+        String description = this.getName() + "." + scb.getLocation()
+            + " SHALL contain the constant value '" + scb.getCode().getValue()
+            + "' drawn from the code system '" + scb.getCode().getCodeSystem() + "'.";
         String assertion = "";
-        if(scb.isCodedElement()){
-          assertion = "<Assertion>" 
-                              + "<AND>" 
-                              + "<AND><Presence Path=\"" + path + ".1[1]" + "\"/><PlainText Path=\"" + path + ".1[1]" + "\" Text=\"" + scb.getCode().getValue() + "\" IgnoreCase=\"false\"/></AND>" 
-                              + "<AND><Presence Path=\"" + path + ".3[1]" + "\"/><PlainText Path=\"" + path + ".3[1]" + "\" Text=\"" + scb.getCode().getCodeSystem() + "\" IgnoreCase=\"false\"/></AND>" 
-                              + "</AND>"
-                              + "</Assertion>";
-        }else {
-          assertion = "<Assertion><AND><Presence Path=\"" + path + "\"/><PlainText Path=\"" + path + "\" Text=\"" + scb.getCode().getValue() + "\" IgnoreCase=\"false\"/></AND></Assertion>";          
+        if (scb.isCodedElement()) {
+          assertion = "<Assertion>" + "<AND>" + "<AND><Presence Path=\"" + path + ".1[1]"
+              + "\"/><PlainText Path=\"" + path + ".1[1]" + "\" Text=\"" + scb.getCode().getValue()
+              + "\" IgnoreCase=\"false\"/></AND>" + "<AND><Presence Path=\"" + path + ".3[1]"
+              + "\"/><PlainText Path=\"" + path + ".3[1]" + "\" Text=\""
+              + scb.getCode().getCodeSystem() + "\" IgnoreCase=\"false\"/></AND>" + "</AND>"
+              + "</Assertion>";
+        } else {
+          assertion = "<Assertion><AND><Presence Path=\"" + path + "\"/><PlainText Path=\"" + path
+              + "\" Text=\"" + scb.getCode().getValue()
+              + "\" IgnoreCase=\"false\"/></AND></Assertion>";
         }
         ConformanceStatement cs = new ConformanceStatement();
         cs.setId(ObjectId.get().toString());
