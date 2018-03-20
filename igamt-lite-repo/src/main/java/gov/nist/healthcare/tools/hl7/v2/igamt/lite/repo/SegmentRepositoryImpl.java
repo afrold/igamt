@@ -104,7 +104,7 @@ public class SegmentRepositoryImpl implements SegmentOperations {
 
   @Override
   public List<Segment> findByScope(String scope) {
-    Criteria where = Criteria.where("scope").is(SCOPE.USER.toString());
+    Criteria where = Criteria.where("scope").is(scope);
     Query qry = Query.query(where);
     List<Segment> segments = mongo.find(qry, Segment.class);
     return segments;
@@ -112,7 +112,7 @@ public class SegmentRepositoryImpl implements SegmentOperations {
 
   @Override
   public List<Segment> findByNameAndScope(String name, String scope) {
-    Criteria where = Criteria.where("scope").is(SCOPE.USER.toString());
+    Criteria where = Criteria.where("scope").is(scope);
     where.andOperator(Criteria.where("name").is(name));
     Query qry = Query.query(where);
     List<Segment> segments = mongo.find(qry, Segment.class);

@@ -73,10 +73,14 @@ public class Component extends DataElement implements Cloneable {
     if (!c.getUsage().toString().equalsIgnoreCase(this.getUsage().toString())) {
       return false;
     }
-    if (!c.getMaxLength().toLowerCase().equals(this.getMaxLength().toLowerCase())) {
-      return false;
-    }
-    if (!c.getMinLength().toLowerCase().equals(this.getMinLength().toLowerCase())) {
+//    if (!c.getMaxLength().toLowerCase().equals(this.getMaxLength().toLowerCase())) {
+//      return false;
+//    }
+//    if (!c.getMinLength().toLowerCase().equals(this.getMinLength().toLowerCase())) {
+//      return false;
+//    }
+//    
+     if (!c.getConfLength().toString().equalsIgnoreCase(this.getConfLength().toString())) {
       return false;
     }
     // if (c.getMinLength().toString().trim()

@@ -40,25 +40,34 @@
 
 	<sec:http pattern="/api/search/**" security="none" />
 	<sec:http pattern="/api/export/**" security="none" />
+	
+		<sec:http pattern="/api/sooa/accounts/**" security="none" />
+	
+		<sec:http pattern="/api/sooa/usernames/**" security="none" />
+	
+		<sec:http pattern="/api/sooa/fullnames/**" security="none" />
+		<sec:http pattern="/api/sooa/emails/**" security="none" />
+		
+	
 
 	<sec:http create-session="ifRequired" use-expressions="true">
 		<sec:http-basic entry-point-ref="restAuthenticationEntryPoint" />
 		<!-- <sec:intercept-url pattern="/api/accounts/login/**" method="OPTIONS" 
 			access="isAnonymous()" /> -->
-		<sec:intercept-url pattern="/api/sooa/accounts/**"
+<!-- 		<sec:intercept-url pattern="/api/sooa/accounts/**"
 			access="isAnonymous()" />
 		<sec:intercept-url pattern="/api/sooa/usernames/**"
 			access="isAnonymous()" />
 <sec:intercept-url pattern="/api/sooa/fullnames/**"
-			access="isAnonymous()" />
+			access="isAnonymous()" /> -->
 
 		<sec:intercept-url pattern="/api/igdocuments/config"
 			access="isAnonymous()" />
 <!--		<sec:intercept-url pattern="/api/datatype-library/config"
 			access="isAnonymous()" />
 -->
-		<sec:intercept-url pattern="/api/sooa/emails/**"
-			access="isAnonymous()" />
+<!-- 		<sec:intercept-url pattern="/api/sooa/emails/**"
+			access="isAnonymous()" /> -->
 		<sec:intercept-url pattern="/api/sooa/issues/**"
 			access="isFullyAuthenticated() and hasRole('admin')" />
 		<sec:intercept-url pattern="/api/accounts/cuser"
