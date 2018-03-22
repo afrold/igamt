@@ -196,14 +196,14 @@
                                                             Component
                                                         </div>
                                                         <div flex class="pull-right">
-                                                                <button ng-click="addSegmentModal(message)" class="btn btn-raised btn-sm menu-table menu-table-add pull-right ">
+                                                                <md-button ng-click="addSegmentModal(message)" class="btn btn-raised btn-sm btn-default pull-right ">
                                                                     <i class="fa fa-plus fa-fw"></i> ADD
-                                                                </button>
-                                                                <button ng-if="message.scope!=='HL7STANDARD'" title="Verify Message" type="button" ng-click="validateMessage()" class="btn btn-raised btn-sm pull-right menu-table menu-table-verify"><i class="fa fa-check fa-fw"></i> Verify</button>
+                                                                </md-button>
+                                                                <md-button ng-if="message.scope!=='HL7STANDARD'" title="Verify Message" type="button" ng-click="validateMessage()" class="btn btn-raised btn-sm btn-info pull-right"><i class="fa fa-check fa-fw"></i> Verify</md-button>
 
 
                                                             <span class="pull-right" flex layout="row">
-                                                            <md-select  flex ng-model="viewSettings.visibleColumns"  md-selected-text="viewSettings.getPlaceHolder()" multiple ng-model-options="{trackBy: '$value.id'}" no-dirty-check>
+                                                            <md-select  flex ng-model="viewSettings.visibleColumns"  md-selected-text="viewSettings.getPlaceHolder()" multiple ng-model-options="{trackBy: '$value.id'}" no-dirty-check style="margin-bottom: 0px;margin-top: 30px;">
                                                                 <md-optgroup label="Columns">
                                                                     <md-option ng-repeat="opt in  viewSettings.columnOptions track by $index" ng-value="opt">{{opt.label}}</md-option>
                                                                 </md-optgroup>
