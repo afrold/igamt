@@ -573,13 +573,14 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     });
 
     modalInstance.then(function(value) {
-      console.log(value);
-      $scope.addSev(node);
-      // node.singleElementValues = angular.copy(node.oldSingleElementValues);
-      node.singleElementValues.value = value;
-      $scope.initSev(node);
-      $rootScope.recordChanged ();
-      //$scope.editForm.$pristine=false;
+      if(value !=='cancel'){
+          console.log(value);
+          $scope.addSev(node);
+          node.singleElementValues.value = value;
+          $scope.initSev(node);
+          $rootScope.recordChanged();
+      }
+
     });
   };
   $scope.hasChildren = function(node) {
@@ -830,6 +831,10 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
       node.attributes.minLength = null;
     } else {
       node.attributes.minLength = node.minLength;
+      if(node.minLength=='NA'){
+          node.maxLength='NA';
+          $scope.updateMaxL(node);
+      }
     }
     // node.attributes.confLength = "NA";
     // node.confLength = node.attributes.confLength;
@@ -867,7 +872,13 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     if (node.maxLength === node.attributes.oldMaxLength) {
       node.attributes.maxLength = null;
     } else {
+
       node.attributes.maxLength = node.maxLength;
+        if(node.maxLength=='NA'){
+            node.minLength='NA';
+            $scope.updateMaxL(node);
+        }
+
     }
     // node.attributes.confLength = "NA";
     // node.confLength = field.attributes.confLength;

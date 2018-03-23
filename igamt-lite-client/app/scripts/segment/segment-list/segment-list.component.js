@@ -1505,18 +1505,18 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
 
   $scope.confirmDatatypeSingleElementDuplicated = function (node) {
-    var modalInstance = $modal.open({
+    var modalInstance = $mdDialog.show({
       templateUrl: 'ConfirmSingleElementDuplicatedCtrl.html',
       controller: 'ConfirmSingleElementDuplicatedCtrl',
-      resolve: {
-        selectedNode: function () {
-          return node;
+      locals: {
+        selectedNode:  node
         }
-      }
+
     });
-    modalInstance.result.then(function (node) {
-      $scope.openDialogForEditSev(node);
-    }, function () {
+    modalInstance.then(function (node) {
+      if(node!=='cancel'){
+          $scope.openDialogForEditSev(node);
+      }
     });
   };
 
@@ -1553,9 +1553,12 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     });
 
     modalInstance.then(function(value) {
-      $scope.addSev(node);
-      node.sev.value = value;
-      $scope.setDirty();
+      if(value !== 'cancel'){
+          $scope.addSev(node);
+          node.sev.value = value;
+          $scope.setDirty();
+      }
+
     });
   };
 
