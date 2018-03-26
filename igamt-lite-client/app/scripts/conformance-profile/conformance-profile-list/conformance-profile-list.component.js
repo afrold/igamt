@@ -937,7 +937,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
     return result;
   };
 
-  $scope.deleteBinding = function(binding){
+  $scope.deleteValueSetBinding = function(binding){
     var index = $rootScope.message.valueSetBindings.indexOf(binding);
     if (index >= 0) {
       $rootScope.message.valueSetBindings.splice(index, 1);

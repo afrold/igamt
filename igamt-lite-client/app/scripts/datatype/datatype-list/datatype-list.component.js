@@ -1426,12 +1426,11 @@ angular.module('igl')
       return result;
     };
 
-    $scope.deleteBinding = function(binding){
+    $scope.deleteValueSetBinding = function(binding){
       var index = $rootScope.datatype.valueSetBindings.indexOf(binding);
       if (index >= 0) {
         $rootScope.datatype.valueSetBindings.splice(index, 1);
         $scope.setDirty();
-        $rootScope.recordChanged();
       }
     };
 
