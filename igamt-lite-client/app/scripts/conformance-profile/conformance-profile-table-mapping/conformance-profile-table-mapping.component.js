@@ -9,6 +9,13 @@ angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $md
   $scope.mCode = null;
   $scope.mCodeSystem = null;
   $scope.codedElement = false;
+    $scope.bindingStrengthValue = null;
+    $scope.bindingLocationValue = null;
+
+    if($scope.selectedValueSetBindings && $scope.selectedValueSetBindings.length > 0){
+        $scope.bindingStrengthValue = $scope.selectedValueSetBindings[0].bindingStrength;
+        $scope.bindingLocationValue = $scope.selectedValueSetBindings[0].bindingLocation;
+    }
 
   $scope.setChanged = function(){
     $scope.changed = true;

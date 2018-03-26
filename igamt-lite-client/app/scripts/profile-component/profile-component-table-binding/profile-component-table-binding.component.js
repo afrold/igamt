@@ -12,6 +12,13 @@ angular.module('igl').controller('TableBindingForPcCtrl', function($scope, $mdDi
   $scope.mCode = null;
   $scope.mCodeSystem = null;
   $scope.codedElement = false;
+    $scope.bindingStrengthValue = null;
+    $scope.bindingLocationValue = null;
+
+    if($scope.selectedValueSetBindings && $scope.selectedValueSetBindings.length > 0){
+        $scope.bindingStrengthValue = $scope.selectedValueSetBindings[0].bindingStrength;
+        $scope.bindingLocationValue = $scope.selectedValueSetBindings[0].bindingLocation;
+    }
 
     $scope.updateBindingStrength = function(value){
         if($scope.selectedValueSetBindings) {
