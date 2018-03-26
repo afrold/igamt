@@ -16,6 +16,26 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $m
     $scope.changed = true;
   };
 
+  $scope.updateBindingStrength = function(value){
+    if($scope.selectedValueSetBindings) {
+        for (var i = 0; i < $scope.selectedValueSetBindings.length; i++) {
+            var b = $scope.selectedValueSetBindings[i];
+            b.bindingStrength = value;
+        }
+    }
+    $scope.setChanged();
+  };
+
+  $scope.updateBindingLocation = function(value){
+    if($scope.selectedValueSetBindings) {
+        for (var i = 0; i < $scope.selectedValueSetBindings.length; i++) {
+          var b = $scope.selectedValueSetBindings[i];
+            b.bindingLocation = value;
+        }
+    }
+    $scope.setChanged();
+  };
+
   $scope.singleCodeInit = function (){
     $scope.valueSetSelectedForSingleCode = null;
     $scope.mCode = null;
