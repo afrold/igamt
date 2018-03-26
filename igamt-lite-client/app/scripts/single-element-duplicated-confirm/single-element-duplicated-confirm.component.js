@@ -4,12 +4,12 @@
 
 
 
-angular.module('igl').controller('ConfirmSingleElementDuplicatedCtrl', function($scope, $modalInstance, $rootScope, selectedNode) {
+angular.module('igl').controller('ConfirmSingleElementDuplicatedCtrl', function($scope, $mdDialog, $rootScope, selectedNode) {
   $scope.yes = function() {
-    $modalInstance.close(selectedNode);
+    $mdDialog.hide(selectedNode);
   };
 
   $scope.no = function() {
-    $modalInstance.dismiss('cancel');
+    $mdDialog.hide('cancel');
   };
 });

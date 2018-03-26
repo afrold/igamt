@@ -46,16 +46,16 @@ public class Datatype extends DataModelWithConstraints
   protected List<Component> components = new ArrayList<Component>();
 
   private String name = "";
-  private Set<String> hl7versions = new HashSet<String>();
+  private List<String> hl7versions = new ArrayList<String>();
 
   private Set<ShareParticipantPermission> shareParticipantIds =
       new HashSet<ShareParticipantPermission>();
 
-  public Set<String> getHl7versions() {
+  public List<String> getHl7versions() {
     return hl7versions;
   }
 
-  public void setHl7versions(Set<String> hl7versions) {
+  public void setHl7versions(List<String> hl7versions) {
     this.hl7versions = hl7versions;
   }
 

@@ -184,15 +184,15 @@
                                                         </div>
                                                         <div flex class="pull-right">
 
-                                                            <button ng-click="addFieldModal(segment)" class="btn btn-sm btn-raised menu-table btn-default menu-table-add pull-right" ng-if="segment.scope=='USER'">
+                                                            <md-button ng-click="addFieldModal(segment)" title="Save Changes" type="button" class="btn btn-raised btn-sm btn-default pull-right"  ng-if="segment.scope=='USER'">
                                                                 <i class="fa fa-plus fa-fw"></i> Add
-                                                            </button>
+                                                            </md-button>
                                                             <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
-                                                            <button ng-if="segment.scope!=='HL7STANDARD'" class="pull-right btn btn-sm btn default btn-raised menu-table menu-table-verify" title="Validate Segment" type="button"
+                                                            <md-button ng-if="segment.scope!=='HL7STANDARD'" class="btn btn-raised btn-sm btn-info pull-right" title="Validate Segment" type="button"
                                                                     ng-click="validateSegment()">
                                                                 <i class="fa fa-check fa-fw"></i> Verify
-                                                            </button>
-                                                            <md-select class="pull-right"  ng-model="viewSettings.visibleColumns"  md-selected-text="viewSettings.getPlaceHolder()" multiple ng-model-options="{trackBy: '$value.id'}" no-dirty-check>
+                                                            </md-button>
+                                                            <md-select class="pull-right"  ng-model="viewSettings.visibleColumns"  md-selected-text="viewSettings.getPlaceHolder()" multiple ng-model-options="{trackBy: '$value.id'}" no-dirty-check style="margin-bottom: 0px;margin-top: 30px;">
                                                                 <md-optgroup label="Columns">
                                                                     <md-option ng-repeat="opt in  viewSettings.columnOptions track by $index" ng-value="opt">{{opt.label}}</md-option>
                                                                 </md-optgroup>
@@ -892,7 +892,7 @@
                                                        name="min"
                                                        attach-form
                                                        form-source="editForm" input-name="formName"
-                                                       ng-change="setDirty()"
+                                                       ng-change="setDirty(); "
                                                        ng-pattern="/^\d+$/"
                                                        ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
                                                        ng-model="node.min" required ng-minlength="1"/>
@@ -903,7 +903,7 @@
                                                        type="text"
                                                        attach-form
                                                        form-source="editForm" input-name="formName"
-                                                       ng-change="setDirty()"
+                                                       ng-change="setDirty();"
                                                        ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.max" required>
@@ -918,7 +918,7 @@
                 <ng-form name="{{formName}}" class="form-inline" layout="row" layout-align="center center">
                     <md-input-container flex="40" class="withoutMargin">
                                                 <input name="minLength"
-                                                       ng-change="setDirty()"
+                                                       ng-change="setDirty();updateLength(node)"
                                                        attach-form
                                                        form-source="editForm" input-name="formName"
                                                        ng-pattern="/^\d+$|^NA$/"
@@ -930,7 +930,7 @@
                                                        name="maxLength"
                                                        attach-form
                                                        form-source="editForm" input-name="formName"
-                                                       ng-change="setDirty()"
+                                                       ng-change="setDirty();updateLength(node)"
                                                        ng-class="{ 'has-error' : {{formName}}.maxLength.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$|^NA$/"
                                                        ng-model="node.maxLength" required>

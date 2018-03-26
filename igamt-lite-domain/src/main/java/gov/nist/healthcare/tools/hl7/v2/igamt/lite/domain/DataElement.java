@@ -99,7 +99,8 @@ public abstract class DataElement extends DataModel
   }
 
   public String getMinLength() {
-    return getFixedLength(minLength);
+	return minLength;  
+//    return getFixedLength(minLength);
   }
 
   public void setMinLength(String minLength) {
@@ -107,7 +108,8 @@ public abstract class DataElement extends DataModel
   }
 
   public String getMaxLength() {
-    return getFixedMaxLength(getMinLength(), maxLength);
+	  return maxLength;
+//    return getFixedMaxLength(getMinLength(), maxLength);
   }
 
   public void setMaxLength(String maxLength) {
@@ -115,7 +117,8 @@ public abstract class DataElement extends DataModel
   }
 
   public String getConfLength() {
-    return getFixedLength(confLength);
+	  return confLength;
+//    return getFixedLength(confLength);
   }
 
   public void setConfLength(String confLength) {

@@ -17,7 +17,7 @@ angular.module('igl').controller('EditSingleElementCtrlInPc', function($scope, $
 
 
   $scope.cancel = function() {
-    $mdDialog.hide();
+    $mdDialog.hide("cancel");
   };
 
   $scope.close = function() {

@@ -747,6 +747,13 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     return value;
   };
 
+  $rootScope.updateLength=function(node){
+        if(node.minLength&&node.minLength=='NA'){
+            node.maxLength='NA';
+        }else if(node.maxLength&&node.maxLength=='NA'){
+            node.minLength='NA';
+        }
+  };
 
   $rootScope.isActive = function(path) {
     return path === $rootScope.activePath;
