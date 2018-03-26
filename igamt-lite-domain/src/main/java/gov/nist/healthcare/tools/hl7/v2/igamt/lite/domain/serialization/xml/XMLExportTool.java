@@ -932,6 +932,7 @@ public class XMLExportTool {
             tablesMap);
       }
     } catch (Exception e) {
+      e.printStackTrace();
       throw new FieldSerializationException(e, "Field[" + f.getPosition() + "]");
     }
 
@@ -1226,7 +1227,7 @@ public class XMLExportTool {
       List<Predicate> messagePredicate, String messagePath) {
     if (predicates != null && path != null) {
       for (Predicate p : predicates) {
-        if (p.getConstraintTarget().equals(path)) {
+        if (p.getConstraintTarget() != null && p.getConstraintTarget().equals(path)) {
           return p;
         }
       }
@@ -1234,7 +1235,7 @@ public class XMLExportTool {
 
     if (messagePredicate != null && messagePath != null) {
       for (Predicate p : messagePredicate) {
-        if (p.getConstraintTarget().equals(messagePath)) {
+        if (p.getConstraintTarget() != null && p.getConstraintTarget().equals(messagePath)) {
           return p;
         }
       }
@@ -1249,14 +1250,14 @@ public class XMLExportTool {
 
     if (conformanceStatements != null && path != null) {
       for (ConformanceStatement c : conformanceStatements) {
-        if (c.getConstraintTarget().equals(path)) {
+        if (c.getConstraintTarget() != null && c.getConstraintTarget().equals(path)) {
           result.add(c);
-        }
+        }          
       }
     }
     if (messageConformanceStatements != null && messagePath != null) {
       for (ConformanceStatement c : messageConformanceStatements) {
-        if (c.getConstraintTarget().equals(messagePath)) {
+        if (c.getConstraintTarget() != null && c.getConstraintTarget().equals(messagePath)) {
           result.add(c);
         }
       }
