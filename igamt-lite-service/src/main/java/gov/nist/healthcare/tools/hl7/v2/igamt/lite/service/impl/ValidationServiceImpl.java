@@ -1022,19 +1022,18 @@ public class ValidationServiceImpl implements ValidationService {
   @Override
   public String validateLength(String referenceMinLen, String referenceMaxLen, String toBeMinLen,
       String toBeMaxLen) {
-    if (toBeMinLen == null) {
+    if (toBeMinLen == null|| toBeMinLen.isEmpty()) {
       return "Min Length cannot be empty";
     }
-    if (toBeMaxLen == null) {
+    if (toBeMaxLen == null|| toBeMaxLen.isEmpty()) {
       return "Max Length cannot be empty";
     }
 
     if ((DataElement.LENGTH_NA.equals(toBeMinLen) && !DataElement.LENGTH_NA.equals(toBeMaxLen))) {
-      return "Max Length cannot be NA where as Min length is numerical";
+      return "Max Length must be NA because Min Length is NA ";
     }
-
-    if (!DataElement.LENGTH_NA.equals(toBeMinLen) && DataElement.LENGTH_NA.equals(toBeMaxLen)) {
-      return "Min Length cannot be NA where as Max length is numerical";
+    if ((DataElement.LENGTH_NA.equals(toBeMaxLen) && !DataElement.LENGTH_NA.equals(toBeMaxLen))) {
+        return "Min Length must be NA because Max Length is NA ";
     }
 
     String result = null;

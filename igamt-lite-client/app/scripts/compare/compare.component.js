@@ -12,8 +12,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
       return element.name;
     }
   };
-  console.log("herrereer");
-  console.log($rootScope.message);
+
 
   $scope.msgSelected = false;
   $scope.igDisabled1 = false;
@@ -1229,7 +1228,6 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.dataList = CompareService.cmpDatatype(datatype1, datatype2, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
     $scope.loadingSelection = false;
     if ($scope.dynamic_params) {
-      console.log($scope.dataList);
       $scope.showDelta = true;
       $scope.dynamic_params.refresh();
     }
@@ -1252,10 +1250,6 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.vsTemplate = false;
     $scope.loadingSelection = false;
     $scope.dataList = CompareService.cmpMessage(msg1, msg2, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
-    //$scope.dataList = result;
-
-
-
     if ($scope.dynamic_params) {
       console.log($scope.dataList);
       $scope.showDelta = true;

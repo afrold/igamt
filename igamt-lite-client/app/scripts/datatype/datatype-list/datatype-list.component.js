@@ -1325,21 +1325,22 @@ angular.module('igl')
         templateUrl: 'EditSingleElement.html',
         controller: 'EditSingleElementCtrl',
         locals: {
-          currentNode:
-          node
-
+          currentNode: node
         }
       });
 
       modalInstance.then(function(value) {
-        $scope.addSev(node);
-        node.sev.value = value;
-        $rootScope.recordChanged();
+        if(value!=='cancel'){
+            $scope.addSev(node);
+            node.sev.value = value;
+            $rootScope.recordChanged();
+        }
+
       });
     };
 
     $scope.confirmDatatypeSingleElementDuplicated = function (node) {
-      var modalInstance = $modal.open({
+      var modalInstance = $mdDialog.show({
         templateUrl: 'ConfirmSingleElementDuplicatedCtrl.html',
         controller: 'ConfirmSingleElementDuplicatedCtrl',
         resolve: {
@@ -1348,7 +1349,7 @@ angular.module('igl')
           }
         }
       });
-      modalInstance.result.then(function (node) {
+      modalInstance.then(function (node) {
         $scope.openDialogForEditSev(node);
       }, function () {
       });

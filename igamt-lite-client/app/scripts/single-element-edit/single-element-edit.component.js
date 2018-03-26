@@ -10,7 +10,7 @@ angular.module('igl').controller('EditSingleElementCtrl', function($scope, $root
   if ($scope.currentNode.sev) $scope.sevVale = $scope.currentNode.sev.value;
 
   $scope.cancel = function() {
-    $mdDialog.hide();
+    $mdDialog.hide('cancel');
   };
 
   $scope.close = function() {

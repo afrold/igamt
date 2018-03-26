@@ -5685,21 +5685,6 @@
     </div>
     </div>
 </script>
-<script type="text/ng-template" id="ConfirmSingleElementDuplicatedCtrl.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Warning for duplicated Constant Value</h3>
-    </div>
-    <div class="modal-body">
-        <p>Constant value is already presence at child node. Do you want to override it and want to define a new single element value at current node?</p>
-    </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised btn-default btn-sm" ng-click="no()"><span><i class="fa fa-times fa-fw">&nbsp; </i>No</span>
-        </button>
-        <button class="btn btn-raised btn-default btn-sm" ng-click="yes()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Yes</span>
-        </button>
-    </div>
-</script>
 <script type="text/ng-template" id="label.html">
     <span ng-if="element.hl7Version!=='*'" ng-class="{deprecated : element.duplicated}">
         <span  class="badge" ng-class="{'label-HL7' : getScopeLabel(element)==='HL7',
@@ -6948,6 +6933,34 @@
             </md-dialog-content>
 
 
+        </form>
+    </md-dialog>
+</script>
+
+<script type="text/ng-template" id="ConfirmSingleElementDuplicatedCtrl.html">
+    <md-dialog aria-label="Warning for duplicated Constant Value">
+        <form ng-cloak role="form">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Warning for duplicated Constant Value </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="no()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                        <p>Constant value is already presence at child node. Do you want to override it and want to define a new single element value at current node?</p>
+
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+
+                <md-button class="btn btn-raised btn-danger btn-sm" ng-click="yes()"><span><i
+                        class="fa fa-trash-o fa-fw">&nbsp; </i>Override </span>
+                </md-button>
+            </md-dialog-actions>
         </form>
     </md-dialog>
 </script>
