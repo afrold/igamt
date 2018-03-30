@@ -15,7 +15,9 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
@@ -56,13 +58,14 @@ public class AppInfo implements Serializable {
   private String adminEmail;
 
 
-  @Value("${gvt.url}")
-  private String gvtUrl;
-
-  @Value("${gvt.uploadTokenContext}")
-  private String gvtUploadTokenContext;
+  @Value("${connect.uploadTokenContext}")
+  private String connectUploadTokenContext;
 
 
+  @Value("${connect.apps}")
+  private String connectAppsString;
+
+  private Set<ConnectApp> connectApps = new HashSet<ConnectApp>();
 
   /**
    * 
@@ -74,15 +77,22 @@ public class AppInfo implements Serializable {
       for (String url : urls) {
         String[] parts = url.split(Pattern.quote("|"));
         properties.put(parts[0], parts[1]);
-
       }
 
     String[] vrs = this.versions.split(",");
-    if (vrs != null)
+    if (vrs != null) {
       for (String v : vrs) {
         hl7Versions.add(v);
-
       }
+    }
+
+    String[] apps = this.connectAppsString.split(";");
+    if (apps != null && apps.length > 0) {
+      for (String appStr : apps) {
+        String[] prop = appStr.split(Pattern.quote("|"));
+        this.connectApps.add(new ConnectApp(prop[0], prop[1]));
+      }
+    }
 
 
   }
@@ -157,20 +167,51 @@ public class AppInfo implements Serializable {
     this.uploadedImagesUrl = uploadedImagesUrl;
   }
 
-  public String getGvtUrl() {
-    return gvtUrl;
+
+
+  public String getWsEndpoints() {
+    return wsEndpoints;
   }
 
-  public void setGvtUrl(String gvtUrl) {
-    this.gvtUrl = gvtUrl;
+
+
+  public void setWsEndpoints(String wsEndpoints) {
+    this.wsEndpoints = wsEndpoints;
   }
 
-  public String getGvtUploadTokenContext() {
-    return gvtUploadTokenContext;
+
+
+  public String getVersions() {
+    return versions;
   }
 
-  public void setGvtUploadTokenContext(String gvtUploadTokenContext) {
-    this.gvtUploadTokenContext = gvtUploadTokenContext;
+
+
+  public void setVersions(String versions) {
+    this.versions = versions;
+  }
+
+
+
+  public String getConnectUploadTokenContext() {
+    return connectUploadTokenContext;
+  }
+
+
+
+  public void setConnectUploadTokenContext(String connectUploadTokenContext) {
+    this.connectUploadTokenContext = connectUploadTokenContext;
+  }
+
+
+  public Set<ConnectApp> getConnectApps() {
+    return connectApps;
+  }
+
+
+
+  public void setConnectApps(Set<ConnectApp> connectApps) {
+    this.connectApps = connectApps;
   }
 
 

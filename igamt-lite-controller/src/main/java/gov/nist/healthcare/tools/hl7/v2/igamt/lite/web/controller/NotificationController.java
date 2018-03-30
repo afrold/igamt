@@ -78,7 +78,7 @@ public class NotificationController extends CommonController {
 
   @RequestMapping(value = "/{id}/sendEmail", method = RequestMethod.GET, produces = "application/json")
   public @ResponseBody boolean notifyEmailForPHINVADS(@PathVariable("id") String id)
-      throws Exception {
+      throws Exception { 
     if(id != null){
       String decodedId = new String(Base64.getDecoder().decode(id));
       Notifications notifications = notificationsRepository.findOne(decodedId);
