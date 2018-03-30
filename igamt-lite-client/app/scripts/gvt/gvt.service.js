@@ -45,7 +45,7 @@ angular.module('igl').factory('GVTSvc',
 
         svc.exportToGVTForCompositeProfile = function(id, cids, auth,targetUrl,targetDomain) {
             var httpHeaders = {};
-            httpHeaders['gvt-auth'] = auth;
+            httpHeaders['target-auth'] = auth;
             httpHeaders['target-url'] = targetUrl;
             httpHeaders['target-domain'] = targetDomain;
             return $http.post('api/igdocuments/' + id + '/connect/composites',cids,{headers:httpHeaders});

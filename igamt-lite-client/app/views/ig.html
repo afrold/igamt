@@ -623,7 +623,7 @@
                             <form name="gvtLoginForm" id="gvtLoginForm" novalidate ng-cloak
                                   style="padding:20px 0px 20px 0px">
                                 <div ng-class="'alert alert-info'" style="font-size:14px;font-weight: bold">
-                                    Target information
+                                    Target Application information
                                 </div>
                                 <div layout="row">
                                     <div style="margin-right:10px; width:30%"
@@ -951,13 +951,13 @@
                             <form name="gvtLoginForm" id="gvtLoginForm" novalidate ng-cloak
                                   style="padding:20px 0px 20px 0px">
 
-
-                                <h3 class="md-title">Select Target App</h3>
-                                <hr/>
+                                <div ng-class="'alert alert-info'" style="font-size:14px;font-weight: bold">
+                                    Target Application information
+                                </div>
                                 <div layout="row">
-                                    <div style="margin-right:10px"
+                                    <div style="margin-right:10px; width:30%"
                                          ng-class="{'has-success has-feedback': gvtLoginForm.targetApp.$valid, 'igl-has-error has-feedback': !gvtLoginForm.targetApp.$valid}">
-                                        <md-input-container style="width:40%">
+                                        <md-input-container >
                                             <label>Target Tool</label>
                                             <md-select ng-model="target.url" placeholder="Select the Target Application"
                                                        ng-change="selectTargetUrl()"
@@ -968,9 +968,9 @@
                                             </md-select>
                                         </md-input-container>
                                     </div>
-                                    <div ng-show="target.url != null"
+                                    <div ng-show="target.url != null" style="margin-right:10px; width:30%"
                                          ng-class="{'has-success has-feedback': gvtLoginForm.targetDomain.$valid, 'igl-has-error has-feedback': !gvtLoginForm.targetDomain.$valid}">
-                                        <md-input-container style="width:40%">
+                                        <md-input-container>
                                             <label>Target Domain</label>
                                             <md-select ng-model="target.domain" placeholder="Select the domain"
                                                        ng-change="selectTargetDomain()"
@@ -985,8 +985,9 @@
                                 </div>
 
                                 <div ng-show="target.url != null && target.domain != null">
-                                    <h3 class="md-title">Login Information</h3>
-                                    <hr/>
+                                    <div ng-class="'alert alert-info'" style="font-size:14px;font-weight: bold">
+                                        Login information
+                                    </div>
                                     <div ng-class="{'has-success has-feedback': gvtLoginForm.gvtUsername.$valid, 'igl-has-error has-feedback': !gvtLoginForm.gvtUsername.$valid}">
                                         <md-input-container layout="row">
                                             <label>Username</label>
@@ -1015,6 +1016,9 @@
                                             <span msg key="gvt.login.newAccount"></span>
                                         </a>
                                     </p>
+                                </div>
+                                <div layout="row" ng-show="loadingDomains">
+                                    <i class="fa fa-spinner fa-1" aria-hidden="true"></i>
                                 </div>
 
                             </form>
