@@ -48,9 +48,12 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
                             break;
                         }
                     }
-                    $scope.selectTargetDomain();
+                }else{
+                    if($scope.targetDomains != null && $scope.targetDomains.length == 1){
+                        $scope.target.domain = $scope.targetDomains[0].value;
+                    }
                 }
-
+                $scope.selectTargetDomain();
                 $scope.loadingDomains = false;
             }, function (error) {
                 $scope.loadingDomains = false;
@@ -175,8 +178,10 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
                     break;
                 }
             }
-            $scope.selectTargetUrl();
+        }else if($scope.targetApps.length == 1){
+            $scope.target.url = $scope.targetApps[0].url;
         }
+        $scope.selectTargetUrl();
     }
 
 });

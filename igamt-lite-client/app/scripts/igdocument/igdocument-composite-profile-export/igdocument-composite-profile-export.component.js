@@ -30,28 +30,14 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
     }
 
 
-    if ($scope.targetApps != null) {
-        var savedTargetUrl = StorageService.get("EXT_TARGET_URL");
-        if (savedTargetUrl && savedTargetUrl != null) {
-            for (var targetApp in $scope.targetApps) {
-                if (targetApp.url === savedTargetUrl) {
-                    $scope.target.url = targetApp.url;
-                    break;
-                }
-            }
-            $scope.selectTargetUrl();
-        }
-    }
-
-
     $scope.selectTargetUrl = function () {
         if ($scope.target.url != null) {
             StorageService.set("EXT_TARGET_URL", $scope.target.url);
             $scope.loadingDomains = true;
             $scope.targetDomains = null;
             $scope.target.domain = null;
-            GVTSvc.getDomains($scope.target.url).then(function (domains) {
-                $scope.targetDomains = domains;
+            GVTSvc.getDomains($scope.target.url).then(function (result) {
+                $scope.targetDomains = result;
                 var savedTargetDomain = StorageService.get("EXT_TARGET_DOMAIN");
                 if(savedTargetDomain != null){
                     for (var targetDomain in $scope.targetDomains) {
@@ -60,9 +46,12 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
                             break;
                         }
                     }
-                    $scope.selectTargetDomain();
+                }else{
+                    if($scope.targetDomains != null && $scope.targetDomains.length == 1){
+                        $scope.target.domain = $scope.targetDomains[0].value;
+                    }
                 }
-
+                $scope.selectTargetDomain();
                 $scope.loadingDomains = false;
             }, function (error) {
                 $scope.loadingDomains = false;
@@ -175,6 +164,21 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
             $scope.loading = false;
         });
     };
+
+    if($scope.targetApps != null) {
+        var savedTargetUrl = StorageService.get("EXT_TARGET_URL");
+        if (savedTargetUrl && savedTargetUrl != null) {
+            for (var targetApp in $scope.targetApps) {
+                if (targetApp.url === savedTargetUrl) {
+                    $scope.target.url = targetApp.url;
+                    break;
+                }
+            }
+        }else if($scope.targetApps.length == 1){
+            $scope.target.url = $scope.targetApps[0].url;
+        }
+        $scope.selectTargetUrl();
+    }
 
 
 });
