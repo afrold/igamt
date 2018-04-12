@@ -37,6 +37,7 @@ public class IGDocumentConfiguration {
 	private Set<String> valueSetAllowedDTs = new HashSet<String>();
 	private Set<String> singleValueSetDTs = new HashSet<String>();
 	private Set<DTComponent> valueSetAllowedComponents = new HashSet<DTComponent>();
+	private Set<SegmentField> valueSetAllowedFields = new HashSet<SegmentField>();
 	private Set<String> codedElementDTs = new HashSet<String>();
 	private HashMap<String, Set<String>> bindingLocationListByHL7Version = new HashMap<String, Set<String>>();
 	private Set<VariesMapItem> variesMapItems = new HashSet<VariesMapItem>();
@@ -244,5 +245,13 @@ public class IGDocumentConfiguration {
 
   public void setDtmCUsageIsLiteralValueRegexCodes(HashMap<Integer, String> dtmCUsageIsLiteralValueRegexCodes) {
     this.dtmCUsageIsLiteralValueRegexCodes = dtmCUsageIsLiteralValueRegexCodes;
+  }
+  
+  public Set<SegmentField> getValueSetAllowedFields() {
+    return valueSetAllowedFields;
+  }
+
+  public void setValueSetAllowedFields(Set<SegmentField> valueSetAllowedFields) {
+    this.valueSetAllowedFields = valueSetAllowedFields;
   }
 }
