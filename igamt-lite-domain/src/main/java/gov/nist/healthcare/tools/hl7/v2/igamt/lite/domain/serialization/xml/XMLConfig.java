@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Bean;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DTComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentField;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.VariesMapItem;
 
 public class XMLConfig {
@@ -93,7 +94,6 @@ bindingIdentifier='A:B' bindingLocation="4"
     valueSetAllowedComponents.add(new DTComponent("XAD", 5));
     valueSetAllowedComponents.add(new DTComponent("XON", 3));
     valueSetAllowedComponents.add(new DTComponent("XON", 10));
-    
     valueSetAllowedComponents.add(new DTComponent("AUI", 1));
     valueSetAllowedComponents.add(new DTComponent("CK", 1));
     valueSetAllowedComponents.add(new DTComponent("CN", 1));
@@ -104,10 +104,13 @@ bindingIdentifier='A:B' bindingLocation="4"
     valueSetAllowedComponents.add(new DTComponent("ELD", 1));
     valueSetAllowedComponents.add(new DTComponent("PLN", 1));
     valueSetAllowedComponents.add(new DTComponent("PPN", 1));
-    valueSetAllowedComponents.add(new DTComponent("XCN", 1));
-    
-    
+    valueSetAllowedComponents.add(new DTComponent("XCN", 1));    
     config.setValueSetAllowedComponents(valueSetAllowedComponents);
+
+    Set<SegmentField> valueSetAllowedFields = new HashSet<SegmentField>();
+    valueSetAllowedFields.add(new SegmentField("PID", 23));
+    config.setValueSetAllowedFields(valueSetAllowedFields);
+    
     HashMap<String, Set<String>> bindingLocationListByHL7Version =
         new HashMap<String, Set<String>>();
     // "2.1", "2.2", "2.3", "2.3.1", "2.4", "2.5", "2.5.1", "2.6", "2.7", "2.7.1", "2.8", "2.8.1",
