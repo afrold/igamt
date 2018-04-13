@@ -2009,7 +2009,12 @@ public class XMLExportTool {
                     + componentDatatype.getHl7Version().replaceAll("\\.", "-"))));
             elmComponent.addAttribute(new Attribute("MinLength", this.str(c.getMinLength())));
             elmComponent.addAttribute(new Attribute("MaxLength", this.str(c.getMaxLength())));
-            elmComponent.addAttribute(new Attribute("ConfLength", this.str(c.getConfLength())));
+            
+            if (c.getConfLength() != null && !c.getConfLength().equals("")){
+              elmComponent.addAttribute(new Attribute("ConfLength", this.str(c.getConfLength())));
+            }else{
+              elmComponent.addAttribute(new Attribute("ConfLength", "NA"));
+            }
 
             List<ValueSetBinding> bindings = findBinding(d.getValueSetBindings(), c.getPosition());
             if (bindings.size() > 0) {
@@ -2237,10 +2242,11 @@ public class XMLExportTool {
                 this.str(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"))));
             elmField.addAttribute(new Attribute("MinLength", this.str(f.getMinLength())));
             elmField.addAttribute(new Attribute("MaxLength", this.str(f.getMaxLength())));
-            elmField.addAttribute(new Attribute("ConfLength", this.str(f.getConfLength())));
-
-            if (f.getConfLength() != null && !f.getConfLength().equals(""))
+            if (f.getConfLength() != null && !f.getConfLength().equals("")){
               elmField.addAttribute(new Attribute("ConfLength", this.str(f.getConfLength())));
+            }else{
+              elmField.addAttribute(new Attribute("ConfLength", "NA"));
+            }
 
             List<ValueSetBinding> bindings = findBinding(s.getValueSetBindings(), f.getPosition());
             if (bindings.size() > 0) {
