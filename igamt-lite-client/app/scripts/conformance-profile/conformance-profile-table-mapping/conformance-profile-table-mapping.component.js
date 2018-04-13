@@ -9,10 +9,37 @@ angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $md
   $scope.mCode = null;
   $scope.mCodeSystem = null;
   $scope.codedElement = false;
+    $scope.bindingStrengthValue = null;
+    $scope.bindingLocationValue = null;
+
+    if($scope.selectedValueSetBindings && $scope.selectedValueSetBindings.length > 0){
+        $scope.bindingStrengthValue = $scope.selectedValueSetBindings[0].bindingStrength;
+        $scope.bindingLocationValue = $scope.selectedValueSetBindings[0].bindingLocation;
+    }
 
   $scope.setChanged = function(){
     $scope.changed = true;
   };
+
+    $scope.updateBindingStrength = function(value){
+        if($scope.selectedValueSetBindings) {
+            for (var i = 0; i < $scope.selectedValueSetBindings.length; i++) {
+                var b = $scope.selectedValueSetBindings[i];
+                b.bindingStrength = value;
+            }
+        }
+        $scope.setChanged();
+    };
+
+    $scope.updateBindingLocation = function(value){
+        if($scope.selectedValueSetBindings) {
+            for (var i = 0; i < $scope.selectedValueSetBindings.length; i++) {
+                var b = $scope.selectedValueSetBindings[i];
+                b.bindingLocation = value;
+            }
+        }
+        $scope.setChanged();
+    };
 
   $scope.singleCodeInit = function (){
     $scope.valueSetSelectedForSingleCode = null;

@@ -757,7 +757,7 @@
                         <span title="For {{getSegmentLabel(segmentsMap[node.segment])}}" ng-show="binding.bindingFrom == 'segment' && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}<i class="fa fa-arrow-right" aria-hidden="true"></i>[{{binding.code.codeSystem}}]</span>
                         <span title="For {{getDatatypeLabel(datatypesMap[node.fieldDT])}}" ng-show="binding.bindingFrom == 'field' && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}<i class="fa fa-arrow-right" aria-hidden="true"></i>[{{binding.code.codeSystem}}]</span>
                         <span title="For {{getDatatypeLabel(datatypesMap[node.componentDT])}}" ng-show="binding.bindingFrom == 'component' && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}<i class="fa fa-arrow-right" aria-hidden="true"></i>[{{binding.code.codeSystem}}]</span>
-                        <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'message'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                        <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'message'" ng-click="deleteValueSetBinding(binding)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                     </span>
                 </div>
                 <a ng-click="editModalBindingForMsg(node)" class="point">
@@ -876,7 +876,7 @@
                         <span title="For {{getSegmentLabel(segmentsMap[node.segment])}}" ng-show="binding.bindingFrom == 'segment' && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}<i class="fa fa-arrow-right" aria-hidden="true"></i>[{{binding.code.codeSystem}}]</span>
                         <span title="For {{getDatatypeLabel(datatypesMap[node.fieldDT])}}" ng-show="binding.bindingFrom == 'field' && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}<i class="fa fa-arrow-right" aria-hidden="true"></i>[{{binding.code.codeSystem}}]</span>
                         <span title="For {{getDatatypeLabel(datatypesMap[node.componentDT])}}" ng-show="binding.bindingFrom == 'component' && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}<i class="fa fa-arrow-right" aria-hidden="true"></i>[{{binding.code.codeSystem}}]</span>
-                        <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'message'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                        <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'message'" ng-click="deleteValueSetBinding(binding)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                     </span>
                 </div>
                 <a ng-click="editModalBindingForMsg(node)" class="point">
