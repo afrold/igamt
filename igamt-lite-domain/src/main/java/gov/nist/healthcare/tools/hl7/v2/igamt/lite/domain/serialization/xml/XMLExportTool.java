@@ -2007,9 +2007,21 @@ public class XMLExportTool {
             elmComponent
                 .addAttribute(new Attribute("Datatype", this.str(componentDatatype.getLabel() + "_"
                     + componentDatatype.getHl7Version().replaceAll("\\.", "-"))));
-            elmComponent.addAttribute(new Attribute("MinLength", this.str(c.getMinLength())));
-            elmComponent.addAttribute(new Attribute("MaxLength", this.str(c.getMaxLength())));
             
+            	if(c.getMinLength() !=null && !c.getMinLength().isEmpty()){
+            	elmComponent.addAttribute(new Attribute("MinLength", this.str(c.getMinLength())));
+                
+                }else{
+                	elmComponent.addAttribute(new Attribute("MinLength", "NA"));
+                }
+                
+                if(c.getMaxLength() !=null&& !c.getMaxLength().isEmpty()){
+                	elmComponent.addAttribute(new Attribute("MaxLength", this.str(c.getMaxLength())));
+
+                }else{
+                	elmComponent.addAttribute(new Attribute("MaxLength", "NA"));
+
+                }   
             if (c.getConfLength() != null && !c.getConfLength().equals("")){
               elmComponent.addAttribute(new Attribute("ConfLength", this.str(c.getConfLength())));
             }else{
@@ -2240,8 +2252,22 @@ public class XMLExportTool {
             elmField.addAttribute(new Attribute("Usage", this.str(f.getUsage().toString())));
             elmField.addAttribute(new Attribute("Datatype",
                 this.str(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"))));
+            
+            if(f.getMinLength() !=null && !f.getMinLength().isEmpty()){
             elmField.addAttribute(new Attribute("MinLength", this.str(f.getMinLength())));
-            elmField.addAttribute(new Attribute("MaxLength", this.str(f.getMaxLength())));
+            
+            }else{
+                elmField.addAttribute(new Attribute("MinLength", "NA"));
+            }
+            
+            if(f.getMaxLength() !=null&& !f.getMaxLength().isEmpty()){
+                elmField.addAttribute(new Attribute("MaxLength", this.str(f.getMaxLength())));
+
+            }else{
+                elmField.addAttribute(new Attribute("MaxLength", "NA"));
+
+            }
+          
             if (f.getConfLength() != null && !f.getConfLength().equals("")){
               elmField.addAttribute(new Attribute("ConfLength", this.str(f.getConfLength())));
             }else{
