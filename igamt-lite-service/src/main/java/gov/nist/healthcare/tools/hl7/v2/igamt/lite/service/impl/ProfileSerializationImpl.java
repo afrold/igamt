@@ -1135,7 +1135,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     filteredProfile.setType(doc.getProfile().getType());
     filteredProfile.setUsageNote(doc.getProfile().getUsageNote());
     filteredProfile.setMetaData(doc.getProfile().getMetaData());
-
+    if(doc.getProfile().getMetaData().getExt() != null && !"".equals(doc.getProfile().getMetaData().getExt())){
+      filteredProfile.getMetaData().setName(doc.getProfile().getMetaData().getExt());
+    }
     Messages messages = new Messages();
     for (CompositeProfileStructure cps : doc.getProfile().getCompositeProfiles().getChildren()) {
       if (Arrays.asList(ids).contains(cps.getId())) {

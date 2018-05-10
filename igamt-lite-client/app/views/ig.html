@@ -560,123 +560,149 @@
 
                 <md-dialog-content>
                     <div class="md-dialog-content">
-                        <div ng-show="exportStep === 0">
+                        <div ng-show="exportStep === 'MESSAGE_STEP'">
+
                             <form novalidate ng-cloak>
                                 <div ng-show="!toGVT || toGVT === false">
-                                    <h4 class="modal-title">Select Export Format</h4>
+                                    <md-card>
+                                        <md-card-header style="font-size:14px;font-weight: bold">
+                                            Export Format
+                                        </md-card-header>
+
+                                        <md-card-content>
+                                            <div style="margin-bottom:10px">
+                                                <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
+                                                    <label class="btn btn-raised btn-primary btn-xs"
+                                                           ng-click="xmlFormat='Validation'"
+                                                           ng-class="{ 'active':xmlFormat==='Validation' }">
+                                                        NIST Validation Format
+                                                    </label>
+                                                    <label class="btn btn-raised btn-primary btn-xs"
+                                                           ng-click="xmlFormat='Display'"
+                                                           ng-class="{ 'active':xmlFormat==='Display' }">
+                                                        NIST Display Format
+                                                    </label>
+                                                    <label class="btn btn-raised btn-primary btn-xs"
+                                                           ng-click="xmlFormat='Gazelle'"
+                                                           ng-class="{ 'active':xmlFormat==='Gazelle' }">
+                                                        Gazelle Format
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </md-card-content>
+                                    </md-card>
                                 </div>
-                                <div ng-show="!toGVT || toGVT === false" style="margin-bottom:10px">
-                                    <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                                        <label class="btn btn-raised btn-primary btn-xs"
-                                               ng-click="xmlFormat='Validation'"
-                                               ng-class="{ 'active':xmlFormat==='Validation' }">
-                                            NIST Validation Format
-                                        </label>
-                                        <label class="btn btn-raised btn-primary btn-xs"
-                                               ng-click="xmlFormat='Display'"
-                                               ng-class="{ 'active':xmlFormat==='Display' }">
-                                            NIST Display Format
-                                        </label>
-                                        <label class="btn btn-raised btn-primary btn-xs"
-                                               ng-click="xmlFormat='Gazelle'"
-                                               ng-class="{ 'active':xmlFormat==='Gazelle' }">
-                                            Gazelle Format
-                                        </label>
-                                    </div>
-                                </div>
-                                <br/>
-                                <div layout="row" class="alert alert-info" style="width:100%">
-                                    Select Conformance Profile(s)
-                                </div>
-                                <div class="table-responsive" style="width:100%">
-                                    <table class="table table-striped table-bordered break-content">
-                                        <thead>
-                                        <tr class="tbl-header" layout="row" layout-align="start start">
-                                            <th flex="10">
-                                                <md-checkbox type="checkbox" ng-model="bool" arial-label="message"
-                                                             ng-change="selectionAll(bool)"></md-checkbox>
-                                            </th>
-                                            <th flex="20">ID</th>
-                                            <th flex="30">Name</th>
-                                            <th flex="40">Description</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody style="display:block; overflow-y: scroll;max-height: 400px;">
-                                        <tr ng-repeat="message in igdocumentToSelect.profile.messages.children track by message.id"
-                                            layout="row" layout-align="start start">
-                                            <td flex="10">
-                                                <md-checkbox type="checkbox" ng-model="message.selected"
-                                                             arial-label="message.id"
-                                                             ng-change="trackSelections()"></md-checkbox>
-                                            </td>
-                                            <td flex="20">{{message.identifier}}</td>
-                                            <td flex="30">{{message.name}}</td>
-                                            <td flex="40">{{message.description}}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+
+                                </md-card>
+                                <md-card>
+                                    <md-card-header style="font-size:14px;font-weight: bold">
+                                        Select Conformance Profile(s)
+                                    </md-card-header>
+
+                                    <md-card-content>
+
+                                        <div class="table-responsive" style="width:100%">
+                                            <table class="table table-striped table-bordered break-content">
+                                                <thead>
+                                                <tr class="tbl-header" layout="row" layout-align="start start">
+                                                    <th flex="10">
+                                                        <md-checkbox type="checkbox" ng-model="bool"
+                                                                     arial-label="message"
+                                                                     ng-change="selectionAll(bool)"></md-checkbox>
+                                                    </th>
+                                                    <th flex="20">ID</th>
+                                                    <th flex="30">Name</th>
+                                                    <th flex="40">Description</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody style="display:block; overflow-y: scroll;max-height: 400px;">
+                                                <tr ng-repeat="message in igdocumentToSelect.profile.messages.children track by message.id"
+                                                    layout="row" layout-align="start start">
+                                                    <td flex="10">
+                                                        <md-checkbox type="checkbox" ng-model="message.selected"
+                                                                     arial-label="message.id"
+                                                                     ng-change="trackSelections()"></md-checkbox>
+                                                    </td>
+                                                    <td flex="20">{{message.identifier}}</td>
+                                                    <td flex="30">{{message.name}}</td>
+                                                    <td flex="40">{{message.description}}</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </md-card-content>
+                                </md-card>
                             </form>
+
                         </div>
-                        <div ng-show="exportStep === 1">
+                        <div ng-show="exportStep === 'LOGIN_STEP'">
+                            <md-card>
+                                <md-card-header style="font-size:14px;font-weight: bold">
+                                    Login information
+                                </md-card-header>
+                                <md-card-content>
 
-                            <form name="gvtLoginForm" id="gvtLoginForm" novalidate ng-cloak
-                                  style="padding:20px 0px 20px 0px">
-                                <div ng-class="'alert alert-info'" style="font-size:14px;font-weight: bold">
-                                    Target Application information
-                                </div>
-                                <div layout="row">
-                                    <div style="margin-right:10px; width:30%"
-                                         ng-class="{'has-success has-feedback': gvtLoginForm.targetApp.$valid, 'igl-has-error has-feedback': !gvtLoginForm.targetApp.$valid}">
-                                        <md-input-container >
-                                            <label>Target Tool</label>
-                                            <md-select ng-model="target.url" placeholder="Select the Target Application"
-                                                       ng-change="selectTargetUrl()"
-                                                       id="targetApp">
-                                                <md-option ng-value="app.url" ng-repeat="app in targetApps">{{ app.url
-                                                    }}
-                                                </md-option>
-                                            </md-select>
-                                        </md-input-container>
-                                    </div>
-                                    <div ng-show="target.url != null" style="margin-right:10px; width:30%"
-                                         ng-class="{'has-success has-feedback': gvtLoginForm.targetDomain.$valid, 'igl-has-error has-feedback': !gvtLoginForm.targetDomain.$valid}">
-                                        <md-input-container>
-                                            <label>Target Domain</label>
-                                            <md-select ng-model="target.domain" placeholder="Select the domain"
-                                                       ng-change="selectTargetDomain()"
-                                                       id="targetDomain" required>
-                                                <md-option ng-value="dom.value" ng-repeat="dom in targetDomains">{{
-                                                    dom.name }}
-                                                </md-option>
-                                            </md-select>
-                                        </md-input-container>
-                                    </div>
+                                    <form name="gvtLoginForm" id="gvtLoginForm" novalidate ng-cloak
+                                          style="padding:20px 0px 20px 0px">
+                                        <!--<div ng-class="'alert alert-info'" style="font-size:14px;font-weight: bold">-->
+                                        <!--</div>-->
+                                        <!--<div style="margin-right:10px; width:30%"-->
+                                             <!--ng-class="{'has-success has-feedback': gvtLoginForm.targetApp.$valid, 'igl-has-error has-feedback': !gvtLoginForm.targetApp.$valid}">-->
+                                            <!---->
+                                        <div >
 
-                                </div>
+                                        <md-input-container class="md-block"  md-no-float style="margin-bottom: 30px">
+                                            <label>Target Url</label>
+                                                <md-select  ng-model="target.url"
+                                                           placeholder="Select the Target Url"
+                                                           ng-change="selectTargetUrl()"
+                                                           id="targetApp">
+                                                    <md-option ng-value="app.url" ng-repeat="app in targetApps">{{
+                                                        app.url
+                                                        }}
+                                                    </md-option>
+                                                </md-select>
+                                            </md-input-container>
 
-                                <div ng-show="target.url != null && target.domain != null">
-                                    <div ng-class="'alert alert-info'" style="font-size:14px;font-weight: bold">
-                                        Login information
-                                    </div>
-                                    <div ng-class="{'has-success has-feedback': gvtLoginForm.gvtUsername.$valid, 'igl-has-error has-feedback': !gvtLoginForm.gvtUsername.$valid}">
-                                        <md-input-container layout="row">
-                                            <label>Username</label>
-                                            <input flex="100" type="text" autocomplete="off" autofocus id="gvtUsername"
-                                                   name="gvtUsername"
-                                                   ng-model="user.username" ng-minlength="4" required>
-                                        </md-input-container>
-                                    </div>
 
-                                    <div ng-class="{'has-success has-feedback': gvtLoginForm.gvtPassword.$valid, 'igl-has-error has-feedback': !gvtLoginForm.gvtPassword.$valid}">
-                                        <md-input-container layout="row">
-                                            <label>Password</label>
-                                            <input flex="100" type="password" autocomplete="off" id="gvtPassword"
-                                                   name="gvtPassword" ng-model="user.password" ng-minlength="4"
-                                                   required>
-                                        </md-input-container>
-                                    </div>
-                                    <p>
+                                        <!--<div ng-class="{'has-success has-feedback': gvtLoginForm.gvtUsername.$valid, 'igl-has-error has-feedback': !gvtLoginForm.gvtUsername.$valid}">-->
+
+
+                                            <md-input-container class="md-block"  md-no-float>
+                                                <label>Username</label>
+                                                <input type="text" autocomplete="off" autofocus
+                                                       id="gvtUsername"
+                                                       name="gvtUsername"
+                                                       placeholder="Username"
+                                                       ng-model="user.username" ng-minlength="4" required>
+                                                <div ng-messages="gvtLoginForm.gvtPassword.$error" role="alert" multiple>
+                                                    <div ng-message="required" class="my-message">You must supply a username.</div>
+                                                </div>
+                                            </md-input-container>
+                                        <!--</div>-->
+
+                                        <!--<div ng-class="{'has-success has-feedback': gvtLoginForm.gvtPassword.$valid, 'igl-has-error has-feedback': !gvtLoginForm.gvtPassword.$valid}">-->
+                                            <md-input-container class="md-block"  md-no-float>
+                                                <label>Password</label>
+                                                <input type="password" autocomplete="off" id="gvtPassword"
+                                                       placeholder="Password"
+                                                       name="gvtPassword" ng-model="user.password" ng-minlength="4"
+                                                       required>
+                                                <div ng-messages="gvtLoginForm.gvtPassword.$error" role="alert" multiple>
+                                                    <div ng-message="required" class="my-message">You must supply a password.</div>
+                                                </div>
+                                            </md-input-container>
+
+                                        </div>
+
+                                        <div layout-gt-sm="row" ng-show="loadingDomains">
+                                            <i class="fa fa-spinner fa-1" aria-hidden="true"></i>
+                                        </div>
+                                    </form>
+                                </md-card-content>
+                                <md-card-footer>
+                                    <div ng-show="target.url != null">
                                         <a ng-href="{{target.url}}#/forgotten" target="_blank"
                                            style="text-align:center">
                                             <span msg key="gvt.login.forgotPwd"></span>
@@ -686,180 +712,267 @@
                                            style="text-align:center">
                                             <span msg key="gvt.login.newAccount"></span>
                                         </a>
-                                    </p>
-                                </div>
-                                 <div layout="row" ng-show="loadingDomains">
-                                    <i class="fa fa-spinner fa-1" aria-hidden="true"></i>
-                                </div>
-                            </form>
+                                    </div>
+                                </md-card-footer>
+                            </md-card>
                         </div>
 
-                        <div ng-show="exportStep === 2">
-                            <div ng-show="info.type === 'info'">
+                        <div ng-show="exportStep === 'DOMAIN_STEP'">
+                            <md-card>
+                                <md-card-header style="font-size:14px;font-weight: bold">
+                                    Tool Scope
+                                </md-card-header>
 
-                                <div ng-class="'alert alert-success'" style="font-size:14px;;font-weight: bold">
-                                    <p><i class="fa fa-check" aria-hidden="true"></i> Transaction Successful !</p>
+                                <md-card-content>
 
-                                </div>
-                                <p><a style="font-size:14px;" ng-href="{{redirectUrl}}" target="_blank">You are now
-                                    being redirected to {{target.url}}.
-                                    Please click here if you are not redirected after 2s</a>
-                                </p>
+                                    <form name="remoteDomainForm" id="remoteDomainForm" class="horizontal" novalidate
+                                          ng-cloak>
+                                        <!--<div ng-class="'alert alert-info'" style="font-size:14px;font-weight: bold">-->
+                                        <!--Target Scope-->
+                                        <!--</div>-->
+                                        <div layout="row">
+                                            <md-input-container flex="50" md-no-float>
+                                                <label>Target Tool Scope</label>
+                                                <md-select ng-model="target.domain" placeholder="Select Tool Scope"
+                                                           ng-change="selectTargetDomain()"
+                                                           id="targetDomain" ng-required="newDomain == null">
+                                                    <md-option ng-value="dom.domain" ng-repeat="dom in targetDomains">{{
+                                                        dom.name }}
+                                                    </md-option>
+                                                </md-select>
+                                            </md-input-container>
 
+                                            <span flex="5" style="text-align: center; align:center">
+                                                Or
+                                            </span>
+                                            <span flex="15">
+                                     <md-button class="btn btn-raised btn-default btn-xs"
+                                               ng-click="createNewDomain()"><span><i
+                                            class="fa fa-plus fa-fw"></i>Create Tool Scope</span></md-button>
+                                 </span>
+                                         </div>
+
+                                        <div layout="row" ng-if="newDomain != null">
+                                            <hr />
+
+                                                <md-input-container flex="100" class="md-block" md-no-float>
+                                                    <label>Tool Scope Key</label>
+                                                    <input required
+                                                           placeholder="Tool Scope Key"
+                                                          name='newDomainKey'
+                                                           id='newDomainKey' type='text'
+                                                           ng-model='newDomain.key'>
+                                                    <div ng-messages="remoteDomainForm.newDomainKey.$error">
+                                                        <div ng-message="required">This is required.</div>
+                                                    </div>
+                                                </md-input-container>
+                                                 <md-input-container flex="100" class="md-block"  md-no-float>
+                                                     <label>Tool Scope Name</label>
+                                                     <input required
+                                                               placeholder="Tool Scope Name"
+                                                               name='newDomainName'
+                                                               id='newDomainName' type='text'
+                                                               ng-model='newDomain.name'>
+                                                        <div ng-messages="remoteDomainForm.newDomainName.$error">
+                                                            <div ng-message="required">This is required.</div>
+                                                        </div>
+                                                 </md-input-container>
+                                            </div>
+
+                                     </form>
+                                </md-card-content>
+                            </md-card>
+                        </div>
+
+                        <div ng-show="error && error != null" style="margin-top:10px; margin-bottom: 10px">
+                            <div ng-class="'alert alert-danger'">
+                                <p><i class="fa fa-check" aria-hidden="true"></i>{{error}}</p>
                             </div>
+                        </div>
 
-                            <div ng-show="info.type === 'danger'">
+                        <div ng-show="exportStep === 'ERROR_STEP'">
+                            <md-card>
+                                <md-card-content>
+                                    <div ng-show="info.type === 'info'">
+                                        <div ng-class="'alert alert-success'" style="font-size:14px;;font-weight: bold">
+                                            <p><i class="fa fa-check" aria-hidden="true"></i> Transaction Successful !
+                                            </p>
 
-                                <div ng-if="info.details === null || !info.details">
-                                    <div ng-class="'alert alert-danger'" style="font-size:14px;font-weight: bold">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                                        <span msg key="info.text"></span>
+                                        </div>
+                                        <p><a style="font-size:14px;" ng-href="{{redirectUrl}}" target="_blank">You are
+                                            now
+                                            being redirected to {{target.url}}.
+                                            Please click here if you are not redirected after 2s</a>
+                                        </p>
                                     </div>
-                                </div>
+                                    <div ng-show="info.type === 'danger'">
+                                        <div ng-if="info.details === null || !info.details">
+                                            <div ng-class="'alert alert-danger'"
+                                                 style="font-size:14px;font-weight: bold">
+                                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                                <span msg key="info.text"></span>
+                                            </div>
+                                        </div>
 
-                                <div ng-if="info.details != null && info.details">
+                                        <div ng-if="info.details != null && info.details">
 
-                                    <div ng-class="'alert alert-danger'" style="font-size:14px;font-weight: bold">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                                        Export Failed
+                                            <div ng-class="'alert alert-danger'"
+                                                 style="font-size:14px;font-weight: bold">
+                                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                                Export Failed
+                                            </div>
+
+                                            <form name="gvtErrorForm" id="gvtErrorForm" novalidate
+                                                  class="form-horizontal">
+                                                <md-tabs md-dynamic-height md-border-bottom>
+                                                    <md-tab label="Profile Errors">
+                                                        <md-content class="md-padding">
+                                                            <div ng-show="errorDetails.profileErrors.length === 0">
+                                                                No error found.
+                                                            </div>
+                                                            <table ng-show="errorDetails.profileErrors.length > 0"
+                                                                   st-table="tmpProfileErrors"
+                                                                   st-safe-src="errorDetails.profileErrors"
+                                                                   class="table table-striped table-bordered table-condensed table-fix-header">
+                                                                <thead>
+                                                                <tr class="tbl-header" style="">
+                                                                    <th st-ratio="60" st-sort="message">Error</th>
+                                                                    <th st-sort="line" st-ratio="20">Line #
+                                                                    </th>
+                                                                    <th st-sort="line" st-ratio="20">Column #
+                                                                    </th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr ng-repeat="row in tmpProfileErrors">
+                                                                    <td ng-bind="row.message" st-ratio="60"></td>
+                                                                    <td ng-bind="row.line" st-ratio="20"></td>
+                                                                    <td ng-bind="row.column" st-ratio="20"></td>
+                                                                </tr>
+                                                                </tbody>
+                                                                <tfoot ng-show="errorDetails.profileErrors.length >= 20">
+                                                                <tr style="">
+                                                                    <td colspan="3">
+                                                                        <div st-pagination="" st-items-by-page="20"
+                                                                             st-displayed-pages="7"></div>
+                                                                    </td>
+                                                                </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </md-content>
+                                                    </md-tab>
+                                                    <md-tab label="Constraints Errors">
+                                                        <md-content class="md-padding">
+                                                            <div ng-show="errorDetails.constraintsErrors.length === 0">
+                                                                No error found.
+                                                            </div>
+                                                            <table ng-show="errorDetails.constraintsErrors.length > 0"
+                                                                   st-table="tmpConstraintErrors"
+                                                                   st-safe-src="errorDetails.constraintsErrors"
+                                                                   class="table table-striped table-bordered table-condensed table-fix-header">
+                                                                <thead>
+                                                                <tr class="tbl-header" style="">
+                                                                    <th st-ratio="60" st-sort="message">Error</th>
+                                                                    <th st-sort="line" st-ratio="20">Line #
+                                                                    </th>
+                                                                    <th st-sort="line" st-ratio="20">Column #
+                                                                    </th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr ng-repeat="row in tmpConstraintErrors">
+                                                                    <td ng-bind="row.message" st-ratio="60"></td>
+                                                                    <td ng-bind="row.line" st-ratio="20"></td>
+                                                                    <td ng-bind="row.column" st-ratio="20"></td>
+                                                                </tr>
+                                                                </tbody>
+                                                                <tfoot ng-show="errorDetails.constraintsErrors.length >= 20">
+                                                                <tr style="">
+                                                                    <td colspan="3">
+                                                                        <div st-pagination="" st-items-by-page="20"
+                                                                             st-displayed-pages="7"></div>
+                                                                    </td>
+                                                                </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </md-content>
+                                                    </md-tab>
+                                                    <md-tab label="ValueSets Errors">
+                                                        <md-content class="md-padding">
+                                                            <div ng-show="errorDetails.vsErrors.length === 0">
+                                                                No error found.
+                                                            </div>
+                                                            <table ng-show="errorDetails.vsErrors.length > 0"
+                                                                   st-table="tmpValueSetErrors"
+                                                                   st-safe-src="errorDetails.vsErrors"
+                                                                   class="table table-striped table-bordered table-condensed table-fix-header">
+                                                                <thead>
+                                                                <tr class="tbl-header" style="">
+                                                                    <th st-ratio="60" st-sort="message">Error</th>
+                                                                    <th st-sort="line" st-ratio="20">Line #
+                                                                    </th>
+                                                                    <th st-sort="line" st-ratio="20">Column #
+                                                                    </th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr ng-repeat="row in tmpValueSetErrors">
+                                                                    <td ng-bind="row.message" st-ratio="60"></td>
+                                                                    <td ng-bind="row.line" st-ratio="20"></td>
+                                                                    <td ng-bind="row.column" st-ratio="20"></td>
+                                                                </tr>
+                                                                </tbody>
+                                                                <tfoot ng-show="errorDetails.vsErrors.length >= 20">
+                                                                <tr style="">
+                                                                    <td colspan="3">
+                                                                        <div st-pagination="" st-items-by-page="20"
+                                                                             st-displayed-pages="7"></div>
+                                                                    </td>
+                                                                </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </md-content>
+                                                    </md-tab>
+                                                </md-tabs>
+                                            </form>
+                                        </div>
                                     </div>
-
-                                    <form name="gvtErrorForm" id="gvtErrorForm" novalidate class="form-horizontal">
-                                        <md-tabs md-dynamic-height md-border-bottom>
-                                            <md-tab label="Profile Errors">
-                                                <md-content class="md-padding">
-                                                    <div ng-show="errorDetails.profileErrors.length === 0">
-                                                        No error found.
-                                                    </div>
-                                                    <table ng-show="errorDetails.profileErrors.length > 0"
-                                                           st-table="tmpProfileErrors"
-                                                           st-safe-src="errorDetails.profileErrors"
-                                                           class="table table-striped table-bordered table-condensed table-fix-header">
-                                                        <thead>
-                                                        <tr class="tbl-header" style="">
-                                                            <th st-ratio="60" st-sort="message">Error</th>
-                                                            <th st-sort="line" st-ratio="20">Line #
-                                                            </th>
-                                                            <th st-sort="line" st-ratio="20">Column #
-                                                            </th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr ng-repeat="row in tmpProfileErrors">
-                                                            <td ng-bind="row.message" st-ratio="60"></td>
-                                                            <td ng-bind="row.line" st-ratio="20"></td>
-                                                            <td ng-bind="row.column" st-ratio="20"></td>
-                                                        </tr>
-                                                        </tbody>
-                                                        <tfoot ng-show="errorDetails.profileErrors.length >= 20">
-                                                        <tr style="">
-                                                            <td colspan="3">
-                                                                <div st-pagination="" st-items-by-page="20"
-                                                                     st-displayed-pages="7"></div>
-                                                            </td>
-                                                        </tr>
-                                                        </tfoot>
-                                                    </table>
-                                                </md-content>
-                                            </md-tab>
-                                            <md-tab label="Constraints Errors">
-                                                <md-content class="md-padding">
-                                                    <div ng-show="errorDetails.constraintsErrors.length === 0">
-                                                        No error found.
-                                                    </div>
-                                                    <table ng-show="errorDetails.constraintsErrors.length > 0"
-                                                           st-table="tmpConstraintErrors"
-                                                           st-safe-src="errorDetails.constraintsErrors"
-                                                           class="table table-striped table-bordered table-condensed table-fix-header">
-                                                        <thead>
-                                                        <tr class="tbl-header" style="">
-                                                            <th st-ratio="60" st-sort="message">Error</th>
-                                                            <th st-sort="line" st-ratio="20">Line #
-                                                            </th>
-                                                            <th st-sort="line" st-ratio="20">Column #
-                                                            </th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr ng-repeat="row in tmpConstraintErrors">
-                                                            <td ng-bind="row.message" st-ratio="60"></td>
-                                                            <td ng-bind="row.line" st-ratio="20"></td>
-                                                            <td ng-bind="row.column" st-ratio="20"></td>
-                                                        </tr>
-                                                        </tbody>
-                                                        <tfoot ng-show="errorDetails.constraintsErrors.length >= 20">
-                                                        <tr style="">
-                                                            <td colspan="3">
-                                                                <div st-pagination="" st-items-by-page="20"
-                                                                     st-displayed-pages="7"></div>
-                                                            </td>
-                                                        </tr>
-                                                        </tfoot>
-                                                    </table>
-                                                </md-content>
-                                            </md-tab>
-                                            <md-tab label="ValueSets Errors">
-                                                <md-content class="md-padding">
-                                                    <div ng-show="errorDetails.vsErrors.length === 0">
-                                                        No error found.
-                                                    </div>
-                                                    <table ng-show="errorDetails.vsErrors.length > 0"
-                                                           st-table="tmpValueSetErrors"
-                                                           st-safe-src="errorDetails.vsErrors"
-                                                           class="table table-striped table-bordered table-condensed table-fix-header">
-                                                        <thead>
-                                                        <tr class="tbl-header" style="">
-                                                            <th st-ratio="60" st-sort="message">Error</th>
-                                                            <th st-sort="line" st-ratio="20">Line #
-                                                            </th>
-                                                            <th st-sort="line" st-ratio="20">Column #
-                                                            </th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr ng-repeat="row in tmpValueSetErrors">
-                                                            <td ng-bind="row.message" st-ratio="60"></td>
-                                                            <td ng-bind="row.line" st-ratio="20"></td>
-                                                            <td ng-bind="row.column" st-ratio="20"></td>
-                                                        </tr>
-                                                        </tbody>
-                                                        <tfoot ng-show="errorDetails.vsErrors.length >= 20">
-                                                        <tr style="">
-                                                            <td colspan="3">
-                                                                <div st-pagination="" st-items-by-page="20"
-                                                                     st-displayed-pages="7"></div>
-                                                            </td>
-                                                        </tr>
-                                                        </tfoot>
-                                                    </table>
-                                                </md-content>
-                                            </md-tab>
-                                        </md-tabs>
-                                    </form>
-                                </div>
-                            </div>
+                                </md-card-content>
+                            </md-card>
                         </div>
                     </div>
                 </md-dialog-content>
                 <md-dialog-actions layout="row">
-                    <md-button ng-show="toGVT && (exportStep === 1 || exportStep === 2)"
-                               class="btn btn-raised btn-primary btn-sm"
-                               ng-disabled="xmlFormat==='' || xmlFormat===null || !selected"
-                               ng-click="goBack()"><span><i
+                    <md-button
+                            ng-show="toGVT && (exportStep === 'LOGIN_STEP' || exportStep === 'ERROR_STEP' || exportStep === 'DOMAIN_STEP')"
+                            class="btn btn-raised btn-primary btn-sm"
+                            ng-disabled="xmlFormat==='' || xmlFormat===null || !selected"
+                            ng-click="goBack()"><span><i
                             class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
+
                     <md-button ng-show="!toGVT || toGVT === false" class="btn btn-raised btn-primary btn-sm"
                                ng-disabled="xmlFormat==='' || xmlFormat===null || !selected"
                                ng-click="exportAsZIPforSelectedMessages()"><span><i class="fa fa-download fa-fw"></i>Export as Zip</span>
                     </md-button>
-                    <md-button ng-show="toGVT && exportStep === 0" class="btn btn-raised btn-primary btn-sm"
+
+                    <md-button ng-show="toGVT && (exportStep === 'LOGIN_STEP')"
+                               class="btn btn-raised btn-primary btn-sm"
+                               ng-disabled="xmlFormat==='' || xmlFormat===null || !selected || target.url === null"
+                               ng-click="goNext()"><span><i
+                            class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
+
+                    <md-button ng-show="toGVT && (exportStep === 'MESSAGE_STEP')"
+                               class="btn btn-raised btn-primary btn-sm"
                                ng-disabled="xmlFormat==='' || xmlFormat===null || !selected"
                                ng-click="goNext()"><span><i
                             class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
-                    <md-button ng-show="toGVT && exportStep === 1" class="btn btn-raised btn-success btn-sm"
+
+
+                    <md-button ng-show="toGVT && exportStep === 'DOMAIN_STEP'" class="btn btn-raised btn-success btn-sm"
                                ng-show="xmlFormat=== 'Validation'"
-                               ng-disabled="xmlFormat==='' || xmlFormat===null || !selected || target.url === null || target.domain ==null"
+                               ng-disabled="xmlFormat==='' || xmlFormat===null || !selected || target.url === null  || ((newDomain == null || newDomain.key == null || newDomain.key == null || newDomain.key == '' || newDomain.key == '' || newDomain.name == null || newDomain.name == null || newDomain.name == '' || newDomain.name == '') && target.domain == null)"
                                ng-click="exportAsZIPToGVT()"><span><i
-                            class="fa fa-paper-plane fa-fw"></i>Send</span></md-button>
+                            class="fa fa-paper-plane fa-fw"></i>SUBMIT</span></md-button>
                 </md-dialog-actions>
             </form>
         </md-dialog>
@@ -957,7 +1070,7 @@
                                 <div layout="row">
                                     <div style="margin-right:10px; width:30%"
                                          ng-class="{'has-success has-feedback': gvtLoginForm.targetApp.$valid, 'igl-has-error has-feedback': !gvtLoginForm.targetApp.$valid}">
-                                        <md-input-container >
+                                        <md-input-container>
                                             <label>Target Tool</label>
                                             <md-select ng-model="target.url" placeholder="Select the Target Application"
                                                        ng-change="selectTargetUrl()"

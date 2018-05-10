@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.2" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument" 
+    project="igamt-lite-domain" 
+    file="/igamt-lite-domain/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/domain/IGDocument.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="87" width="235" x="17" y="-557"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message" 
+    project="igamt-lite-domain" 
+    file="/igamt-lite-domain/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/domain/Message.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="109" width="285" x="-291" y="-880"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile" 
+    project="igamt-lite-domain" 
+    file="/igamt-lite-domain/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/domain/Profile.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="96" width="235" x="17" y="-705"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages" 
+    project="igamt-lite-domain" 
+    file="/igamt-lite-domain/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/domain/Messages.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="89" width="235" x="23" y="-837"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TextbasedSectionModel" 
+    project="igamt-lite-domain" 
+    file="/igamt-lite-domain/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/domain/TextbasedSectionModel.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="678" y="-543"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes" 
+    project="igamt-lite-domain" 
+    file="/igamt-lite-domain/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/domain/Datatypes.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="100" width="252" x="13" y="-1214"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument" 
+    project="igamt-lite-domain" 
+    file="/igamt-lite-domain/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/domain/DatatypeLibraryDocument.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="101" width="245" x="951" y="-674"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section" 
+    project="igamt-lite-domain" 
+    file="/igamt-lite-domain/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/domain/Section.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="112" width="235" x="18" y="-416"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments" 
+    project="igamt-lite-domain" 
+    file="/igamt-lite-domain/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/domain/Segments.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="92" width="235" x="27" y="-1089"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables" 
+    project="igamt-lite-domain" 
+    file="/igamt-lite-domain/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/domain/Tables.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="106" width="240" x="25" y="-969"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary" 
+    project="igamt-lite-domain" 
+    file="/igamt-lite-domain/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/domain/DatatypeLibrary.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="74" width="276" x="576" y="-1196"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary" 
+    project="igamt-lite-domain" 
+    file="/igamt-lite-domain/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/domain/ProfileComponentLibrary.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="110" width="240" x="864" y="-1203"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary" 
+    project="igamt-lite-domain" 
+    file="/igamt-lite-domain/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/domain/SegmentLibrary.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="113" width="240" x="1142" y="-1216"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink" 
+    project="igamt-lite-domain" 
+    file="/igamt-lite-domain/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/domain/SegmentLink.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="127" width="235" x="1077" y="-1400"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.AbstractLink" 
+    project="igamt-lite-domain" 
+    file="/igamt-lite-domain/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/domain/AbstractLink.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="652" y="-1598"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink" 
+    project="igamt-lite-domain" 
+    file="/igamt-lite-domain/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/domain/DatatypeLink.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="134" width="239" x="794" y="-1410"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink" 
+    project="igamt-lite-domain" 
+    file="/igamt-lite-domain/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/domain/TableLink.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="127" width="235" x="535" y="-1405"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary" 
+    project="igamt-lite-domain" 
+    file="/igamt-lite-domain/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/domain/TableLibrary.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="86" width="255" x="316" y="-1202"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="19">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="20" name="children"/>      
+      <multiplicity id="21" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="22">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="23" name="childSections"/>      
+      <multiplicity id="24" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="25">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="15"/>  
+  </generalization>  
+  <association id="26">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="27" name="children"/>      
+      <multiplicity id="28" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="29">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="15"/>  
+  </generalization>  
+  <generalization id="30">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <association id="31">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="32" name="segmentLibrary"/>      
+      <multiplicity id="33" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="34">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <generalization id="35">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <generalization id="36">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <association id="37">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="38" name="profileComponentLibrary"/>      
+      <multiplicity id="39" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="40">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="41" name="messages"/>      
+      <multiplicity id="42" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="43">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <association id="44">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="45" name="childSections"/>      
+      <multiplicity id="46" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="47">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="48" name="tableLibrary"/>      
+      <multiplicity id="49" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="50">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="15"/>  
+  </generalization>  
+  <generalization id="51">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <generalization id="52">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <association id="53">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="54" name="profile"/>      
+      <multiplicity id="55" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="56">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="57" name="children"/>      
+      <multiplicity id="58" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="59">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <association id="60">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="61" name="datatypeLibrary"/>      
+      <multiplicity id="62" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="63">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <generalization id="64">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <association id="65">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="66" name="tableLibrary"/>      
+      <multiplicity id="67" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="68">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="69" name="children"/>      
+      <multiplicity id="70" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="71">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="72" name="datatypeLibrary"/>      
+      <multiplicity id="73" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

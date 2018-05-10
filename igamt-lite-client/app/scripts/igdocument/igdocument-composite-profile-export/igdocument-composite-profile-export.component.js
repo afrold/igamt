@@ -62,6 +62,7 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
 
     $scope.selectTargetDomain = function () {
         if ($scope.target.domain != null) {
+            $scope.newDomain = null;
             StorageService.set("EXT_TARGET_DOMAIN", $scope.target.domain);
         }
     };

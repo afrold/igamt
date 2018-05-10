@@ -27,6 +27,9 @@ public interface ConnectService {
   public boolean validCredentials(String authorization, String url) throws GVTLoginException;
   
   public ResponseEntity<?> getDomains(String url) throws GVTLoginException;
+ 
+  ResponseEntity<?> createDomain(String authorization, String url, String key, String name)
+      throws GVTExportException, IOException;
   
 
 }

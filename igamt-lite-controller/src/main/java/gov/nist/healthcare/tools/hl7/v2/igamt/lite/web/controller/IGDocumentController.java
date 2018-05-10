@@ -2133,7 +2133,24 @@ private void processDatatype(Datatype d, MessageAddReturn ret,
     } catch (Exception e) {
       throw new GVTExportException(e);
     }
+  } 
+  
+  @RequestMapping(value = "/connect/createDomain", method = RequestMethod.POST,
+      produces = "application/json")
+  public ResponseEntity<?>  createDomain(@PathVariable("id") String id,
+      @RequestBody Set<String> messageIds, @RequestHeader("target-auth") String authorization
+      ,@RequestHeader("target-url") String url,@RequestParam("key") String key,
+      @RequestParam("name") String name,
+      HttpServletRequest request, HttpServletResponse response) throws GVTExportException {
+    try {
+      log.info(
+          "Creating domain with name " +  name + ", key=" + key + ",url="+ url);
+      return  gvtService.createDomain(authorization, url,key, name);
+    } catch (Exception e) {
+      throw new GVTExportException(e);
+    }
   }
+  
 
   @RequestMapping(value = "/{id}/connect/composites", method = RequestMethod.POST,
       produces = "application/json")

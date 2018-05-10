@@ -1,10 +1,10 @@
 [
   {
-    "value":"iz",
+    "domain":"iz",
     "name":"Immunization"
   },
   {
-    "value":"ss",
+    "domain":"ss",
     "name":"Syndromic"
   }
 ]

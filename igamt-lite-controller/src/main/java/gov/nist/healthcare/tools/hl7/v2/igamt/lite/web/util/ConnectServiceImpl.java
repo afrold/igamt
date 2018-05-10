@@ -55,8 +55,12 @@ public class ConnectServiceImpl implements ConnectService {
   @Value("${connect.loginEndpoint}")
   private String LOGIN_ENDPOINT;
 
-  @Value("${connect.domainEndpoint}")
-  private String DOMAIN_ENDPOINT;
+  @Value("${connect.domainsEndpoint}")
+  private String DOMAINS_ENDPOINT;
+  
+  @Value("${connect.createDomainEndpoint}")
+  private String CREATE_DOMAN_ENDPOINT;
+  
 
  
 
@@ -111,6 +115,25 @@ public class ConnectServiceImpl implements ConnectService {
         HttpMethod.POST, requestEntity, Map.class);
     return response;
   }
+  
+  @Override
+  public ResponseEntity<?> createDomain(String authorization, String url,String key, String name)
+      throws GVTExportException, IOException {
+    LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+    
+    params.add("key", key);
+    params.add("name", name);
+ 
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    headers.add("Authorization", "Basic " + authorization);
+    HttpEntity<LinkedMultiValueMap<String, String>> requestEntity =
+        new HttpEntity<LinkedMultiValueMap<String, String>>(params, headers);
+    ResponseEntity<?> response = restTemplate.exchange(url + EXPORT_ENDPOINT,
+        HttpMethod.POST, requestEntity, Map.class);
+    return response;
+  }
+  
 
   public File toFile(InputStream io) {
     OutputStream outputStream = null;
@@ -171,7 +194,7 @@ public class ConnectServiceImpl implements ConnectService {
       HttpHeaders headers = new HttpHeaders();
       HttpEntity<String> entity = new HttpEntity<String>("", headers);
       ResponseEntity<List> response =
-          restTemplate.exchange(url + DOMAIN_ENDPOINT, HttpMethod.GET, entity, List.class);
+          restTemplate.exchange(url + DOMAINS_ENDPOINT, HttpMethod.GET, entity, List.class);
       return response;
     } catch (HttpClientErrorException e) {
       throw new GVTLoginException(e.getMessage());
