@@ -134,7 +134,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
     };
 
     $scope.createNewDomain = function () {
-        $scope.newDomain = {name: null, key: null};
+        $scope.newDomain = {name: null, key: null, homeTitle:null};
         $scope.error = null;
         $scope.target.domain = null;
     };
@@ -154,10 +154,10 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
 
     $scope.showErrors = function (errorDetails) {
         $scope.exportStep =  'ERROR_STEP';
-        $scope.errorDetails = errorDetails;
-        $scope.tmpProfileErrors = errorDetails != null ? [].concat($scope.errorDetails.profileErrors) : [];
-        $scope.tmpConstraintErrors = errorDetails != null ? [].concat($scope.errorDetails.constraintsErrors) : [];
-        $scope.tmpValueSetErrors = errorDetails != null ? [].concat($scope.errorDetails.vsErrors) : [];
+        // $scope.errorDetails = errorDetails;
+        // $scope.tmpProfileErrors = errorDetails != null ? [].concat($scope.errorDetails.profileErrors) : [];
+        // $scope.tmpConstraintErrors = errorDetails != null ? [].concat($scope.errorDetails.constraintsErrors) : [];
+        // $scope.tmpValueSetErrors = errorDetails != null ? [].concat($scope.errorDetails.vsErrors) : [];
     };
 
     $scope.exportToGVT = function () {
@@ -204,7 +204,8 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
         $scope.loading = true;
         $scope.error = null;
         if ($scope.newDomain != null) {
-            GVTSvc.createDomain(StorageService.getGvtUsername(), StorageService.getGvtPassword(), $scope.target.url, $scope.newDomain.key, $scope.newDomain.name).then(function (domain) {
+            $scope.newDomain.key = $scope.newDomain.name.replace(/\s+/g, '-').toLowerCase();
+            GVTSvc.createDomain(StorageService.getGvtUsername(), StorageService.getGvtPassword(), $scope.target.url, $scope.newDomain.key, $scope.newDomain.name,$scope.newDomain.homeTitle).then(function (domain) {
                 $scope.loading = false;
                 $scope.target.domain = $scope.newDomain.key;
                 $scope.exportToGVT();

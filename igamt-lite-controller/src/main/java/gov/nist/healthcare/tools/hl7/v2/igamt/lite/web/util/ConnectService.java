@@ -28,7 +28,7 @@ public interface ConnectService {
   
   public ResponseEntity<?> getDomains(String url) throws GVTLoginException;
  
-  ResponseEntity<?> createDomain(String authorization, String url, String key, String name)
+  ResponseEntity<?> createDomain(String authorization, String url, String key, String name,String homeTitle)
       throws GVTExportException, IOException;
   
 

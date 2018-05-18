@@ -5,7 +5,7 @@
 angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', function ($scope, $mdDialog, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc, GVTSvc, $timeout, $window, toGVT, StorageService) {
     $scope.igdocumentToSelect = igdocumentToSelect;
     $scope.toGVT = toGVT;
-    $scope.exportStep = 0;
+    $scope.exportStep = 'MESSAGE_STEP';
     $scope.xmlFormat = 'Validation';
     $scope.selectedCompositeProfileIDs = [];
     $scope.loading = false;
@@ -22,6 +22,7 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
         url: null, domain: null
     };
 
+    $scope.newDomain = null;
 
     // init selection to false
     for (var i in $scope.igdocumentToSelect.profile.compositeProfiles.children) {
@@ -31,41 +32,21 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
 
 
     $scope.selectTargetUrl = function () {
-        if ($scope.target.url != null) {
-            StorageService.set("EXT_TARGET_URL", $scope.target.url);
-            $scope.loadingDomains = true;
-            $scope.targetDomains = null;
-            $scope.target.domain = null;
-            GVTSvc.getDomains($scope.target.url).then(function (result) {
-                $scope.targetDomains = result;
-                var savedTargetDomain = StorageService.get("EXT_TARGET_DOMAIN");
-                if(savedTargetDomain != null){
-                    for (var targetDomain in $scope.targetDomains) {
-                        if (targetDomain.value === savedTargetDomain) {
-                            $scope.target.domain = savedTargetDomain;
-                            break;
-                        }
-                    }
-                }else{
-                    if($scope.targetDomains != null && $scope.targetDomains.length == 1){
-                        $scope.target.domain = $scope.targetDomains[0].value;
-                    }
-                }
-                $scope.selectTargetDomain();
-                $scope.loadingDomains = false;
-            }, function (error) {
-                $scope.loadingDomains = false;
-                alert(error);
-            });
-        }
+        StorageService.set("EXT_TARGET_URL", $scope.target.url);
+        $scope.loadingDomains = false;
+        $scope.targetDomains = null;
+        $scope.target.domain = null;
+        $scope.newDomain = null;
+        $scope.error = null;
     };
 
     $scope.selectTargetDomain = function () {
+        $scope.newDomain = null;
         if ($scope.target.domain != null) {
-            $scope.newDomain = null;
-            StorageService.set("EXT_TARGET_DOMAIN", $scope.target.domain);
+            StorageService.set($scope.target.url+"/EXT_TARGET_DOMAIN", $scope.target.domain);
         }
     };
+
 
 
     $scope.trackSelections = function () {
@@ -95,18 +76,73 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
     };
 
     $scope.goBack = function () {
-        $scope.exportStep = $scope.exportStep != 0 ? $scope.exportStep - 1 : 0;
+        if ($scope.exportStep === 'LOGIN_STEP') {
+            $scope.exportStep = 'MESSAGE_STEP';
+        } else if($scope.exportStep === 'DOMAIN_STEP'){
+            $scope.exportStep = 'LOGIN_STEP';
+        } else if($scope.exportStep === 'ERROR_STEP'){
+            $scope.exportStep = 'DOMAIN_STEP';
+        }
     };
 
-    $scope.goNext = function () {
-        $scope.exportStep = $scope.exportStep != 2 ? $scope.exportStep + 1 : 2;
+    $scope.login = function () {
+        GVTSvc.login($scope.user.username, $scope.user.password, $scope.target.url).then(function (auth) {
+            StorageService.setGvtUsername($scope.user.username);
+            StorageService.setGvtPassword($scope.user.password);
+            StorageService.setGVTBasicAuth(auth);
+            GVTSvc.getDomains($scope.target.url).then(function (result) {
+                $scope.targetDomains = result;
+                var savedTargetDomain = StorageService.get($scope.target.url+"/EXT_TARGET_DOMAIN");
+                if (savedTargetDomain != null) {
+                    for (var targetDomain in $scope.targetDomains) {
+                        if (targetDomain.domain === savedTargetDomain) {
+                            $scope.target.domain = savedTargetDomain;
+                            break;
+                        }
+                    }
+                } else {
+                    if ($scope.targetDomains != null && $scope.targetDomains.length == 1) {
+                        $scope.target.domain = $scope.targetDomains[0].domain;
+                    }
+                }
+                $scope.exportStep = 'DOMAIN_STEP';
+                $scope.selectTargetDomain();
+                $scope.loadingDomains = false;
+            }, function (error) {
+                $scope.loadingDomains = false;
+                alert(error);
+            });
+
+        });
     };
+
+
+    $scope.goNext = function () {
+        if ($scope.exportStep === 'LOGIN_STEP') {
+            $scope.login();
+        } else if($scope.exportStep === 'DOMAIN_STEP'){
+            $scope.exportToGVT();
+        } else if($scope.exportStep === 'ERROR_STEP'){
+            $scope.exportStep = 'DOMAIN_STEP';
+        } else if($scope.exportStep === 'MESSAGE_STEP'){
+            $scope.generatedSelectedMessagesIDs();
+            $scope.exportStep = 'LOGIN_STEP';
+        }
+    };
+
+    $scope.createNewDomain = function () {
+        $scope.newDomain = {name: null, key: null, homeTitle:null};
+        $scope.error = null;
+        $scope.target.domain = null;
+    };
+
 
     $scope.exportAsZIPforSelectedCompositeProfiles = function () {
         $scope.loading = true;
         $scope.generatedSelectedMessagesIDs();
         ExportSvc.exportAsXMLByCompositeProfileIds($scope.igdocumentToSelect.id, $scope.selectedCompositeProfileIDs, $scope.xmlFormat);
         $scope.loading = false;
+
     };
 
     $scope.cancel = function () {
@@ -121,17 +157,16 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
         $scope.tmpValueSetErrors = errorDetails != null ? [].concat($scope.errorDetails.vsErrors) : [];
     };
 
-    $scope.exportAsZIPToGVT = function () {
-        $scope.loading = true;
+    $scope.exportToGVT = function () {
         $scope.info.text = null;
         $scope.info.show = false;
         $scope.info.type = 'danger';
         $scope.info['details'] = null;
-        $scope.generatedSelectedMessagesIDs();
-        GVTSvc.login($scope.user.username, $scope.user.password).then(function (auth) {
-            StorageService.setGvtUsername($scope.user.username);
-            StorageService.setGvtPassword($scope.user.password);
-            GVTSvc.exportToGVTForCompositeProfile($scope.igdocumentToSelect.id, $scope.selectedCompositeProfileIDs, auth, $scope.target.url, $scope.target.domain).then(function (map) {
+        var auth =  StorageService.getGVTBasicAuth();
+        if($scope.target.url != null && $scope.target.domain != null && auth!= null) {
+            $scope.loading = true;
+            GVTSvc.exportToGVTForCompositeProfile($scope.igdocumentToSelect.id, $scope.selectedCompositeProfileIDs,auth, $scope.target.url, $scope.target.domain).then(function (map) {
+                $scope.loading = false;
                 var response = angular.fromJson(map.data);
                 if (response.success === false) {
                     $scope.info.text = "gvtExportFailed";
@@ -139,10 +174,9 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
                     $scope.showErrors($scope.info.details);
                     $scope.info.show = true;
                     $scope.info.type = 'danger';
-                    $scope.loading = false;
                 } else {
-                    $scope.exportStep = 2;
                     var token = response.token;
+                    $scope.exportStep =  'ERROR_STEP';
                     $scope.info.text = 'gvtRedirectInProgress';
                     $scope.info.show = true;
                     $scope.info.type = 'info';
@@ -157,14 +191,31 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
                 $scope.info.show = true;
                 $scope.info.type = 'danger';
                 $scope.loading = false;
+                $scope.exportStep =  'ERROR_STEP';
             });
-        }, function (error) {
-            $scope.info.text = error.data.text;
-            $scope.info.show = true;
-            $scope.info.type = 'danger';
-            $scope.loading = false;
-        });
+        }
     };
+
+
+
+    $scope.exportAsZIPToGVT = function () {
+        $scope.loading = true;
+        $scope.error = null;
+        if ($scope.newDomain != null) {
+            $scope.newDomain.key = $scope.newDomain.name.replace(/\s+/g, '-').toLowerCase();
+            GVTSvc.createDomain(StorageService.getGvtUsername(), StorageService.getGvtPassword(), $scope.target.url, $scope.newDomain.key, $scope.newDomain.name,$scope.newDomain.homeTitle).then(function (domain) {
+                $scope.loading = false;
+                $scope.target.domain = $scope.newDomain.key;
+                $scope.exportToGVT();
+            }, function (error) {
+                $scope.loading = false;
+                $scope.error = error.data.text;
+            });
+        }else if($scope.target.url != null && $scope.target.domain != null){
+            $scope.exportToGVT();
+        }
+    };
+
 
     if($scope.targetApps != null) {
         var savedTargetUrl = StorageService.get("EXT_TARGET_URL");

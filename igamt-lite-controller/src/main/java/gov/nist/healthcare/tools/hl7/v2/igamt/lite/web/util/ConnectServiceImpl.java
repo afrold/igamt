@@ -117,13 +117,13 @@ public class ConnectServiceImpl implements ConnectService {
   }
   
   @Override
-  public ResponseEntity<?> createDomain(String authorization, String url,String key, String name)
+  public ResponseEntity<?> createDomain(String authorization, String url,String key, String name,String homeTitle)
       throws GVTExportException, IOException {
     LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
     
     params.add("key", key);
     params.add("name", name);
- 
+    params.add("homeTitle", homeTitle);
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
     headers.add("Authorization", "Basic " + authorization);

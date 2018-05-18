@@ -2140,12 +2140,12 @@ private void processDatatype(Datatype d, MessageAddReturn ret,
   public ResponseEntity<?>  createDomain(@PathVariable("id") String id,
       @RequestBody Set<String> messageIds, @RequestHeader("target-auth") String authorization
       ,@RequestHeader("target-url") String url,@RequestParam("key") String key,
-      @RequestParam("name") String name,
+      @RequestParam("name") String name,@RequestParam("homeTitle") String homeTitle,
       HttpServletRequest request, HttpServletResponse response) throws GVTExportException {
     try {
       log.info(
           "Creating domain with name " +  name + ", key=" + key + ",url="+ url);
-      return  gvtService.createDomain(authorization, url,key, name);
+      return  gvtService.createDomain(authorization, url,key, name,homeTitle);
     } catch (Exception e) {
       throw new GVTExportException(e);
     }
