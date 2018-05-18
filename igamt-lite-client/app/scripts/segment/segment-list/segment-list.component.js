@@ -1031,7 +1031,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     var bindings = $scope.findingBindings(node);
     if(bindings && bindings.length > 0) return false;
     if(node.datatype &&node.datatype.id){
-        if($rootScope.datatypesMap[node.datatype.id].name == 'ID' || $rootScope.datatypesMap[node.datatype.id].name == "IS") return false;
+        if($rootScope.datatypesMap[node.datatype.id].name === 'ID' || $rootScope.datatypesMap[node.datatype.id].name === "IS") return false;
     }
     return true;
   };
@@ -1566,15 +1566,21 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     if(node && node.datatype){
       var currentDT = $rootScope.datatypesMap[node.datatype.id];
       if(currentDT && _.find($rootScope.config.valueSetAllowedDTs, function(valueSetAllowedDT){
-          return valueSetAllowedDT == currentDT.name;
+          return valueSetAllowedDT === currentDT.name;
         })) return true;
+
+          if(!node.fieldDT && !node.componentDT && $rootScope.config.valueSetAllowedFields){
+              if(_.find($rootScope.config.valueSetAllowedFields, function(valueSetAllowedField){
+                      return valueSetAllowedField.segmentName === $rootScope.segment.name && valueSetAllowedField.location === node.position;})) return true;
+
+          }
     }
 
     if(node && node.fieldDT && !node.componentDT){
       var parentDT = $rootScope.datatypesMap[node.fieldDT];
       var pathSplit = node.path.split(".");
       if(parentDT && _.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
-          return valueSetAllowedComponent.dtName == parentDT.name && valueSetAllowedComponent.location == pathSplit[1];
+          return valueSetAllowedComponent.dtName === parentDT.name && valueSetAllowedComponent.location === pathSplit[1];
         })) return true;
     }
 
@@ -1582,7 +1588,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
       var parentDT = $rootScope.datatypesMap[node.componentDT];
       var pathSplit = node.path.split(".");
       if(parentDT && _.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
-          return valueSetAllowedComponent.dtName == parentDT.name && valueSetAllowedComponent.location == pathSplit[2];
+          return valueSetAllowedComponent.dtName === parentDT.name && valueSetAllowedComponent.location === pathSplit[2];
         })) return true;
     }
 

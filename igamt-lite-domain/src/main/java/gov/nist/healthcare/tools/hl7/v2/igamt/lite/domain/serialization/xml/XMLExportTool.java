@@ -932,6 +932,7 @@ public class XMLExportTool {
             tablesMap);
       }
     } catch (Exception e) {
+      e.printStackTrace();
       throw new FieldSerializationException(e, "Field[" + f.getPosition() + "]");
     }
 
@@ -1226,7 +1227,7 @@ public class XMLExportTool {
       List<Predicate> messagePredicate, String messagePath) {
     if (predicates != null && path != null) {
       for (Predicate p : predicates) {
-        if (p.getConstraintTarget().equals(path)) {
+        if (p.getConstraintTarget() != null && p.getConstraintTarget().equals(path)) {
           return p;
         }
       }
@@ -1234,7 +1235,7 @@ public class XMLExportTool {
 
     if (messagePredicate != null && messagePath != null) {
       for (Predicate p : messagePredicate) {
-        if (p.getConstraintTarget().equals(messagePath)) {
+        if (p.getConstraintTarget() != null && p.getConstraintTarget().equals(messagePath)) {
           return p;
         }
       }
@@ -1249,14 +1250,14 @@ public class XMLExportTool {
 
     if (conformanceStatements != null && path != null) {
       for (ConformanceStatement c : conformanceStatements) {
-        if (c.getConstraintTarget().equals(path)) {
+        if (c.getConstraintTarget() != null && c.getConstraintTarget().equals(path)) {
           result.add(c);
-        }
+        }          
       }
     }
     if (messageConformanceStatements != null && messagePath != null) {
       for (ConformanceStatement c : messageConformanceStatements) {
-        if (c.getConstraintTarget().equals(messagePath)) {
+        if (c.getConstraintTarget() != null && c.getConstraintTarget().equals(messagePath)) {
           result.add(c);
         }
       }
@@ -2006,9 +2007,26 @@ public class XMLExportTool {
             elmComponent
                 .addAttribute(new Attribute("Datatype", this.str(componentDatatype.getLabel() + "_"
                     + componentDatatype.getHl7Version().replaceAll("\\.", "-"))));
-            elmComponent.addAttribute(new Attribute("MinLength", this.str(c.getMinLength())));
-            elmComponent.addAttribute(new Attribute("MaxLength", this.str(c.getMaxLength())));
-            elmComponent.addAttribute(new Attribute("ConfLength", this.str(c.getConfLength())));
+            
+            	if(c.getMinLength() !=null && !c.getMinLength().isEmpty()){
+            	elmComponent.addAttribute(new Attribute("MinLength", this.str(c.getMinLength())));
+                
+                }else{
+                	elmComponent.addAttribute(new Attribute("MinLength", "NA"));
+                }
+                
+                if(c.getMaxLength() !=null&& !c.getMaxLength().isEmpty()){
+                	elmComponent.addAttribute(new Attribute("MaxLength", this.str(c.getMaxLength())));
+
+                }else{
+                	elmComponent.addAttribute(new Attribute("MaxLength", "NA"));
+
+                }   
+            if (c.getConfLength() != null && !c.getConfLength().equals("")){
+              elmComponent.addAttribute(new Attribute("ConfLength", this.str(c.getConfLength())));
+            }else{
+              elmComponent.addAttribute(new Attribute("ConfLength", "NA"));
+            }
 
             List<ValueSetBinding> bindings = findBinding(d.getValueSetBindings(), c.getPosition());
             if (bindings.size() > 0) {
@@ -2234,12 +2252,27 @@ public class XMLExportTool {
             elmField.addAttribute(new Attribute("Usage", this.str(f.getUsage().toString())));
             elmField.addAttribute(new Attribute("Datatype",
                 this.str(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"))));
+            
+            if(f.getMinLength() !=null && !f.getMinLength().isEmpty()){
             elmField.addAttribute(new Attribute("MinLength", this.str(f.getMinLength())));
-            elmField.addAttribute(new Attribute("MaxLength", this.str(f.getMaxLength())));
-            elmField.addAttribute(new Attribute("ConfLength", this.str(f.getConfLength())));
+            
+            }else{
+                elmField.addAttribute(new Attribute("MinLength", "NA"));
+            }
+            
+            if(f.getMaxLength() !=null&& !f.getMaxLength().isEmpty()){
+                elmField.addAttribute(new Attribute("MaxLength", this.str(f.getMaxLength())));
 
-            if (f.getConfLength() != null && !f.getConfLength().equals(""))
+            }else{
+                elmField.addAttribute(new Attribute("MaxLength", "NA"));
+
+            }
+          
+            if (f.getConfLength() != null && !f.getConfLength().equals("")){
               elmField.addAttribute(new Attribute("ConfLength", this.str(f.getConfLength())));
+            }else{
+              elmField.addAttribute(new Attribute("ConfLength", "NA"));
+            }
 
             List<ValueSetBinding> bindings = findBinding(s.getValueSetBindings(), f.getPosition());
             if (bindings.size() > 0) {

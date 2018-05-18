@@ -723,7 +723,7 @@ public class IGDocumentController extends CommonController {
         for (String key : s.getCoConstraintsTable().getThenMapData().keySet()) {
           List<CoConstraintTHENColumnData> dataList =
               s.getCoConstraintsTable().getThenMapData().get(key);
-
+          if( dataList !=null && dataList.isEmpty()){
           for (CoConstraintTHENColumnData data : dataList) {
             if (data != null && data.getValueSets() != null) {
               for (ValueSetData vsd : data.getValueSets()) {
@@ -738,6 +738,7 @@ public class IGDocumentController extends CommonController {
               }
             }
           }
+        }
         }
       }
       

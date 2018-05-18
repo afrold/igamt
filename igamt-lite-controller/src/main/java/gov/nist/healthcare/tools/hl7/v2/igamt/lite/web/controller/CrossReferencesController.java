@@ -165,33 +165,36 @@ public class CrossReferencesController {
     }
     for (ProfileComponentLink link : ig.getProfile().getProfileComponentLibrary().getChildren()) {
       ProfileComponent pc = profileComponentService.findById(link.getId());
-      for (SubProfileComponent spc : pc.getChildren()) {
-        if (spc.getType().equals("message")) {
-          if (spc.getSource() != null && spc.getSource().getMessageId() != null) {
-            if (spc.getSource().getMessageId().equals(wrapper.getMessageId())) {
-              ProfileComponentFound pcf = new ProfileComponentFound();
-              pcf.setDescription(pc.getDescription());
-              pcf.setId(pc.getId());
-              pcf.setName(pc.getName());
-              pcf.setTargetPosition(spc.getPosition());
-              pcf.setWhere(spc.getType());
-              profileComponentFounds.add(pcf);
+      if(pc != null){
+        for (SubProfileComponent spc : pc.getChildren()) {
+          if (spc.getType().equals("message")) {
+            if (spc.getSource() != null && spc.getSource().getMessageId() != null) {
+              if (spc.getSource().getMessageId().equals(wrapper.getMessageId())) {
+                ProfileComponentFound pcf = new ProfileComponentFound();
+                pcf.setDescription(pc.getDescription());
+                pcf.setId(pc.getId());
+                pcf.setName(pc.getName());
+                pcf.setTargetPosition(spc.getPosition());
+                pcf.setWhere(spc.getType());
+                profileComponentFounds.add(pcf);
+              }
+            }
+          } else {
+            if (spc.getSource() != null && spc.getSource().getMessageId() != null) {
+              if (spc.getSource().getMessageId().equals(wrapper.getMessageId())) {
+                ProfileComponentFound pcf = new ProfileComponentFound();
+                pcf.setDescription(pc.getDescription());
+                pcf.setId(pc.getId());
+                pcf.setName(pc.getName());
+                pcf.setTargetPosition(spc.getPosition());
+                pcf.setWhere(spc.getType());
+                profileComponentFounds.add(pcf);
+              }
             }
           }
-        } else {
-          if (spc.getSource() != null && spc.getSource().getMessageId() != null) {
-            if (spc.getSource().getMessageId().equals(wrapper.getMessageId())) {
-              ProfileComponentFound pcf = new ProfileComponentFound();
-              pcf.setDescription(pc.getDescription());
-              pcf.setId(pc.getId());
-              pcf.setName(pc.getName());
-              pcf.setTargetPosition(spc.getPosition());
-              pcf.setWhere(spc.getType());
-              profileComponentFounds.add(pcf);
-            }
-          }
-        }
+        }  
       }
+      
     }
     ret.setCompositeProfileFound(compositeProfileFounds);
     ret.setProfileComponentFound(profileComponentFounds);
@@ -212,40 +215,43 @@ public class CrossReferencesController {
     }
     for (ProfileComponentLink link : ig.getProfile().getProfileComponentLibrary().getChildren()) {
       ProfileComponent pc = profileComponentService.findById(link.getId());
-      for (SubProfileComponent spc : pc.getChildren()) {
+      if(pc != null){
+        for (SubProfileComponent spc : pc.getChildren()) {
 
-        if (spc.getType().equals("segment") || spc.getType().equals("segmentRef")) {
-          if (spc.getAttributes().getOldRef().getId().equals(wrapper.getSegmentId())) {
-            ProfileComponentFound pcf = new ProfileComponentFound();
-            pcf.setDescription(pc.getDescription());
-            pcf.setId(pc.getId());
-            pcf.setName(pc.getName());
-            pcf.setTargetPosition(spc.getPosition());
-            pcf.setWhere("oldRef of " + spc.getType());
-            profileComponentFounds.add(pcf);
-          } else if (spc.getAttributes().getRef().getId().equals(wrapper.getSegmentId())) {
-            ProfileComponentFound pcf = new ProfileComponentFound();
-            pcf.setDescription(pc.getDescription());
-            pcf.setId(pc.getId());
-            pcf.setName(pc.getName());
-            pcf.setTargetPosition(spc.getPosition());
-            pcf.setWhere("newRef of " + spc.getType());
-            profileComponentFounds.add(pcf);
-          }
-        } else {
-          if (spc.getSource() != null && spc.getSource().getSegmentId() != null) {
-            if (spc.getSource().getSegmentId().equals(wrapper.getSegmentId())) {
+          if (spc.getType().equals("segment") || spc.getType().equals("segmentRef")) {
+            if (spc.getAttributes().getOldRef().getId().equals(wrapper.getSegmentId())) {
               ProfileComponentFound pcf = new ProfileComponentFound();
               pcf.setDescription(pc.getDescription());
               pcf.setId(pc.getId());
               pcf.setName(pc.getName());
               pcf.setTargetPosition(spc.getPosition());
-              pcf.setWhere("From " + spc.getFrom() + ", Type: " + spc.getType());
+              pcf.setWhere("oldRef of " + spc.getType());
+              profileComponentFounds.add(pcf);
+            } else if (spc.getAttributes().getRef().getId().equals(wrapper.getSegmentId())) {
+              ProfileComponentFound pcf = new ProfileComponentFound();
+              pcf.setDescription(pc.getDescription());
+              pcf.setId(pc.getId());
+              pcf.setName(pc.getName());
+              pcf.setTargetPosition(spc.getPosition());
+              pcf.setWhere("newRef of " + spc.getType());
               profileComponentFounds.add(pcf);
             }
+          } else {
+            if (spc.getSource() != null && spc.getSource().getSegmentId() != null) {
+              if (spc.getSource().getSegmentId().equals(wrapper.getSegmentId())) {
+                ProfileComponentFound pcf = new ProfileComponentFound();
+                pcf.setDescription(pc.getDescription());
+                pcf.setId(pc.getId());
+                pcf.setName(pc.getName());
+                pcf.setTargetPosition(spc.getPosition());
+                pcf.setWhere("From " + spc.getFrom() + ", Type: " + spc.getType());
+                profileComponentFounds.add(pcf);
+              }
+            }
           }
-        }
+        }  
       }
+      
     }
     ret.setMessageFounds(messageFounds);
     ret.setProfileComponentFound(profileComponentFounds);

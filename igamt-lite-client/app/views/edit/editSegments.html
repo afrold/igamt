@@ -814,10 +814,6 @@
 <script type="text/ng-template" id="SegmentFieldEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF)" ng-class="{ 'new': isChildNew(node), 'selected': isChildSelected(node)}">
         <td ng-controller="FormRowCtrl">
-
-
-
-
             <ng-form name="{{formName}}" class="form-inline">
                 <span ng-show="hasError(node.id) && validationResult && isSegmentValidated()&&node.added!=='yes'"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
                 <span ng-show="!hasError(node.id) && validationResult && isSegmentValidated()&&node.added!=='yes'"><i class="fa fa-check-circle" style="color:green;"></i></span>
@@ -858,11 +854,6 @@
         <td ng-class="hasUsageError(node.id)" data-toggle="tooltip" title="{{displayMessageError(node.id,'USAGE')}}">
             <span ng-show="node.usage !=='C' || (node.usage==='C' && countPredicate(node.position)===0 )" ng-controller="FormRowCtrl">
                 <ng-form name="{{formName}}" class="form-inline">
-                    <!--<select class="form-control input-sm" name="usage"-->
-                            <!--ng-change="setUsage(node);setCardinalities(node);openPredicateDialog(node);"-->
-                            <!--ng-class="{ 'has-error has-feedback' : {{formName}}.usage.$invalid}"-->
-                            <!--required ng-model="node.usage" ng-options="usage for usage in config.usages"/>-->
-                    <!---->
                              <md-select placeholder="Select Usage" name="usage" id="usage" class="inside-table"
                                         ng-change="setUsage(node); openPredicateDialog(node); setCardinalities(node)"
                                         ng-class="{ 'has-error has-feedback' : {{formName}}.usage.$invalid}"
