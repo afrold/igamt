@@ -117,7 +117,7 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
             });
 
         },function(error){
-            $scope.error = error.data;
+            $scope.error = "Invalid credentials";
         });
     };
 

@@ -118,7 +118,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
             });
 
         },function(error){
-            $scope.error = error.data;
+            $scope.error = "Invalid credentials";
         });
     };
 
