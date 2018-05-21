@@ -218,8 +218,8 @@ public class IGDocumentController extends CommonController {
   @Value("${gvt.url}")
   private String GVT_URL;
 
-  @Value("${gvt.exportEndpoint}")
-  private String GVT_EXPORT_ENDPOINT;
+//  @Value("${gvt.exportEndpoint}")
+//  private String GVT_EXPORT_ENDPOINT;
   @Autowired
   private ConnectService gvtService;
 
