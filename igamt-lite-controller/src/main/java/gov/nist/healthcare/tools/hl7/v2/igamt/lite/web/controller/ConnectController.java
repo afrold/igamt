@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.GVTLoginException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.ConnectService;
+import gov.nist.hit.resources.deploy.client.SSLHL7v2ResourceClient;
 
 @RestController
 @RequestMapping("/connect")
@@ -24,10 +25,15 @@ public class ConnectController extends CommonController {
 
 
   @RequestMapping(value = "/login", method = RequestMethod.GET, produces = "application/json")
-  public boolean validCredentials(@RequestHeader("target-auth") String authorization,@RequestHeader("target-url") String url)
+  public boolean validCredentials(@RequestHeader("target-auth") String authorization,@RequestHeader("target-url") String host)
       throws GVTLoginException {
-    log.info("Logging to " + url);
-    return gvtService.validCredentials(authorization,url);
+    log.info("Logging to " + host);
+	try {
+		SSLHL7v2ResourceClient client = new SSLHL7v2ResourceClient(host, authorization);
+		return client.validCredentials();
+	} catch (Exception e) {
+		throw new GVTLoginException(e.getMessage());
+	}
   }
 
 
