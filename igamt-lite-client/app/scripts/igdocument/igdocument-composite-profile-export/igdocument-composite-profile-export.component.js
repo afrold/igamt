@@ -170,7 +170,7 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
                 var response = angular.fromJson(map.data);
                 if (response.success === false) {
                     $scope.info.text = "gvtExportFailed";
-                    $scope.info['details'] = response;
+                    $scope.info['details'] = response.report;
                     $scope.showErrors($scope.info.details);
                     $scope.info.show = true;
                     $scope.info.type = 'danger';

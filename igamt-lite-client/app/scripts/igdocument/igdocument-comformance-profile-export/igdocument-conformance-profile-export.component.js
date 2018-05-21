@@ -154,6 +154,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
 
     $scope.showErrors = function (errorDetails) {
         $scope.exportStep =  'ERROR_STEP';
+        // $scope.info['details'] = errorDetails;
         // $scope.errorDetails = errorDetails;
         // $scope.tmpProfileErrors = errorDetails != null ? [].concat($scope.errorDetails.profileErrors) : [];
         // $scope.tmpConstraintErrors = errorDetails != null ? [].concat($scope.errorDetails.constraintsErrors) : [];
@@ -173,7 +174,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
                 var response = angular.fromJson(map.data);
                 if (response.success === false) {
                     $scope.info.text = "gvtExportFailed";
-                    $scope.info['details'] = response;
+                    $scope.info['details'] = response.report;
                     $scope.showErrors($scope.info.details);
                     $scope.info.show = true;
                     $scope.info.type = 'danger';
