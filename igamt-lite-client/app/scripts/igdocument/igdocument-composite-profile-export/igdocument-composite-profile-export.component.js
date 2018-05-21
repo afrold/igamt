@@ -76,6 +76,8 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
     };
 
     $scope.goBack = function () {
+        $scope.error = null;
+
         if ($scope.exportStep === 'LOGIN_STEP') {
             $scope.exportStep = 'MESSAGE_STEP';
         } else if($scope.exportStep === 'DOMAIN_STEP'){
@@ -86,6 +88,7 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
     };
 
     $scope.login = function () {
+        $scope.error = null;
         GVTSvc.login($scope.user.username, $scope.user.password, $scope.target.url).then(function (auth) {
             StorageService.setGvtUsername($scope.user.username);
             StorageService.setGvtPassword($scope.user.password);
@@ -113,11 +116,15 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
                 alert(error);
             });
 
+        },function(error){
+            $scope.error = error.data;
         });
     };
 
 
     $scope.goNext = function () {
+        $scope.error = null;
+
         if ($scope.exportStep === 'LOGIN_STEP') {
             $scope.login();
         } else if($scope.exportStep === 'DOMAIN_STEP'){
@@ -149,12 +156,14 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
         $mdDialog.hide();
     };
 
+
     $scope.showErrors = function (errorDetails) {
-        $scope.exportStep = 2;
-        $scope.errorDetails = errorDetails;
-        $scope.tmpProfileErrors = errorDetails != null ? [].concat($scope.errorDetails.profileErrors) : [];
-        $scope.tmpConstraintErrors = errorDetails != null ? [].concat($scope.errorDetails.constraintsErrors) : [];
-        $scope.tmpValueSetErrors = errorDetails != null ? [].concat($scope.errorDetails.vsErrors) : [];
+        $scope.exportStep =  'ERROR_STEP';
+        // $scope.info['details'] = errorDetails;
+        // $scope.errorDetails = errorDetails;
+        // $scope.tmpProfileErrors = errorDetails != null ? [].concat($scope.errorDetails.profileErrors) : [];
+        // $scope.tmpConstraintErrors = errorDetails != null ? [].concat($scope.errorDetails.constraintsErrors) : [];
+        // $scope.tmpValueSetErrors = errorDetails != null ? [].concat($scope.errorDetails.vsErrors) : [];
     };
 
     $scope.exportToGVT = function () {

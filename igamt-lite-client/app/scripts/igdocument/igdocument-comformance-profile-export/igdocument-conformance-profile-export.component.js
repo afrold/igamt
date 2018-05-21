@@ -79,6 +79,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
 
 
     $scope.goBack = function () {
+        $scope.error = null;
         if ($scope.exportStep === 'LOGIN_STEP') {
             $scope.exportStep = 'MESSAGE_STEP';
         } else if($scope.exportStep === 'DOMAIN_STEP'){
@@ -116,11 +117,14 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
                 alert(error);
             });
 
+        },function(error){
+            $scope.error = error.data;
         });
     };
 
 
     $scope.goNext = function () {
+        $scope.error = null;
         if ($scope.exportStep === 'LOGIN_STEP') {
             $scope.login();
         } else if($scope.exportStep === 'DOMAIN_STEP'){
