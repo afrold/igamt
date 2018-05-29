@@ -94,7 +94,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
             StorageService.setGvtUsername($scope.user.username);
             StorageService.setGvtPassword($scope.user.password);
             StorageService.setGVTBasicAuth(auth);
-            GVTSvc.getDomains($scope.target.url).then(function (result) {
+            GVTSvc.getDomains($scope.target.url,auth).then(function (result) {
                 $scope.targetDomains = result;
                 var savedTargetDomain = StorageService.get($scope.target.url+"/EXT_TARGET_DOMAIN");
                 if (savedTargetDomain != null) {
@@ -196,6 +196,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
                 }
             }, function (error) {
                 $scope.info.text = "gvtExportFailed";
+                $scope.info['details'] = error.text;
                 $scope.info.show = true;
                 $scope.info.type = 'danger';
                 $scope.loading = false;
@@ -210,13 +211,13 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
         $scope.error = null;
         if ($scope.newDomain != null) {
             $scope.newDomain.key = $scope.newDomain.name.replace(/\s+/g, '-').toLowerCase();
-            GVTSvc.createDomain(StorageService.getGvtUsername(), StorageService.getGvtPassword(), $scope.target.url, $scope.newDomain.key, $scope.newDomain.name,$scope.newDomain.homeTitle).then(function (domain) {
+            GVTSvc.createDomain(StorageService.getGVTBasicAuth(), $scope.target.url, $scope.newDomain.key, $scope.newDomain.name,$scope.newDomain.homeTitle).then(function (domain) {
                 $scope.loading = false;
                 $scope.target.domain = $scope.newDomain.key;
                 $scope.exportToGVT();
             }, function (error) {
                 $scope.loading = false;
-                $scope.error = error.data.text;
+                $scope.error = error.text;
             });
         }else if($scope.target.url != null && $scope.target.domain != null){
             $scope.exportToGVT();

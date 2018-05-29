@@ -31,6 +31,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -119,18 +120,16 @@ public class ConnectServiceImpl implements ConnectService {
   @Override
   public ResponseEntity<?> createDomain(String authorization, String url,String key, String name,String homeTitle)
       throws GVTExportException, IOException {
-    LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-    
+    MultiValueMap<String, String> params= new LinkedMultiValueMap<String, String>();
     params.add("key", key);
     params.add("name", name);
     params.add("homeTitle", homeTitle);
     HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_JSON);
+    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
     headers.add("Authorization", "Basic " + authorization);
-    HttpEntity<LinkedMultiValueMap<String, String>> requestEntity =
-        new HttpEntity<LinkedMultiValueMap<String, String>>(params, headers);
-    ResponseEntity<?> response = restTemplate.exchange(url + EXPORT_ENDPOINT,
-        HttpMethod.POST, requestEntity, Map.class);
+    HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(params, headers);
+    ResponseEntity<?> response = restTemplate.postForEntity(url + CREATE_DOMAN_ENDPOINT,
+         request, Map.class);
     return response;
   }
   
@@ -189,9 +188,10 @@ public class ConnectServiceImpl implements ConnectService {
     }
   }
   
-  public ResponseEntity<?> getDomains(String url) throws GVTLoginException {
+  public ResponseEntity<?> getDomains(String authorization,String url) throws GVTLoginException {
     try {
       HttpHeaders headers = new HttpHeaders();
+      headers.add("Authorization", authorization);
       HttpEntity<String> entity = new HttpEntity<String>("", headers);
       ResponseEntity<List> response =
           restTemplate.exchange(url + DOMAINS_ENDPOINT, HttpMethod.GET, entity, List.class);

@@ -35,19 +35,12 @@ angular.module('igl').factory('GVTSvc',
             return delay.promise;
         };
 
-        svc.createDomain = function(username, password,targetUrl,key, name,homeTitle) {
-            var delay = $q.defer();
+        svc.createDomain = function(auth,targetUrl,key, name,homeTitle) {
             var httpHeaders = {};
             httpHeaders['Accept'] = 'application/json';
-            var auth =  base64.encode(username + ':' + password);
-            httpHeaders['target-auth'] = 'Basic ' + auth;
+            httpHeaders['target-auth'] = auth;
             httpHeaders['target-url'] = targetUrl;
-            $http.post('api/connect/createDomain', {headers:httpHeaders,params:{'key':key,'name':name,'homeTitle':homeTitle}}).then(function (res) {
-                delay.resolve(auth);
-            }, function(er){
-                delay.reject(er);
-            });
-            return delay.promise;
+            return $http.post('api/connect/createDomain',{'key':key,'name':name,'homeTitle':homeTitle}, {headers:httpHeaders});
         };
 
 
@@ -67,10 +60,11 @@ angular.module('igl').factory('GVTSvc',
             return $http.post('api/igdocuments/' + id + '/connect/composites',cids,{headers:httpHeaders});
         };
 
-        svc.getDomains = function(targetUrl) {
+        svc.getDomains = function(targetUrl,auth) {
             var delay = $q.defer();
             var httpHeaders = {};
             httpHeaders['target-url'] = targetUrl;
+            httpHeaders['target-auth'] = auth;
             $http.get("api/connect/domains",{headers:httpHeaders}).then(function (result) {
                 var data = angular.fromJson(result.data);
                 delay.resolve(data);

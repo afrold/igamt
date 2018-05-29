@@ -592,7 +592,6 @@
                                 </md-card>
                             </div>
 
-                            </md-card>
                             <md-card>
                                 <md-card-header style="font-size:14px;font-weight: bold">
                                     Select Conformance Profile(s)
@@ -675,7 +674,7 @@
                                                    name="gvtUsername"
                                                    placeholder="Username"
                                                    ng-model="user.username" ng-minlength="4" required>
-                                            <div ng-messages="gvtLoginForm.gvtPassword.$error" role="alert" multiple>
+                                            <div ng-messages="gvtLoginForm.gvtUsername.$error" role="alert" multiple>
                                                 <div ng-message="required" class="my-message">You must supply a
                                                     username.
                                                 </div>
@@ -790,7 +789,7 @@
 
                     <div ng-show="error && error != null" style="margin-top:10px; margin-bottom: 10px">
                         <div ng-class="'alert alert-danger'">
-                            <p><i class="fa fa-check" aria-hidden="true"></i>{{error}}</p>
+                            <p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>{{error}}</p>
                         </div>
                     </div>
 
@@ -848,7 +847,7 @@
 
                 <md-button ng-show="toGVT && (exportStep === 'LOGIN_STEP')"
                            class="btn btn-raised btn-primary btn-sm"
-                           ng-disabled="xmlFormat==='' || xmlFormat===null || !selected || target.url === null"
+                           ng-disabled="xmlFormat==='' || xmlFormat===null || !selected || target.url === null || gvtLoginForm.gvtPassword.$invalid || gvtLoginForm.gvtUsername.$invalid"
                            ng-click="goNext()"><span><i
                         class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
 
@@ -910,11 +909,10 @@
                                                         Gazelle Format
                                                     </label>
                                                 </div>
+                                            </div>
                                         </md-card-content>
                                     </md-card>
                                 </div>
-
-                                </md-card>
 
                                 <md-card>
                                     <md-card-header style="font-size:14px;font-weight: bold">
@@ -993,7 +991,7 @@
                                                        name="gvtUsername"
                                                        placeholder="Username"
                                                        ng-model="user.username" ng-minlength="4" required>
-                                                <div ng-messages="gvtLoginForm.gvtPassword.$error" role="alert"
+                                                <div ng-messages="gvtLoginForm.gvtUsername.$error" role="alert"
                                                      multiple>
                                                     <div ng-message="required" class="my-message">You must supply a
                                                         username.
@@ -1113,7 +1111,7 @@
 
                         <div ng-show="error && error != null" style="margin-top:10px; margin-bottom: 10px">
                             <div ng-class="'alert alert-danger'">
-                                <p><i class="fa fa-check" aria-hidden="true"></i>{{error}}</p>
+                                <p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>{{error}}</p>
                             </div>
                         </div>
 
@@ -1156,7 +1154,7 @@
                         </div>
                     </div>
                 </md-dialog-content>
-                <md-
+                <md-dialog-actions layout="row">
                 <md-button
                         ng-show="toGVT && (exportStep === 'LOGIN_STEP' || exportStep === 'ERROR_STEP' || exportStep === 'DOMAIN_STEP')"
                         class="btn btn-raised btn-primary btn-sm"
@@ -1171,7 +1169,7 @@
 
                 <md-button ng-show="toGVT && (exportStep === 'LOGIN_STEP')"
                            class="btn btn-raised btn-primary btn-sm"
-                           ng-disabled="xmlFormat==='' || xmlFormat===null || !selected || target.url === null"
+                           ng-disabled="xmlFormat==='' || xmlFormat===null || !selected || target.url === null || gvtLoginForm.gvtPassword.$invalid || gvtLoginForm.gvtUsername.$invalid"
                            ng-click="goNext()"><span><i
                         class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
 
