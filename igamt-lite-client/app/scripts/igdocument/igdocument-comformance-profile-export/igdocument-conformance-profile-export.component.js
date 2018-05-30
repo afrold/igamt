@@ -188,7 +188,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
                     $scope.info.text = 'gvtRedirectInProgress';
                     $scope.info.show = true;
                     $scope.info.type = 'info';
-                    $scope.redirectUrl = $scope.target.url + $rootScope.appInfo.gvtUploadTokenContext + "?x=" + encodeURIComponent(token) + "&y=" + encodeURIComponent(auth) + "&d=" + encodeURIComponent($scope.target.domain);
+                    $scope.redirectUrl = $scope.target.url + $rootScope.appInfo.connectUploadTokenContext + "?x=" + encodeURIComponent(token) + "&y=" + encodeURIComponent(auth) + "&d=" + encodeURIComponent($scope.target.domain);
                     $timeout(function () {
                         $scope.loading = false;
                         $window.open($scope.redirectUrl, "_target", "", false);
