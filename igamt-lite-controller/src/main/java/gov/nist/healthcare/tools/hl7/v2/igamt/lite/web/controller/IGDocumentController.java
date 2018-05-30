@@ -17,11 +17,6 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ProfileSerializationException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.TableSerializationException;
-
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +43,6 @@ import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.AppInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ApplyInfo;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
@@ -70,7 +64,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageAddReturn;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageComparator;
@@ -87,7 +80,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SectionMap;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipant;
@@ -100,11 +92,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.comparator.IgDocumentComparator;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CCValue;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintTHENColumnData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ProfileSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.TableSerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileStructureService;
@@ -723,25 +717,25 @@ public class IGDocumentController extends CommonController {
         for (String key : s.getCoConstraintsTable().getThenMapData().keySet()) {
           List<CoConstraintTHENColumnData> dataList =
               s.getCoConstraintsTable().getThenMapData().get(key);
-          if( dataList !=null && dataList.isEmpty()){
-          for (CoConstraintTHENColumnData data : dataList) {
-            if (data != null && data.getValueSets() != null) {
-              for (ValueSetData vsd : data.getValueSets()) {
-                if (vsd.getTableId() != null && tableIdChangeMap.containsKey(vsd.getTableId())) {
-                  vsd.setTableId(tableIdChangeMap.get(vsd.getTableId()));
+          if (dataList != null && !dataList.isEmpty()) {
+            for (CoConstraintTHENColumnData data : dataList) {
+              if (data != null && data.getValueSets() != null) {
+                for (ValueSetData vsd : data.getValueSets()) {
+                  if (vsd.getTableId() != null && tableIdChangeMap.containsKey(vsd.getTableId())) {
+                    vsd.setTableId(tableIdChangeMap.get(vsd.getTableId()));
+                  }
                 }
               }
-            }
-            if(data != null && data.getDatatypeId() != null) {
-              if(datatypeIdChangeMap.containsKey(data.getDatatypeId())){
-                data.setDatatypeId(datatypeIdChangeMap.get(data.getDatatypeId()));
+              if (data != null && data.getDatatypeId() != null) {
+                if (datatypeIdChangeMap.containsKey(data.getDatatypeId())) {
+                  data.setDatatypeId(datatypeIdChangeMap.get(data.getDatatypeId()));
+                }
               }
             }
           }
         }
-        }
       }
-      
+
       segmentService.save(s);
     }
 
@@ -756,7 +750,7 @@ public class IGDocumentController extends CommonController {
       for (Component c : d.getComponents()) {
         if (c.getDatatype() != null && c.getDatatype().getId() != null
             && datatypeIdChangeMap.containsKey(c.getDatatype().getId()))
-          c.getDatatype().setId(datatypeIdChangeMap.get(c.getDatatype().getId())); 
+          c.getDatatype().setId(datatypeIdChangeMap.get(c.getDatatype().getId()));
       }
       for (ValueSetOrSingleCodeBinding binding : d.getValueSetBindings()) {
         if (binding.getTableId() != null) {
@@ -1036,7 +1030,8 @@ public class IGDocumentController extends CommonController {
   public void exportValidationXMLByCompositeProfile(@PathVariable("id") String id,
       @PathVariable("cIds") String[] compositeProfileIds, HttpServletRequest request,
       HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException {
+      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException,
+      ProfileSerializationException, TableSerializationException, ConstraintSerializationException {
     IGDocument d = findIGDocument(id);
     InputStream content =
         igDocumentExport.exportAsValidationForSelectedCompositeProfiles(d, compositeProfileIds);
@@ -1052,7 +1047,8 @@ public class IGDocumentController extends CommonController {
   public void exportValidationXMLByMessages(@PathVariable("id") String id,
       @PathVariable("mIds") String[] messageIds, HttpServletRequest request,
       HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException {
+      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException,
+      ProfileSerializationException, TableSerializationException, ConstraintSerializationException {
     IGDocument d = findIGDocument(id);
     InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d, messageIds);
     response.setContentType("application/zip");
@@ -1066,8 +1062,8 @@ public class IGDocumentController extends CommonController {
       produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
   public void exportDisplayXMLByCompositeProfile(@PathVariable("id") String id,
       @PathVariable("cIds") String[] compositeProfileIds, HttpServletRequest request,
-      HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException {
+      HttpServletResponse response) throws IOException, IGDocumentNotFoundException,
+      CloneNotSupportedException, TableSerializationException, ProfileSerializationException {
     IGDocument d = findIGDocument(id);
     InputStream content =
         igDocumentExport.exportAsDisplayForSelectedCompositeProfiles(d, compositeProfileIds);
@@ -1082,8 +1078,8 @@ public class IGDocumentController extends CommonController {
       produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
   public void exportDisplayXMLByMessages(@PathVariable("id") String id,
       @PathVariable("mIds") String[] messageIds, HttpServletRequest request,
-      HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException {
+      HttpServletResponse response) throws IOException, IGDocumentNotFoundException,
+      CloneNotSupportedException, TableSerializationException, ProfileSerializationException {
     IGDocument d = findIGDocument(id);
     InputStream content = igDocumentExport.exportAsDisplayForSelectedMessage(d, messageIds);
     response.setContentType("application/zip");
@@ -1097,8 +1093,8 @@ public class IGDocumentController extends CommonController {
       produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
   public void exportGazelleXMLByMessages(@PathVariable("id") String id,
       @PathVariable("mIds") String[] messageIds, HttpServletRequest request,
-      HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException {
+      HttpServletResponse response) throws IOException, IGDocumentNotFoundException,
+      CloneNotSupportedException, ProfileSerializationException, TableSerializationException {
     IGDocument d = findIGDocument(id);
     InputStream content = igDocumentExport.exportAsGazelleForSelectedMessages(d, messageIds);
     response.setContentType("application/zip");
@@ -1112,8 +1108,8 @@ public class IGDocumentController extends CommonController {
       produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
   public void exportGazelleXMLByCompositeProfiles(@PathVariable("id") String id,
       @PathVariable("cIds") String[] compositeProfileIds, HttpServletRequest request,
-      HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException {
+      HttpServletResponse response) throws IOException, IGDocumentNotFoundException,
+      CloneNotSupportedException, ProfileSerializationException, TableSerializationException {
     IGDocument d = findIGDocument(id);
     InputStream content =
         igDocumentExport.exportAsGazelleForSelectedCompositeProfiles(d, compositeProfileIds);
@@ -1601,7 +1597,7 @@ public class IGDocumentController extends CommonController {
   public MessageAddReturn findAndAddMessages(@PathVariable("id") String id,
       @RequestBody List<EventWrapper> eventWrapper) throws IOException, IGDocumentNotFoundException,
       IGDocumentException, CloneNotSupportedException {
-	  MessageAddReturn ret = new MessageAddReturn();
+    MessageAddReturn ret = new MessageAddReturn();
 
     List<Message> newMessages = new ArrayList<Message>();
     IGDocument d = igDocumentService.findOne(id);
@@ -1620,8 +1616,8 @@ public class IGDocumentController extends CommonController {
         Message m1 = null;
         m1 = newMessage.clone();
         m1.setId(null);
-        processMessage(d,m1,ret);
-        
+        processMessage(d, m1, ret);
+
         m1.setScope(Constant.SCOPE.USER);
         String name = m1.getMessageType() + "^" + nands.getName() + "^" + m1.getStructID();
         log.debug("Message.name=" + name);
@@ -1629,20 +1625,20 @@ public class IGDocumentController extends CommonController {
         int position = messageService.findMaxPosition(msgs);
         m1.setPosition(++position);
         messageRepository.save(m1);
-        processMessage(d,m1,ret);
+        processMessage(d, m1, ret);
         // add segment to the library
-        for ( Segment s : ret.getSegments()){
-        	p.getSegmentLibrary().addSegment(s);
+        for (Segment s : ret.getSegments()) {
+          p.getSegmentLibrary().addSegment(s);
         }
-        for(Datatype dt : ret.getDatatypes()){
-        	p.getDatatypeLibrary().addDatatype(dt);
-        
+        for (Datatype dt : ret.getDatatypes()) {
+          p.getDatatypeLibrary().addDatatype(dt);
+
         }
-        
-        for(Table t : ret.getTables()){
-        	p.getTableLibrary().addTable(t);
+
+        for (Table t : ret.getTables()) {
+          p.getTableLibrary().addTable(t);
         }
-        
+
         msgsToadd.add(m1);
         ret.setMsgsToadd(msgsToadd);
         msgs.addMessage(m1);
@@ -1656,124 +1652,127 @@ public class IGDocumentController extends CommonController {
     } catch (Exception e) {
       log.error("", e);
     }
-	return ret;
+    return ret;
 
 
   }
 
   private void processMessage(IGDocument d, Message m1, MessageAddReturn ret) {
 
-		 HashMap<String,Boolean> segmentMap = new HashMap<String,Boolean>(); 
-		 HashMap<String,Boolean> datatypesMap = new HashMap<String,Boolean>(); 
-		 HashMap<String,Boolean> tablesMap = new HashMap<String,Boolean>(); 
-	 for(ValueSetOrSingleCodeBinding c: m1.getValueSetBindings()){
-		  if(c instanceof ValueSetBinding){
-			  if(c.getTableId()!=null && !tablesMap.containsKey(c.getTableId())){
-				 Table t= tableService.findOneShortById(c.getTableId());
-				 if(t!=null ){
-					 ret.addTable(t); 
-					 tablesMap.put(t.getId(), true);
-				 }
-				
-			  }
-		  }
-	 }
+    HashMap<String, Boolean> segmentMap = new HashMap<String, Boolean>();
+    HashMap<String, Boolean> datatypesMap = new HashMap<String, Boolean>();
+    HashMap<String, Boolean> tablesMap = new HashMap<String, Boolean>();
+    for (ValueSetOrSingleCodeBinding c : m1.getValueSetBindings()) {
+      if (c instanceof ValueSetBinding) {
+        if (c.getTableId() != null && !tablesMap.containsKey(c.getTableId())) {
+          Table t = tableService.findOneShortById(c.getTableId());
+          if (t != null) {
+            ret.addTable(t);
+            tablesMap.put(t.getId(), true);
+          }
 
-	 for(SegmentLink s : d.getProfile().getSegmentLibrary().getChildren()){
-		 segmentMap.put(s.getId(), true);
-	 }
-	 for(DatatypeLink dt : d.getProfile().getDatatypeLibrary().getChildren()){
-		 datatypesMap.put(dt.getId(), true);
-	 }
-	 for(TableLink table : d.getProfile().getTableLibrary().getChildren()){
-		 tablesMap.put(table.getId(), true);
-	 }
+        }
+      }
+    }
 
-	 for( SegmentRefOrGroup child : m1.getChildren()){
-		 processSegmentOrGroup(child,ret,segmentMap,datatypesMap,tablesMap);
-	 }
-	 
-	
+    for (SegmentLink s : d.getProfile().getSegmentLibrary().getChildren()) {
+      segmentMap.put(s.getId(), true);
+    }
+    for (DatatypeLink dt : d.getProfile().getDatatypeLibrary().getChildren()) {
+      datatypesMap.put(dt.getId(), true);
+    }
+    for (TableLink table : d.getProfile().getTableLibrary().getChildren()) {
+      tablesMap.put(table.getId(), true);
+    }
+
+    for (SegmentRefOrGroup child : m1.getChildren()) {
+      processSegmentOrGroup(child, ret, segmentMap, datatypesMap, tablesMap);
+    }
+
+
   }
 
 
-private void processSegmentOrGroup(SegmentRefOrGroup child, MessageAddReturn ret, HashMap<String, Boolean> segmentMap, HashMap<String, Boolean> datatypesMap, HashMap<String, Boolean> tablesMap) {
-	// TODO Auto-generated method stub
-	
-	if(child instanceof SegmentRef){
-		SegmentRef ref =(SegmentRef) child;
-		if(ref.getRef().getId() !=null && !segmentMap.containsKey(ref.getRef().getId())){
-		Segment segment = segmentService.findById(ref.getRef().getId());
-		if(segment!=null){
-			processSegment(segment,ret,segmentMap,datatypesMap,tablesMap);
-		 }
-		}
-		
-	}else if(child instanceof Group){
-		Group ref = (Group)child;
-		for( SegmentRefOrGroup child1: ref.getChildren()){
-		processSegmentOrGroup(child1,ret,segmentMap,datatypesMap, tablesMap);
-			}
-		}
-	
-}
+  private void processSegmentOrGroup(SegmentRefOrGroup child, MessageAddReturn ret,
+      HashMap<String, Boolean> segmentMap, HashMap<String, Boolean> datatypesMap,
+      HashMap<String, Boolean> tablesMap) {
+    // TODO Auto-generated method stub
+
+    if (child instanceof SegmentRef) {
+      SegmentRef ref = (SegmentRef) child;
+      if (ref.getRef().getId() != null && !segmentMap.containsKey(ref.getRef().getId())) {
+        Segment segment = segmentService.findById(ref.getRef().getId());
+        if (segment != null) {
+          processSegment(segment, ret, segmentMap, datatypesMap, tablesMap);
+        }
+      }
+
+    } else if (child instanceof Group) {
+      Group ref = (Group) child;
+      for (SegmentRefOrGroup child1 : ref.getChildren()) {
+        processSegmentOrGroup(child1, ret, segmentMap, datatypesMap, tablesMap);
+      }
+    }
+
+  }
 
 
-private void processSegment(Segment segment, MessageAddReturn ret, HashMap<String, Boolean> segmentMap,
-		HashMap<String, Boolean> datatypesMap, HashMap<String, Boolean> tablesMap) {
-	
-	ret.addSegment(segment);
-	segmentMap.put(segment.getId(), true);
-	for(ValueSetOrSingleCodeBinding c: segment.getValueSetBindings()){
-		  if(c instanceof ValueSetBinding){
-			  if(c.getTableId()!=null && !tablesMap.containsKey(c.getTableId())){
-				 Table t= tableService.findOneShortById(c.getTableId());
-				 if(t!=null ){
-					 ret.addTable(t); 
-					 tablesMap.put(t.getId(), true);
-				 }
-				
-			  }
-		  }
-	 }
-	for( Field f : segment.getFields()){
-		if(f.getDatatype().getId()!=null && !datatypesMap.containsKey(f.getDatatype().getId())){
-			Datatype d = datatypeService.findById(f.getDatatype().getId());
-			if(d !=null){
-				processDatatype(d,ret,datatypesMap,tablesMap);
-			}
-		}
-	}
-	// TODO Auto-generated method stub
-	
-}
+  private void processSegment(Segment segment, MessageAddReturn ret,
+      HashMap<String, Boolean> segmentMap, HashMap<String, Boolean> datatypesMap,
+      HashMap<String, Boolean> tablesMap) {
 
-private void processDatatype(Datatype d, MessageAddReturn ret,
-		HashMap<String, Boolean> datatypesMap, HashMap<String, Boolean> tablesMap) {
-	ret.addDatatype(d);
-	datatypesMap.put(d.getId(), true);
-	for(ValueSetOrSingleCodeBinding c: d.getValueSetBindings()){
-		  if(c instanceof ValueSetBinding){
-			  if(c.getTableId()!=null && !tablesMap.containsKey(c.getTableId())){
-				 Table t= tableService.findOneShortById(c.getTableId());
-				 if(t!=null ){
-					 ret.addTable(t); 
-					 tablesMap.put(t.getId(), true);
-				 }
-			  }
-		  }
-	 }
-	for( Component c : d.getComponents()){
-		if(c.getDatatype().getId()!=null && !datatypesMap.containsKey(c.getDatatype().getId())){
-			Datatype sub = datatypeService.findById(c.getDatatype().getId());
-			if(sub !=null){
-				processDatatype(sub,ret,datatypesMap,tablesMap);
-			}
-		}
-	}	
-}
+    ret.addSegment(segment);
+    segmentMap.put(segment.getId(), true);
+    for (ValueSetOrSingleCodeBinding c : segment.getValueSetBindings()) {
+      if (c instanceof ValueSetBinding) {
+        if (c.getTableId() != null && !tablesMap.containsKey(c.getTableId())) {
+          Table t = tableService.findOneShortById(c.getTableId());
+          if (t != null) {
+            ret.addTable(t);
+            tablesMap.put(t.getId(), true);
+          }
 
-@RequestMapping(value = "/{id}/addMessages", method = RequestMethod.POST)
+        }
+      }
+    }
+    for (Field f : segment.getFields()) {
+      if (f.getDatatype().getId() != null && !datatypesMap.containsKey(f.getDatatype().getId())) {
+        Datatype d = datatypeService.findById(f.getDatatype().getId());
+        if (d != null) {
+          processDatatype(d, ret, datatypesMap, tablesMap);
+        }
+      }
+    }
+    // TODO Auto-generated method stub
+
+  }
+
+  private void processDatatype(Datatype d, MessageAddReturn ret,
+      HashMap<String, Boolean> datatypesMap, HashMap<String, Boolean> tablesMap) {
+    ret.addDatatype(d);
+    datatypesMap.put(d.getId(), true);
+    for (ValueSetOrSingleCodeBinding c : d.getValueSetBindings()) {
+      if (c instanceof ValueSetBinding) {
+        if (c.getTableId() != null && !tablesMap.containsKey(c.getTableId())) {
+          Table t = tableService.findOneShortById(c.getTableId());
+          if (t != null) {
+            ret.addTable(t);
+            tablesMap.put(t.getId(), true);
+          }
+        }
+      }
+    }
+    for (Component c : d.getComponents()) {
+      if (c.getDatatype().getId() != null && !datatypesMap.containsKey(c.getDatatype().getId())) {
+        Datatype sub = datatypeService.findById(c.getDatatype().getId());
+        if (sub != null) {
+          processDatatype(sub, ret, datatypesMap, tablesMap);
+        }
+      }
+    }
+  }
+
+  @RequestMapping(value = "/{id}/addMessages", method = RequestMethod.POST)
   public Long addMessages(@PathVariable("id") String id, @RequestBody Set<String> messageIds)
       throws IOException, IGDocumentNotFoundException, IGDocumentException,
       CloneNotSupportedException {
