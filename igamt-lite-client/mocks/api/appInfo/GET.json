@@ -5,5 +5,9 @@
   "adminEmail": "rsnelick@nist.gov",
   "gvtUrl": "https://hl7v2.gvt.nist.gov/gvt/",
   "gvtUploadTokenContext": "#/uploadTokens",
-  "properties":{"PHINVADS":"https://phinvads.cdc.gov/vads/ViewValueSet.action?oid="}
+  "properties":{"PHINVADS":"https://phinvads.cdc.gov/vads/ViewValueSet.action?oid="},
+  "connectApps":[
+    {"name": "LAB Tool", "url":"http://localhost:9001"},
+    {"name": "ERX Tool", "url":"http://localhost:9001"}
+  ]
 }

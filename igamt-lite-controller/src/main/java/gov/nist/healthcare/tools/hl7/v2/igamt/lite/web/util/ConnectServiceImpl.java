@@ -10,6 +10,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -30,6 +31,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -42,19 +44,26 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.GVTLoginExcepti
  *
  */
 @Service
-public class GVTServiceImpl implements GVTService {
+public class ConnectServiceImpl implements ConnectService {
 
 
-  @Value("${gvt.url}")
-  private String GVT_URL;
+//  @Value("${gvt.url}")
+//  private String GVT_URL;
 
-  @Value("${gvt.exportEndpoint}")
-  private String GVT_EXPORT_ENDPOINT;
+  @Value("${connect.exportEndpoint}")
+  private String EXPORT_ENDPOINT;
 
-  @Value("${gvt.loginEndpoint}")
-  private String GVT_LOGIN_ENDPOINT;
+  @Value("${connect.loginEndpoint}")
+  private String LOGIN_ENDPOINT;
 
+  @Value("${connect.domainsEndpoint}")
+  private String DOMAINS_ENDPOINT;
+  
+  @Value("${connect.createDomainEndpoint}")
+  private String CREATE_DOMAN_ENDPOINT;
+  
 
+ 
 
   private RestTemplate restTemplate;
 
@@ -86,26 +95,44 @@ public class GVTServiceImpl implements GVTService {
   }
 
 
-  public GVTServiceImpl() {
+  public ConnectServiceImpl() {
     super();
   }
 
 
   @Override
-  public ResponseEntity<?> send(InputStream io, String authorization)
+  public ResponseEntity<?> send(InputStream io, String authorization, String url,String domain)
       throws GVTExportException, IOException {
     LinkedMultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
     File oFile = toFile(io);
     parts.add("file", new FileSystemResource(oFile));
+    parts.add("domain",domain);
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.MULTIPART_FORM_DATA);
     headers.add("Authorization", "Basic " + authorization);
     HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity =
         new HttpEntity<LinkedMultiValueMap<String, Object>>(parts, headers);
-    ResponseEntity<?> response = restTemplate.exchange(GVT_URL + GVT_EXPORT_ENDPOINT,
+    ResponseEntity<?> response = restTemplate.exchange(url + EXPORT_ENDPOINT,
         HttpMethod.POST, requestEntity, Map.class);
     return response;
   }
+  
+  @Override
+  public ResponseEntity<?> createDomain(String authorization, String url,String key, String name,String homeTitle)
+      throws GVTExportException, IOException {
+    MultiValueMap<String, String> params= new LinkedMultiValueMap<String, String>();
+    params.add("key", key);
+    params.add("name", name);
+    params.add("homeTitle", homeTitle);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+    headers.add("Authorization", "Basic " + authorization);
+    HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(params, headers);
+    ResponseEntity<?> response = restTemplate.postForEntity(url + CREATE_DOMAN_ENDPOINT,
+         request, Map.class);
+    return response;
+  }
+  
 
   public File toFile(InputStream io) {
     OutputStream outputStream = null;
@@ -143,13 +170,13 @@ public class GVTServiceImpl implements GVTService {
   }
 
   @Override
-  public boolean validCredentials(String authorization) throws GVTLoginException {
+  public boolean validCredentials(String authorization, String url) throws GVTLoginException {
     try {
       HttpHeaders headers = new HttpHeaders();
       headers.add("Authorization", authorization);
       HttpEntity<String> entity = new HttpEntity<String>("", headers);
       ResponseEntity<String> response =
-          restTemplate.exchange(GVT_URL + GVT_LOGIN_ENDPOINT, HttpMethod.GET, entity, String.class);
+          restTemplate.exchange(url + LOGIN_ENDPOINT, HttpMethod.GET, entity, String.class);
       if (response.getStatusCode() == HttpStatus.OK) {
         return true;
       }
@@ -160,5 +187,21 @@ public class GVTServiceImpl implements GVTService {
       throw new GVTLoginException(e.getMessage());
     }
   }
+  
+  public ResponseEntity<?> getDomains(String authorization,String url) throws GVTLoginException {
+    try {
+      HttpHeaders headers = new HttpHeaders();
+      headers.add("Authorization", authorization);
+      HttpEntity<String> entity = new HttpEntity<String>("", headers);
+      ResponseEntity<List> response =
+          restTemplate.exchange(url + DOMAINS_ENDPOINT, HttpMethod.GET, entity, List.class);
+      return response;
+    } catch (HttpClientErrorException e) {
+      throw new GVTLoginException(e.getMessage());
+    } catch (Exception e) {
+      throw new GVTLoginException(e.getMessage());
+    }
+  }
+  
 
 }

@@ -134,7 +134,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotF
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.EventWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.IntegrationIGDocumentRequestWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.ScopesAndVersionWrapper;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.GVTService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.ConnectService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.TimerTaskForPHINVADSValueSetDigger;
 
 @RestController
@@ -212,10 +212,10 @@ public class IGDocumentController extends CommonController {
   @Value("${gvt.url}")
   private String GVT_URL;
 
-  @Value("${gvt.exportEndpoint}")
-  private String GVT_EXPORT_ENDPOINT;
+//  @Value("${gvt.exportEndpoint}")
+//  private String GVT_EXPORT_ENDPOINT;
   @Autowired
-  private GVTService gvtService;
+  private ConnectService gvtService;
 
   @Autowired
   private MailSender mailSender;
@@ -2115,10 +2115,10 @@ public class IGDocumentController extends CommonController {
     return sortedList;
   }
 
-  @RequestMapping(value = "/{id}/export/gvt", method = RequestMethod.POST,
+  @RequestMapping(value = "/{id}/connect/messages", method = RequestMethod.POST,
       produces = "application/json")
   public Map<String, Object> exportToGVT(@PathVariable("id") String id,
-      @RequestBody Set<String> messageIds, @RequestHeader("gvt-auth") String authorization,
+      @RequestBody Set<String> messageIds, @RequestHeader("target-auth") String authorization,@RequestHeader("target-url") String url,@RequestHeader("target-domain") String domain,
       HttpServletRequest request, HttpServletResponse response) throws GVTExportException {
     try {
       log.info(
@@ -2127,18 +2127,19 @@ public class IGDocumentController extends CommonController {
       InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d,
           messageIds.toArray(new String[messageIds.size()]));
 
-      ResponseEntity<?> rsp = gvtService.send(content, authorization);
+      ResponseEntity<?> rsp = gvtService.send(content, authorization, url,domain);
       Map<String, Object> res = (Map<String, Object>) rsp.getBody();
       return res;
     } catch (Exception e) {
       throw new GVTExportException(e);
     }
-  }
+  } 
+  
 
-  @RequestMapping(value = "/{id}/export/gvt/composite", method = RequestMethod.POST,
+  @RequestMapping(value = "/{id}/connect/composites", method = RequestMethod.POST,
       produces = "application/json")
   public Map<String, Object> exportToGVTForComposite(@PathVariable("id") String id,
-      @RequestBody Set<String> messageIds, @RequestHeader("gvt-auth") String authorization,
+      @RequestBody Set<String> messageIds, @RequestHeader("target-auth") String authorization,@RequestHeader("target-url") String url,@RequestHeader("target-domain") String domain,
       HttpServletRequest request, HttpServletResponse response) throws GVTExportException {
     try {
       log.info(
@@ -2147,7 +2148,7 @@ public class IGDocumentController extends CommonController {
       InputStream content = igDocumentExport.exportAsValidationForSelectedCompositeProfiles(d,
           messageIds.toArray(new String[messageIds.size()]));
 
-      ResponseEntity<?> rsp = gvtService.send(content, authorization);
+      ResponseEntity<?> rsp = gvtService.send(content, authorization,url,domain);
       Map<String, Object> res = (Map<String, Object>) rsp.getBody();
       return res;
     } catch (Exception e) {
