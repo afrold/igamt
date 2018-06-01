@@ -46,7 +46,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
     $scope.selectTargetDomain = function () {
         $scope.newDomain = null;
         if ($scope.target.domain != null) {
-            StorageService.set($scope.target.url+"/EXT_TARGET_DOMAIN", $scope.target.domain);
+            StorageService.set($scope.target.url + "/EXT_TARGET_DOMAIN", $scope.target.domain);
         }
     };
 
@@ -82,11 +82,11 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
         $scope.error = null;
         if ($scope.exportStep === 'LOGIN_STEP') {
             $scope.exportStep = 'MESSAGE_STEP';
-        } else if($scope.exportStep === 'DOMAIN_STEP'){
+        } else if ($scope.exportStep === 'DOMAIN_STEP') {
             $scope.exportStep = 'LOGIN_STEP';
-        } else if($scope.exportStep === 'ERROR_STEP'){
-            $scope.exportStep = 'DOMAIN_STEP';
-        }
+        } else if ($scope.exportStep === 'ERROR_STEP') {
+            $scope.loadDomains();
+         }
     };
 
     $scope.login = function () {
@@ -94,9 +94,17 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
             StorageService.setGvtUsername($scope.user.username);
             StorageService.setGvtPassword($scope.user.password);
             StorageService.setGVTBasicAuth(auth);
-            GVTSvc.getDomains($scope.target.url,auth).then(function (result) {
+            $scope.loadDomains();
+        }, function (error) {
+            $scope.error = "Invalid credentials";
+        });
+    };
+
+    $scope.loadDomains = function () {
+        if($scope.target.url != null) {
+            GVTSvc.getDomains($scope.target.url, StorageService.getGVTBasicAuth()).then(function (result) {
                 $scope.targetDomains = result;
-                var savedTargetDomain = StorageService.get($scope.target.url+"/EXT_TARGET_DOMAIN");
+                var savedTargetDomain = StorageService.get($scope.target.url + "/EXT_TARGET_DOMAIN");
                 if (savedTargetDomain != null) {
                     for (var targetDomain in $scope.targetDomains) {
                         if (targetDomain.domain === savedTargetDomain) {
@@ -116,10 +124,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
                 $scope.loadingDomains = false;
                 alert(error);
             });
-
-        },function(error){
-            $scope.error = "Invalid credentials";
-        });
+        }
     };
 
 
@@ -127,18 +132,18 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
         $scope.error = null;
         if ($scope.exportStep === 'LOGIN_STEP') {
             $scope.login();
-        } else if($scope.exportStep === 'DOMAIN_STEP'){
+        } else if ($scope.exportStep === 'DOMAIN_STEP') {
             $scope.exportToGVT();
-        } else if($scope.exportStep === 'ERROR_STEP'){
-            $scope.exportStep = 'DOMAIN_STEP';
-        } else if($scope.exportStep === 'MESSAGE_STEP'){
+        } else if ($scope.exportStep === 'ERROR_STEP') {
+            $scope.loadDomains();
+        } else if ($scope.exportStep === 'MESSAGE_STEP') {
             $scope.generatedSelectedMessagesIDs();
             $scope.exportStep = 'LOGIN_STEP';
         }
     };
 
     $scope.createNewDomain = function () {
-        $scope.newDomain = {name: null, key: null, homeTitle:null};
+        $scope.newDomain = {name: null, key: null, homeTitle: null};
         $scope.error = null;
         $scope.target.domain = null;
     };
@@ -157,7 +162,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
 
 
     $scope.showErrors = function (errorDetails) {
-        $scope.exportStep =  'ERROR_STEP';
+        $scope.exportStep = 'ERROR_STEP';
         // $scope.info['details'] = errorDetails;
         // $scope.errorDetails = errorDetails;
         // $scope.tmpProfileErrors = errorDetails != null ? [].concat($scope.errorDetails.profileErrors) : [];
@@ -170,10 +175,10 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
         $scope.info.show = false;
         $scope.info.type = 'danger';
         $scope.info['details'] = null;
-        var auth =  StorageService.getGVTBasicAuth();
-        if($scope.target.url != null && $scope.target.domain != null && auth!= null) {
+        var auth = StorageService.getGVTBasicAuth();
+        if ($scope.target.url != null && $scope.target.domain != null && auth != null) {
             $scope.loading = true;
-            GVTSvc.exportToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs,auth, $scope.target.url, $scope.target.domain).then(function (map) {
+            GVTSvc.exportToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, auth, $scope.target.url, $scope.target.domain).then(function (map) {
                 $scope.loading = false;
                 var response = angular.fromJson(map.data);
                 if (response.success === false) {
@@ -184,7 +189,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
                     $scope.info.type = 'danger';
                 } else {
                     var token = response.token;
-                    $scope.exportStep =  'ERROR_STEP';
+                    $scope.exportStep = 'ERROR_STEP';
                     $scope.info.text = 'gvtRedirectInProgress';
                     $scope.info.show = true;
                     $scope.info.type = 'info';
@@ -200,7 +205,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
                 $scope.info.show = true;
                 $scope.info.type = 'danger';
                 $scope.loading = false;
-                $scope.exportStep =  'ERROR_STEP';
+                $scope.exportStep = 'ERROR_STEP';
             });
         }
     };
@@ -211,7 +216,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
         $scope.error = null;
         if ($scope.newDomain != null) {
             $scope.newDomain.key = $scope.newDomain.name.replace(/\s+/g, '-').toLowerCase();
-            GVTSvc.createDomain(StorageService.getGVTBasicAuth(), $scope.target.url, $scope.newDomain.key, $scope.newDomain.name,$scope.newDomain.homeTitle).then(function (domain) {
+            GVTSvc.createDomain(StorageService.getGVTBasicAuth(), $scope.target.url, $scope.newDomain.key, $scope.newDomain.name, $scope.newDomain.homeTitle).then(function (domain) {
                 $scope.loading = false;
                 $scope.target.domain = $scope.newDomain.key;
                 $scope.exportToGVT();
@@ -219,11 +224,10 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
                 $scope.loading = false;
                 $scope.error = error.text;
             });
-        }else if($scope.target.url != null && $scope.target.domain != null){
+        } else if ($scope.target.url != null && $scope.target.domain != null) {
             $scope.exportToGVT();
         }
     };
-
 
 
     if ($scope.targetApps != null) {
