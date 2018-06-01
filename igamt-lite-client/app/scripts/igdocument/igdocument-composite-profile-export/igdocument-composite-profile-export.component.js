@@ -83,7 +83,7 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
         } else if($scope.exportStep === 'DOMAIN_STEP'){
             $scope.exportStep = 'LOGIN_STEP';
         } else if($scope.exportStep === 'ERROR_STEP'){
-            $scope.exportStep = 'DOMAIN_STEP';
+            $scope.loadDomains();
         }
     };
 
@@ -93,9 +93,17 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
             StorageService.setGvtUsername($scope.user.username);
             StorageService.setGvtPassword($scope.user.password);
             StorageService.setGVTBasicAuth(auth);
-            GVTSvc.getDomains($scope.target.url,auth).then(function (result) {
+            $scope.loadDomains();
+        },function(error){
+            $scope.error = "Invalid credentials";
+        });
+    };
+
+    $scope.loadDomains = function () {
+        if($scope.target.url != null) {
+            GVTSvc.getDomains($scope.target.url, auth).then(function (result) {
                 $scope.targetDomains = result;
-                var savedTargetDomain = StorageService.get($scope.target.url+"/EXT_TARGET_DOMAIN");
+                var savedTargetDomain = StorageService.get($scope.target.url + "/EXT_TARGET_DOMAIN");
                 if (savedTargetDomain != null) {
                     for (var targetDomain in $scope.targetDomains) {
                         if (targetDomain.domain === savedTargetDomain) {
@@ -115,22 +123,19 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
                 $scope.loadingDomains = false;
                 alert(error);
             });
-
-        },function(error){
-            $scope.error = "Invalid credentials";
-        });
+        }
     };
+
 
 
     $scope.goNext = function () {
         $scope.error = null;
-
         if ($scope.exportStep === 'LOGIN_STEP') {
             $scope.login();
         } else if($scope.exportStep === 'DOMAIN_STEP'){
             $scope.exportToGVT();
         } else if($scope.exportStep === 'ERROR_STEP'){
-            $scope.exportStep = 'DOMAIN_STEP';
+            $scope.loadDomains();
         } else if($scope.exportStep === 'MESSAGE_STEP'){
             $scope.generatedSelectedMessagesIDs();
             $scope.exportStep = 'LOGIN_STEP';
