@@ -203,7 +203,7 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
             }, function (error) {
                 $scope.info.text = "gvtExportFailed";
                 $scope.info.show = true;
-                $scope.info['details'] = error.text;
+                $scope.info['details'] = "Sorry, we couldn't push your profiles. Please contact the administrator for more information";
                 $scope.info.type = 'danger';
                 $scope.loading = false;
                 $scope.exportStep =  'ERROR_STEP';
