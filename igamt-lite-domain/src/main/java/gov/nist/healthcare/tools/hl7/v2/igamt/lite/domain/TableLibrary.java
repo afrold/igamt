@@ -177,6 +177,18 @@ public class TableLibrary extends Library implements java.io.Serializable, Clone
 
     return null;
   }
+  
+  public TableLink findOneTableByBindingIdentifier(String bindingIdentifier) {
+    if (this.children != null) {
+      for (TableLink tl : this.children) {
+        if (bindingIdentifier.equals(tl.getBindingIdentifier())) {
+          return tl;
+        }
+      }
+    }
+
+    return null;
+  }
 
   public TableLibrary clone(HashMap<String, Table> tabRecords) throws CloneNotSupportedException {
     TableLibrary clonedTables = new TableLibrary();

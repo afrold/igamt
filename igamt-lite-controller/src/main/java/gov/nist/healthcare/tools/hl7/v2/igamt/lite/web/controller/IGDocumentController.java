@@ -16,6 +16,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.xml.sax.SAXException;
 
 import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
@@ -134,6 +136,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotF
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.EventWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.IntegrationIGDocumentRequestWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.ScopesAndVersionWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.XMLProfileRequestWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.ConnectService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.TimerTaskForPHINVADSValueSetDigger;
 
@@ -1323,6 +1326,16 @@ public class IGDocumentController extends CommonController {
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
     IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(idrw.getMsgEvts(),
         idrw.getMetaData(), idrw.getHl7Version(), account.getId());
+    setUserInfos(igDocument);
+    return igDocument;
+  }
+  
+  @RequestMapping(value = "/loadXML", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+  public IGDocument createIGByXML(@RequestBody XMLProfileRequestWrapper wrapper) throws IGDocumentException, SAXException, ParserConfigurationException, IOException {
+    log.info("Creation of IGDocument by XML");
+    User u = userService.getCurrentUser();
+    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+    IGDocument igDocument = igDocumentCreation.createIntegratedIGDocumentByXML(wrapper.getTitle(), wrapper.getSubTitle(), wrapper.getProfileXML(),  wrapper.getConstraintXML(), wrapper.getValuesetXML(), account.getId());
     setUserInfos(igDocument);
     return igDocument;
   }

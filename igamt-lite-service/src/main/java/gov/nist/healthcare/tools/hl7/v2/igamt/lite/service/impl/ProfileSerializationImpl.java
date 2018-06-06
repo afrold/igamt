@@ -39,7 +39,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
@@ -49,11 +48,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMapping;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingDefinition;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingItem;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
@@ -69,6 +68,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.VariesMapItem;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByName;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
@@ -194,17 +194,16 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     }
   }
 
-  // private Element getDatatypeElement(Element elmDatatypes, String id) {
-  // NodeList datatypeNodeList = elmDatatypes
-  // .getElementsByTagName("Datatype");
-  // for (int i = 0; i < datatypeNodeList.getLength(); i++) {
-  // Element elmDatatype = (Element) datatypeNodeList.item(i);
-  // if (id.equals(elmDatatype.getAttribute("ID"))) {
-  // return elmDatatype;
-  // }
-  // }
-  // return null;
-  // }
+  private Element getDatatypeElement(Element elmDatatypes, String id) {
+    NodeList datatypeNodeList = elmDatatypes.getElementsByTagName("Datatype");
+    for (int i = 0; i < datatypeNodeList.getLength(); i++) {
+      Element elmDatatype = (Element) datatypeNodeList.item(i);
+      if (id.equals(elmDatatype.getAttribute("ID"))) {
+        return elmDatatype;
+      }
+    }
+    return null;
+  }
 
   private Datatype deserializeDatatype(Element elmDatatype, Profile profile, Element elmDatatypes) {
     String ID = elmDatatype.getAttribute("ID");
@@ -231,12 +230,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
           componentObj.setName(elmComponent.getAttribute("Name"));
           componentObj.setUsage(Usage.fromValue(elmComponent.getAttribute("Usage")));
           componentObj.setPosition(new Integer(elmComponent.getAttribute("Position")));
-          // Element elmDt = getDatatypeElement(elmDatatypes,
-          // elmComponent.getAttribute("Datatype"));
-          // Datatype datatype = this.deserializeDatatype(elmDt,
-          // profile, elmDatatypes);
-          // TODO
-          // componentObj.setDatatype(datatype.getId());
+
+          Element elmDt =
+              this.getDatatypeElement(elmDatatypes, elmComponent.getAttribute("Datatype"));
+
+          Datatype dt = this.deserializeDatatype(elmDt, profile, elmDatatypes);
+          componentObj.setDatatype(new DatatypeLink(dt.getId(), dt.getName(), dt.getExt()));
           componentObj.setMinLength(elmComponent.getAttribute("MinLength"));
           if (elmComponent.getAttribute("MaxLength") != null) {
             componentObj.setMaxLength(elmComponent.getAttribute("MaxLength"));
@@ -244,10 +243,22 @@ public class ProfileSerializationImpl implements ProfileSerialization {
           if (elmComponent.getAttribute("ConfLength") != null) {
             componentObj.setConfLength(elmComponent.getAttribute("ConfLength"));
           }
-          // TODO
+
+          ValueSetBinding valueSetBinding = new ValueSetBinding();
+          if (elmComponent.getAttribute("BindingStrength") != null) {
+            valueSetBinding.setBindingStrength(elmComponent.getAttribute("BindingStrength"));
+          } else {
+            valueSetBinding.setBindingStrength("R");
+          }
+
+          if (elmComponent.getAttribute("BindingLocation") != null) {
+            valueSetBinding.setBindingLocation(elmComponent.getAttribute("BindingLocation"));
+          }
+
           if (elmComponent.getAttribute("Binding") != null) {
-            // componentObj.setTable(findTableIdByMappingId(elmComponent.getAttribute("Binding"),
-            // profile.getTableLibrary()));
+            valueSetBinding.setTableId(profile.getTableLibrary()
+                .findOneTableByBindingIdentifier(elmComponent.getAttribute("Binding")).getId());
+            datatypeObj.addValueSetBinding(valueSetBinding);
           }
 
           if (elmComponent.getAttribute("Hide") != null
@@ -261,8 +272,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
         }
       }
 
-      // datatypeObj = this.deserializeDatatype(elmDatatype, profile,
-      // elmDatatypes);
       datatypesMap.put(ID, datatypeObj);
 
       return datatypeObj;
@@ -346,7 +355,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     }
     return null;
   }
-  
+
   private void deserializeMetaData(Profile profile, Element elmConformanceProfile) {
     profile.getMetaData().setProfileID(elmConformanceProfile.getAttribute("ID"));
     profile.getMetaData().setType(elmConformanceProfile.getAttribute("Type"));
@@ -451,34 +460,33 @@ public class ProfileSerializationImpl implements ProfileSerialization {
             segmentElm.getAttribute("ID"), segmentElm.getAttribute("Name")));
 
     NodeList dynamicMapping = segmentElm.getElementsByTagName("Mapping");
-    DynamicMapping dynamicMappingObj = null;
+    DynamicMappingDefinition dynamicMappingDefinition = null;
     if (dynamicMapping.getLength() > 0) {
-      dynamicMappingObj = new DynamicMapping();
+      dynamicMappingDefinition = new DynamicMappingDefinition();
     }
 
-    for (int i = 0; i < dynamicMapping.getLength(); i++) {
-      Element mappingElm = (Element) dynamicMapping.item(i);
-      Mapping mappingObj = new Mapping();
-      mappingObj.setPosition(Integer.parseInt(mappingElm.getAttribute("Position")));
-      mappingObj.setReference(Integer.parseInt(mappingElm.getAttribute("Reference")));
-      NodeList cases = mappingElm.getElementsByTagName("Case");
+    Element mappingElm = (Element) dynamicMapping.item(0);
+    VariesMapItem variesMapItem = new VariesMapItem();
+    variesMapItem.setHl7Version(profile.getMetaData().getHl7Version());
+    variesMapItem.setReferenceLocation(mappingElm.getAttribute("Reference"));
+    variesMapItem.setSecondRefereceLocation(mappingElm.getAttribute("SecondReference"));
+    variesMapItem.setSegmentName(segmentObj.getName());
+    variesMapItem.setTargetLocation(mappingElm.getAttribute("Position"));
 
-      for (int j = 0; j < cases.getLength(); j++) {
-        Element caseElm = (Element) cases.item(j);
-        Case caseObj = new Case();
-        caseObj.setValue(caseElm.getAttribute("Value"));
-        caseObj.setDatatype(this.findDatatype(caseElm.getAttribute("Datatype"), profile).getId());
+    dynamicMappingDefinition.setMappingStructure(variesMapItem);
 
-        mappingObj.addCase(caseObj);
-
-      }
-
-      dynamicMappingObj.addMapping(mappingObj);
+    NodeList cases = mappingElm.getElementsByTagName("Case");
+    for (int j = 0; j < cases.getLength(); j++) {
+      Element caseElm = (Element) cases.item(j);
+      DynamicMappingItem dynamicMappingItem = new DynamicMappingItem();
+      dynamicMappingItem
+          .setDatatypeId(this.findDatatype(caseElm.getAttribute("Datatype"), profile).getId());
+      dynamicMappingItem.setFirstReferenceValue(caseElm.getAttribute("Value"));
+      dynamicMappingItem.setSecondReferenceValue(caseElm.getAttribute("SecondValue"));
+      dynamicMappingDefinition.addDynamicMappingItem(dynamicMappingItem);
 
     }
-
-    if (dynamicMappingObj != null)
-      segmentObj.setDynamicMapping(dynamicMappingObj);
+    segmentObj.setDynamicMappingDefinition(dynamicMappingDefinition);
 
     NodeList fields = segmentElm.getElementsByTagName("Field");
     for (int i = 0; i < fields.getLength(); i++) {
@@ -492,11 +500,10 @@ public class ProfileSerializationImpl implements ProfileSerialization {
   private Field deserializeField(Element fieldElm, Segment segment, Profile profile,
       String segmentId, int position) {
     Field fieldObj = new Field();
-
     fieldObj.setName(fieldElm.getAttribute("Name"));
     fieldObj.setUsage(Usage.fromValue(fieldElm.getAttribute("Usage")));
-    // fieldObj.setDatatype(this.findDatatype(fieldElm.getAttribute("Datatype"),
-    // profile).getId());
+    Datatype dt = this.findDatatype(fieldElm.getAttribute("Datatype"), profile);
+    fieldObj.setDatatype(new DatatypeLink(dt.getId(), dt.getName(), dt.getExt()));
     fieldObj.setMinLength(fieldElm.getAttribute("MinLength"));
     fieldObj.setPosition(new Integer(fieldElm.getAttribute("Position")));
     if (fieldElm.getAttribute("MaxLength") != null) {
@@ -505,17 +512,24 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     if (fieldElm.getAttribute("ConfLength") != null) {
       fieldObj.setConfLength(fieldElm.getAttribute("ConfLength"));
     }
-    // if (fieldElm.getAttribute("Binding") != null) {
-    // fieldObj.setTable(findTableIdByMappingId(fieldElm.getAttribute("Binding"),
-    // profile.getTableLibrary()));
-    // }
-    // if (fieldElm.getAttribute("BindingStrength") != null) {
-    // fieldObj.setBindingStrength(fieldElm.getAttribute("BindingStrength"));
-    // }
-    //
-    // if (fieldElm.getAttribute("BindingLocation") != null) {
-    // fieldObj.setBindingLocation(fieldElm.getAttribute("BindingLocation"));
-    // }
+
+    ValueSetBinding valueSetBinding = new ValueSetBinding();
+    if (fieldElm.getAttribute("BindingStrength") != null) {
+      valueSetBinding.setBindingStrength(fieldElm.getAttribute("BindingStrength"));
+    } else {
+      valueSetBinding.setBindingStrength("R");
+    }
+
+    if (fieldElm.getAttribute("BindingLocation") != null) {
+      valueSetBinding.setBindingLocation(fieldElm.getAttribute("BindingLocation"));
+    }
+
+    if (fieldElm.getAttribute("Binding") != null) {
+      valueSetBinding.setTableId(profile.getTableLibrary()
+          .findOneTableByBindingIdentifier(fieldElm.getAttribute("Binding")).getId());
+      segment.addValueSetBinding(valueSetBinding);
+    }
+
     if (fieldElm.getAttribute("Hide") != null && fieldElm.getAttribute("Hide").equals("true")) {
       fieldObj.setHide(true);
     } else {
@@ -590,10 +604,11 @@ public class ProfileSerializationImpl implements ProfileSerialization {
   public void setSegmentsMap(HashMap<String, Segment> segmentsMap) {
     this.segmentsMap = segmentsMap;
   }
-  
+
   @Override
-  public InputStream serializeProfileGazelleToZip(Profile original, String[] ids, DocumentMetaData metadata)
-      throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException {
+  public InputStream serializeProfileGazelleToZip(Profile original, String[] ids,
+      DocumentMetaData metadata) throws IOException, CloneNotSupportedException,
+      ProfileSerializationException, TableSerializationException {
     Profile filteredProfile = new Profile();
 
     HashMap<String, Segment> segmentsMap = new HashMap<String, Segment>();
@@ -673,12 +688,14 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     filteredProfile.setMessages(messages);
     filteredProfile.setTableLibrary(tables);
 
-    return new XMLExportTool().exportXMLAsGazelleFormatForSelectedMessages(filteredProfile, metadata, segmentsMap, datatypesMap, tablesMap);
+    return new XMLExportTool().exportXMLAsGazelleFormatForSelectedMessages(filteredProfile,
+        metadata, segmentsMap, datatypesMap, tablesMap);
   }
 
   @Override
   public InputStream serializeCompositeProfileDisplayToZip(IGDocument doc, String[] ids)
-      throws IOException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException {
+      throws IOException, CloneNotSupportedException, TableSerializationException,
+      ProfileSerializationException {
     Map<String, Segment> segmentsMap = new HashMap<String, Segment>();
     Map<String, Datatype> datatypesMap = new HashMap<String, Datatype>();
     Map<String, Table> tablesMap = new HashMap<String, Table>();
@@ -757,12 +774,14 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     filteredProfile.setMessages(messages);
     filteredProfile.setTableLibrary(tables);
 
-    return new XMLExportTool().exportXMLAsDisplayFormatForSelectedMessages(filteredProfile, doc.getMetaData(), segmentsMap, datatypesMap, tablesMap);
+    return new XMLExportTool().exportXMLAsDisplayFormatForSelectedMessages(filteredProfile,
+        doc.getMetaData(), segmentsMap, datatypesMap, tablesMap);
   }
-  
+
   @Override
   public InputStream serializeProfileToZip(Profile original, String[] ids,
-      DocumentMetaData metadata) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException {
+      DocumentMetaData metadata) throws IOException, CloneNotSupportedException,
+      ProfileSerializationException, TableSerializationException, ConstraintSerializationException {
     Profile filteredProfile = new Profile();
 
     HashMap<String, Segment> segmentsMap = new HashMap<String, Segment>();
@@ -783,14 +802,14 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     filteredProfile.setUsageNote(original.getUsageNote());
     filteredProfile.setMetaData(original.getMetaData());
 
-//    for (SegmentLink sl : original.getSegmentLibrary().getChildren()) {
-//      if (sl != null) {
-//        Segment s = segmentService.findById(sl.getId());
-//        if (s != null) {
-//          segmentsMap.put(s.getId(), s);
-//        }
-//      }
-//    }
+    // for (SegmentLink sl : original.getSegmentLibrary().getChildren()) {
+    // if (sl != null) {
+    // Segment s = segmentService.findById(sl.getId());
+    // if (s != null) {
+    // segmentsMap.put(s.getId(), s);
+    // }
+    // }
+    // }
 
     for (DatatypeLink dl : original.getDatatypeLibrary().getChildren()) {
       if (dl != null) {
@@ -804,22 +823,23 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     for (TableLink tl : original.getTableLibrary().getChildren()) {
       if (tl != null) {
         Table t = tableService.findById(tl.getId());
-        if (t != null) {    
+        if (t != null) {
           /*
-           * Temporary script Begin
-           * This script is to hack Codes for external-user ValueSet. It is just temporary script till implementation for external valueset validation
+           * Temporary script Begin This script is to hack Codes for external-user ValueSet. It is
+           * just temporary script till implementation for external valueset validation
            */
 
-          if(t != null && t.getSourceType().equals(SourceType.EXTERNAL) && t.getCreatedFrom() != null && !t.getCreatedFrom().isEmpty()){
+          if (t != null && t.getSourceType().equals(SourceType.EXTERNAL)
+              && t.getCreatedFrom() != null && !t.getCreatedFrom().isEmpty()) {
             Table origin = tableService.findById(t.getCreatedFrom());
-            if(origin != null && origin.getCodes() != null && origin.getCodes().size() > 0){
+            if (origin != null && origin.getCodes() != null && origin.getCodes().size() > 0) {
               t.setCodes(origin.getCodes());
             }
           }
-          
+
           /*
            * Temporary script End
-           */  
+           */
           tablesMap.put(t.getId(), t);
         }
       }
@@ -863,7 +883,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
   @Override
   public InputStream serializeProfileDisplayToZip(Profile original, String[] ids,
-      DocumentMetaData metadata) throws IOException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException {
+      DocumentMetaData metadata) throws IOException, CloneNotSupportedException,
+      TableSerializationException, ProfileSerializationException {
 
     Profile filteredProfile = new Profile();
 
@@ -944,14 +965,15 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     filteredProfile.setMessages(messages);
     filteredProfile.setTableLibrary(tables);
 
-    return new XMLExportTool().exportXMLAsDisplayFormatForSelectedMessages(filteredProfile, metadata, segmentsMap, datatypesMap, tablesMap);
+    return new XMLExportTool().exportXMLAsDisplayFormatForSelectedMessages(filteredProfile,
+        metadata, segmentsMap, datatypesMap, tablesMap);
   }
-  
+
   private void visit(SegmentRefOrGroup seog, Map<String, Segment> segmentsMap,
       Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
     if (seog instanceof SegmentRef) {
       SegmentRef sr = (SegmentRef) seog;
-//      Segment s = segmentsMap.get(sr.getRef().getId());
+      // Segment s = segmentsMap.get(sr.getRef().getId());
       Segment s = segmentService.findById(sr.getRef().getId());
       segmentsMap.put(s.getId(), s);
 
@@ -1026,19 +1048,21 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     return null;
   }
 
-  private void addDatatypeForDM(Datatype d, Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
+  private void addDatatypeForDM(Datatype d, Map<String, Datatype> datatypesMap,
+      Map<String, Table> tablesMap) {
     if (d != null) {
       int randumNum = new SecureRandom().nextInt(100000);
       d.setExt("ForDM" + randumNum);
       datatypesMap.put(d.getId(), d);
       for (Component c : d.getComponents()) {
-        this.addDatatypeForDM(datatypeService.findById(c.getDatatype().getId()), datatypesMap, tablesMap);
+        this.addDatatypeForDM(datatypeService.findById(c.getDatatype().getId()), datatypesMap,
+            tablesMap);
       }
-      
-      for(ValueSetOrSingleCodeBinding binding:d.getValueSetBindings()){
-        if(binding instanceof ValueSetBinding){
+
+      for (ValueSetOrSingleCodeBinding binding : d.getValueSetBindings()) {
+        if (binding instanceof ValueSetBinding) {
           Table t = tableService.findById(binding.getTableId());
-          if(t != null){
+          if (t != null) {
             tablesMap.put(t.getId(), t);
           }
         }
@@ -1069,7 +1093,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
   @Override
   public InputStream serializeCompositeProfileToZip(IGDocument doc, String[] ids)
-      throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException {
+      throws IOException, CloneNotSupportedException, ProfileSerializationException,
+      TableSerializationException, ConstraintSerializationException {
     Map<String, Segment> segmentsMap = new HashMap<String, Segment>();
     Map<String, Datatype> datatypesMap = new HashMap<String, Datatype>();
     Map<String, Table> tablesMap = new HashMap<String, Table>();
@@ -1096,24 +1121,25 @@ public class ProfileSerializationImpl implements ProfileSerialization {
       if (tl != null) {
         Table t = tableService.findById(tl.getId());
         if (t != null) {
-          
+
           /*
-           * Temporary script Begin
-           * This script is to hack Codes for external-user ValueSet. It is just temporary script till implementation for external valueset validation
+           * Temporary script Begin This script is to hack Codes for external-user ValueSet. It is
+           * just temporary script till implementation for external valueset validation
            */
 
-          if(t != null && t.getSourceType().equals(SourceType.EXTERNAL) && t.getCreatedFrom() != null && !t.getCreatedFrom().isEmpty()){
+          if (t != null && t.getSourceType().equals(SourceType.EXTERNAL)
+              && t.getCreatedFrom() != null && !t.getCreatedFrom().isEmpty()) {
             Table origin = tableService.findById(t.getCreatedFrom());
-            if(origin != null && origin.getCodes() != null && origin.getCodes().size() > 0){
+            if (origin != null && origin.getCodes() != null && origin.getCodes().size() > 0) {
               t.setCodes(origin.getCodes());
             }
           }
-          
+
           /*
            * Temporary script End
-           */  
-          
-          
+           */
+
+
           tablesMap.put(t.getId(), t);
         }
       }
@@ -1135,7 +1161,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     filteredProfile.setType(doc.getProfile().getType());
     filteredProfile.setUsageNote(doc.getProfile().getUsageNote());
     filteredProfile.setMetaData(doc.getProfile().getMetaData());
-    if(doc.getProfile().getMetaData().getExt() != null && !"".equals(doc.getProfile().getMetaData().getExt())){
+    if (doc.getProfile().getMetaData().getExt() != null
+        && !"".equals(doc.getProfile().getMetaData().getExt())) {
       filteredProfile.getMetaData().setName(doc.getProfile().getMetaData().getExt());
     }
     Messages messages = new Messages();
@@ -1174,7 +1201,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
   @Override
   public InputStream serializeCompositeProfileGazelleToZip(IGDocument doc, String[] ids)
-      throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException {
+      throws IOException, CloneNotSupportedException, ProfileSerializationException,
+      TableSerializationException {
     HashMap<String, Segment> segmentsMap = new HashMap<String, Segment>();
     HashMap<String, Datatype> datatypesMap = new HashMap<String, Datatype>();
     HashMap<String, Table> tablesMap = new HashMap<String, Table>();
@@ -1253,7 +1281,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     filteredProfile.setMessages(messages);
     filteredProfile.setTableLibrary(tables);
 
-    return new XMLExportTool().exportXMLAsGazelleFormatForSelectedMessages(filteredProfile, doc.getMetaData(), segmentsMap, datatypesMap, tablesMap);
+    return new XMLExportTool().exportXMLAsGazelleFormatForSelectedMessages(filteredProfile,
+        doc.getMetaData(), segmentsMap, datatypesMap, tablesMap);
   }
 
 }
