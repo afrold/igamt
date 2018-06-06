@@ -101,6 +101,8 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
     };
 
     $scope.loadDomains = function () {
+        $scope.targetDomains = [];
+        $scope.target.domain = null;
         if($scope.target.url != null) {
             GVTSvc.getDomains($scope.target.url, StorageService.getGVTBasicAuth()).then(function (result) {
                 $scope.targetDomains = result;
@@ -122,8 +124,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
                 $scope.loadingDomains = false;
             }, function (error) {
                 $scope.loadingDomains = false;
-                alert(error);
-            });
+             });
         }
     };
 
