@@ -24,9 +24,9 @@ import nu.xom.Document;
 import nu.xom.Element;
 
 public interface TableSerialization {
-	TableLibrary deserializeXMLToTableLibrary(String xmlContents);
+	TableLibrary deserializeXMLToTableLibrary(String xmlContents, String hl7Version);
 
-	TableLibrary deserializeXMLToTableLibrary(Document xmlDoc);
+	TableLibrary deserializeXMLToTableLibrary(Document xmlDoc, String hl7Version);
 
 	String serializeTableLibraryToXML(TableLibrary tableLibrary, DocumentMetaData metadata, Date dateUpdated);
 
@@ -45,5 +45,6 @@ public interface TableSerialization {
 	Document serializeTableLibraryToGazelleDoc(Profile profile);
 
 	Element serializeTableLibraryToElement(Profile profile, DocumentMetaData metadata, Date dateUpdated);
+
 
 }

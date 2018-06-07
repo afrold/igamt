@@ -131,37 +131,6 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
     }
     return messageEvents;
   }
-
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService#
-   * createIntegratedIGDocumentByXML(java.lang.String, java.lang.String, java.lang.String,
-   * java.lang.Long)
-   */
-  @Override
-  public IGDocument createIntegratedIGDocumentByXML(String title, String subTitle,
-      String profileXML, String constraintXML, String valuesetXML, Long accountId) {
-    IGDocument dTarget = new IGDocument();
-    Profile profile = this.profileSerialization.deserializeXMLToProfile(profileXML, valuesetXML, constraintXML);
-    dTarget.addProfile(profile);
-
-    dTarget.setAccountId(accountId);
-    Date date = new Date();
-    dTarget.setDateUpdated(new Date());
-    dTarget.setScope(IGDocumentScope.USER);
-    dTarget.setComment("Created " + date.toString());
-
-    DocumentMetaData metaData = new DocumentMetaData();
-    metaData.setSubTitle(subTitle);
-    metaData.setTitle(title);
-    metaData.setHl7Version(profile.getMetaData().getHl7Version());
-    dTarget.setMetaData(metaData);
-    
-    igdocumentRepository.save(dTarget);
-    return dTarget;
-  }
   
   @Override
   public IGDocument createIntegratedIGDocument(List<MessageEvents> msgEvts,

@@ -18,12 +18,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
-import java.io.IOException;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
@@ -41,8 +36,4 @@ public interface IGDocumentCreationService {
 
 	IGDocument createIntegratedIGDocument(List<MessageEvents> msgEvts, DocumentMetaData metadata, String hl7Version,
 			Long accountId) throws IGDocumentException;
-
-	
-    public IGDocument createIntegratedIGDocumentByXML(String title, String subTitle, String profileXML, String constraintXML, String valuesetXML, Long id) throws SAXException, ParserConfigurationException, IOException;
-
 }

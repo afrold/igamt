@@ -43,6 +43,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SourceType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
@@ -67,6 +68,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBindingStrength;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.VariesMapItem;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
@@ -82,9 +84,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exceptio
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.xml.XMLExportTool;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ConstraintsSerialization;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 
@@ -96,13 +102,25 @@ public class ProfileSerializationImpl implements ProfileSerialization {
   private DatatypeService datatypeService;
 
   @Autowired
+  private MessageService messageService;
+
+  @Autowired
   private SegmentService segmentService;
 
   @Autowired
   private TableService tableService;
 
   @Autowired
+  private TableLibraryService tableLibraryService;
+
+  @Autowired
   private TableSerialization tableSerializationService;
+
+  @Autowired
+  private DatatypeLibraryService datatypeLibraryService;
+
+  @Autowired
+  private SegmentLibraryService segmentLibraryService;
 
   @Autowired
   private CompositeProfileService compositeProfileService;
@@ -131,8 +149,10 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     // Read Profile Libs
     profile.setSegmentLibrary(new SegmentLibrary());
     profile.setDatatypeLibrary(new DatatypeLibrary());
-
-    profile.setTableLibrary(tableSerializationService.deserializeXMLToTableLibrary(xmlValueSet));
+    TableLibrary tables = tableSerializationService.deserializeXMLToTableLibrary(xmlValueSet,
+        profile.getMetaData().getHl7Version());
+    tableLibraryService.save(tables);
+    profile.setTableLibrary(tables);
 
     this.conformanceStatement =
         constraintsSerializationService.deserializeXMLToConformanceStatements(xmlConstraints);
@@ -144,14 +164,15 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
     DatatypeLibrary datatypes = new DatatypeLibrary();
     for (String key : datatypesMap.keySet()) {
-      Datatype d = datatypeService.save(datatypesMap.get(key));
+      Datatype d = datatypesMap.get(key);
       DatatypeLink link = new DatatypeLink();
       link.setExt(key.replace(d.getName(), ""));
       link.setId(d.getId());
       link.setName(d.getName());
-
       datatypes.addDatatype(link);
     }
+
+    this.datatypeLibraryService.save(datatypes);
     profile.setDatatypeLibrary(datatypes);
 
     this.segmentsMap = this.constructSegmentsMap(
@@ -159,13 +180,14 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
     SegmentLibrary segments = new SegmentLibrary();
     for (String key : segmentsMap.keySet()) {
-      Segment s = segmentService.save(segmentsMap.get(key));
+      Segment s = segmentsMap.get(key);
       SegmentLink link = new SegmentLink();
       link.setId(s.getId());
       link.setExt(key.replace(s.getName(), ""));
       link.setName(s.getName());
       segments.addSegment(link);
     }
+    this.segmentLibraryService.save(segments);
     profile.setSegmentLibrary(segments);
 
     // Read Profile Messages
@@ -188,8 +210,24 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     for (int i = 0; i < datatypeNodeList.getLength(); i++) {
       Element elmDatatype = (Element) datatypeNodeList.item(i);
       if (!datatypesMap.keySet().contains(elmDatatype.getAttribute("ID"))) {
-        datatypesMap.put(elmDatatype.getAttribute("ID"),
-            this.deserializeDatatype(elmDatatype, profile, elmDatatypes));
+        String id = elmDatatype.getAttribute("ID");
+        String name = elmDatatype.getAttribute("Name");
+
+        if (!id.equals(name)) {
+          if (!datatypesMap.containsKey(id))
+            datatypesMap.put(elmDatatype.getAttribute("ID"),
+                this.deserializeDatatype(elmDatatype, profile, elmDatatypes));
+        } else {
+          Datatype d = this.datatypeService.findByNameAndVesionAndScope(name, profile.getMetaData().getHl7Version(), "HL7STANDARD");
+          
+          for(Component c:d.getComponents()){
+            Datatype childD = this.datatypeService.findById(c.getDatatype().getId());
+            datatypesMap.put(childD.getId(), childD);
+          }
+          
+          datatypesMap.put(elmDatatype.getAttribute("ID"), this.datatypeService.findByNameAndVesionAndScope(name, profile.getMetaData().getHl7Version(), "HL7STANDARD"));
+        }
+
       }
     }
   }
@@ -207,78 +245,106 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
   private Datatype deserializeDatatype(Element elmDatatype, Profile profile, Element elmDatatypes) {
     String ID = elmDatatype.getAttribute("ID");
-    if (!datatypesMap.keySet().contains(ID)) {
-      Datatype datatypeObj = new Datatype();
-      datatypeObj.setDescription(elmDatatype.getAttribute("Description"));
-      if (elmDatatype.getAttribute("Label") != null
-          && !elmDatatype.getAttribute("Label").equals("")) {
-        datatypeObj.setLabel(elmDatatype.getAttribute("Label"));
-      } else {
-        datatypeObj.setLabel(elmDatatype.getAttribute("Name"));
-      }
-      datatypeObj.setName(elmDatatype.getAttribute("Name"));
-      datatypeObj.setPredicates(this.findPredicates(this.predicates.getDatatypes(), ID,
-          elmDatatype.getAttribute("Name")));
-      datatypeObj.setConformanceStatements(this.findConformanceStatement(
-          this.conformanceStatement.getDatatypes(), ID, elmDatatype.getAttribute("Name")));
+    String name = elmDatatype.getAttribute("Name");
 
-      NodeList nodes = elmDatatype.getChildNodes();
-      for (int i = 0; i < nodes.getLength(); i++) {
-        if (nodes.item(i).getNodeName().equals("Component")) {
-          Element elmComponent = (Element) nodes.item(i);
-          Component componentObj = new Component();
-          componentObj.setName(elmComponent.getAttribute("Name"));
-          componentObj.setUsage(Usage.fromValue(elmComponent.getAttribute("Usage")));
-          componentObj.setPosition(new Integer(elmComponent.getAttribute("Position")));
-
-          Element elmDt =
-              this.getDatatypeElement(elmDatatypes, elmComponent.getAttribute("Datatype"));
-
-          Datatype dt = this.deserializeDatatype(elmDt, profile, elmDatatypes);
-          componentObj.setDatatype(new DatatypeLink(dt.getId(), dt.getName(), dt.getExt()));
-          componentObj.setMinLength(elmComponent.getAttribute("MinLength"));
-          if (elmComponent.getAttribute("MaxLength") != null) {
-            componentObj.setMaxLength(elmComponent.getAttribute("MaxLength"));
-          }
-          if (elmComponent.getAttribute("ConfLength") != null) {
-            componentObj.setConfLength(elmComponent.getAttribute("ConfLength"));
-          }
-
-          ValueSetBinding valueSetBinding = new ValueSetBinding();
-          if (elmComponent.getAttribute("BindingStrength") != null) {
-            valueSetBinding.setBindingStrength(elmComponent.getAttribute("BindingStrength"));
-          } else {
-            valueSetBinding.setBindingStrength("R");
-          }
-
-          if (elmComponent.getAttribute("BindingLocation") != null) {
-            valueSetBinding.setBindingLocation(elmComponent.getAttribute("BindingLocation"));
-          }
-
-          if (elmComponent.getAttribute("Binding") != null) {
-            valueSetBinding.setTableId(profile.getTableLibrary()
-                .findOneTableByBindingIdentifier(elmComponent.getAttribute("Binding")).getId());
-            datatypeObj.addValueSetBinding(valueSetBinding);
-          }
-
-          if (elmComponent.getAttribute("Hide") != null
-              && elmComponent.getAttribute("Hide").equals("true")) {
-            componentObj.setHide(true);
-          } else {
-            componentObj.setHide(false);
-          }
-
-          datatypeObj.addComponent(componentObj);
-        }
-      }
-
-      datatypesMap.put(ID, datatypeObj);
-
-      return datatypeObj;
-
-    } else {
+    if (datatypesMap.keySet().contains(ID))
       return datatypesMap.get(ID);
+    if (ID.equals(name)) {
+      Datatype dt = this.datatypeService.findOneByNameAndVersionAndScope(ID,
+          profile.getMetaData().getHl7Version(), "HL7STANDARD");
+      datatypesMap.put(ID, dt);
+      return dt;
     }
+
+
+    Datatype datatypeObj = new Datatype();
+    datatypeObj.setDescription(elmDatatype.getAttribute("Description"));
+    if (elmDatatype.getAttribute("Label") != null
+        && !elmDatatype.getAttribute("Label").equals("")) {
+      datatypeObj.setLabel(elmDatatype.getAttribute("Label"));
+      datatypeObj.setExt(
+          elmDatatype.getAttribute("Label").replace(elmDatatype.getAttribute("Name") + "_", ""));
+    } else {
+      datatypeObj.setLabel(elmDatatype.getAttribute("Name"));
+    }
+    datatypeObj.setName(elmDatatype.getAttribute("Name"));
+    datatypeObj.setPredicates(
+        this.findPredicates(this.predicates.getDatatypes(), ID, elmDatatype.getAttribute("Name")));
+    datatypeObj.setConformanceStatements(this.findConformanceStatement(
+        this.conformanceStatement.getDatatypes(), ID, elmDatatype.getAttribute("Name")));
+    datatypeObj.setScope(SCOPE.USER);
+
+    NodeList nodes = elmDatatype.getElementsByTagName("Component");
+    for (int i = 0; i < nodes.getLength(); i++) {
+      Element elmComponent = (Element) nodes.item(i);
+      Component componentObj = new Component();
+      componentObj.setName(elmComponent.getAttribute("Name"));
+      componentObj.setUsage(Usage.fromValue(elmComponent.getAttribute("Usage")));
+      componentObj.setPosition(i + 1);
+
+      Element elmDt = this.getDatatypeElement(elmDatatypes, elmComponent.getAttribute("Datatype"));
+
+      Datatype dt = this.deserializeDatatype(elmDt, profile, elmDatatypes);
+      componentObj.setDatatype(new DatatypeLink(dt.getId(), dt.getName(), dt.getExt()));
+      componentObj.setMinLength(elmComponent.getAttribute("MinLength"));
+      if (elmComponent.getAttribute("MaxLength") != null) {
+        componentObj.setMaxLength(elmComponent.getAttribute("MaxLength"));
+      }
+      if (elmComponent.getAttribute("ConfLength") != null) {
+        componentObj.setConfLength(elmComponent.getAttribute("ConfLength"));
+      }
+
+      ValueSetBinding valueSetBinding = new ValueSetBinding();
+      if (elmComponent.getAttribute("BindingStrength") != null) {
+        if (elmComponent.getAttribute("BindingStrength").equals("R")) {
+          valueSetBinding.setBindingStrength(ValueSetBindingStrength.R);
+        } else if (elmComponent.getAttribute("BindingStrength").equals("S")) {
+          valueSetBinding.setBindingStrength(ValueSetBindingStrength.S);
+        } else if (elmComponent.getAttribute("BindingStrength").equals("U")) {
+          valueSetBinding.setBindingStrength(ValueSetBindingStrength.U);
+        } else {
+          valueSetBinding.setBindingStrength(ValueSetBindingStrength.R);
+        }
+      } else {
+        valueSetBinding.setBindingStrength(ValueSetBindingStrength.R);
+      }
+
+      if (elmComponent.getAttribute("BindingLocation") != null) {
+        valueSetBinding.setBindingLocation(elmComponent.getAttribute("BindingLocation"));
+      }
+
+      if (elmComponent.getAttribute("Binding") != null
+          && !elmComponent.getAttribute("Binding").equals("")) {
+        String bindingIdentifier = elmComponent.getAttribute("Binding");
+        if (bindingIdentifier.startsWith("HL7") && bindingIdentifier.length() == 7) {
+          valueSetBinding.setTableId(profile.getTableLibrary()
+              .findOneTableByBindingIdentifier(bindingIdentifier.replace("HL7", "")).getId());
+          valueSetBinding.setLocation(componentObj.getPosition() + "");
+          datatypeObj.addValueSetBinding(valueSetBinding);
+        } else {
+          valueSetBinding.setTableId(
+              profile.getTableLibrary().findOneTableByBindingIdentifier(bindingIdentifier).getId());
+          valueSetBinding.setLocation(componentObj.getPosition() + "");
+          datatypeObj.addValueSetBinding(valueSetBinding);
+        }
+
+
+      }
+
+      if (elmComponent.getAttribute("Hide") != null
+          && elmComponent.getAttribute("Hide").equals("true")) {
+        componentObj.setHide(true);
+      } else {
+        componentObj.setHide(false);
+      }
+
+      datatypeObj.addComponent(componentObj);
+    }
+    datatypeService.save(datatypeObj);
+    datatypesMap.put(ID, datatypeObj);
+
+    return datatypeObj;
+
   }
 
   private List<ConformanceStatement> findConformanceStatement(Context context, String id,
@@ -340,7 +406,14 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
     for (int i = 0; i < segmentNodeList.getLength(); i++) {
       Element elmSegment = (Element) segmentNodeList.item(i);
-      segmentsMap.put(elmSegment.getAttribute("ID"), this.deserializeSegment(elmSegment, profile));
+      String id = elmSegment.getAttribute("ID");
+      String name = elmSegment.getAttribute("Name");
+
+      Segment s = this.deserializeSegment(elmSegment, profile);
+      if (!id.equals(name)) {
+        segmentService.save(s);
+      }
+      segmentsMap.put(elmSegment.getAttribute("ID"), s);
     }
 
     return segmentsMap;
@@ -408,6 +481,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
         this.deserializeSegmentRefOrGroups(elmConformanceProfile, messageObj, elmMessage,
             profile.getSegmentLibrary(), profile.getDatatypeLibrary());
+
+        messageService.save(messageObj);
         messagesObj.addMessage(messageObj);
       }
       profile.setMessages(messagesObj);
@@ -419,13 +494,14 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     List<SegmentRefOrGroup> segmentRefOrGroups = new ArrayList<SegmentRefOrGroup>();
     NodeList nodes = elmMessage.getChildNodes();
 
+    int index = 0;
     for (int i = 0; i < nodes.getLength(); i++) {
       if (nodes.item(i).getNodeName().equals("Segment")) {
-        this.deserializeSegmentRef(elmConformanceProfile, segmentRefOrGroups,
-            (Element) nodes.item(i), segments, datatypes);
+        index = index + 1;
+        this.deserializeSegmentRef(elmConformanceProfile, segmentRefOrGroups, (Element) nodes.item(i), segments, datatypes, index);
       } else if (nodes.item(i).getNodeName().equals("Group")) {
-        this.deserializeGroup(elmConformanceProfile, segmentRefOrGroups, (Element) nodes.item(i),
-            segments, datatypes);
+        index = index + 1;
+        this.deserializeGroup(elmConformanceProfile, segmentRefOrGroups, (Element) nodes.item(i), segments, datatypes, index);
       }
     }
 
@@ -435,20 +511,31 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
   private void deserializeSegmentRef(Element elmConformanceProfile,
       List<SegmentRefOrGroup> segmentRefOrGroups, Element segmentElm, SegmentLibrary segments,
-      DatatypeLibrary datatypes) {
+      DatatypeLibrary datatypes, int position) {
     SegmentRef segmentRefObj = new SegmentRef();
     segmentRefObj.setMax(segmentElm.getAttribute("Max"));
     segmentRefObj.setMin(new Integer(segmentElm.getAttribute("Min")));
     segmentRefObj.setUsage(Usage.fromValue(segmentElm.getAttribute("Usage")));
-    // segmentRefObj.setRef(this.segmentsMap.get(segmentElm.getAttribute("Ref")).getId());
+    Segment seg = this.segmentsMap.get(segmentElm.getAttribute("Ref"));
+    segmentRefObj.setRef(new SegmentLink(seg.getId(), seg.getName(), seg.getExt()));
+    segmentRefObj.setPosition(position);
     segmentRefOrGroups.add(segmentRefObj);
   }
 
   private Segment deserializeSegment(Element segmentElm, Profile profile) {
+    String id = segmentElm.getAttribute("ID");
+    String name = segmentElm.getAttribute("Name");
+
+    if (id.equals(name))
+      return this.segmentService.findByNameAndVersionAndScope(name,
+          profile.getMetaData().getHl7Version(), "HL7STANDARD");
+
     Segment segmentObj = new Segment();
     segmentObj.setDescription(segmentElm.getAttribute("Description"));
     if (segmentElm.getAttribute("Label") != null && !segmentElm.getAttribute("Label").equals("")) {
       segmentObj.setLabel(segmentElm.getAttribute("Label"));
+      segmentObj.setExt(
+          segmentElm.getAttribute("Label").replace(segmentElm.getAttribute("Name") + "_", ""));
     } else {
       segmentObj.setLabel(segmentElm.getAttribute("Name"));
     }
@@ -458,41 +545,40 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     segmentObj.setConformanceStatements(
         this.findConformanceStatement(this.conformanceStatement.getSegments(),
             segmentElm.getAttribute("ID"), segmentElm.getAttribute("Name")));
+    segmentObj.setScope(SCOPE.USER);
+    segmentObj.setHl7Version(profile.getMetaData().getHl7Version());
+
 
     NodeList dynamicMapping = segmentElm.getElementsByTagName("Mapping");
     DynamicMappingDefinition dynamicMappingDefinition = null;
     if (dynamicMapping.getLength() > 0) {
       dynamicMappingDefinition = new DynamicMappingDefinition();
+      Element mappingElm = (Element) dynamicMapping.item(0);
+      VariesMapItem variesMapItem = new VariesMapItem();
+      variesMapItem.setHl7Version(profile.getMetaData().getHl7Version());
+      variesMapItem.setReferenceLocation(mappingElm.getAttribute("Reference"));
+      variesMapItem.setSegmentName(segmentObj.getName());
+      variesMapItem.setTargetLocation(mappingElm.getAttribute("Position"));
+
+      dynamicMappingDefinition.setMappingStructure(variesMapItem);
+
+      NodeList cases = mappingElm.getElementsByTagName("Case");
+      for (int j = 0; j < cases.getLength(); j++) {
+        Element caseElm = (Element) cases.item(j);
+        DynamicMappingItem dynamicMappingItem = new DynamicMappingItem();
+        dynamicMappingItem
+            .setDatatypeId(this.findDatatype(caseElm.getAttribute("Datatype"), profile).getId());
+        dynamicMappingItem.setFirstReferenceValue(caseElm.getAttribute("Value"));
+        dynamicMappingDefinition.addDynamicMappingItem(dynamicMappingItem);
+
+      }
+      segmentObj.setDynamicMappingDefinition(dynamicMappingDefinition);
     }
-
-    Element mappingElm = (Element) dynamicMapping.item(0);
-    VariesMapItem variesMapItem = new VariesMapItem();
-    variesMapItem.setHl7Version(profile.getMetaData().getHl7Version());
-    variesMapItem.setReferenceLocation(mappingElm.getAttribute("Reference"));
-    variesMapItem.setSecondRefereceLocation(mappingElm.getAttribute("SecondReference"));
-    variesMapItem.setSegmentName(segmentObj.getName());
-    variesMapItem.setTargetLocation(mappingElm.getAttribute("Position"));
-
-    dynamicMappingDefinition.setMappingStructure(variesMapItem);
-
-    NodeList cases = mappingElm.getElementsByTagName("Case");
-    for (int j = 0; j < cases.getLength(); j++) {
-      Element caseElm = (Element) cases.item(j);
-      DynamicMappingItem dynamicMappingItem = new DynamicMappingItem();
-      dynamicMappingItem
-          .setDatatypeId(this.findDatatype(caseElm.getAttribute("Datatype"), profile).getId());
-      dynamicMappingItem.setFirstReferenceValue(caseElm.getAttribute("Value"));
-      dynamicMappingItem.setSecondReferenceValue(caseElm.getAttribute("SecondValue"));
-      dynamicMappingDefinition.addDynamicMappingItem(dynamicMappingItem);
-
-    }
-    segmentObj.setDynamicMappingDefinition(dynamicMappingDefinition);
-
     NodeList fields = segmentElm.getElementsByTagName("Field");
     for (int i = 0; i < fields.getLength(); i++) {
       Element fieldElm = (Element) fields.item(i);
-      segmentObj.addField(
-          this.deserializeField(fieldElm, segmentObj, profile, segmentElm.getAttribute("ID"), i));
+      segmentObj.addField(this.deserializeField(fieldElm, segmentObj, profile,
+          segmentElm.getAttribute("ID"), i + 1));
     }
     return segmentObj;
   }
@@ -505,7 +591,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     Datatype dt = this.findDatatype(fieldElm.getAttribute("Datatype"), profile);
     fieldObj.setDatatype(new DatatypeLink(dt.getId(), dt.getName(), dt.getExt()));
     fieldObj.setMinLength(fieldElm.getAttribute("MinLength"));
-    fieldObj.setPosition(new Integer(fieldElm.getAttribute("Position")));
+    fieldObj.setPosition(position);
     if (fieldElm.getAttribute("MaxLength") != null) {
       fieldObj.setMaxLength(fieldElm.getAttribute("MaxLength"));
     }
@@ -513,21 +599,45 @@ public class ProfileSerializationImpl implements ProfileSerialization {
       fieldObj.setConfLength(fieldElm.getAttribute("ConfLength"));
     }
 
-    ValueSetBinding valueSetBinding = new ValueSetBinding();
-    if (fieldElm.getAttribute("BindingStrength") != null) {
-      valueSetBinding.setBindingStrength(fieldElm.getAttribute("BindingStrength"));
-    } else {
-      valueSetBinding.setBindingStrength("R");
-    }
+    if (fieldElm.getAttribute("Binding") != null && !fieldElm.getAttribute("Binding").equals("")) {
+      String ids = fieldElm.getAttribute("Binding");
 
-    if (fieldElm.getAttribute("BindingLocation") != null) {
-      valueSetBinding.setBindingLocation(fieldElm.getAttribute("BindingLocation"));
-    }
+      for (String id : ids.split("\\:")) {
+        ValueSetBinding valueSetBinding = new ValueSetBinding();
+        if (fieldElm.getAttribute("BindingStrength") != null) {
+          if (fieldElm.getAttribute("BindingStrength").equals("R")) {
+            valueSetBinding.setBindingStrength(ValueSetBindingStrength.R);
+          } else if (fieldElm.getAttribute("BindingStrength").equals("S")) {
+            valueSetBinding.setBindingStrength(ValueSetBindingStrength.S);
+          } else if (fieldElm.getAttribute("BindingStrength").equals("U")) {
+            valueSetBinding.setBindingStrength(ValueSetBindingStrength.U);
+          } else {
+            valueSetBinding.setBindingStrength(ValueSetBindingStrength.R);
+          }
 
-    if (fieldElm.getAttribute("Binding") != null) {
-      valueSetBinding.setTableId(profile.getTableLibrary()
-          .findOneTableByBindingIdentifier(fieldElm.getAttribute("Binding")).getId());
-      segment.addValueSetBinding(valueSetBinding);
+        } else {
+          valueSetBinding.setBindingStrength(ValueSetBindingStrength.R);
+        }
+
+        if (fieldElm.getAttribute("BindingLocation") != null) {
+          valueSetBinding.setBindingLocation(fieldElm.getAttribute("BindingLocation"));
+        }
+
+        if (id.startsWith("HL7") && id.length() == 7) {
+          valueSetBinding.setTableId(profile.getTableLibrary()
+              .findOneTableByBindingIdentifier(id.replace("HL7", "")).getId());
+          valueSetBinding.setLocation(position + "");
+          segment.addValueSetBinding(valueSetBinding);
+        } else {
+          valueSetBinding
+              .setTableId(profile.getTableLibrary().findOneTableByBindingIdentifier(id).getId());
+          valueSetBinding.setLocation(position + "");
+          segment.addValueSetBinding(valueSetBinding);
+        }
+      }
+
+
+
     }
 
     if (fieldElm.getAttribute("Hide") != null && fieldElm.getAttribute("Hide").equals("true")) {
@@ -545,23 +655,26 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
   private void deserializeGroup(Element elmConformanceProfile,
       List<SegmentRefOrGroup> segmentRefOrGroups, Element groupElm, SegmentLibrary segments,
-      DatatypeLibrary datatypes) {
+      DatatypeLibrary datatypes, int position) {
     Group groupObj = new Group();
     groupObj.setMax(groupElm.getAttribute("Max"));
     groupObj.setMin(new Integer(groupElm.getAttribute("Min")));
     groupObj.setName(groupElm.getAttribute("Name"));
     groupObj.setUsage(Usage.fromValue(groupElm.getAttribute("Usage")));
-
+    groupObj.setPosition(position);
     List<SegmentRefOrGroup> childSegmentRefOrGroups = new ArrayList<SegmentRefOrGroup>();
 
     NodeList nodes = groupElm.getChildNodes();
+    int index = 0;
     for (int i = 0; i < nodes.getLength(); i++) {
       if (nodes.item(i).getNodeName().equals("Segment")) {
+        index = index + 1;
         this.deserializeSegmentRef(elmConformanceProfile, childSegmentRefOrGroups,
-            (Element) nodes.item(i), segments, datatypes);
+            (Element) nodes.item(i), segments, datatypes, index);
       } else if (nodes.item(i).getNodeName().equals("Group")) {
+        index = index + 1;
         this.deserializeGroup(elmConformanceProfile, childSegmentRefOrGroups,
-            (Element) nodes.item(i), segments, datatypes);
+            (Element) nodes.item(i), segments, datatypes, index);
       }
     }
 

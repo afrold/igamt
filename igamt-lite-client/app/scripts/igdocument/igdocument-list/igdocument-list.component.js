@@ -1459,6 +1459,11 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 
                       if($rootScope.segment.scope === 'USER' && $rootScope.segment.name === 'OBX'){
                           SegmentService.updateDynamicMappingInfo().then (function (dynamicMappingTable) {
+
+                            console.log("Start Test!!");
+                              console.log(dynamicMappingTable);
+
+
                               $rootScope.dynamicMappingTable = dynamicMappingTable;
                               SegmentService.initCoConstraintsTable($rootScope.segment).then (function (coConstraintsTable) {
                                   $rootScope.segment.coConstraintsTable = coConstraintsTable;
@@ -2132,7 +2137,8 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
   };
 
   $rootScope.isNonEditableValueSet=function(table){
-    return $scope.viewSettings.tableReadonly||table.status == 'PUBLISHED';
+    if(table) return $scope.viewSettings.tableReadonly||table.status == 'PUBLISHED';
+    else return true;
   };
   $rootScope.definitionDisabled=function(table){
     return $rootScope.isNonEditableValueSet(table)|| table.extensibility=='Not Defined';
