@@ -488,7 +488,6 @@ public class IGDocumentController extends CommonController {
             s.setId(null);
             s.setLibId(new HashSet<String>());
             s.setStatus(STATUS.UNPUBLISHED);
-
           }
           s.getLibIds().add(clonedSegmentLibrary.getId());
           segmentService.save(s);

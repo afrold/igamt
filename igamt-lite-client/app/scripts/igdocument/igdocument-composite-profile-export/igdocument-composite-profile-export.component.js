@@ -77,7 +77,6 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
 
     $scope.goBack = function () {
         $scope.error = null;
-
         if ($scope.exportStep === 'LOGIN_STEP') {
             $scope.exportStep = 'MESSAGE_STEP';
         } else if($scope.exportStep === 'DOMAIN_STEP'){
@@ -100,6 +99,8 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
     };
 
     $scope.loadDomains = function () {
+        $scope.targetDomains = [];
+        $scope.target.domain = null;
         if($scope.target.url != null) {
             GVTSvc.getDomains($scope.target.url, auth).then(function (result) {
                 $scope.targetDomains = result;
@@ -121,7 +122,6 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
                 $scope.loadingDomains = false;
             }, function (error) {
                 $scope.loadingDomains = false;
-                alert(error);
             });
         }
     };
@@ -203,7 +203,7 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
             }, function (error) {
                 $scope.info.text = "gvtExportFailed";
                 $scope.info.show = true;
-                $scope.info['details'] = error.text;
+                $scope.info['details'] = "Sorry, we couldn't push your profiles. Please contact the administrator for more information";
                 $scope.info.type = 'danger';
                 $scope.loading = false;
                 $scope.exportStep =  'ERROR_STEP';
