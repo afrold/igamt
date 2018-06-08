@@ -9,25 +9,25 @@
 	<Messages>
 		<Message ID="aa72383a-7b48-46e5-a74a-82e019591fe7" Name="Unsolicited Immunization Update" Type="VXU" Event="V04" StructID="VXU_V04" Description="Z22: Unsolicited Immunization Update" Identifier="Z22">
 			<Segment Ref="MSH_IZ 1_5_Z22" Usage="R" Min="1" Max="1"/>
-			<Segment Ref="SFT_219" Usage="O" Min="0" Max="*"/>
+			<Segment Ref="SFT" Usage="O" Min="0" Max="*"/>
 			<Segment Ref="PID_IZ 1_5" Usage="R" Min="1" Max="1"/>
 			<Segment Ref="PD1_IZ 1_5" Usage="RE" Min="0" Max="1"/>
 			<Segment Ref="NK1_IZ 1_5" Usage="RE" Min="0" Max="*"/>
 			<Group ID="VXU_V04.PATIENT" Name="VXU_V04.PATIENT" Usage="O" Min="0" Max="1">
-				<Segment Ref="PV1_251" Usage="R" Min="1" Max="1"/>
-				<Segment Ref="PV2_49" Usage="O" Min="0" Max="1"/>
+				<Segment Ref="PV1" Usage="R" Min="1" Max="1"/>
+				<Segment Ref="PV2" Usage="O" Min="0" Max="1"/>
 			</Group>
-			<Segment Ref="GT1_154" Usage="O" Min="0" Max="*"/>
+			<Segment Ref="GT1" Usage="O" Min="0" Max="*"/>
 			<Group ID="VXU_V04.INSURANCE" Name="VXU_V04.INSURANCE" Usage="O" Min="0" Max="*">
 				<Segment Ref="IN1_IZ 1_5" Usage="R" Min="1" Max="1"/>
-				<Segment Ref="IN2_218" Usage="O" Min="0" Max="1"/>
-				<Segment Ref="IN3_179" Usage="O" Min="0" Max="1"/>
+				<Segment Ref="IN2" Usage="O" Min="0" Max="1"/>
+				<Segment Ref="IN3" Usage="O" Min="0" Max="1"/>
 			</Group>
 			<Group ID="VXU_V04.ORDER" Name="VXU_V04.ORDER" Usage="RE" Min="0" Max="*">
 				<Segment Ref="ORC_IZ 1_5" Usage="R" Min="1" Max="1"/>
 				<Group ID="VXU_V04.ORDER.TIMING" Name="VXU_V04.ORDER.TIMING" Usage="O" Min="0" Max="*">
-					<Segment Ref="TQ1_118" Usage="R" Min="1" Max="1"/>
-					<Segment Ref="TQ2_47" Usage="O" Min="0" Max="1"/>
+					<Segment Ref="TQ1" Usage="R" Min="1" Max="1"/>
+					<Segment Ref="TQ2" Usage="O" Min="0" Max="1"/>
 				</Group>
 				<Segment Ref="RXA_IZ 1_5_Z22" Usage="R" Min="1" Max="1"/>
 				<Segment Ref="RXR_IZ 1_5" Usage="RE" Min="0" Max="1"/>
@@ -66,7 +66,7 @@
 			<Field Name="Sending Network Address" Usage="O" Min="0" Max="1" Datatype="HD" MinLength="1" MaxLength="*"/>
 			<Field Name="Receiving Network Address" Usage="O" Min="0" Max="1" Datatype="HD" MinLength="1" MaxLength="*"/>
 		</Segment>
-		<Segment ID="SFT_219" Label="SFT_219" Name="SFT" Description="Software Segment">
+		<Segment ID="SFT" Label="SFT" Name="SFT" Description="Software Segment">
 			<Field Name="Software Vendor Organization" Usage="R" Min="1" Max="1" Datatype="XON_IZ" MinLength="1" MaxLength="567" ItemNo="01834"/>
 			<Field Name="Software Certified Version or Release Number" Usage="R" Min="1" Max="1" Datatype="ST_IZ" MinLength="1" MaxLength="15" ItemNo="01835"/>
 			<Field Name="Software Product Name" Usage="R" Min="1" Max="1" Datatype="ST_IZ" MinLength="1" MaxLength="20" ItemNo="01836"/>
@@ -179,7 +179,7 @@
 			<Field Name="Next of Kin Birth Place" Usage="O" Min="0" Max="1" Datatype="ST" MinLength="1" MaxLength="250" ItemNo="01905"/>
 			<Field Name="VIP Indicator" Usage="O" Min="0" Max="1" Datatype="IS" MinLength="1" MaxLength="2" Binding="HL70099" BindingStrength="R" ItemNo="00146"/>
 		</Segment>
-		<Segment ID="PV1_251" Label="PV1_251" Name="PV1" Description="Patient Visit">
+		<Segment ID="PV1" Label="PV1" Name="PV1" Description="Patient Visit">
 			<Field Name="Set ID - PV1" Usage="O" Min="0" Max="1" Datatype="SI" MinLength="1" MaxLength="4" ItemNo="00131"/>
 			<Field Name="Patient Class" Usage="R" Min="1" Max="1" Datatype="IS" MinLength="1" MaxLength="1" Binding="HL70004" BindingStrength="R" ItemNo="00132"/>
 			<Field Name="Assigned Patient Location" Usage="O" Min="0" Max="1" Datatype="PL" MinLength="1" MaxLength="80" ItemNo="00133"/>
@@ -233,7 +233,7 @@
 			<Field Name="Visit Indicator" Usage="O" Min="0" Max="1" Datatype="IS" MinLength="1" MaxLength="1" Binding="HL70326" BindingStrength="R" ItemNo="01226"/>
 			<Field Name="Other Healthcare Provider" Usage="X" Min="0" Max="0" Datatype="XCN_IZ" MinLength="1" MaxLength="250" Binding="HL70010" BindingStrength="R" BindingLocation="1" ItemNo="01274"/>
 		</Segment>
-		<Segment ID="PV2_49" Label="PV2_49" Name="PV2" Description="Patient Visit - Additional Information">
+		<Segment ID="PV2" Label="PV2" Name="PV2" Description="Patient Visit - Additional Information">
 			<Field Name="Prior Pending Location" Usage="C" Min="0" Max="1" Datatype="PL" MinLength="1" MaxLength="80" ItemNo="00181"/>
 			<Field Name="Accommodation Code" Usage="O" Min="0" Max="1" Datatype="CE" MinLength="1" MaxLength="250" Binding="HL70129" BindingStrength="R" BindingLocation="1" ItemNo="00182"/>
 			<Field Name="Admit Reason" Usage="O" Min="0" Max="1" Datatype="CE" MinLength="1" MaxLength="250" ItemNo="00183"/>
@@ -284,7 +284,7 @@
 			<Field Name="Expected Pre-admission Testing Date/Time" Usage="O" Min="0" Max="1" Datatype="TS" MinLength="1" MaxLength="26" ItemNo="01841"/>
 			<Field Name="Notify Clergy Code" Usage="O" Min="0" Max="*" Datatype="IS" MinLength="1" MaxLength="20" Binding="HL70534" BindingStrength="R" ItemNo="01842"/>
 		</Segment>
-		<Segment ID="GT1_154" Label="GT1_154" Name="GT1" Description="Guarantor">
+		<Segment ID="GT1" Label="GT1" Name="GT1" Description="Guarantor">
 			<Field Name="Set ID - GT1" Usage="R" Min="1" Max="1" Datatype="SI" MinLength="1" MaxLength="4" ItemNo="00405"/>
 			<Field Name="Guarantor Number" Usage="O" Min="0" Max="*" Datatype="CX" MinLength="1" MaxLength="250" ItemNo="00406"/>
 			<Field Name="Guarantor Name" Usage="R" Min="1" Max="*" Datatype="XPN_IZ_DR" MinLength="1" MaxLength="250" ItemNo="00407"/>
@@ -398,7 +398,7 @@
 			<Field Name="Insured's Birth Place" Usage="O" Min="0" Max="1" Datatype="ST" MinLength="1" MaxLength="250" ItemNo="01899"/>
 			<Field Name="VIP Indicator" Usage="O" Min="0" Max="1" Datatype="IS" MinLength="1" MaxLength="2" Binding="HL70099" BindingStrength="R" ItemNo="01852"/>
 		</Segment>
-		<Segment ID="IN2_218" Label="IN2_218" Name="IN2" Description="Insurance Additional Information">
+		<Segment ID="IN2" Label="IN2" Name="IN2" Description="Insurance Additional Information">
 			<Field Name="Insured's Employee ID" Usage="O" Min="0" Max="*" Datatype="CX" MinLength="1" MaxLength="250" ItemNo="00472"/>
 			<Field Name="Insured's Social Security Number" Usage="O" Min="0" Max="1" Datatype="ST" MinLength="1" MaxLength="11" ItemNo="00473"/>
 			<Field Name="Insured's Employer's Name and ID" Usage="O" Min="0" Max="*" Datatype="XCN" MinLength="1" MaxLength="250" ItemNo="00474"/>
@@ -472,7 +472,7 @@
 			<Field Name="Race" Usage="O" Min="0" Max="*" Datatype="CE" MinLength="1" MaxLength="250" Binding="HL70005" BindingStrength="R" BindingLocation="1" ItemNo="00113"/>
 			<Field Name="CMS Patient's Relationship to Insured" Usage="O" Min="0" Max="1" Datatype="CE" MinLength="1" MaxLength="250" Binding="HL70344" BindingStrength="R" BindingLocation="1" ItemNo="00811"/>
 		</Segment>
-		<Segment ID="IN3_179" Label="IN3_179" Name="IN3" Description="Insurance Additional Information, Certification">
+		<Segment ID="IN3" Label="IN3" Name="IN3" Description="Insurance Additional Information, Certification">
 			<Field Name="Set ID - IN3" Usage="R" Min="1" Max="1" Datatype="SI" MinLength="1" MaxLength="4" ItemNo="00502"/>
 			<Field Name="Certification Number" Usage="O" Min="0" Max="1" Datatype="CX" MinLength="1" MaxLength="250" ItemNo="00503"/>
 			<Field Name="Certified By" Usage="O" Min="0" Max="*" Datatype="XCN" MinLength="1" MaxLength="250" ItemNo="00504"/>
@@ -532,7 +532,7 @@
 			<Field Name="Enterer Authorization Mode" Usage="O" Min="0" Max="1" Datatype="CNE" MinLength="1" MaxLength="250" Binding="HL70483" BindingStrength="R" BindingLocation="1" ItemNo="01644"/>
 			<Field Name="Parent Universal Service Identifier" Usage="O" Min="0" Max="1" Datatype="CWE" MinLength="1" MaxLength="250" ItemNo="02286"/>
 		</Segment>
-		<Segment ID="TQ1_118" Label="TQ1_118" Name="TQ1" Description="Timing/Quantity">
+		<Segment ID="TQ1" Label="TQ1" Name="TQ1" Description="Timing/Quantity">
 			<Field Name="Set ID - TQ1" Usage="O" Min="0" Max="1" Datatype="SI" MinLength="1" MaxLength="4" ItemNo="01627"/>
 			<Field Name="Quantity" Usage="O" Min="0" Max="1" Datatype="CQ" MinLength="1" MaxLength="20" ItemNo="01628"/>
 			<Field Name="Repeat Pattern" Usage="O" Min="0" Max="*" Datatype="RPT" MinLength="1" MaxLength="540" Binding="HL70335" BindingStrength="R" BindingLocation="1" ItemNo="01629"/>
@@ -548,7 +548,7 @@
 			<Field Name="Occurrence duration" Usage="O" Min="0" Max="1" Datatype="CQ" MinLength="1" MaxLength="20" ItemNo="01639"/>
 			<Field Name="Total occurrence's" Usage="O" Min="0" Max="1" Datatype="NM" MinLength="1" MaxLength="10" ItemNo="01640"/>
 		</Segment>
-		<Segment ID="TQ2_47" Label="TQ2_47" Name="TQ2" Description="Timing/Quantity Relationship">
+		<Segment ID="TQ2" Label="TQ2" Name="TQ2" Description="Timing/Quantity Relationship">
 			<Field Name="Set ID - TQ2" Usage="O" Min="0" Max="1" Datatype="SI" MinLength="1" MaxLength="4" ItemNo="01648"/>
 			<Field Name="Sequence/Results Flag" Usage="O" Min="0" Max="1" Datatype="ID" MinLength="1" MaxLength="1" Binding="HL70503" BindingStrength="R" ItemNo="01649"/>
 			<Field Name="Related Placer Number" Usage="C" Min="0" Max="*" Datatype="EI" MinLength="1" MaxLength="22" ItemNo="01650"/>

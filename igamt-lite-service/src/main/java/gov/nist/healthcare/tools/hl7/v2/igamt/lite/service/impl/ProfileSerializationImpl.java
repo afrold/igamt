@@ -191,6 +191,21 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     // Read Profile Messages
     this.deserializeMessages(profile, elmConformanceProfile);
 
+    
+    profile.getSegmentLibrary().setSectionTitle("SegmentLib");
+    profile.getSegmentLibrary().setSectionContents("Contents");
+    profile.getSegmentLibrary().setSectionDescription("DESC");
+    profile.getSegmentLibrary().setSectionPosition(4);
+    profile.getDatatypeLibrary().setSectionTitle("DatatypeLib");
+    profile.getDatatypeLibrary().setSectionContents("Contents");
+    profile.getDatatypeLibrary().setSectionDescription("DESC");
+    profile.getDatatypeLibrary().setSectionPosition(5);
+    profile.getTableLibrary().setSectionTitle("TableLib");
+    profile.getTableLibrary().setSectionContents("Contents");
+    profile.getTableLibrary().setSectionDescription("DESC");
+    profile.getTableLibrary().setSectionPosition(6);
+    
+    
     this.tableLibraryService.save(profile.getTableLibrary());
     this.datatypeLibraryService.save(profile.getDatatypeLibrary());
     this.segmentLibraryService.save(profile.getSegmentLibrary());
@@ -501,6 +516,10 @@ public class ProfileSerializationImpl implements ProfileSerialization {
         messageService.save(messageObj);
         messagesObj.addMessage(messageObj);
       }
+      messagesObj.setSectionTitle("Messages");
+      messagesObj.setSectionContents("Contents");
+      messagesObj.setSectionDescription("DESC");
+      messagesObj.setSectionPosition(2);
       profile.setMessages(messagesObj);
     }
   }
