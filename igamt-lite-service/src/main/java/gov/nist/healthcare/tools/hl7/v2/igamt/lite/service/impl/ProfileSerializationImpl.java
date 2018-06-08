@@ -154,7 +154,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     profile.setDatatypeLibrary(new DatatypeLibrary());
     TableLibrary tables = tableSerializationService.deserializeXMLToTableLibrary(xmlValueSet,profile.getMetaData().getHl7Version());
     tables.setMetaData(new TableLibraryMetaData());
-    tableLibraryService.save(tables);
     profile.setTableLibrary(tables);
 
     this.conformanceStatement = constraintsSerializationService.deserializeXMLToConformanceStatements(xmlConstraints);
@@ -173,8 +172,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
       link.setName(d.getName());
       datatypes.addDatatype(link);
     }
-
-    this.datatypeLibraryService.save(datatypes);
     profile.setDatatypeLibrary(datatypes);
 
     this.segmentsMap = this.constructSegmentsMap((Element) elmConformanceProfile.getElementsByTagName("Segments").item(0), profile);
@@ -189,12 +186,15 @@ public class ProfileSerializationImpl implements ProfileSerialization {
       link.setName(s.getName());
       segments.addSegment(link);
     }
-    this.segmentLibraryService.save(segments);
     profile.setSegmentLibrary(segments);
 
     // Read Profile Messages
     this.deserializeMessages(profile, elmConformanceProfile);
 
+    this.tableLibraryService.save(profile.getTableLibrary());
+    this.datatypeLibraryService.save(profile.getDatatypeLibrary());
+    this.segmentLibraryService.save(profile.getSegmentLibrary());
+    
     return profile;
   }
 
@@ -217,10 +217,22 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
         if (!id.equals(name)) {
           if (!datatypesMap.containsKey(id))
-            datatypesMap.put(elmDatatype.getAttribute("ID"),
-                this.deserializeDatatype(elmDatatype, profile, elmDatatypes));
+            datatypesMap.put(elmDatatype.getAttribute("ID"), this.deserializeDatatype(elmDatatype, profile, elmDatatypes));
         } else {
           Datatype d = this.datatypeService.findByNameAndVesionAndScope(name, profile.getMetaData().getHl7Version(), "HL7STANDARD");
+          
+          
+          for(ValueSetOrSingleCodeBinding vsosc : d.getValueSetBindings()){
+            Table t = this.tableService.findById(vsosc.getTableId());
+            if(t != null){
+              TableLink tl = profile.getTableLibrary().findOneTableByBindingIdentifier(t.getBindingIdentifier());
+              
+              if(tl == null) {
+                TableLink newTableLink = new TableLink(t.getId(), t.getBindingIdentifier());
+                profile.getTableLibrary().addTable(newTableLink);              
+              }
+            }
+          }
           
           for(Component c:d.getComponents()){
             Datatype childD = this.datatypeService.findById(c.getDatatype().getId());
@@ -275,6 +287,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     datatypeObj.setConformanceStatements(this.findConformanceStatement(
         this.conformanceStatement.getDatatypes(), ID, elmDatatype.getAttribute("Name")));
     datatypeObj.setScope(SCOPE.USER);
+    datatypeObj.setHl7Version(profile.getMetaData().getHl7Version());
 
     NodeList nodes = elmDatatype.getElementsByTagName("Component");
     for (int i = 0; i < nodes.getLength(); i++) {
@@ -413,6 +426,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
       Segment s = this.deserializeSegment(elmSegment, profile);
       if (!id.equals(name)) {
+        s.setHl7Version(profile.getMetaData().getHl7Version());
         segmentService.save(s);
       }
       segmentsMap.put(elmSegment.getAttribute("ID"), s);
@@ -474,7 +488,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
         messageObj.setEvent(elmMessage.getAttribute("Event"));
         messageObj.setStructID(elmMessage.getAttribute("StructID"));
         messageObj.setDescription(elmMessage.getAttribute("Description"));
-
+        messageObj.setHl7Version(profile.getMetaData().getHl7Version());
         messageObj.setPredicates(this.findPredicates(this.predicates.getMessages(),
             elmMessage.getAttribute("ID"), elmMessage.getAttribute("StructID")));
         messageObj.setConformanceStatements(
