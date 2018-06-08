@@ -47,6 +47,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SourceType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingDefinition;
@@ -60,11 +61,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
@@ -149,20 +152,19 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     // Read Profile Libs
     profile.setSegmentLibrary(new SegmentLibrary());
     profile.setDatatypeLibrary(new DatatypeLibrary());
-    TableLibrary tables = tableSerializationService.deserializeXMLToTableLibrary(xmlValueSet,
-        profile.getMetaData().getHl7Version());
+    TableLibrary tables = tableSerializationService.deserializeXMLToTableLibrary(xmlValueSet,profile.getMetaData().getHl7Version());
+    tables.setMetaData(new TableLibraryMetaData());
     tableLibraryService.save(tables);
     profile.setTableLibrary(tables);
 
-    this.conformanceStatement =
-        constraintsSerializationService.deserializeXMLToConformanceStatements(xmlConstraints);
+    this.conformanceStatement = constraintsSerializationService.deserializeXMLToConformanceStatements(xmlConstraints);
     this.predicates = constraintsSerializationService.deserializeXMLToPredicates(xmlConstraints);
     profile.setConstraintId(this.releaseConstraintId(xmlConstraints));
 
-    this.constructDatatypesMap(
-        (Element) elmConformanceProfile.getElementsByTagName("Datatypes").item(0), profile);
+    this.constructDatatypesMap((Element) elmConformanceProfile.getElementsByTagName("Datatypes").item(0), profile);
 
     DatatypeLibrary datatypes = new DatatypeLibrary();
+    datatypes.setMetaData(new DatatypeLibraryMetaData());
     for (String key : datatypesMap.keySet()) {
       Datatype d = datatypesMap.get(key);
       DatatypeLink link = new DatatypeLink();
@@ -175,10 +177,10 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     this.datatypeLibraryService.save(datatypes);
     profile.setDatatypeLibrary(datatypes);
 
-    this.segmentsMap = this.constructSegmentsMap(
-        (Element) elmConformanceProfile.getElementsByTagName("Segments").item(0), profile);
+    this.segmentsMap = this.constructSegmentsMap((Element) elmConformanceProfile.getElementsByTagName("Segments").item(0), profile);
 
     SegmentLibrary segments = new SegmentLibrary();
+    segments.setMetaData(new SegmentLibraryMetaData());
     for (String key : segmentsMap.keySet()) {
       Segment s = segmentsMap.get(key);
       SegmentLink link = new SegmentLink();
@@ -629,10 +631,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
           valueSetBinding.setLocation(position + "");
           segment.addValueSetBinding(valueSetBinding);
         } else {
-          valueSetBinding
-              .setTableId(profile.getTableLibrary().findOneTableByBindingIdentifier(id).getId());
-          valueSetBinding.setLocation(position + "");
-          segment.addValueSetBinding(valueSetBinding);
+          TableLink tl = profile.getTableLibrary().findOneTableByBindingIdentifier(id);
+          if(tl != null){
+            valueSetBinding.setTableId(tl.getId());
+            valueSetBinding.setLocation(position + "");
+            segment.addValueSetBinding(valueSetBinding);            
+          }
         }
       }
 
