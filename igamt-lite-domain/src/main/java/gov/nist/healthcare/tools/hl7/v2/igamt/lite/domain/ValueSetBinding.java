@@ -36,19 +36,19 @@ public class ValueSetBinding extends ValueSetOrSingleCodeBinding  implements Ser
 		this.bindingStrength = bindingStrength;
 	}
 
-	public void setBindingStrength(String bindingStrength) {
-		if (bindingStrength == null) {
-			this.bindingStrength = ValueSetBindingStrength.R;
-		} else if (bindingStrength.equals("R")) {
-			this.bindingStrength = ValueSetBindingStrength.R;
-		} else if (bindingStrength.equals("S")) {
-			this.bindingStrength = ValueSetBindingStrength.S;
-		} else if (bindingStrength.equals("U")) {
-			this.bindingStrength = ValueSetBindingStrength.U;
-		} else {
-			this.bindingStrength = ValueSetBindingStrength.R;
-		}
-	}
+//	public void setBindingStrength(String bindingStrength) {
+//		if (bindingStrength == null) {
+//			this.bindingStrength = ValueSetBindingStrength.R;
+//		} else if (bindingStrength.equals("R")) {
+//			this.bindingStrength = ValueSetBindingStrength.R;
+//		} else if (bindingStrength.equals("S")) {
+//			this.bindingStrength = ValueSetBindingStrength.S;
+//		} else if (bindingStrength.equals("U")) {
+//			this.bindingStrength = ValueSetBindingStrength.U;
+//		} else {
+//			this.bindingStrength = ValueSetBindingStrength.R;
+//		}
+//	}
 	
 	public ValueSetBinding clone(){
 		ValueSetBinding cloned = new ValueSetBinding();

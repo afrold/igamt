@@ -641,10 +641,10 @@
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            <tr ng-repeat="item in displayItems track by $index">
+                                                            <tr ng-repeat="item in displayItems">
                                                                 <td class="col-md-3">
                                                                     <md-select ng-model="item.firstReferenceValue" placeholder="Select DT Base Name" ng-disabled="viewSettings.tableReadonly || segment.scope !== 'USER'" ng-change="setDirty();" required>
-                                                                        <md-option ng-repeat="c in dynamicMappingTable.codes | orderBy:'value' track by $index" value="{{c.value}}">
+                                                                        <md-option ng-repeat="c in dynamicMappingTable.codes | orderBy:'value'" value="{{c.value}}">
                                                                             {{c.value}}({{c.label}})
                                                                         </md-option>
                                                                     </md-select>
@@ -657,7 +657,7 @@
                                                                                placeholder="Select DT Flavor"
                                                                                ng-change="setDirty()"
                                                                                ng-disabled="viewSettings.tableReadonly || segment.scope !== 'USER'">
-                                                                           <md-option ng-repeat="link in igdocument.profile.datatypeLibrary.children | filter: {name: item.firstReferenceValue} track by $index" value="{{link.id}}">
+                                                                           <md-option ng-repeat="link in igdocument.profile.datatypeLibrary.children | filter: {name: item.firstReferenceValue}" value="{{link.id}}">
                                                                                {{getDatatypeLabel(datatypesMap[link.id])}}
                                                                            </md-option>
                                                                     </md-select>
@@ -668,11 +668,6 @@
                                                                 </td>
                                                             </tr>
                                                             </tbody>
-                                                            <tr style="float:center !important;" ng-if="segment.dynamicMappingDefinition.dynamicMappingItems.length > 10">
-                                                                <td colspan="6" class="text-center" style="float:center !important;">
-                                                                    <div st-pagination="" st-items-by-page="10" st-displayed-pages="7" style="float:center !important;"></div>
-                                                                </td>
-                                                            </tr>
                                                         </table>
                                                         <h3 class="modal-title">Default DynamicMapping</h3>
                                                         <div class="col-md-12">
@@ -694,7 +689,7 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr ng-repeat="c in displayCodes track by $index">
+                                                                <tr ng-repeat="c in displayCodes">
                                                                     <td class="col-md-3">
                                                                         <span>{{c.value}}</span>
                                                                     </td>

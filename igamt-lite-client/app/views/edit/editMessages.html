@@ -378,7 +378,7 @@
             <ng-form class="form-inline">
 
                 <a ng-show="editableSeg!==node.obj.id" ng-click="redirectSeg(node.obj.ref)" class="point">
-                    <span id="segEditTree" class="label label-segment label-icon">S</span>{{node.position}}. {{getSegmentLabel(segmentsMap[node.obj.ref.id])}}:{{segmentsMap[node.obj.ref.id].description}}
+                    <span id="segEditTree" class="label label-segment label-icon">S</span>{{node.obj.position}}. {{getSegmentLabel(segmentsMap[node.obj.ref.id])}}:{{segmentsMap[node.obj.ref.id].description}}
                 </a>
                 <span ng-show="editableSeg!==node.obj.id" ng-click="editSgmt(node,message)" class="point">
                     <span ><i class="fa fa-pencil fa-fw"></i></span>

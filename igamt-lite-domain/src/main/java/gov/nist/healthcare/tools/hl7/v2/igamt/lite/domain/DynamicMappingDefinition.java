@@ -32,6 +32,21 @@ public class DynamicMappingDefinition implements java.io.Serializable, Cloneable
   public void setDynamicMappingItems(List<DynamicMappingItem> dynamicMappingItems) {
     this.dynamicMappingItems = dynamicMappingItems;
   }
+  
+  public void addDynamicMappingItem(DynamicMappingItem item){
+    if(this.checkDuplicated(item)){
+      this.dynamicMappingItems.add(item);
+    }
+  }
+
+  private boolean checkDuplicated(DynamicMappingItem item) {
+    for(DynamicMappingItem entry:this.dynamicMappingItems){
+      if(entry.getFirstReferenceValue().equals(item.getFirstReferenceValue())) {
+        if(entry.getSecondReferenceValue() != null && entry.getSecondReferenceValue().equals(item.getSecondReferenceValue())) return false;
+      }
+    }
+    return true;
+  }
 
   @Override
   public DynamicMappingDefinition clone() throws CloneNotSupportedException {

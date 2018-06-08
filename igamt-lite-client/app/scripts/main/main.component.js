@@ -4154,7 +4154,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
   };
 
   $rootScope.getFieldNodeName = function(node) {
-    return   node.name;
+    return  node.position + "."  + node.name;
   };
 
   $rootScope.getComponentNodeName = function(node) {

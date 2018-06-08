@@ -12,6 +12,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,12 +27,14 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
@@ -53,6 +56,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeMatrix;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingItem;
@@ -73,6 +77,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notifications;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
@@ -123,6 +128,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
@@ -177,6 +184,7 @@ public class Bootstrap implements InitializingBean {
 	DatatypeLibraryService datatypeLibraryService;
 	@Autowired
 	TableLibraryService tableLibraryService;
+	
 
 	@Autowired
 	TableService tableService;
@@ -206,6 +214,9 @@ public class Bootstrap implements InitializingBean {
 
 	@Autowired
 	private NotificationsRepository notificationsRepository;
+	
+	@Autowired
+	private ProfileSerialization profileSerialization;
 
 	/*
 	 * 
@@ -349,8 +360,44 @@ public class Bootstrap implements InitializingBean {
 //		fixSegmentStatus();
 		
 		//changeEmptyToNA();
+	  
+	  importXMLProfile();
 	}
 	
+	
+
+  void importXMLProfile() throws IOException, IGDocumentException, ProfileException {
+    
+    ClassPathResource pResource = new ClassPathResource("ONC-Profiles/Profiles/VXU-Z22_Profile.xml");
+    ClassPathResource vResource = new ClassPathResource("ONC-Profiles/Tables/VXU-Z22_ValueSetLibrary.xml");
+    ClassPathResource cResource = new ClassPathResource("ONC-Profiles/Constraints/VXU-Z22_Constraints.xml");
+    
+    IGDocument igd = new IGDocument();
+    Profile profile = this.profileSerialization.deserializeXMLToProfile(FileUtils.readFileToString(pResource.getFile()), FileUtils.readFileToString(vResource.getFile()), FileUtils.readFileToString(cResource.getFile()));
+    profile.setAccountId((long)40);
+    profile.setDateUpdated(new Date());
+    profile.setScope(IGDocumentScope.USER);
+    
+    ProfileComponentLibrary profileComponentLibrary = new ProfileComponentLibrary();
+    profileComponentLibraryService.save(profileComponentLibrary);
+    profile.setProfileComponentLibrary(profileComponentLibrary);
+
+    igd.addProfile(profile);
+
+    igd.setAccountId((long)10);
+    Date date = new Date();
+    igd.setDateUpdated(new Date());
+    igd.setScope(IGDocumentScope.USER);
+    igd.setComment("Created " + date.toString());
+
+    DocumentMetaData metaData = new DocumentMetaData();
+    metaData.setSubTitle("Imported from XML files");
+    metaData.setTitle("ONC Immunization Z22");
+    metaData.setHl7Version(profile.getMetaData().getHl7Version());
+    igd.setMetaData(metaData);
+
+    iGDocumentService.save(igd);
+  }
 	
 	void changeEmptyToNA(){
 		

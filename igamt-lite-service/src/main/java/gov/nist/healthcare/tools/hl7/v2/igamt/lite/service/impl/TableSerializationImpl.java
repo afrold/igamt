@@ -34,6 +34,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
@@ -59,21 +61,21 @@ public class TableSerializationImpl implements TableSerialization {
   private SerializationUtil serializationUtil;
 
   @Override
-  public TableLibrary deserializeXMLToTableLibrary(String xmlContents) {
+  public TableLibrary deserializeXMLToTableLibrary(String xmlContents, String hl7Version) {
     Document tableLibraryDoc = this.stringToDom(xmlContents);
     TableLibrary tableLibrary = new TableLibrary();
     Element elmTableLibrary =
         (Element) tableLibraryDoc.getElementsByTagName("ValueSetLibrary").item(0);
     tableLibrary
         .setValueSetLibraryIdentifier(elmTableLibrary.getAttribute("ValueSetLibraryIdentifier"));
-    this.deserializeXMLToTable(elmTableLibrary, tableLibrary);
+    this.deserializeXMLToTable(elmTableLibrary, tableLibrary, hl7Version);
 
     return tableLibrary;
   }
 
   @Override
-  public TableLibrary deserializeXMLToTableLibrary(nu.xom.Document xmlDoc) {
-    return deserializeXMLToTableLibrary(xmlDoc.toString());
+  public TableLibrary deserializeXMLToTableLibrary(nu.xom.Document xmlDoc, String hl7Version) {
+    return deserializeXMLToTableLibrary(xmlDoc.toString(), hl7Version);
   }
 
   @Override
@@ -368,64 +370,78 @@ public class TableSerializationImpl implements TableSerialization {
     return new nu.xom.Document(this.serializeTableLibraryToGazelleElement(profile));
   }
 
-  private void deserializeXMLToTable(Element elmTableLibrary, TableLibrary tableLibrary) {
+  private void deserializeXMLToTable(Element elmTableLibrary, TableLibrary tableLibrary, String hl7Version) {
     NodeList valueSetDefinitionsNode = elmTableLibrary.getElementsByTagName("ValueSetDefinitions");
     for (int i = 0; i < valueSetDefinitionsNode.getLength(); i++) {
       Element valueSetDefinitionsElement = (Element) valueSetDefinitionsNode.item(i);
-      NodeList valueSetDefinitionNodes =
-          valueSetDefinitionsElement.getElementsByTagName("ValueSetDefinition");
-      for (int j = 0; j < valueSetDefinitionNodes.getLength(); j++) {
-        Element elmTable = (Element) valueSetDefinitionNodes.item(j);
+      
+      if(!valueSetDefinitionsElement.getAttribute("Group").equals("HL7")){
+        NodeList valueSetDefinitionNodes = valueSetDefinitionsElement.getElementsByTagName("ValueSetDefinition");
+        for (int j = 0; j < valueSetDefinitionNodes.getLength(); j++) {
+          Element elmTable = (Element) valueSetDefinitionNodes.item(j);
+          Table tableObj = new Table();
+          tableObj.setScope(SCOPE.USER);
+          tableObj.setBindingIdentifier(elmTable.getAttribute("BindingIdentifier"));
+          tableObj.setName(elmTable.getAttribute("Name"));
+          tableObj.setStatus(STATUS.UNPUBLISHED);
+          tableObj.setGroup(valueSetDefinitionsElement.getAttribute("Group"));
+          String orderStr = valueSetDefinitionsElement.getAttribute("Order");
+          if (orderStr != null && !orderStr.equals("")) {
+            tableObj.setOrder(Integer.parseInt(orderStr));
+          }
 
-        Table tableObj = new Table();
+          if (elmTable.getAttribute("Description") != null
+              && !elmTable.getAttribute("Description").equals(""))
+            tableObj.setDefPreText(elmTable.getAttribute("Description"));
+          if (elmTable.getAttribute("Version") != null
+              && !elmTable.getAttribute("Version").equals(""))
+            tableObj.setVersion(elmTable.getAttribute("Version"));
+          if (elmTable.getAttribute("Oid") != null && !elmTable.getAttribute("Oid").equals(""))
+            tableObj.setOid(elmTable.getAttribute("Oid"));
 
-        tableObj.setBindingIdentifier(elmTable.getAttribute("BindingIdentifier"));
-        tableObj.setName(elmTable.getAttribute("Name"));
+          if (elmTable.getAttribute("Extensibility") != null
+              && !elmTable.getAttribute("Extensibility").equals("")) {
+            tableObj
+                .setExtensibility(Extensibility.fromValue(elmTable.getAttribute("Extensibility")));
+          } else {
+            tableObj.setExtensibility(Extensibility.fromValue("Open"));
+          }
 
-        tableObj.setGroup(valueSetDefinitionsElement.getAttribute("Group"));
-        String orderStr = valueSetDefinitionsElement.getAttribute("Order");
-        if (orderStr != null && !orderStr.equals("")) {
-          tableObj.setOrder(Integer.parseInt(orderStr));
+          if (elmTable.getAttribute("Stability") != null
+              && !elmTable.getAttribute("Stability").equals("")) {
+            tableObj.setStability(Stability.fromValue(elmTable.getAttribute("Stability")));
+          } else {
+            tableObj.setStability(Stability.fromValue("Static"));
+          }
+
+          if (elmTable.getAttribute("ContentDefinition") != null
+              && !elmTable.getAttribute("ContentDefinition").equals("")) {
+            tableObj.setContentDefinition(
+                ContentDefinition.fromValue(elmTable.getAttribute("ContentDefinition")));
+          } else {
+            tableObj.setContentDefinition(ContentDefinition.fromValue("Extensional"));
+          }
+
+          this.deserializeXMLToCode(elmTable, tableObj);
+          tableObj = tableService.save(tableObj);
+          TableLink link = new TableLink();
+          link.setBindingIdentifier(tableObj.getBindingIdentifier());
+          link.setId(tableObj.getId());
+          tableLibrary.addTable(link);
+        } 
+      }else {
+        NodeList valueSetDefinitionNodes = valueSetDefinitionsElement.getElementsByTagName("ValueSetDefinition");
+        for (int j = 0; j < valueSetDefinitionNodes.getLength(); j++) {
+          Element elmTable = (Element) valueSetDefinitionNodes.item(j);
+          String bindingIdentifier = elmTable.getAttribute("BindingIdentifier");
+          bindingIdentifier = bindingIdentifier.replace("HL7", "");
+          Table t = this.tableService.findByScopeAndVersionAndBindingIdentifier(SCOPE.HL7STANDARD, hl7Version, bindingIdentifier);
+          if(t == null) t = this.tableService.findByScopeAndVersionAndBindingIdentifier(SCOPE.HL7STANDARD, "2.8.2", bindingIdentifier);
+          TableLink link = new TableLink();
+          link.setBindingIdentifier(t.getBindingIdentifier());
+          link.setId(t.getId());
+          tableLibrary.addTable(link);
         }
-
-        if (elmTable.getAttribute("Description") != null
-            && !elmTable.getAttribute("Description").equals(""))
-          tableObj.setDefPreText(elmTable.getAttribute("Description"));
-        if (elmTable.getAttribute("Version") != null
-            && !elmTable.getAttribute("Version").equals(""))
-          tableObj.setVersion(elmTable.getAttribute("Version"));
-        if (elmTable.getAttribute("Oid") != null && !elmTable.getAttribute("Oid").equals(""))
-          tableObj.setOid(elmTable.getAttribute("Oid"));
-
-        if (elmTable.getAttribute("Extensibility") != null
-            && !elmTable.getAttribute("Extensibility").equals("")) {
-          tableObj
-              .setExtensibility(Extensibility.fromValue(elmTable.getAttribute("Extensibility")));
-        } else {
-          tableObj.setExtensibility(Extensibility.fromValue("Open"));
-        }
-
-        if (elmTable.getAttribute("Stability") != null
-            && !elmTable.getAttribute("Stability").equals("")) {
-          tableObj.setStability(Stability.fromValue(elmTable.getAttribute("Stability")));
-        } else {
-          tableObj.setStability(Stability.fromValue("Static"));
-        }
-
-        if (elmTable.getAttribute("ContentDefinition") != null
-            && !elmTable.getAttribute("ContentDefinition").equals("")) {
-          tableObj.setContentDefinition(
-              ContentDefinition.fromValue(elmTable.getAttribute("ContentDefinition")));
-        } else {
-          tableObj.setContentDefinition(ContentDefinition.fromValue("Extensional"));
-        }
-
-        this.deserializeXMLToCode(elmTable, tableObj);
-        tableObj = tableService.save(tableObj);
-        TableLink link = new TableLink();
-        link.setBindingIdentifier(tableObj.getBindingIdentifier());
-        link.setId(tableObj.getId());
-        tableLibrary.addTable(link);
       }
     }
   }

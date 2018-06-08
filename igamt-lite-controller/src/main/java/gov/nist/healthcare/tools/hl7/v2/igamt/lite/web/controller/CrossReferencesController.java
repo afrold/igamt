@@ -412,6 +412,9 @@ public class CrossReferencesController {
     List<Datatype> allDatatypes = datatypeService.findByIds(datatypeIds);
     for (Datatype d : allDatatypes) {
       for (Component c : d.getComponents()) {
+        System.out.println(wrapper.getDatatypeId());
+        System.out.println(c.getDatatype().getId());
+        
         if (c.getDatatype().getId().equals(wrapper.getDatatypeId())) {
           ComponentFound found = new ComponentFound();
           found.setName(c.getName());

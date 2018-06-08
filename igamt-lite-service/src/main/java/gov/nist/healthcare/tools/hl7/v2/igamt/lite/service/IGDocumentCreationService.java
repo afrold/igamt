@@ -36,5 +36,4 @@ public interface IGDocumentCreationService {
 
 	IGDocument createIntegratedIGDocument(List<MessageEvents> msgEvts, DocumentMetaData metadata, String hl7Version,
 			Long accountId) throws IGDocumentException;
-
 }
