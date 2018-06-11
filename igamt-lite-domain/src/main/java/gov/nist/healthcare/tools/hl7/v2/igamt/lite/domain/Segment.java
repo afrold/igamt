@@ -411,15 +411,15 @@ public class Segment extends DataModelWithConstraints
   }
 
   public List<ConformanceStatement> retrieveAllConformanceStatementsForXML(
-      Map<String, Table> tablesMap) {
+      Map<String, Table> tablesMap, String profileHL7Version) {
     List<ConformanceStatement> results = this.conformanceStatements;
     results.addAll(this.retrieveConformanceStatementsForSingleCode());
     results.addAll(this.retrieveConformanceStatementsForConstant());
-    results.addAll(this.retrieveConformanceStatementsForCoConstraints(tablesMap));
+    results.addAll(this.retrieveConformanceStatementsForCoConstraints(tablesMap, profileHL7Version));
     return results;
   }
 
-  private List<ConformanceStatement> retrieveConformanceStatementsForCoConstraints(Map<String, Table> tablesMap) {
+  private List<ConformanceStatement> retrieveConformanceStatementsForCoConstraints(Map<String, Table> tablesMap, String profileHL7Version) {
     List<ConformanceStatement> results = new ArrayList<ConformanceStatement>();
     if (this.coConstraintsTable != null) {
       if (this.coConstraintsTable.getIfColumnDefinition() != null) {
@@ -440,8 +440,8 @@ public class Segment extends DataModelWithConstraints
                   String constraintId = this.getLabel() + "-CoConstraint-" + (i + 1) + "-" + index;
                   if (isOBX5(definitionThen.getPath())) {
                     if (thenData.getValueSets() != null && thenData.getValueSets().size() > 0) {
-                      thenDescription = this.generateTHENDescirptionForValueSet(definitionThen, thenData, tablesMap);
-                      thenAssertion =   this.generateTHENAssertionForValueSet(definitionThen, thenData, tablesMap);
+                      thenDescription = this.generateTHENDescirptionForValueSet(definitionThen, thenData, tablesMap, profileHL7Version);
+                      thenAssertion =   this.generateTHENAssertionForValueSet(definitionThen, thenData, tablesMap, profileHL7Version);
                     } else if (thenData.getValueData() != null && thenData.getValueData().getValue() != null) {
                       thenDescription = this.generateTHENDescirptionForValue(definitionThen, thenData);
                       thenAssertion = this.generateTHENAssertionForValue(definitionThen, thenData);
@@ -450,8 +450,8 @@ public class Segment extends DataModelWithConstraints
                     thenDescription = this.generateTHENDescirptionForValue(definitionThen, thenData);
                     thenAssertion = this.generateTHENAssertionForValue(definitionThen, thenData);
                   } else if (definitionThen.getConstraintType().equals("valueset")) {
-                    thenDescription = this.generateTHENDescirptionForValueSet(definitionThen, thenData, tablesMap);
-                    thenAssertion = this.generateTHENAssertionForValueSet(definitionThen, thenData, tablesMap);
+                    thenDescription = this.generateTHENDescirptionForValueSet(definitionThen, thenData, tablesMap, profileHL7Version);
+                    thenAssertion = this.generateTHENAssertionForValueSet(definitionThen, thenData, tablesMap, profileHL7Version);
                   }
                   String description = "[CoConstraint-" + (i + 1) + "-" + index + "]" + ifDescription + thenDescription;
                   String assertion = "<Assertion><IMPLY>" + ifAssertion + thenAssertion + "</IMPLY></Assertion>";
@@ -503,28 +503,27 @@ public class Segment extends DataModelWithConstraints
     }
   }
 
-  private String generateTHENDescirptionForValueSet(CoConstraintColumnDefinition definitionThen, CoConstraintTHENColumnData thenData, Map<String, Table> tablesMap) {
+  private String generateTHENDescirptionForValueSet(CoConstraintColumnDefinition definitionThen, CoConstraintTHENColumnData thenData, Map<String, Table> tablesMap, String profileHL7Version) {
     String thenDescription = "then the value of " + this.getName() + "-" + definitionThen.getConstraintPath() + " (" + definitionThen.getName() + ") SHALL be one of codes in ";
     for (ValueSetData vs : thenData.getValueSets()) {
       Table t = tablesMap.get(vs.getTableId());
-      if (t.getHl7Version() == null) {
-        thenDescription = "'" + thenDescription + t.getBindingIdentifier() + "' ";
-      } else {
+      if (t.getHl7Version() != null && !t.getHl7Version().equals(profileHL7Version)) {
         thenDescription = "'" + thenDescription + t.getBindingIdentifier() + "_" + t.getHl7Version().replaceAll("\\.", "-") + "' ";
+      } else {
+        thenDescription = "'" + thenDescription + t.getBindingIdentifier() + "' ";
       }
     }
     thenDescription = thenDescription + ".";
     return thenDescription;
   }
 
-  private String generateTHENAssertionForValueSet(CoConstraintColumnDefinition definitionThen, CoConstraintTHENColumnData thenData, Map<String, Table> tablesMap) {
+  private String generateTHENAssertionForValueSet(CoConstraintColumnDefinition definitionThen, CoConstraintTHENColumnData thenData, Map<String, Table> tablesMap, String profileHL7Version) {
     String thenAssertion = "";
     
     if (thenData.getValueSets().size() == 1) {
       Table t = tablesMap.get(thenData.getValueSets().get(0).getTableId());
       String bid = t.getBindingIdentifier();
-      if (t.getHl7Version() != null) bid = bid + "_" + t.getHl7Version().replaceAll("\\.", "-");
-      
+      if (t.getHl7Version() != null && !t.getHl7Version().equals(profileHL7Version)) bid = bid + "_" + t.getHl7Version().replaceAll("\\.", "-");
       
       if (definitionThen.isPrimitive()) {
         thenAssertion = "<ValueSet Path=\"" + definitionThen.getConstraintPath() + "\" ValueSetID=\"" + bid   + "\" BindingLocation=\"1\" BindingStrength=\"" + thenData.getValueSets().get(0).getBindingStrength() + "\"/>";
@@ -541,7 +540,7 @@ public class Segment extends DataModelWithConstraints
       for (ValueSetData vs : thenData.getValueSets()) {
         Table t = tablesMap.get(vs.getTableId());
         String bid = t.getBindingIdentifier();
-        if (t.getHl7Version() != null)
+        if (t.getHl7Version() != null && !t.getHl7Version().equals(profileHL7Version))
           bid = bid + "_" + t.getHl7Version().replaceAll("\\.", "-");
         String bindingLocation = null;
         if (vs.getBindingLocation() == null) {

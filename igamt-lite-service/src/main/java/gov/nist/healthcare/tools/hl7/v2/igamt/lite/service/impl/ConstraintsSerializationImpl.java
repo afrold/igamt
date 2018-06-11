@@ -694,8 +694,8 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 					Segment s = segmentsMap.get(key);
 					ByID byID = new ByID();
 					byID.setByID(s.getLabel() + "_" + s.getHl7Version().replaceAll("\\.", "-"));
-					if (s.retrieveAllConformanceStatementsForXML(tablesMap).size() > 0) {
-							byID.setConformanceStatements(s.retrieveAllConformanceStatementsForXML(tablesMap));
+					if (s.retrieveAllConformanceStatementsForXML(tablesMap, profile.getMetaData().getVersion()).size() > 0) {
+							byID.setConformanceStatements(s.retrieveAllConformanceStatementsForXML(tablesMap, profile.getMetaData().getVersion()));
 							byNameOrByIDs.add(byID);
 					}
 				}
