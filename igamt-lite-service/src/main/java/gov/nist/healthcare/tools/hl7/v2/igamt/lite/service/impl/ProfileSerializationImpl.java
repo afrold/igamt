@@ -196,14 +196,17 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     profile.getSegmentLibrary().setSectionContents("Contents");
     profile.getSegmentLibrary().setSectionDescription("DESC");
     profile.getSegmentLibrary().setSectionPosition(4);
+    profile.getSegmentLibrary().setScope(SCOPE.USER);
     profile.getDatatypeLibrary().setSectionTitle("DatatypeLib");
     profile.getDatatypeLibrary().setSectionContents("Contents");
     profile.getDatatypeLibrary().setSectionDescription("DESC");
     profile.getDatatypeLibrary().setSectionPosition(5);
+    profile.getDatatypeLibrary().setScope(SCOPE.USER);
     profile.getTableLibrary().setSectionTitle("TableLib");
     profile.getTableLibrary().setSectionContents("Contents");
     profile.getTableLibrary().setSectionDescription("DESC");
     profile.getTableLibrary().setSectionPosition(6);
+    profile.getTableLibrary().setScope(SCOPE.USER);
     
     
     this.tableLibraryService.save(profile.getTableLibrary());
@@ -1200,19 +1203,16 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
   private void addDatatypeForDM(Datatype d, Map<String, Datatype> datatypesMap,
       Map<String, Table> tablesMap) {
-    if (d != null) {
-      int randumNum = new SecureRandom().nextInt(100000);
-      d.setExt("ForDM" + randumNum);
+    if (d != null && !datatypesMap.containsKey(d.getId())) {
       datatypesMap.put(d.getId(), d);
       for (Component c : d.getComponents()) {
-        this.addDatatypeForDM(datatypeService.findById(c.getDatatype().getId()), datatypesMap,
-            tablesMap);
+        this.addDatatypeForDM(datatypeService.findById(c.getDatatype().getId()), datatypesMap, tablesMap);
       }
 
       for (ValueSetOrSingleCodeBinding binding : d.getValueSetBindings()) {
         if (binding instanceof ValueSetBinding) {
           Table t = tableService.findById(binding.getTableId());
-          if (t != null) {
+          if (t != null && !tablesMap.containsKey(t.getId())) {
             tablesMap.put(t.getId(), t);
           }
         }
