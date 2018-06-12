@@ -449,7 +449,6 @@ public class Bootstrap implements InitializingBean {
   }
 
 
-
   private void removePreloadedIGs(String s) {
 
     List<IGDocument> allPreloadeds = this.iGDocumentService.findAllPreloaded();
