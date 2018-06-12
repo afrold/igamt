@@ -361,32 +361,32 @@ public class Bootstrap implements InitializingBean {
 
     // changeEmptyToNA();
 
-    // removePreloadedIGs("CDC 2.5.1 Immunization Profile");
-    // removePreloadedIGs("ONC Immunization Profile");
-    // importXMLProfile("ONC-Profiles/Profiles/VXU-Z22_Profile.xml",
-    // "ONC-Profiles/Tables/VXU-Z22_ValueSetLibrary.xml",
-    // "ONC-Profiles/Constraints/VXU-Z22_Constraints.xml", "CDC 2.5.1 Immunization Profile Z22");
-    // importXMLProfile("ONC-Profiles/Profiles/ACK-Z23_Profile.xml",
-    // "ONC-Profiles/Tables/ACK-Z23_ValueSetLibrary.xml",
-    // "ONC-Profiles/Constraints/ACK-Z23_Constraints.xml", "CDC 2.5.1 Immunization Profile Z23");
-    // importXMLProfile("ONC-Profiles/Profiles/RSP-Z31_Profile.xml",
-    // "ONC-Profiles/Tables/RSP-Z31_ValueSetLibrary.xml",
-    // "ONC-Profiles/Constraints/RSP-Z31_Constraints.xml", "CDC 2.5.1 Immunization Profile Z31");
-    // importXMLProfile("ONC-Profiles/Profiles/RSP-Z32_Profile.xml",
-    // "ONC-Profiles/Tables/RSP-Z32_ValueSetLibrary.xml",
-    // "ONC-Profiles/Constraints/RSP-Z32_Constraints.xml", "CDC 2.5.1 Immunization Profile Z32");
-    // importXMLProfile("ONC-Profiles/Profiles/RSP-Z33_Profile.xml",
-    // "ONC-Profiles/Tables/RSP-Z33_ValueSetLibrary.xml",
-    // "ONC-Profiles/Constraints/RSP-Z33_Constraints.xml", "CDC 2.5.1 Immunization Profile Z33");
-    // importXMLProfile("ONC-Profiles/Profiles/QBP-Z34_Profile.xml",
-    // "ONC-Profiles/Tables/QBP-Z34_ValueSetLibrary.xml",
-    // "ONC-Profiles/Constraints/QBP-Z34_Constraints.xml", "CDC 2.5.1 Immunization Profile Z34");
-    // importXMLProfile("ONC-Profiles/Profiles/RSP-Z42_Profile.xml",
-    // "ONC-Profiles/Tables/RSP-Z42_ValueSetLibrary.xml",
-    // "ONC-Profiles/Constraints/RSP-Z42_Constraints.xml", "CDC 2.5.1 Immunization Profile Z42");
-    // importXMLProfile("ONC-Profiles/Profiles/QBP-Z44_Profile.xml",
-    // "ONC-Profiles/Tables/QBP-Z44_ValueSetLibrary.xml",
-    // "ONC-Profiles/Constraints/QBP-Z44_Constraints.xml", "CDC 2.5.1 Immunization Profile Z44");
+     removePreloadedIGs("CDC 2.5.1 Immunization Profile");
+     removePreloadedIGs("ONC Immunization Profile");
+     importXMLProfile("ONC-Profiles/Profiles/VXU-Z22_Profile.xml",
+     "ONC-Profiles/Tables/VXU-Z22_ValueSetLibrary.xml",
+     "ONC-Profiles/Constraints/VXU-Z22_Constraints.xml", "CDC 2.5.1 Immunization Profile Z22");
+     importXMLProfile("ONC-Profiles/Profiles/ACK-Z23_Profile.xml",
+     "ONC-Profiles/Tables/ACK-Z23_ValueSetLibrary.xml",
+     "ONC-Profiles/Constraints/ACK-Z23_Constraints.xml", "CDC 2.5.1 Immunization Profile Z23");
+     importXMLProfile("ONC-Profiles/Profiles/RSP-Z31_Profile.xml",
+     "ONC-Profiles/Tables/RSP-Z31_ValueSetLibrary.xml",
+     "ONC-Profiles/Constraints/RSP-Z31_Constraints.xml", "CDC 2.5.1 Immunization Profile Z31");
+     importXMLProfile("ONC-Profiles/Profiles/RSP-Z32_Profile.xml",
+     "ONC-Profiles/Tables/RSP-Z32_ValueSetLibrary.xml",
+     "ONC-Profiles/Constraints/RSP-Z32_Constraints.xml", "CDC 2.5.1 Immunization Profile Z32");
+     importXMLProfile("ONC-Profiles/Profiles/RSP-Z33_Profile.xml",
+     "ONC-Profiles/Tables/RSP-Z33_ValueSetLibrary.xml",
+     "ONC-Profiles/Constraints/RSP-Z33_Constraints.xml", "CDC 2.5.1 Immunization Profile Z33");
+     importXMLProfile("ONC-Profiles/Profiles/QBP-Z34_Profile.xml",
+     "ONC-Profiles/Tables/QBP-Z34_ValueSetLibrary.xml",
+     "ONC-Profiles/Constraints/QBP-Z34_Constraints.xml", "CDC 2.5.1 Immunization Profile Z34");
+     importXMLProfile("ONC-Profiles/Profiles/RSP-Z42_Profile.xml",
+     "ONC-Profiles/Tables/RSP-Z42_ValueSetLibrary.xml",
+     "ONC-Profiles/Constraints/RSP-Z42_Constraints.xml", "CDC 2.5.1 Immunization Profile Z42");
+     importXMLProfile("ONC-Profiles/Profiles/QBP-Z44_Profile.xml",
+     "ONC-Profiles/Tables/QBP-Z44_ValueSetLibrary.xml",
+     "ONC-Profiles/Constraints/QBP-Z44_Constraints.xml", "CDC 2.5.1 Immunization Profile Z44");
 
 
     correctSegmentCocon();
