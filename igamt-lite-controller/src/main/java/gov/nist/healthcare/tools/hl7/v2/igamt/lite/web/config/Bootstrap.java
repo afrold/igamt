@@ -393,9 +393,11 @@ public class Bootstrap implements InitializingBean {
     
     // fixDuplicateValueSets();
     
+    fixValueSetDataDB();
     
   } 
-  
+
+
   public boolean exist(List<ValueSetOrSingleCodeBinding> bindings, ValueSetBinding binding){
     boolean found = false;
     for (ValueSetOrSingleCodeBinding b : bindings) {
@@ -640,12 +642,16 @@ public class Bootstrap implements InitializingBean {
         defPostText = "";
       else {
         defPostText = defPostText.replaceAll("\u0019s", " ");
+        defPostText = defPostText.replaceAll("“", "\"");
+        defPostText = defPostText.replaceAll("”", "\"");
       }
       String defPreText = t.getDefPreText();
       if (defPreText == null)
         defPreText = "";
       else {
         defPreText = defPreText.replaceAll("\u0019s", " ");
+        defPreText = defPreText.replaceAll("“", "\"");
+        defPreText = defPreText.replaceAll("”", "\"");
       }
 
       tableService.updateAllDescription(t.getId(), description, defPostText, defPreText);

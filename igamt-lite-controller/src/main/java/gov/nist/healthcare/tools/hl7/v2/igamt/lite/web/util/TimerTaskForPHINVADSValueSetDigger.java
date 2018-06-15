@@ -257,6 +257,8 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
 
       // 5. update Table on DB
       try {
+        table = this.fixValueSetDescription(table);
+        
         mongoOps.save(table);
         for (IGDocument ig : this.igDocs) {
           if (ig.getProfile().getTableLibrary().findOneTableById(table.getId()) != null) {
@@ -284,6 +286,37 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
       return table;
     }
     return null;
+  }
+
+  private Table fixValueSetDescription(Table t) {
+    String description = t.getDescription();
+    if (description == null)
+      description = "";
+    else {
+      description = description.replaceAll("\u0019s", " ");
+    }
+    String defPostText = t.getDefPostText();
+    if (defPostText == null)
+      defPostText = "";
+    else {
+      defPostText = defPostText.replaceAll("\u0019s", " ");
+      defPostText = defPostText.replaceAll("“", "\"");
+      defPostText = defPostText.replaceAll("”", "\"");
+    }
+    String defPreText = t.getDefPreText();
+    if (defPreText == null)
+      defPreText = "";
+    else {
+      defPreText = defPreText.replaceAll("\u0019s", " ");
+      defPreText = defPreText.replaceAll("“", "\"");
+      defPreText = defPreText.replaceAll("”", "\"");
+    }
+    
+    t.setDescription(description);
+    t.setDefPostText(defPostText);
+    t.setDefPreText(defPreText);
+   
+    return t;
   }
 
   private static void notificationEmail(String notificationsId) throws IOException {
