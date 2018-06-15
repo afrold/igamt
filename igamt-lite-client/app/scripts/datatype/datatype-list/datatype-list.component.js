@@ -483,12 +483,14 @@ angular.module('igl')
       $scope.results = [];
       if($rootScope.igdocument){
         angular.forEach($rootScope.datatypeLibrary.children, function(dtLink) {
-          if (dtLink.name && dtLink.name === field.datatype.name) {
-            if(!$scope.editDTMap[dtLink.id]){
-              $scope.editDTMap[dtLink.id]=dtLink;
-              $scope.results.push(dtLink);
+            if(dtLink.name && field.datatype.name){
+                if (field.datatype.name.split('\\_')[0] === dtLink.name.split('\\_')[0]) {
+                    if(!$scope.editDTMap[dtLink.id]){
+                        $scope.editDTMap[dtLink.id]=dtLink;
+                        $scope.results.push(dtLink);
+                    }
+                }
             }
-          }
         });
       }else{
         var dt= $rootScope.datatypesMap[field.datatype.id];
