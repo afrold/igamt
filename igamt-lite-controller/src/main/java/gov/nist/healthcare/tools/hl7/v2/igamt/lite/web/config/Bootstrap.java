@@ -636,22 +636,27 @@ public class Bootstrap implements InitializingBean {
         description = "";
       else {
         description = description.replaceAll("\u0019s", " ");
+        description = description.replaceAll("“", "&quot;");
+        description = description.replaceAll("”", "&quot;");
+        description = description.replaceAll("\"", "&quot;");
       }
       String defPostText = t.getDefPostText();
       if (defPostText == null)
         defPostText = "";
       else {
         defPostText = defPostText.replaceAll("\u0019s", " ");
-        defPostText = defPostText.replaceAll("“", "\"");
-        defPostText = defPostText.replaceAll("”", "\"");
+        defPostText = defPostText.replaceAll("“", "&quot;");
+        defPostText = defPostText.replaceAll("”", "&quot;");
+        defPostText = defPostText.replaceAll("\"", "&quot;");
       }
       String defPreText = t.getDefPreText();
       if (defPreText == null)
         defPreText = "";
       else {
         defPreText = defPreText.replaceAll("\u0019s", " ");
-        defPreText = defPreText.replaceAll("“", "\"");
-        defPreText = defPreText.replaceAll("”", "\"");
+        defPreText = defPreText.replaceAll("“", "&quot;");
+        defPreText = defPreText.replaceAll("”", "&quot;");
+        defPreText = defPreText.replaceAll("\"", "&quot;");
       }
 
       tableService.updateAllDescription(t.getId(), description, defPostText, defPreText);

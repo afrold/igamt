@@ -300,16 +300,18 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
       defPostText = "";
     else {
       defPostText = defPostText.replaceAll("\u0019s", " ");
-      defPostText = defPostText.replaceAll("“", "\"");
-      defPostText = defPostText.replaceAll("”", "\"");
+      defPostText = defPostText.replaceAll("“", "&quot;");
+      defPostText = defPostText.replaceAll("”", "&quot;");
+      defPostText = defPostText.replaceAll("\"", "&quot;");
     }
     String defPreText = t.getDefPreText();
     if (defPreText == null)
       defPreText = "";
     else {
       defPreText = defPreText.replaceAll("\u0019s", " ");
-      defPreText = defPreText.replaceAll("“", "\"");
-      defPreText = defPreText.replaceAll("”", "\"");
+      defPreText = defPreText.replaceAll("“", "&quot;");
+      defPreText = defPreText.replaceAll("”", "&quot;");
+      defPreText = defPreText.replaceAll("\"", "&quot;");
     }
     
     t.setDescription(description);
