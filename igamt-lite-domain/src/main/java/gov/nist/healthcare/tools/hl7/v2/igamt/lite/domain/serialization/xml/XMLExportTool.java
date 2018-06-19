@@ -94,8 +94,7 @@ public class XMLExportTool {
     String profileXMLStr =
         this.serializeProfileToDoc(profile, metadata, segmentsMap, datatypesMap, tablesMap).toXML();
     String valueSetXMLStr = this.serializeTableXML(profile, metadata, tablesMap).toXML();
-    String constraintXMLStr = this
-        .serializeConstraintsXML(profile, metadata, segmentsMap, datatypesMap, tablesMap).toXML();
+    String constraintXMLStr = this.serializeConstraintsXML(profile, metadata, segmentsMap, datatypesMap, tablesMap).toXML();
 
     this.generateProfileIS(out, profileXMLStr);
     this.generateValueSetIS(out, valueSetXMLStr);
@@ -1288,7 +1287,13 @@ public class XMLExportTool {
     for (String key : segmentsMap.keySet()) {
       Segment s = segmentsMap.get(key);
       ByID byID = new ByID();
-      byID.setByID(s.getLabel() + "_" + s.getHl7Version().replaceAll("\\.", "-"));
+      
+      if (s.getHl7Version().equals(profile.getMetaData().getHl7Version())) {
+        byID.setByID(s.getLabel());
+      }else {
+        byID.setByID(s.getLabel() + "_" + s.getHl7Version().replaceAll("\\.", "-"));
+      }
+      
       List<ConformanceStatement> segmentConformanceStatements =
           s.retrieveAllConformanceStatementsForXML(tablesMap, profile.getMetaData().getHl7Version());
       if (segmentConformanceStatements.size() > 0) {
@@ -1302,7 +1307,11 @@ public class XMLExportTool {
     for (String key : datatypesMap.keySet()) {
       Datatype d = datatypesMap.get(key);
       ByID byID = new ByID();
-      byID.setByID(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"));
+      if (d.getHl7Version().equals(profile.getMetaData().getHl7Version())) {
+        byID.setByID(d.getLabel());
+      }else {
+        byID.setByID(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"));
+      }
       byID.setConformanceStatements(d.retrieveAllConformanceStatements());
       if (d.getName().equals("DTM"))
         this.generateConstraintsForDTMFormat(byID, d);
@@ -1681,7 +1690,7 @@ public class XMLExportTool {
 
     for (SegmentRefOrGroup sog : g.getChildren()) {
       if (sog instanceof Group) {
-        byNameOrByIDs = findAllConformanceStatementsForGroup((Group) sog, byNameOrByIDs);
+        byNameOrByIDs.addAll(byNameOrByIDs);
       }
     }
 
@@ -1887,7 +1896,7 @@ public class XMLExportTool {
 
     for (SegmentRefOrGroup sog : g.getChildren()) {
       if (sog instanceof Group) {
-        byNameOrByIDs = findAllPredicatesForGroup((Group) sog, byNameOrByIDs);
+        byNameOrByIDs.addAll(findAllPredicatesForGroup((Group) sog, byNameOrByIDs));
       }
     }
 
@@ -1930,7 +1939,13 @@ public class XMLExportTool {
     for (String key : segmentsMap.keySet()) {
       Segment s = segmentsMap.get(key);
       ByID byID = new ByID();
-      byID.setByID(s.getLabel() + "_" + s.getHl7Version().replaceAll("\\.", "-"));
+      
+      if (s.getHl7Version().equals(profile.getMetaData().getHl7Version())) {
+        byID.setByID(s.getLabel());
+      }else {
+        byID.setByID(s.getLabel() + "_" + s.getHl7Version().replaceAll("\\.", "-"));
+      }
+      
       if (s.getPredicates().size() > 0) {
         byID.setPredicates(s.getPredicates());
         byNameOrByIDs.add(byID);
@@ -1943,7 +1958,11 @@ public class XMLExportTool {
     for (String key : datatypesMap.keySet()) {
       Datatype d = datatypesMap.get(key);
       ByID byID = new ByID();
-      byID.setByID(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"));
+      if (d.getHl7Version().equals(profile.getMetaData().getHl7Version())) {
+        byID.setByID(d.getLabel());
+      }else {
+        byID.setByID(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"));
+      }
       if (d.getPredicates().size() > 0) {
         byID.setPredicates(d.getPredicates());
         byNameOrByIDs.add(byID);

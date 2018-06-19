@@ -406,7 +406,7 @@ public class TableSerializationImpl implements TableSerialization {
             tableObj
                 .setExtensibility(Extensibility.fromValue(elmTable.getAttribute("Extensibility")));
           } else {
-            tableObj.setExtensibility(Extensibility.fromValue("Open"));
+            tableObj.setExtensibility(Extensibility.fromValue("Closed"));
           }
 
           if (elmTable.getAttribute("Stability") != null

@@ -697,11 +697,14 @@ public class ProfileSerializationImpl implements ProfileSerialization {
       List<SegmentRefOrGroup> segmentRefOrGroups, Element groupElm, SegmentLibrary segments,
       DatatypeLibrary datatypes, int position) {
     Group groupObj = new Group();
+    String ID = groupElm.getAttribute("ID");
     groupObj.setMax(groupElm.getAttribute("Max"));
     groupObj.setMin(new Integer(groupElm.getAttribute("Min")));
     groupObj.setName(groupElm.getAttribute("Name"));
     groupObj.setUsage(Usage.fromValue(groupElm.getAttribute("Usage")));
     groupObj.setPosition(position);
+    groupObj.setPredicates(this.findPredicates(this.predicates.getGroups(), ID, groupObj.getName()));
+    groupObj.setConformanceStatements(this.findConformanceStatement(this.conformanceStatement.getGroups(), ID, groupObj.getName()));
     List<SegmentRefOrGroup> childSegmentRefOrGroups = new ArrayList<SegmentRefOrGroup>();
 
     NodeList nodes = groupElm.getChildNodes();
