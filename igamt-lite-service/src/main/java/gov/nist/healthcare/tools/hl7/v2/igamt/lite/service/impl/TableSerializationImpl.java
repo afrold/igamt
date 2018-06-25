@@ -17,8 +17,10 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -404,7 +406,7 @@ public class TableSerializationImpl implements TableSerialization {
             tableObj
                 .setExtensibility(Extensibility.fromValue(elmTable.getAttribute("Extensibility")));
           } else {
-            tableObj.setExtensibility(Extensibility.fromValue("Open"));
+            tableObj.setExtensibility(Extensibility.fromValue("Closed"));
           }
 
           if (elmTable.getAttribute("Stability") != null
@@ -422,7 +424,8 @@ public class TableSerializationImpl implements TableSerialization {
             tableObj.setContentDefinition(ContentDefinition.fromValue("Extensional"));
           }
 
-          this.deserializeXMLToCode(elmTable, tableObj);
+          Set<String> codeSystems = this.deserializeXMLToCode(elmTable, tableObj);
+          tableObj.setCodeSystems(codeSystems);
           tableObj = tableService.save(tableObj);
           TableLink link = new TableLink();
           link.setBindingIdentifier(tableObj.getBindingIdentifier());
@@ -446,7 +449,8 @@ public class TableSerializationImpl implements TableSerialization {
     }
   }
 
-  private void deserializeXMLToCode(Element elmTable, Table tableObj) {
+  private Set<String> deserializeXMLToCode(Element elmTable, Table tableObj) {
+    Set<String> codeSystems = new HashSet<String>();
     NodeList nodes = elmTable.getElementsByTagName("ValueElement");
 
     for (int i = 0; i < nodes.getLength(); i++) {
@@ -458,8 +462,10 @@ public class TableSerializationImpl implements TableSerialization {
       codeObj.setLabel(elmCode.getAttribute("DisplayName"));
 
       if (elmCode.getAttribute("CodeSystem") != null
-          && !elmCode.getAttribute("CodeSystem").equals(""))
+          && !elmCode.getAttribute("CodeSystem").equals("")){
+        codeSystems.add(elmCode.getAttribute("CodeSystem"));
         codeObj.setCodeSystem(elmCode.getAttribute("CodeSystem"));
+      }
       if (elmCode.getAttribute("CodeSystemVersion") != null
           && !elmCode.getAttribute("CodeSystemVersion").equals(""))
         codeObj.setCodeSystemVersion(elmCode.getAttribute("CodeSystemVersion"));
@@ -474,6 +480,8 @@ public class TableSerializationImpl implements TableSerialization {
 
       tableObj.addCode(codeObj);
     }
+    
+    return codeSystems;
 
   }
 

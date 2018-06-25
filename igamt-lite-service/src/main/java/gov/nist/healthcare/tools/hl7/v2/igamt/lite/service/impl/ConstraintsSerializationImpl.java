@@ -99,17 +99,22 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 
 						Context datatypeContextObj = new Context();
 						Context segmentContextObj = new Context();
+						Context groupContextObj = new Context();
 						Context messageContextObj = new Context();
 
 						this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Datatype").item(0),
 								datatypeContextObj);
 						this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Segment").item(0),
 								segmentContextObj);
+						this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Group").item(0),
+						    groupContextObj);
 						this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Message").item(0),
-								messageContextObj);
+                            messageContextObj);
+						
 
 						constraints.setDatatypes(datatypeContextObj);
 						constraints.setSegments(segmentContextObj);
+						constraints.setGroups(groupContextObj);
 						constraints.setMessages(messageContextObj);
 
 						return constraints;
@@ -126,17 +131,21 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 
 						Context datatypeContextObj = new Context();
 						Context segmentContextObj = new Context();
+						Context groupContextObj = new Context();
 						Context messageContextObj = new Context();
 
 						this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Datatype").item(0),
 								datatypeContextObj);
 						this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Segment").item(0),
 								segmentContextObj);
+						this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Group").item(0),
+                            groupContextObj);
 						this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Message").item(0),
 								messageContextObj);
 
 						constraints.setDatatypes(datatypeContextObj);
 						constraints.setSegments(segmentContextObj);
+						constraints.setGroups(groupContextObj);
 						constraints.setMessages(messageContextObj);
 
 						return constraints;
@@ -694,8 +703,8 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 					Segment s = segmentsMap.get(key);
 					ByID byID = new ByID();
 					byID.setByID(s.getLabel() + "_" + s.getHl7Version().replaceAll("\\.", "-"));
-					if (s.retrieveAllConformanceStatementsForXML(tablesMap).size() > 0) {
-							byID.setConformanceStatements(s.retrieveAllConformanceStatementsForXML(tablesMap));
+					if (s.retrieveAllConformanceStatementsForXML(tablesMap, profile.getMetaData().getVersion()).size() > 0) {
+							byID.setConformanceStatements(s.retrieveAllConformanceStatementsForXML(tablesMap, profile.getMetaData().getVersion()));
 							byNameOrByIDs.add(byID);
 					}
 				}
