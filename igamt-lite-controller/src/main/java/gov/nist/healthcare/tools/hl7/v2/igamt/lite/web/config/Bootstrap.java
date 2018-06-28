@@ -77,7 +77,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notifications;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
@@ -361,58 +360,59 @@ public class Bootstrap implements InitializingBean {
 
     // changeEmptyToNA();
 
-     removePreloadedIGs("CDC 2.5.1 Immunization Profile");
-     removePreloadedIGs("ONC Immunization Profile");
-//     importXMLProfile("ONC-Profiles/Profiles/VXU-Z22_Profile.xml",
-//     "ONC-Profiles/Tables/VXU-Z22_ValueSetLibrary.xml",
-//     "ONC-Profiles/Constraints/VXU-Z22_Constraints.xml", "CDC 2.5.1 Immunization Profile Z22");
-//     importXMLProfile("ONC-Profiles/Profiles/ACK-Z23_Profile.xml",
-//     "ONC-Profiles/Tables/ACK-Z23_ValueSetLibrary.xml",
-//     "ONC-Profiles/Constraints/ACK-Z23_Constraints.xml", "CDC 2.5.1 Immunization Profile Z23");
-//     importXMLProfile("ONC-Profiles/Profiles/RSP-Z31_Profile.xml",
-//     "ONC-Profiles/Tables/RSP-Z31_ValueSetLibrary.xml",
-//     "ONC-Profiles/Constraints/RSP-Z31_Constraints.xml", "CDC 2.5.1 Immunization Profile Z31");
-//     importXMLProfile("ONC-Profiles/Profiles/RSP-Z32_Profile.xml",
-//     "ONC-Profiles/Tables/RSP-Z32_ValueSetLibrary.xml",
-//     "ONC-Profiles/Constraints/RSP-Z32_Constraints.xml", "CDC 2.5.1 Immunization Profile Z32");
-//     importXMLProfile("ONC-Profiles/Profiles/RSP-Z33_Profile.xml",
-//     "ONC-Profiles/Tables/RSP-Z33_ValueSetLibrary.xml",
-//     "ONC-Profiles/Constraints/RSP-Z33_Constraints.xml", "CDC 2.5.1 Immunization Profile Z33");
-//     importXMLProfile("ONC-Profiles/Profiles/QBP-Z34_Profile.xml",
-//     "ONC-Profiles/Tables/QBP-Z34_ValueSetLibrary.xml",
-//     "ONC-Profiles/Constraints/QBP-Z34_Constraints.xml", "CDC 2.5.1 Immunization Profile Z34");
-//     importXMLProfile("ONC-Profiles/Profiles/RSP-Z42_Profile.xml",
-//     "ONC-Profiles/Tables/RSP-Z42_ValueSetLibrary.xml",
-//     "ONC-Profiles/Constraints/RSP-Z42_Constraints.xml", "CDC 2.5.1 Immunization Profile Z42");
-//     importXMLProfile("ONC-Profiles/Profiles/QBP-Z44_Profile.xml",
-//     "ONC-Profiles/Tables/QBP-Z44_ValueSetLibrary.xml",
-//     "ONC-Profiles/Constraints/QBP-Z44_Constraints.xml", "CDC 2.5.1 Immunization Profile Z44");
-//
-//
-//    correctSegmentCocon();  
-    
+    // removePreloadedIGs("CDC 2.5.1 Immunization Profile");
+    // removePreloadedIGs("ONC Immunization Profile");
+    // importXMLProfile("ONC-Profiles/Profiles/VXU-Z22_Profile.xml",
+    // "ONC-Profiles/Tables/VXU-Z22_ValueSetLibrary.xml",
+    // "ONC-Profiles/Constraints/VXU-Z22_Constraints.xml", "CDC 2.5.1 Immunization Profile Z22");
+    // importXMLProfile("ONC-Profiles/Profiles/ACK-Z23_Profile.xml",
+    // "ONC-Profiles/Tables/ACK-Z23_ValueSetLibrary.xml",
+    // "ONC-Profiles/Constraints/ACK-Z23_Constraints.xml", "CDC 2.5.1 Immunization Profile Z23");
+    // importXMLProfile("ONC-Profiles/Profiles/RSP-Z31_Profile.xml",
+    // "ONC-Profiles/Tables/RSP-Z31_ValueSetLibrary.xml",
+    // "ONC-Profiles/Constraints/RSP-Z31_Constraints.xml", "CDC 2.5.1 Immunization Profile Z31");
+    // importXMLProfile("ONC-Profiles/Profiles/RSP-Z32_Profile.xml",
+    // "ONC-Profiles/Tables/RSP-Z32_ValueSetLibrary.xml",
+    // "ONC-Profiles/Constraints/RSP-Z32_Constraints.xml", "CDC 2.5.1 Immunization Profile Z32");
+    // importXMLProfile("ONC-Profiles/Profiles/RSP-Z33_Profile.xml",
+    // "ONC-Profiles/Tables/RSP-Z33_ValueSetLibrary.xml",
+    // "ONC-Profiles/Constraints/RSP-Z33_Constraints.xml", "CDC 2.5.1 Immunization Profile Z33");
+    // importXMLProfile("ONC-Profiles/Profiles/QBP-Z34_Profile.xml",
+    // "ONC-Profiles/Tables/QBP-Z34_ValueSetLibrary.xml",
+    // "ONC-Profiles/Constraints/QBP-Z34_Constraints.xml", "CDC 2.5.1 Immunization Profile Z34");
+    // importXMLProfile("ONC-Profiles/Profiles/RSP-Z42_Profile.xml",
+    // "ONC-Profiles/Tables/RSP-Z42_ValueSetLibrary.xml",
+    // "ONC-Profiles/Constraints/RSP-Z42_Constraints.xml", "CDC 2.5.1 Immunization Profile Z42");
+    // importXMLProfile("ONC-Profiles/Profiles/QBP-Z44_Profile.xml",
+    // "ONC-Profiles/Tables/QBP-Z44_ValueSetLibrary.xml",
+    // "ONC-Profiles/Constraints/QBP-Z44_Constraints.xml", "CDC 2.5.1 Immunization Profile Z44");
+    //
+    //
+    // correctSegmentCocon();
+
     // fixDuplicateValueSets();
-    
-//    fixValueSetDataDB();
-     
-     
-     removePreloadedIGs("CDC 2.5.1 Immunization Profile");
-     removePreloadedIGs("ONC Immunization Profile");
-     
-    
-     makePreloadedProfile("5b3103a984ae3d88f239fb8e");
-    
-  } 
+
+    // fixValueSetDataDB();
+
+
+    // removePreloadedIGs("CDC 2.5.1 Immunization Profile");
+    // removePreloadedIGs("ONC Immunization Profile");
+    //
+    //
+    // makePreloadedProfile("5b3103a984ae3d88f239fb8e");
+	  fixIgDocumentType();
+
+  }
 
 
   /**
    * @param string
-   * @throws IGDocumentException 
+   * @throws IGDocumentException
    */
   private void makePreloadedProfile(String id) throws IGDocumentException {
     IGDocument igDocument = this.iGDocumentService.findOne(id);
     igDocument.setAccountId(null);
-    
+
     Date date = new Date();
     igDocument.setDateUpdated(new Date());
     igDocument.setScope(IGDocumentScope.PRELOADED);
@@ -423,12 +423,27 @@ public class Bootstrap implements InitializingBean {
     metaData.setTitle("CDC 2.5.1 Immunization Profile Z22");
     metaData.setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
     igDocument.setMetaData(metaData);
-    
+
     this.iGDocumentService.save(igDocument);
+  }
+  
+  void fixIgDocumentType(){
+	  List<IGDocument> allIgs=this.iGDocumentService.findAll();
+	  for(IGDocument ig : allIgs){
+		  if(!ig.getType().equals(Constant.Document)){
+			  ig.setType(Constant.Document);
+			  try {
+				this.iGDocumentService.save(ig);
+			} catch (IGDocumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		  }
+	  }
   }
 
 
-  public boolean exist(List<ValueSetOrSingleCodeBinding> bindings, ValueSetBinding binding){
+  public boolean exist(List<ValueSetOrSingleCodeBinding> bindings, ValueSetBinding binding) {
     boolean found = false;
     for (ValueSetOrSingleCodeBinding b : bindings) {
       if (b instanceof ValueSetBinding && b.getTableId().equals(binding.getTableId())) {
@@ -438,50 +453,52 @@ public class Bootstrap implements InitializingBean {
     return found;
   }
 
-  
-  public void fixDuplicateValueSets(){
+
+  public void fixDuplicateValueSets() {
     List<Segment> segments = this.segmentService.findByScope("HL7STANDARD");
     for (Segment s : segments) {
-      List<ValueSetOrSingleCodeBinding> valueSetBindings = s.getValueSetBindings(); 
-      List<ValueSetOrSingleCodeBinding> newValueSetBindings = new ArrayList<ValueSetOrSingleCodeBinding>();
-      if(valueSetBindings != null){
-        for(ValueSetOrSingleCodeBinding binding: valueSetBindings){
+      List<ValueSetOrSingleCodeBinding> valueSetBindings = s.getValueSetBindings();
+      List<ValueSetOrSingleCodeBinding> newValueSetBindings =
+          new ArrayList<ValueSetOrSingleCodeBinding>();
+      if (valueSetBindings != null) {
+        for (ValueSetOrSingleCodeBinding binding : valueSetBindings) {
           if (binding instanceof ValueSetBinding) {
             ValueSetBinding vs = (ValueSetBinding) binding;
-            if(!exist(newValueSetBindings, vs)){
-              newValueSetBindings.add( vs); 
+            if (!exist(newValueSetBindings, vs)) {
+              newValueSetBindings.add(vs);
             }
-          }else{
+          } else {
             newValueSetBindings.add(binding);
           }
-        } 
+        }
         s.setValueSetBindings(newValueSetBindings);
         segmentService.save(s);
-        
+
       }
     }
-    
-    
+
+
     List<Datatype> datatypes = this.datatypeService.findByScope("HL7STANDARD");
     for (Datatype s : datatypes) {
-      List<ValueSetOrSingleCodeBinding> valueSetBindings = s.getValueSetBindings(); 
-      List<ValueSetOrSingleCodeBinding> newValueSetBindings = new ArrayList<ValueSetOrSingleCodeBinding>();
-      if(valueSetBindings != null){
-        for(ValueSetOrSingleCodeBinding binding: valueSetBindings){
+      List<ValueSetOrSingleCodeBinding> valueSetBindings = s.getValueSetBindings();
+      List<ValueSetOrSingleCodeBinding> newValueSetBindings =
+          new ArrayList<ValueSetOrSingleCodeBinding>();
+      if (valueSetBindings != null) {
+        for (ValueSetOrSingleCodeBinding binding : valueSetBindings) {
           if (binding instanceof ValueSetBinding) {
             ValueSetBinding vs = (ValueSetBinding) binding;
-            if(!exist(newValueSetBindings, vs)){
-              newValueSetBindings.add( vs); 
+            if (!exist(newValueSetBindings, vs)) {
+              newValueSetBindings.add(vs);
             }
-          }else{
+          } else {
             newValueSetBindings.add(binding);
           }
-        } 
+        }
         s.setValueSetBindings(newValueSetBindings);
         datatypeService.save(s);
       }
     }
-    
+
   }
 
 
@@ -527,7 +544,7 @@ public class Bootstrap implements InitializingBean {
             System.out.println("Label:" + s.getLabel());
             System.out.println("rowSize1:" + coConstraintsTable.getRowSize());
             System.out.println("rowSize2:" + coConstraintsTable.getIfColumnData().size());
-            
+
             this.segmentService.save(s);
 
           }
@@ -702,7 +719,7 @@ public class Bootstrap implements InitializingBean {
         for (ValueSetOrSingleCodeBinding binding : d.getValueSetBindings()) {
           if (binding instanceof ValueSetBinding) {
             if (tableService.findOneShortById(binding.getTableId()) != null) {
-              finalList.add((ValueSetBinding) binding);
+              finalList.add(binding);
             }
           }
         }
@@ -721,7 +738,7 @@ public class Bootstrap implements InitializingBean {
         for (ValueSetOrSingleCodeBinding binding : s.getValueSetBindings()) {
           if (binding instanceof ValueSetBinding) {
             if (tableService.findById(binding.getTableId()) != null) {
-              finalList.add((ValueSetBinding) binding);
+              finalList.add(binding);
             }
           }
         }

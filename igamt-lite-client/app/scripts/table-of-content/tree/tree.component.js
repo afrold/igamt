@@ -237,12 +237,18 @@ angular
             var dest = destNodes.$parent.$modelValue;
             var dataTypeDest = destNodes.$element.attr('data-type');
             var dataTypeSource = sourceNode.$element.attr('data-type');
-            // event.source.nodeScope.$modelValue.sectionPosition =
+
+
+            console.log(""+dataTypeDest);
+            console.log(dataTypeDest);
+
+
+              // event.source.nodeScope.$modelValue.sectionPosition =
             // sortAfter + 1;
 
             var parentSource = sourceNode.$parentNodeScope.$modelValue;
             var parentDest = event.dest.nodesScope.$nodeScope.$modelValue;
-
+             console.log()
 
             if (dataTypeDest === "messages") {
               console.log("========ordering messages");
@@ -279,7 +285,7 @@ angular
                   return "";
                 });
               } else {
-                console.log(" ordering 2 sections ");
+                console.log("ordering 2 sections ");
                 $scope.updatePositions(parentSource.childSections);
                 $scope.updatePositions(parentDest.childSections);
                 SectionSvc.update($rootScope.igdocument.id, parentSource).then(function() {
