@@ -77,7 +77,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notifications;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
@@ -361,8 +360,8 @@ public class Bootstrap implements InitializingBean {
 
     // changeEmptyToNA();
 
-     removePreloadedIGs("CDC 2.5.1 Immunization Profile");
-     removePreloadedIGs("ONC Immunization Profile");
+//     removePreloadedIGs("CDC 2.5.1 Immunization Profile");
+//     removePreloadedIGs("ONC Immunization Profile");
 //     importXMLProfile("ONC-Profiles/Profiles/VXU-Z22_Profile.xml",
 //     "ONC-Profiles/Tables/VXU-Z22_ValueSetLibrary.xml",
 //     "ONC-Profiles/Constraints/VXU-Z22_Constraints.xml", "CDC 2.5.1 Immunization Profile Z22");
@@ -396,13 +395,69 @@ public class Bootstrap implements InitializingBean {
 //    fixValueSetDataDB();
      
      
-     removePreloadedIGs("CDC 2.5.1 Immunization Profile");
-     removePreloadedIGs("ONC Immunization Profile");
-     
+//     removePreloadedIGs("CDC 2.5.1 Immunization Profile");
+//     removePreloadedIGs("ONC Immunization Profile");
+//     
+//    
+//     makePreloadedProfile("5b3103a984ae3d88f239fb8e");
     
-     makePreloadedProfile("5b3103a984ae3d88f239fb8e");
     
+    removeWrongBindingData("5b21730984ae53d88a68bed2", new String[]{"57e43a2b84ae7eaed5fbdf83", "57e624d684aea6fcfcde915f"});
+    removeWrongBindingData("5b352a9c84aeb042c3e441b9", new String[]{"57e43a2b84ae7eaed5fbdf83", "57e624d684aea6fcfcde915f"});
   } 
+
+
+  /**
+   * @param string
+   * @param strings
+   */
+  private void removeWrongBindingData(String igId, String[] valueSetIds) {
+    
+    IGDocument igDoc = this.iGDocumentService.findOne(igId);
+    
+    if(igDoc != null){
+      for(SegmentLink sl : igDoc.getProfile().getSegmentLibrary().getChildren()){
+        Segment s = this.segmentService.findById(sl.getId());
+        Set<ValueSetOrSingleCodeBinding> toBeDeletedBindings = new HashSet<ValueSetOrSingleCodeBinding>();
+        if(s != null && s.getValueSetBindings() != null){
+          for(ValueSetOrSingleCodeBinding binding : s.getValueSetBindings()){
+            if(binding instanceof ValueSetBinding){
+              ValueSetBinding valueSetBinding = (ValueSetBinding)binding;
+              if(Arrays.asList(valueSetIds).contains(valueSetBinding.getTableId())){
+                toBeDeletedBindings.add(valueSetBinding);
+              }
+            }
+          }
+          for(ValueSetOrSingleCodeBinding binding:toBeDeletedBindings){
+            s.getValueSetBindings().remove(binding);
+          }
+        }
+        
+        this.segmentService.save(s);
+      }
+      
+      for(DatatypeLink dl : igDoc.getProfile().getDatatypeLibrary().getChildren()){
+        Datatype d = this.datatypeService.findById(dl.getId());
+        Set<ValueSetOrSingleCodeBinding> toBeDeletedBindings = new HashSet<ValueSetOrSingleCodeBinding>();
+        if(d != null && d.getValueSetBindings() != null){
+          for(ValueSetOrSingleCodeBinding binding : d.getValueSetBindings()){
+            if(binding instanceof ValueSetBinding){
+              ValueSetBinding valueSetBinding = (ValueSetBinding)binding;
+              if(Arrays.asList(valueSetIds).contains(valueSetBinding.getTableId())){
+                toBeDeletedBindings.add(valueSetBinding);
+              }
+            }
+          }
+          
+          for(ValueSetOrSingleCodeBinding binding:toBeDeletedBindings){
+            d.getValueSetBindings().remove(binding);
+          }
+        }
+        
+        this.datatypeService.save(d);
+      }
+    }
+  }
 
 
   /**
