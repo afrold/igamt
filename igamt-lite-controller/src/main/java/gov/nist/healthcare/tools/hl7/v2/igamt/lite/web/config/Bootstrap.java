@@ -360,54 +360,108 @@ public class Bootstrap implements InitializingBean {
 
     // changeEmptyToNA();
 
-    // removePreloadedIGs("CDC 2.5.1 Immunization Profile");
-    // removePreloadedIGs("ONC Immunization Profile");
-    // importXMLProfile("ONC-Profiles/Profiles/VXU-Z22_Profile.xml",
-    // "ONC-Profiles/Tables/VXU-Z22_ValueSetLibrary.xml",
-    // "ONC-Profiles/Constraints/VXU-Z22_Constraints.xml", "CDC 2.5.1 Immunization Profile Z22");
-    // importXMLProfile("ONC-Profiles/Profiles/ACK-Z23_Profile.xml",
-    // "ONC-Profiles/Tables/ACK-Z23_ValueSetLibrary.xml",
-    // "ONC-Profiles/Constraints/ACK-Z23_Constraints.xml", "CDC 2.5.1 Immunization Profile Z23");
-    // importXMLProfile("ONC-Profiles/Profiles/RSP-Z31_Profile.xml",
-    // "ONC-Profiles/Tables/RSP-Z31_ValueSetLibrary.xml",
-    // "ONC-Profiles/Constraints/RSP-Z31_Constraints.xml", "CDC 2.5.1 Immunization Profile Z31");
-    // importXMLProfile("ONC-Profiles/Profiles/RSP-Z32_Profile.xml",
-    // "ONC-Profiles/Tables/RSP-Z32_ValueSetLibrary.xml",
-    // "ONC-Profiles/Constraints/RSP-Z32_Constraints.xml", "CDC 2.5.1 Immunization Profile Z32");
-    // importXMLProfile("ONC-Profiles/Profiles/RSP-Z33_Profile.xml",
-    // "ONC-Profiles/Tables/RSP-Z33_ValueSetLibrary.xml",
-    // "ONC-Profiles/Constraints/RSP-Z33_Constraints.xml", "CDC 2.5.1 Immunization Profile Z33");
-    // importXMLProfile("ONC-Profiles/Profiles/QBP-Z34_Profile.xml",
-    // "ONC-Profiles/Tables/QBP-Z34_ValueSetLibrary.xml",
-    // "ONC-Profiles/Constraints/QBP-Z34_Constraints.xml", "CDC 2.5.1 Immunization Profile Z34");
-    // importXMLProfile("ONC-Profiles/Profiles/RSP-Z42_Profile.xml",
-    // "ONC-Profiles/Tables/RSP-Z42_ValueSetLibrary.xml",
-    // "ONC-Profiles/Constraints/RSP-Z42_Constraints.xml", "CDC 2.5.1 Immunization Profile Z42");
-    // importXMLProfile("ONC-Profiles/Profiles/QBP-Z44_Profile.xml",
-    // "ONC-Profiles/Tables/QBP-Z44_ValueSetLibrary.xml",
-    // "ONC-Profiles/Constraints/QBP-Z44_Constraints.xml", "CDC 2.5.1 Immunization Profile Z44");
-    //
-    //
-    // correctSegmentCocon();
-
+//     removePreloadedIGs("CDC 2.5.1 Immunization Profile");
+//     removePreloadedIGs("ONC Immunization Profile");
+//     importXMLProfile("ONC-Profiles/Profiles/VXU-Z22_Profile.xml",
+//     "ONC-Profiles/Tables/VXU-Z22_ValueSetLibrary.xml",
+//     "ONC-Profiles/Constraints/VXU-Z22_Constraints.xml", "CDC 2.5.1 Immunization Profile Z22");
+//     importXMLProfile("ONC-Profiles/Profiles/ACK-Z23_Profile.xml",
+//     "ONC-Profiles/Tables/ACK-Z23_ValueSetLibrary.xml",
+//     "ONC-Profiles/Constraints/ACK-Z23_Constraints.xml", "CDC 2.5.1 Immunization Profile Z23");
+//     importXMLProfile("ONC-Profiles/Profiles/RSP-Z31_Profile.xml",
+//     "ONC-Profiles/Tables/RSP-Z31_ValueSetLibrary.xml",
+//     "ONC-Profiles/Constraints/RSP-Z31_Constraints.xml", "CDC 2.5.1 Immunization Profile Z31");
+//     importXMLProfile("ONC-Profiles/Profiles/RSP-Z32_Profile.xml",
+//     "ONC-Profiles/Tables/RSP-Z32_ValueSetLibrary.xml",
+//     "ONC-Profiles/Constraints/RSP-Z32_Constraints.xml", "CDC 2.5.1 Immunization Profile Z32");
+//     importXMLProfile("ONC-Profiles/Profiles/RSP-Z33_Profile.xml",
+//     "ONC-Profiles/Tables/RSP-Z33_ValueSetLibrary.xml",
+//     "ONC-Profiles/Constraints/RSP-Z33_Constraints.xml", "CDC 2.5.1 Immunization Profile Z33");
+//     importXMLProfile("ONC-Profiles/Profiles/QBP-Z34_Profile.xml",
+//     "ONC-Profiles/Tables/QBP-Z34_ValueSetLibrary.xml",
+//     "ONC-Profiles/Constraints/QBP-Z34_Constraints.xml", "CDC 2.5.1 Immunization Profile Z34");
+//     importXMLProfile("ONC-Profiles/Profiles/RSP-Z42_Profile.xml",
+//     "ONC-Profiles/Tables/RSP-Z42_ValueSetLibrary.xml",
+//     "ONC-Profiles/Constraints/RSP-Z42_Constraints.xml", "CDC 2.5.1 Immunization Profile Z42");
+//     importXMLProfile("ONC-Profiles/Profiles/QBP-Z44_Profile.xml",
+//     "ONC-Profiles/Tables/QBP-Z44_ValueSetLibrary.xml",
+//     "ONC-Profiles/Constraints/QBP-Z44_Constraints.xml", "CDC 2.5.1 Immunization Profile Z44");
+//
+//
+//    correctSegmentCocon();  
+    
     // fixDuplicateValueSets();
+    
+//    fixValueSetDataDB();
+     
+     
+//     removePreloadedIGs("CDC 2.5.1 Immunization Profile");
+//     removePreloadedIGs("ONC Immunization Profile");
+//     makePreloadedProfile("5b3103a984ae3d88f239fb8e");
+    
+    
+    removeWrongBindingData("5b21730984ae53d88a68bed2", new String[]{"57e43a2b84ae7eaed5fbdf83", "57e624d684aea6fcfcde915f"});
+    removeWrongBindingData("5b352a9c84aeb042c3e441b9", new String[]{"57e43a2b84ae7eaed5fbdf83", "57e624d684aea6fcfcde915f"});
 
-    // fixValueSetDataDB();
+    fixIgDocumentType();
 
+  }
 
-    // removePreloadedIGs("CDC 2.5.1 Immunization Profile");
-    // removePreloadedIGs("ONC Immunization Profile");
-    //
-    //
-    // makePreloadedProfile("5b3103a984ae3d88f239fb8e");
-	  fixIgDocumentType();
-
+  private void removeWrongBindingData(String igId, String[] valueSetIds) {
+    
+    IGDocument igDoc = this.iGDocumentService.findOne(igId);
+    
+    if(igDoc != null){
+      for(SegmentLink sl : igDoc.getProfile().getSegmentLibrary().getChildren()){
+        Segment s = this.segmentService.findById(sl.getId());
+        Set<ValueSetOrSingleCodeBinding> toBeDeletedBindings = new HashSet<ValueSetOrSingleCodeBinding>();
+        if(s != null && s.getValueSetBindings() != null){
+          for(ValueSetOrSingleCodeBinding binding : s.getValueSetBindings()){
+            if(binding instanceof ValueSetBinding){
+              ValueSetBinding valueSetBinding = (ValueSetBinding)binding;
+              if(Arrays.asList(valueSetIds).contains(valueSetBinding.getTableId())){
+                toBeDeletedBindings.add(valueSetBinding);
+              }
+            }
+          }
+          for(ValueSetOrSingleCodeBinding binding:toBeDeletedBindings){
+            s.getValueSetBindings().remove(binding);
+          }
+        }
+        
+        this.segmentService.save(s);
+      }
+      
+      for(DatatypeLink dl : igDoc.getProfile().getDatatypeLibrary().getChildren()){
+        Datatype d = this.datatypeService.findById(dl.getId());
+        Set<ValueSetOrSingleCodeBinding> toBeDeletedBindings = new HashSet<ValueSetOrSingleCodeBinding>();
+        if(d != null && d.getValueSetBindings() != null){
+          for(ValueSetOrSingleCodeBinding binding : d.getValueSetBindings()){
+            if(binding instanceof ValueSetBinding){
+              ValueSetBinding valueSetBinding = (ValueSetBinding)binding;
+              if(Arrays.asList(valueSetIds).contains(valueSetBinding.getTableId())){
+                toBeDeletedBindings.add(valueSetBinding);
+              }
+            }
+          }
+          
+          for(ValueSetOrSingleCodeBinding binding:toBeDeletedBindings){
+            d.getValueSetBindings().remove(binding);
+          }
+        }
+        
+        this.datatypeService.save(d);
+      }
+    }
   }
 
 
   /**
    * @param string
+   * @throws IGDocumentException 
+=======
    * @throws IGDocumentException
+>>>>>>> develop
    */
   private void makePreloadedProfile(String id) throws IGDocumentException {
     IGDocument igDocument = this.iGDocumentService.findOne(id);
