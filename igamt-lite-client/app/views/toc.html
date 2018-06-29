@@ -57,7 +57,7 @@
         <div ng-controller="TreeCtrl">
             <div ui-tree="treeOptions" style="margin-left:8px; margin-bottom :20px;">
                 <ol ui-tree-nodes="" ng-model="TreeIgs">
-                    <li ng-repeat="ig in TreeIgs" ui-tree-node>
+                    <li ng-repeat="ig in TreeIgs" ui-tree-node data-type="document">
                         <div ui-tree-handle class="treeRoot">
                             <span data-nodrag ng-click="editIg(ig)" confirm-click context-menu="igOptions">IG Document Metadata
                             </span>
@@ -69,12 +69,12 @@
                 {{getLabel(this)}}.{{section.sectionTitle}} </span>
                             </div>
                             <ol ui-tree-nodes="" ng-model="section.childSections" data-type="sections" ng-if="section.childSections&&!this.NodeScope.collapsed">
-                                <li ng-repeat="section in section.childSections" ui-tree-node ng-include="'nodes_renderer.html'" data-type="sections" ng-if="section.childSections&&!collapsed">
+                                <li ng-repeat="section in section.childSections" ui-tree-node  data-expand-on-hover ng-include="'nodes_renderer.html'" data-type="sections" ng-if="section.childSections&&!collapsed" >
                                 </li>
                             </ol>
                         </script>
                         <ol ui-tree-nodes="" ng-model="ig.childSections" data-type="sections" style="margin-left:0px;">
-                            <li ng-repeat="section in ig.childSections" ui-tree-node ng-include="'nodes_renderer.html'" data-type="sections" ng-init="x=section.sectionPosition" ng-if="!this.$parentNodeScope.collapsed" style="margin-left:0px;"></li>
+                            <li ng-repeat="section in ig.childSections" ui-tree-node data-expand-on-hover ng-include="'nodes_renderer.html'" data-type="sections" ng-init="x=section.sectionPosition" ng-if="!this.$parentNodeScope.collapsed" style="margin-left:0px;"></li>
                         </ol>
                         <div>
                             <i data-nodrag ng-click="switcherprofile()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !profilecollapsed, 'fa-caret-right': profilecollapsed}"></i>
