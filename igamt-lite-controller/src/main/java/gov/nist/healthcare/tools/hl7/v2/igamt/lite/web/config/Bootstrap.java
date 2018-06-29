@@ -397,20 +397,16 @@ public class Bootstrap implements InitializingBean {
      
 //     removePreloadedIGs("CDC 2.5.1 Immunization Profile");
 //     removePreloadedIGs("ONC Immunization Profile");
-//     
-//    
 //     makePreloadedProfile("5b3103a984ae3d88f239fb8e");
     
     
     removeWrongBindingData("5b21730984ae53d88a68bed2", new String[]{"57e43a2b84ae7eaed5fbdf83", "57e624d684aea6fcfcde915f"});
     removeWrongBindingData("5b352a9c84aeb042c3e441b9", new String[]{"57e43a2b84ae7eaed5fbdf83", "57e624d684aea6fcfcde915f"});
-  } 
 
+    fixIgDocumentType();
 
-  /**
-   * @param string
-   * @param strings
-   */
+  }
+
   private void removeWrongBindingData(String igId, String[] valueSetIds) {
     
     IGDocument igDoc = this.iGDocumentService.findOne(igId);
@@ -463,11 +459,14 @@ public class Bootstrap implements InitializingBean {
   /**
    * @param string
    * @throws IGDocumentException 
+=======
+   * @throws IGDocumentException
+>>>>>>> develop
    */
   private void makePreloadedProfile(String id) throws IGDocumentException {
     IGDocument igDocument = this.iGDocumentService.findOne(id);
     igDocument.setAccountId(null);
-    
+
     Date date = new Date();
     igDocument.setDateUpdated(new Date());
     igDocument.setScope(IGDocumentScope.PRELOADED);
@@ -478,12 +477,27 @@ public class Bootstrap implements InitializingBean {
     metaData.setTitle("CDC 2.5.1 Immunization Profile Z22");
     metaData.setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
     igDocument.setMetaData(metaData);
-    
+
     this.iGDocumentService.save(igDocument);
+  }
+  
+  void fixIgDocumentType(){
+	  List<IGDocument> allIgs=this.iGDocumentService.findAll();
+	  for(IGDocument ig : allIgs){
+		  if(!ig.getType().equals(Constant.Document)){
+			  ig.setType(Constant.Document);
+			  try {
+				this.iGDocumentService.save(ig);
+			} catch (IGDocumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		  }
+	  }
   }
 
 
-  public boolean exist(List<ValueSetOrSingleCodeBinding> bindings, ValueSetBinding binding){
+  public boolean exist(List<ValueSetOrSingleCodeBinding> bindings, ValueSetBinding binding) {
     boolean found = false;
     for (ValueSetOrSingleCodeBinding b : bindings) {
       if (b instanceof ValueSetBinding && b.getTableId().equals(binding.getTableId())) {
@@ -493,50 +507,52 @@ public class Bootstrap implements InitializingBean {
     return found;
   }
 
-  
-  public void fixDuplicateValueSets(){
+
+  public void fixDuplicateValueSets() {
     List<Segment> segments = this.segmentService.findByScope("HL7STANDARD");
     for (Segment s : segments) {
-      List<ValueSetOrSingleCodeBinding> valueSetBindings = s.getValueSetBindings(); 
-      List<ValueSetOrSingleCodeBinding> newValueSetBindings = new ArrayList<ValueSetOrSingleCodeBinding>();
-      if(valueSetBindings != null){
-        for(ValueSetOrSingleCodeBinding binding: valueSetBindings){
+      List<ValueSetOrSingleCodeBinding> valueSetBindings = s.getValueSetBindings();
+      List<ValueSetOrSingleCodeBinding> newValueSetBindings =
+          new ArrayList<ValueSetOrSingleCodeBinding>();
+      if (valueSetBindings != null) {
+        for (ValueSetOrSingleCodeBinding binding : valueSetBindings) {
           if (binding instanceof ValueSetBinding) {
             ValueSetBinding vs = (ValueSetBinding) binding;
-            if(!exist(newValueSetBindings, vs)){
-              newValueSetBindings.add( vs); 
+            if (!exist(newValueSetBindings, vs)) {
+              newValueSetBindings.add(vs);
             }
-          }else{
+          } else {
             newValueSetBindings.add(binding);
           }
-        } 
+        }
         s.setValueSetBindings(newValueSetBindings);
         segmentService.save(s);
-        
+
       }
     }
-    
-    
+
+
     List<Datatype> datatypes = this.datatypeService.findByScope("HL7STANDARD");
     for (Datatype s : datatypes) {
-      List<ValueSetOrSingleCodeBinding> valueSetBindings = s.getValueSetBindings(); 
-      List<ValueSetOrSingleCodeBinding> newValueSetBindings = new ArrayList<ValueSetOrSingleCodeBinding>();
-      if(valueSetBindings != null){
-        for(ValueSetOrSingleCodeBinding binding: valueSetBindings){
+      List<ValueSetOrSingleCodeBinding> valueSetBindings = s.getValueSetBindings();
+      List<ValueSetOrSingleCodeBinding> newValueSetBindings =
+          new ArrayList<ValueSetOrSingleCodeBinding>();
+      if (valueSetBindings != null) {
+        for (ValueSetOrSingleCodeBinding binding : valueSetBindings) {
           if (binding instanceof ValueSetBinding) {
             ValueSetBinding vs = (ValueSetBinding) binding;
-            if(!exist(newValueSetBindings, vs)){
-              newValueSetBindings.add( vs); 
+            if (!exist(newValueSetBindings, vs)) {
+              newValueSetBindings.add(vs);
             }
-          }else{
+          } else {
             newValueSetBindings.add(binding);
           }
-        } 
+        }
         s.setValueSetBindings(newValueSetBindings);
         datatypeService.save(s);
       }
     }
-    
+
   }
 
 
@@ -582,7 +598,7 @@ public class Bootstrap implements InitializingBean {
             System.out.println("Label:" + s.getLabel());
             System.out.println("rowSize1:" + coConstraintsTable.getRowSize());
             System.out.println("rowSize2:" + coConstraintsTable.getIfColumnData().size());
-            
+
             this.segmentService.save(s);
 
           }
@@ -757,7 +773,7 @@ public class Bootstrap implements InitializingBean {
         for (ValueSetOrSingleCodeBinding binding : d.getValueSetBindings()) {
           if (binding instanceof ValueSetBinding) {
             if (tableService.findOneShortById(binding.getTableId()) != null) {
-              finalList.add((ValueSetBinding) binding);
+              finalList.add(binding);
             }
           }
         }
@@ -776,7 +792,7 @@ public class Bootstrap implements InitializingBean {
         for (ValueSetOrSingleCodeBinding binding : s.getValueSetBindings()) {
           if (binding instanceof ValueSetBinding) {
             if (tableService.findById(binding.getTableId()) != null) {
-              finalList.add((ValueSetBinding) binding);
+              finalList.add(binding);
             }
           }
         }
