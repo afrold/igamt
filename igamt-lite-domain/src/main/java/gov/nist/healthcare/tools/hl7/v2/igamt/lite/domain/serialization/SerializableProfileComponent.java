@@ -1,15 +1,24 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ProfileComponentSerializationException;
-import nu.xom.Attribute;
-import nu.xom.Element;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SingleCodeBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponent;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentAttributes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ProfileComponentSerializationException;
+import nu.xom.Attribute;
+import nu.xom.Element;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -33,6 +42,8 @@ public class SerializableProfileComponent extends SerializableSection {
     private Boolean showInnerLinks;
     private String host;
     private List<SubProfileComponent> subComponentsToBeExported;
+    private SerializableConstraints serializableConformanceStatements;
+    private SerializableConstraints serializablePredicates;
 
     public SerializableProfileComponent(String id, String prefix, String position,
         String headerLevel, String title, ProfileComponent profileComponent, Map<SubProfileComponentAttributes,String> definitionTexts, String defPreText, String defPostText, Map<String,Table> tableidTableMap, Boolean showInnerLinks, String host, List<SubProfileComponent> subComponentsToBeExported) {
@@ -72,6 +83,8 @@ public class SerializableProfileComponent extends SerializableSection {
         if (this.profileComponent.getComment() != null && !this.profileComponent.getComment().isEmpty()) {
             profileComponentElement.addAttribute(new Attribute("Comment", this.profileComponent.getComment()));
         }
+        List<SerializableConstraint> predicates = new ArrayList<>();
+        List<SerializableConstraint> conformanceStatements = new ArrayList<>();
         for(SubProfileComponent subProfileComponent : subComponentsToBeExported){
             if(subProfileComponent!=null && subProfileComponent.getAttributes() != null) {
                 SubProfileComponentAttributes subProfileComponentAttributes =
@@ -161,6 +174,14 @@ public class SerializableProfileComponent extends SerializableSection {
                           }
                         }
                     }
+                    if(subProfileComponentAttributes.getPredicate()!=null) {
+                    		predicates.add(new SerializableConstraint(subProfileComponentAttributes.getPredicate(), subProfileComponent.getPath()));
+                    }
+                    if(subProfileComponentAttributes.getConformanceStatements() != null && !subProfileComponentAttributes.getConformanceStatements().isEmpty()) {
+	                    	for(ConformanceStatement conformanceStatement : subProfileComponentAttributes.getConformanceStatements()) {
+	                			conformanceStatements.add(new SerializableConstraint(conformanceStatement, subProfileComponent.getPath()));
+	                    	}
+                    }
                     if(definitionTexts!=null && definitionTexts.containsKey(subProfileComponentAttributes)){
                         subProfileComponentElement
                             .addAttribute(new Attribute("DefinitionText", definitionTexts.get(subProfileComponentAttributes)));
@@ -181,7 +202,25 @@ public class SerializableProfileComponent extends SerializableSection {
                 }
             }
         }
+        this.serializableConformanceStatements = new SerializableConstraints(conformanceStatements, this.profileComponent.getId(),"1","Conformance Statements", "cs");
+        this.serializablePredicates = new SerializableConstraints(predicates, this.profileComponent.getId(),"2","Predicates", "cs");
+        try {
+			profileComponentElement.appendChild(serializableConformanceStatements.serializeElement());
+			profileComponentElement.appendChild(serializablePredicates.serializeElement());
+		} catch (ConstraintSerializationException e) {
+			throw new ProfileComponentSerializationException(e, this.profileComponent.getName());
+		}
         return profileComponentElement;
     }
+
+	public SerializableConstraints getSerializableConformanceStatements() {
+		return serializableConformanceStatements;
+	}
+
+	public SerializableConstraints getSerializablePredicates() {
+		return serializablePredicates;
+	}
+    
+    
 
 }

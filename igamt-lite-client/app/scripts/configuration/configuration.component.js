@@ -102,7 +102,7 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
     }
 
     $scope.restoreDefaultExportConfig = function () {
-        ConfigurationService.restoreDefault($scope.config).then(function (response) {
+        ConfigurationService.restoreDefaultExportConfig($scope.config).then(function (response) {
             console.log(response);
             $scope.config = response;
             $scope.resetChanged();
