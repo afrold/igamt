@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.exception.DatatypeNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.exception.TableNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.*;
 import org.apache.commons.lang3.StringUtils;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CoConstraintExportMode;
@@ -24,6 +21,15 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstrai
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintsTable;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.exception.DatatypeNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.exception.TableNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.CoConstraintDataSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.CoConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.DynamicMappingItemSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.DynamicMappingSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.FieldSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.SegmentSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.TableSerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Text;
@@ -238,7 +244,7 @@ public class SerializableSegment extends SerializableSection {
         DynamicMappingDefinition dynamicMappingDefinition = segment.getDynamicMappingDefinition();
         if (dynamicMappingDefinition != null && !dynamicMappingDefinition.getDynamicMappingItems()
             .isEmpty()) {
-          Element dynamicMappingElement = generateDynamicMappingElement();
+          Element dynamicMappingElement = generateDynamicMappingElement(dynamicMappingDefinition, this.dynamicMappingDatatypeMap);
           if (dynamicMappingElement != null) {
             segmentElement.appendChild(dynamicMappingElement);
           }
@@ -253,7 +259,7 @@ public class SerializableSegment extends SerializableSection {
   
   
   Element generateCoConstraintsTable() throws CoConstraintSerializationException{
-	  if(this.coConstraintExportMode ==null||this.coConstraintExportMode.equals(coConstraintExportMode.COMPACT)){
+	  if(this.coConstraintExportMode ==null||this.coConstraintExportMode.equals(CoConstraintExportMode.COMPACT)){
 		  return this.generateCoConstraintsTableCompact();
 		  
 	  }else{
@@ -261,9 +267,8 @@ public class SerializableSegment extends SerializableSection {
 	  }
 	  
   }
-  private Element generateDynamicMappingElement() throws DynamicMappingSerializationException {
+  public static Element generateDynamicMappingElement(DynamicMappingDefinition dynamicMappingDefinition, Map<String, Datatype> dynamicMappingDatatypeMap) throws DynamicMappingSerializationException {
     try {
-      DynamicMappingDefinition dynamicMappingDefinition = segment.getDynamicMappingDefinition();
       Element dynamicMappingElement = new Element("DynamicMapping");
       if (dynamicMappingDefinition.getMappingStructure() != null) {
         String basePath = "";
@@ -303,7 +308,7 @@ public class SerializableSegment extends SerializableSection {
                   .indexOf(dynamicMappingItem) + "]","Missing second reference value");
             }*/
             if(dynamicMappingItem.getDatatypeId() != null && !dynamicMappingItem.getDatatypeId().isEmpty()){
-	            Datatype datatype = this.dynamicMappingDatatypeMap.get(dynamicMappingItem.getDatatypeId());
+	            Datatype datatype = dynamicMappingDatatypeMap.get(dynamicMappingItem.getDatatypeId());
 	            if (datatype != null) {
 	              dynamicMappingItemElement.addAttribute(new Attribute("Datatype", datatype.getLabel()));
 	            } else {

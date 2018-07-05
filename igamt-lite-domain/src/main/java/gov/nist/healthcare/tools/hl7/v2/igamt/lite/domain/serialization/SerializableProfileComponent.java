@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponent;
@@ -16,6 +17,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.DynamicMappingSerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ProfileComponentSerializationException;
 import nu.xom.Attribute;
 import nu.xom.Element;
@@ -44,9 +46,10 @@ public class SerializableProfileComponent extends SerializableSection {
     private List<SubProfileComponent> subComponentsToBeExported;
     private SerializableConstraints serializableConformanceStatements;
     private SerializableConstraints serializablePredicates;
+    private Map<String, Datatype> dynamicMappingDatatypeMap;
 
     public SerializableProfileComponent(String id, String prefix, String position,
-        String headerLevel, String title, ProfileComponent profileComponent, Map<SubProfileComponentAttributes,String> definitionTexts, String defPreText, String defPostText, Map<String,Table> tableidTableMap, Boolean showInnerLinks, String host, List<SubProfileComponent> subComponentsToBeExported) {
+        String headerLevel, String title, ProfileComponent profileComponent, Map<SubProfileComponentAttributes,String> definitionTexts, String defPreText, String defPostText, Map<String,Table> tableidTableMap, Boolean showInnerLinks, String host, List<SubProfileComponent> subComponentsToBeExported, Map<String, Datatype> dynamicMappingDatatypeMap) {
         super(id, prefix, position, headerLevel, title);
         this.profileComponent = profileComponent;
         this.definitionTexts = definitionTexts;
@@ -56,6 +59,7 @@ public class SerializableProfileComponent extends SerializableSection {
         this.showInnerLinks = showInnerLinks;
         this.subComponentsToBeExported = subComponentsToBeExported;
         this.host = host;
+        this.dynamicMappingDatatypeMap = dynamicMappingDatatypeMap;
     }
 
     @Override public Element serializeElement() throws ProfileComponentSerializationException {
@@ -181,6 +185,14 @@ public class SerializableProfileComponent extends SerializableSection {
 	                    	for(ConformanceStatement conformanceStatement : subProfileComponentAttributes.getConformanceStatements()) {
 	                			conformanceStatements.add(new SerializableConstraint(conformanceStatement, subProfileComponent.getPath()));
 	                    	}
+                    }
+                    if(subProfileComponentAttributes.getDynamicMappingDefinition() != null) {
+                    		try {
+							Element dynamicMappingElement = SerializableSegment.generateDynamicMappingElement(subProfileComponentAttributes.getDynamicMappingDefinition(), this.dynamicMappingDatatypeMap);
+							profileComponentElement.appendChild(dynamicMappingElement);
+                    		} catch (DynamicMappingSerializationException e) {
+							throw new ProfileComponentSerializationException(e, this.profileComponent.getName());
+						}
                     }
                     if(definitionTexts!=null && definitionTexts.containsKey(subProfileComponentAttributes)){
                         subProfileComponentElement

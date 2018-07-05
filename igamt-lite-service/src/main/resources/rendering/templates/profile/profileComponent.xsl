@@ -3,7 +3,7 @@
     <xsl:include href="/rendering/templates/profile/definitionText.xsl"/>
     <xsl:include href="/rendering/templates/profile/conformanceStatementHeader.xsl"/>
     <xsl:include href="/rendering/templates/profile/predicateHeader.xsl"/>
-    
+    <xsl:include href="/rendering/templates/profile/dynamicMapping.xsl"/>
 
     <xsl:template match="ProfileComponent" mode="toc">
         <xsl:element name="a">
@@ -310,6 +310,7 @@
                 </xsl:element>
             </xsl:element>
         </xsl:element>
+        <xsl:apply-templates select="./DynamicMapping"/>
         <xsl:if test="count(Constraints/Constraint[@Type='cs']) &gt; 0">
             <xsl:element name="br"/>
             <xsl:element name="span">

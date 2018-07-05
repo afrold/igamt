@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.exception.DatatypeNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.exception.ProfileComponentNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,10 @@ import org.springframework.stereotype.Service;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableElement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.DynamicMappingItemSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.DynamicMappingSerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ProfileComponentSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeProfileComponentService;
@@ -39,6 +43,7 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
     @Autowired ProfileComponentService profileComponentService;
     @Autowired SerializationUtil serializationUtil;
     @Autowired TableService tableService;
+    @Autowired DatatypeService datatypeService;
 
     @Override public SerializableSection serializeProfileComponent(
         ProfileComponentLink profileComponentLink, Integer position, UsageConfig profileComponentItemsExport) throws ProfileComponentNotFoundException, ProfileComponentSerializationException {
@@ -63,6 +68,7 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
 	            Map<SubProfileComponentAttributes,String> definitionTexts = new HashMap<>();
 	            Map<String,Table> tableidTableMap = new HashMap<>();
 	            List<SubProfileComponent> subComponentsToBeExported = new ArrayList<>();
+	            Map<String, Datatype> dynamicMappingDatatypeMap = new HashMap<>();
 	            for(SubProfileComponent subProfileComponent : profileComponent.getChildren()){
 					boolean exportItem = false;
 					if(subProfileComponent.getFrom().equals("message")){
@@ -80,6 +86,32 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
 					    }
 					} else {
 						exportItem = true;
+					}
+					if(subProfileComponent.getAttributes().getDynamicMappingDefinition() != null) {
+						DynamicMappingDefinition dynamicMappingDefinition = subProfileComponent.getAttributes().getDynamicMappingDefinition();
+						if (dynamicMappingDefinition != null) {
+		                    try {
+		                        for (DynamicMappingItem dynamicMappingItem : dynamicMappingDefinition.getDynamicMappingItems()) {
+		                            try {
+		                                if (dynamicMappingItem != null
+		                                    && dynamicMappingItem.getDatatypeId() != null) {
+		                                    Datatype datatype = datatypeService.findById(dynamicMappingItem.getDatatypeId());
+		                                    if (datatype != null) {
+		                                        dynamicMappingDatatypeMap
+		                                            .put(dynamicMappingItem.getDatatypeId(), datatype);
+		                                    } else {
+		                                        throw new DatatypeNotFoundException(dynamicMappingItem.getDatatypeId());
+		                                    }
+		                                }
+		                            } catch (Exception e) {
+		                                throw new DynamicMappingItemSerializationException(e,
+		                                    dynamicMappingDefinition.getDynamicMappingItems().indexOf(dynamicMappingItem)+1);
+		                            }
+		                        }
+		                    } catch (Exception e) {
+		                        throw new DynamicMappingSerializationException(e, "DynamicMapping");
+		                    }
+		                }
 					}
 					if(exportItem){
 						subComponentsToBeExported.add(subProfileComponent);
@@ -110,8 +142,8 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
 	            }
 	            if(profileComponent.getDefPostText()!=null&&!profileComponent.getDefPostText().isEmpty()){
 	                defPostText = serializationUtil.cleanRichtext(profileComponent.getDefPostText());
-	            }
-	            SerializableProfileComponent serializableProfileComponent = new SerializableProfileComponent(id, profileComponent.getName(),segmentPosition,sectionHeaderLevel,title,profileComponent,definitionTexts, defPreText,defPostText,tableidTableMap, showInnerLinks, host,subComponentsToBeExported);
+	            }                
+	            SerializableProfileComponent serializableProfileComponent = new SerializableProfileComponent(id, profileComponent.getName(),segmentPosition,sectionHeaderLevel,title,profileComponent,definitionTexts, defPreText,defPostText,tableidTableMap, showInnerLinks, host,subComponentsToBeExported, dynamicMappingDatatypeMap);
 	            if(serializableProfileComponent != null) {
 	                serializableSection.addSection(serializableProfileComponent);
 	                return serializableSection;
