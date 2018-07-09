@@ -17,6 +17,7 @@
         <xsl:text>.hidden { display: none; }</xsl:text>
         <xsl:text>.unhidden { display:block; }</xsl:text>
         <xsl:text>.btn { float:right; }</xsl:text>
+        <xsl:text>html { margin-bottom: 10px;}</xsl:text>
         <xsl:text>
 
             body {counter-reset: h1}
