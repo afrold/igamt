@@ -28,7 +28,9 @@ public interface SerializeProfileComponentService {
 
 	public SerializableSection serializeProfileComponent(ProfileComponentLink profileComponentLink, Integer position,
 			UsageConfig profileComponentItemsExport, CoConstraintExportMode coConstraintExportMode,
-			Boolean greyOutOBX2FlavorColumn)
+			Boolean greyOutOBX2FlavorColumn, boolean includeProfileComponentConformanceStatements,
+			boolean includeProfileComponentConditionalPredicates, boolean includeProfileComponentCoConstraints,
+			boolean includeProfileComponentDynamicMapping)
 			throws ProfileComponentNotFoundException, ProfileComponentSerializationException;
 
 	public SerializableElement serializeProfileComponent(ProfileComponent profileComponent, String host)

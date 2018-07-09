@@ -60,13 +60,17 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
 	@Override
 	public SerializableSection serializeProfileComponent(ProfileComponentLink profileComponentLink, Integer position,
 			UsageConfig profileComponentItemsExport, CoConstraintExportMode coConstraintExportMode,
-			Boolean greyOutOBX2FlavorColumn)
+			Boolean greyOutOBX2FlavorColumn, boolean includeProfileComponentConformanceStatements,
+			boolean includeProfileComponentConditionalPredicates, boolean includeProfileComponentCoConstraints,
+			boolean includeProfileComponentDynamicMapping)
 			throws ProfileComponentNotFoundException, ProfileComponentSerializationException {
 		if (profileComponentLink != null) {
 			ProfileComponent profileComponent = profileComponentService.findById(profileComponentLink.getId());
 			if (profileComponent != null) {
 				return serializeProfileComponent(profileComponent, position, String.valueOf(3), false, null,
-						profileComponentItemsExport, coConstraintExportMode, greyOutOBX2FlavorColumn);
+						profileComponentItemsExport, coConstraintExportMode, greyOutOBX2FlavorColumn,
+						includeProfileComponentConformanceStatements, includeProfileComponentConditionalPredicates,
+						includeProfileComponentCoConstraints, includeProfileComponentDynamicMapping);
 			} else {
 				throw new ProfileComponentNotFoundException(profileComponentLink.getId(),
 						profileComponentLink.getName());
@@ -77,7 +81,9 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
 
 	private SerializableSection serializeProfileComponent(ProfileComponent profileComponent, Integer position,
 			String sectionHeaderLevel, Boolean showInnerLinks, String host, UsageConfig profileComponentItemsExport,
-			CoConstraintExportMode coConstraintExportMode, Boolean greyOutOBX2FlavorColumn)
+			CoConstraintExportMode coConstraintExportMode, Boolean greyOutOBX2FlavorColumn, boolean includeProfileComponentConformanceStatements,
+			boolean includeProfileComponentConditionalPredicates, boolean includeProfileComponentCoConstraints,
+			boolean includeProfileComponentDynamicMapping)
 			throws ProfileComponentSerializationException {
 		try {
 			if (profileComponent != null) {
@@ -213,7 +219,9 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
 						profileComponent.getName(), segmentPosition, sectionHeaderLevel, title, profileComponent,
 						definitionTexts, defPreText, defPostText, tableidTableMap, showInnerLinks, host,
 						subComponentsToBeExported, dynamicMappingDatatypeMap, coConstraintValueTableMap,
-						coConstraintDatatypeMap, coConstraintExportMode, greyOutOBX2FlavorColumn);
+						coConstraintDatatypeMap, coConstraintExportMode, greyOutOBX2FlavorColumn,
+						includeProfileComponentConformanceStatements, includeProfileComponentConditionalPredicates,
+						includeProfileComponentCoConstraints, includeProfileComponentDynamicMapping);
 				if (serializableProfileComponent != null) {
 					serializableSection.addSection(serializableProfileComponent);
 					return serializableSection;
@@ -231,6 +239,10 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
 		return serializeProfileComponent(profileComponent, 0, String.valueOf(1), true, host,
 				ExportConfig.getBasicExportConfig(true).getProfileComponentItemsExport(),
 				ExportConfig.getBasicExportConfig(true).getCoConstraintExportMode(),
-				ExportConfig.getBasicExportConfig(true).isGreyOutOBX2FlavorColumn());
+				ExportConfig.getBasicExportConfig(true).isGreyOutOBX2FlavorColumn(),
+				ExportConfig.getBasicExportConfig(true).isIncludeProfileComponentConformanceStatements(),
+				ExportConfig.getBasicExportConfig(true).isIncludeProfileComponentConditionalPredicates(),
+				ExportConfig.getBasicExportConfig(true).isIncludeProfileComponentCoConstraints(),
+				ExportConfig.getBasicExportConfig(true).isIncludeProfileComponentDynamicMapping());
 	}
 }

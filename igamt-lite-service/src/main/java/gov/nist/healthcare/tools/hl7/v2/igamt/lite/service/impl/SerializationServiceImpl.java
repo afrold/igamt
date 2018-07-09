@@ -482,7 +482,11 @@ public class SerializationServiceImpl implements SerializationService {
 				SerializableSection serializableProfileComponentSection = serializeProfileComponentService
 						.serializeProfileComponent(profileComponentLink, currentPosition,
 								exportConfig.getProfileComponentItemsExport(), exportConfig.getCoConstraintExportMode(),
-								exportConfig.isGreyOutOBX2FlavorColumn());
+								exportConfig.isGreyOutOBX2FlavorColumn(),
+								exportConfig.isIncludeProfileComponentConformanceStatements(),
+								exportConfig.isIncludeProfileComponentConditionalPredicates(),
+								exportConfig.isIncludeProfileComponentCoConstraints(),
+								exportConfig.isIncludeProfileComponentDynamicMapping());
 				if (serializableProfileComponentSection != null) {
 					profileComponentSection.addSection(serializableProfileComponentSection);
 					currentPosition++;

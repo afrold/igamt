@@ -55,6 +55,10 @@ public class SerializableProfileComponent extends SerializableSection {
 	private Map<String, Datatype> coConstraintDatatypeMap;
 	private CoConstraintExportMode coConstraintExportMode;
 	private Boolean greyOutOBX2FlavorColumn;
+	private boolean includeProfileComponentConformanceStatements = true;
+	private boolean includeProfileComponentConditionalPredicates = true;
+	private boolean includeProfileComponentCoConstraints = true;
+	private boolean includeProfileComponentDynamicMapping = true;
 
 	public SerializableProfileComponent(String id, String prefix, String position, String headerLevel, String title,
 			ProfileComponent profileComponent, Map<SubProfileComponentAttributes, String> definitionTexts,
@@ -62,7 +66,9 @@ public class SerializableProfileComponent extends SerializableSection {
 			String host, List<SubProfileComponent> subComponentsToBeExported,
 			Map<String, Datatype> dynamicMappingDatatypeMap, Map<String, Table> coConstraintValueTableMap,
 			Map<String, Datatype> coConstraintDatatypeMap, CoConstraintExportMode coConstraintExportMode,
-			Boolean greyOutOBX2FlavorColumn) {
+			Boolean greyOutOBX2FlavorColumn, boolean includeProfileComponentConformanceStatements,
+			boolean includeProfileComponentConditionalPredicates, boolean includeProfileComponentCoConstraints,
+			boolean includeProfileComponentDynamicMapping) {
 		super(id, prefix, position, headerLevel, title);
 		this.profileComponent = profileComponent;
 		this.definitionTexts = definitionTexts;
@@ -77,6 +83,10 @@ public class SerializableProfileComponent extends SerializableSection {
 		this.coConstraintDatatypeMap = coConstraintDatatypeMap;
 		this.coConstraintExportMode = coConstraintExportMode;
 		this.greyOutOBX2FlavorColumn = greyOutOBX2FlavorColumn;
+		this.includeProfileComponentConformanceStatements = includeProfileComponentConformanceStatements;
+		this.includeProfileComponentConditionalPredicates = includeProfileComponentConditionalPredicates;
+		this.includeProfileComponentCoConstraints = includeProfileComponentCoConstraints;
+		this.includeProfileComponentDynamicMapping = includeProfileComponentDynamicMapping;
 	}
 
 	@Override
@@ -197,11 +207,11 @@ public class SerializableProfileComponent extends SerializableSection {
 							}
 						}
 					}
-					if (subProfileComponentAttributes.getPredicate() != null) {
+					if (includeProfileComponentConditionalPredicates && subProfileComponentAttributes.getPredicate() != null) {
 						predicates.add(new SerializableConstraint(subProfileComponentAttributes.getPredicate(),
 								subProfileComponent.getPath()));
 					}
-					if (subProfileComponentAttributes.getConformanceStatements() != null
+					if (includeProfileComponentConformanceStatements && subProfileComponentAttributes.getConformanceStatements() != null
 							&& !subProfileComponentAttributes.getConformanceStatements().isEmpty()) {
 						for (ConformanceStatement conformanceStatement : subProfileComponentAttributes
 								.getConformanceStatements()) {
@@ -209,7 +219,7 @@ public class SerializableProfileComponent extends SerializableSection {
 									new SerializableConstraint(conformanceStatement, subProfileComponent.getPath()));
 						}
 					}
-					if (subProfileComponentAttributes.getDynamicMappingDefinition() != null) {
+					if (includeProfileComponentDynamicMapping && subProfileComponentAttributes.getDynamicMappingDefinition() != null) {
 						try {
 							Element dynamicMappingElement = SerializableSegment.generateDynamicMappingElement(
 									subProfileComponentAttributes.getDynamicMappingDefinition(),
@@ -219,7 +229,7 @@ public class SerializableProfileComponent extends SerializableSection {
 							throw new ProfileComponentSerializationException(e, this.profileComponent.getName());
 						}
 					}
-					if (subProfileComponentAttributes.getCoConstraintsTable() != null) {
+					if (includeProfileComponentCoConstraints && subProfileComponentAttributes.getCoConstraintsTable() != null) {
 						SerializableCoConstraints serializableCoConstraints = new SerializableCoConstraints(
 								subProfileComponentAttributes.getCoConstraintsTable(),
 								subProfileComponentAttributes.getRef().getName(), coConstraintValueTableMap,
@@ -228,7 +238,7 @@ public class SerializableProfileComponent extends SerializableSection {
 						try {
 							coConstraintsElement = serializableCoConstraints.serializeElement();
 							if (coConstraintsElement != null) {
-								subProfileComponentElement.appendChild(coConstraintsElement);
+								profileComponentElement.appendChild(coConstraintsElement);
 							}
 						} catch (SerializationException e) {
 							e.printStackTrace();

@@ -23,519 +23,537 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "exportConfig")
 public class ExportConfig {
 
-  @Id
-  private String id;
-  boolean defaultType = false;
-  private String name;
-  private Long accountId;
-  private boolean unboundHL7 = false;
-  private boolean unboundCustom = false;
-  private boolean includeVaries = false;
-  private boolean includeMessageTable = true;
-  private boolean includeSegmentTable = true;
-  private boolean includeDatatypeTable = true;
-  private boolean includeValueSetsTable = true;
-  private boolean includeCompositeProfileTable = true;
-  private boolean includeProfileComponentTable = true;
-
-  private boolean greyOutOBX2FlavorColumn = false;
-  
-  private CoConstraintExportMode coConstraintExportMode = CoConstraintExportMode.COMPACT;
- 
-  private boolean includeDerived=false;
-
-  private UsageConfig segmentORGroupsMessageExport;
-  private UsageConfig segmentORGroupsCompositeProfileExport;
-  private UsageConfig segmentsExport;
-
-  private UsageConfig fieldsExport;
-
-  private UsageConfig profileComponentItemsExport;
-
-  private UsageConfig valueSetsExport;
-  private boolean includeComposition;
-  private CodeUsageConfig codesExport;
-  private boolean phinvadsUpdateEmailNotification;
-
-  private UsageConfig datatypesExport;
-  private UsageConfig componentExport;
-  private ColumnsConfig messageColumn;
-  private ColumnsConfig compositeProfileColumn;
-  private ColumnsConfig segmentColumn;
-  private ColumnsConfig profileComponentColumn;
-  private ColumnsConfig datatypeColumn;
-  private ColumnsConfig valueSetColumn;
-  private ValueSetMetadataConfig valueSetsMetadata;
-  private MetadataConfig datatypeMetadataConfig;
-  private MetadataConfig segmentMetadataConfig;
-  private MetadataConfig messageMetadataConfig;
-  private MetadataConfig compositeProfileMetadataConfig;
-  private final static int MAX_CODE = 500;
-  private int maxCodeNumber = MAX_CODE;
-  
-  //DatatypeLibrary Config
-  private boolean datatypeLibraryIncludeSummary = true;
-  private boolean datatypeLibraryIncludeDerived = false;
-
-
-
-  public static ExportConfig getBasicExportConfig(boolean setAllTrue) {
-    ExportConfig defaultConfiguration = new ExportConfig();
-    defaultConfiguration.setCoConstraintExportMode(CoConstraintExportMode.COMPACT);
-    defaultConfiguration.setDefaultType(true);
-    defaultConfiguration.setAccountId(null);
-    defaultConfiguration.setIncludeMessageTable(true);
-    defaultConfiguration.setIncludeSegmentTable(true);
-    defaultConfiguration.setIncludeDatatypeTable(true);
-    defaultConfiguration.setIncludeValueSetsTable(true);
-    defaultConfiguration.setIncludeCompositeProfileTable(true);
-    defaultConfiguration.setIncludeProfileComponentTable(true);
-    // Default Usages
-    UsageConfig displayAll = new UsageConfig();
-    UsageConfig displaySelectives = new UsageConfig();
-    displaySelectives.setC(true);
-    displaySelectives.setX(setAllTrue);
-    displaySelectives.setO(setAllTrue);
-    displaySelectives.setR(true);
-    displaySelectives.setRe(true);
-    CodeUsageConfig codeUsageExport = new CodeUsageConfig();
-    codeUsageExport.setE(setAllTrue);
-    codeUsageExport.setP(true);
-    codeUsageExport.setR(true);
-
-    displayAll.setC(true);
-    displayAll.setRe(true);
-    displayAll.setX(true);
-    displayAll.setO(true);
-    displayAll.setR(true);
-
-    defaultConfiguration.setSegmentORGroupsMessageExport(displayAll);
-    defaultConfiguration.setSegmentORGroupsCompositeProfileExport(displayAll);
-
-    defaultConfiguration.setComponentExport(displayAll);
-
-    defaultConfiguration.setFieldsExport(displayAll);
-    defaultConfiguration.setProfileComponentItemsExport(displayAll);
-
-    defaultConfiguration.setCodesExport(codeUsageExport);
-    defaultConfiguration.setPhinvadsUpdateEmailNotification(false);
-    defaultConfiguration.setDatatypesExport(displaySelectives);
-    defaultConfiguration.setSegmentsExport(displaySelectives);
-
-    defaultConfiguration.setValueSetsExport(displaySelectives);
-
-    ValueSetMetadataConfig valueSetMetadataConfig =
-        new ValueSetMetadataConfig(true, true, true, true, true);
-    defaultConfiguration.setValueSetsMetadata(valueSetMetadataConfig);
-    
-    MetadataConfig metadataDefaultConfig = new MetadataConfig(false, false, false, false);
-    defaultConfiguration.setDatatypeMetadataConfig(metadataDefaultConfig);
-    defaultConfiguration.setSegmentMetadataConfig(metadataDefaultConfig);
-    defaultConfiguration.setMessageMetadataConfig(metadataDefaultConfig);
-    defaultConfiguration.setCompositeProfileMetadataConfig(metadataDefaultConfig);
-    
-    // Default column
-    ArrayList<NameAndPositionAndPresence> messageColumnsDefaultList =
-        new ArrayList<NameAndPositionAndPresence>();
-
-    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Segment", 1, true, true));
-    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Flavor", 2, true, true));
-    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Element Name", 3, true, true));
-    messageColumnsDefaultList
-        .add(new NameAndPositionAndPresence("Cardinality", 4, true, setAllTrue));
-    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 5, true, setAllTrue));
-    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 1, true, setAllTrue));
-
-    ArrayList<NameAndPositionAndPresence> segmentColumnsDefaultList =
-        new ArrayList<NameAndPositionAndPresence>();
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Name", 1, true, true));
-    segmentColumnsDefaultList
-        .add(new NameAndPositionAndPresence("Conformance Length", 2, setAllTrue, setAllTrue));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 3, true, setAllTrue));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, true, setAllTrue));
-    segmentColumnsDefaultList
-        .add(new NameAndPositionAndPresence("Cardinality", 5, true, setAllTrue));
-    segmentColumnsDefaultList
-        .add(new NameAndPositionAndPresence("Length", 6, setAllTrue, setAllTrue));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 7, true, setAllTrue));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 8, true, setAllTrue));
-
-
-
-    ArrayList<NameAndPositionAndPresence> dataTypeColumnsDefaultList =
-        new ArrayList<NameAndPositionAndPresence>();
-
-    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Name", 1, true, true));
-    dataTypeColumnsDefaultList
-        .add(new NameAndPositionAndPresence("Conformance Length", 2, setAllTrue, setAllTrue));
-    dataTypeColumnsDefaultList
-        .add(new NameAndPositionAndPresence("Data Type", 3, true, setAllTrue));
-    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, true, setAllTrue));
-    dataTypeColumnsDefaultList
-        .add(new NameAndPositionAndPresence("Length", 5, setAllTrue, setAllTrue));
-    dataTypeColumnsDefaultList
-        .add(new NameAndPositionAndPresence("Value Set", 6, true, setAllTrue));
-    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 7, true, setAllTrue));
-
-
-
-    defaultConfiguration.setDatatypeColumn(new ColumnsConfig(dataTypeColumnsDefaultList));
-    defaultConfiguration.setSegmentColumn(new ColumnsConfig(segmentColumnsDefaultList));
-    defaultConfiguration.setProfileComponentColumn(new ColumnsConfig(segmentColumnsDefaultList));
-    defaultConfiguration.setMessageColumn(new ColumnsConfig(messageColumnsDefaultList));
-    defaultConfiguration.setCompositeProfileColumn(new ColumnsConfig(messageColumnsDefaultList));
-
-    ArrayList<NameAndPositionAndPresence> valueSetsDefaultList =
-        new ArrayList<NameAndPositionAndPresence>();
-
-    valueSetsDefaultList.add(new NameAndPositionAndPresence("Value", 1, true, true));
-    valueSetsDefaultList.add(new NameAndPositionAndPresence("Code System", 2, true, true));
-    valueSetsDefaultList.add(new NameAndPositionAndPresence("Usage", 3, setAllTrue, setAllTrue));
-    valueSetsDefaultList.add(new NameAndPositionAndPresence("Description", 4, true, true));
-    valueSetsDefaultList.add(new NameAndPositionAndPresence("Comment", 5, setAllTrue, setAllTrue));
-
-    defaultConfiguration.setValueSetColumn(new ColumnsConfig(valueSetsDefaultList));
-    defaultConfiguration.setMaxCodeNumber(MAX_CODE);
-    return defaultConfiguration;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public boolean isDefaultType() {
-    return defaultType;
-  }
-
-  public void setDefaultType(boolean defaultType) {
-    this.defaultType = defaultType;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public Long getAccountId() {
-    return accountId;
-  }
-
-  public void setAccountId(Long accountId) {
-    this.accountId = accountId;
-  }
-
-  public boolean isUnboundHL7() {
-    return unboundHL7;
-  }
-
-  public void setUnboundHL7(boolean unboundHL7) {
-    this.unboundHL7 = unboundHL7;
-  }
-
-  public boolean isUnboundCustom() {
-    return unboundCustom;
-  }
-
-  public void setUnboundCustom(boolean unboundCustom) {
-    this.unboundCustom = unboundCustom;
-  }
-
-  public boolean isIncludeMessageTable() {
-    return includeMessageTable;
-  }
-
-  public void setIncludeMessageTable(boolean includeMessageTable) {
-    this.includeMessageTable = includeMessageTable;
-  }
-
-  public boolean isIncludeSegmentTable() {
-    return includeSegmentTable;
-  }
-
-  public void setIncludeSegmentTable(boolean includeSegmentTable) {
-    this.includeSegmentTable = includeSegmentTable;
-  }
-
-  public boolean isIncludeDatatypeTable() {
-    return includeDatatypeTable;
-  }
-
-  public void setIncludeDatatypeTable(boolean includeDatatypeTable) {
-    this.includeDatatypeTable = includeDatatypeTable;
-  }
-
-  public boolean isIncludeValueSetsTable() {
-    return includeValueSetsTable;
-  }
-
-  public void setIncludeValueSetsTable(boolean includeValueSetsTable) {
-    this.includeValueSetsTable = includeValueSetsTable;
-  }
-
-  public boolean isIncludeCompositeProfileTable() {
-    return includeCompositeProfileTable;
-  }
-
-  public void setIncludeCompositeProfileTable(boolean includeCompositeProfileTable) {
-    this.includeCompositeProfileTable = includeCompositeProfileTable;
-  }
-
-  public boolean isIncludeProfileComponentTable() {
-    return includeProfileComponentTable;
-  }
-
-  public void setIncludeProfileComponentTable(boolean includeProfileComponentTable) {
-    this.includeProfileComponentTable = includeProfileComponentTable;
-  }
-
-  public UsageConfig getSegmentORGroupsMessageExport() {
-    return segmentORGroupsMessageExport;
-  }
-
-  public void setSegmentORGroupsMessageExport(UsageConfig segmentORGroupsMessageExport) {
-    this.segmentORGroupsMessageExport = segmentORGroupsMessageExport;
-  }
-
-  public UsageConfig getSegmentORGroupsCompositeProfileExport() {
-    return segmentORGroupsCompositeProfileExport;
-  }
-
-  public void setSegmentORGroupsCompositeProfileExport(
-      UsageConfig segmentORGroupsCompositeProfileExport) {
-    this.segmentORGroupsCompositeProfileExport = segmentORGroupsCompositeProfileExport;
-  }
-
-  public UsageConfig getSegmentsExport() {
-    return segmentsExport;
-  }
-
-  public void setSegmentsExport(UsageConfig segmentsExport) {
-    this.segmentsExport = segmentsExport;
-  }
-
-  public UsageConfig getFieldsExport() {
-    return fieldsExport;
-  }
-
-  public void setFieldsExport(UsageConfig fieldsExport) {
-    this.fieldsExport = fieldsExport;
-  }
-
-  public UsageConfig getValueSetsExport() {
-    return valueSetsExport;
-  }
-
-  public void setValueSetsExport(UsageConfig valueSetsExport) {
-    this.valueSetsExport = valueSetsExport;
-  }
-
-  public CodeUsageConfig getCodesExport() {
-    return codesExport;
-  }
-
-  public void setCodesExport(CodeUsageConfig codesExport) {
-    this.codesExport = codesExport;
-  }
-
-  public UsageConfig getDatatypesExport() {
-    return datatypesExport;
-  }
-
-  public void setDatatypesExport(UsageConfig datatypesExport) {
-    this.datatypesExport = datatypesExport;
-  }
-
-  public UsageConfig getComponentExport() {
-    return componentExport;
-  }
-
-  public void setComponentExport(UsageConfig componentExport) {
-    this.componentExport = componentExport;
-  }
-
-  public ColumnsConfig getMessageColumn() {
-    return messageColumn;
-  }
-
-  public void setMessageColumn(ColumnsConfig messageColumn) {
-    this.messageColumn = messageColumn;
-  }
-
-  public ColumnsConfig getCompositeProfileColumn() {
-    return compositeProfileColumn;
-  }
-
-  public void setCompositeProfileColumn(ColumnsConfig compositeProfileColumn) {
-    this.compositeProfileColumn = compositeProfileColumn;
-  }
-
-  public ColumnsConfig getSegmentColumn() {
-    return segmentColumn;
-  }
-
-  public void setSegmentColumn(ColumnsConfig segmentColumn) {
-    this.segmentColumn = segmentColumn;
-  }
-
-  public ColumnsConfig getDatatypeColumn() {
-    return datatypeColumn;
-  }
-
-  public void setDatatypeColumn(ColumnsConfig datatypeColumn) {
-    this.datatypeColumn = datatypeColumn;
-  }
-
-  public ColumnsConfig getValueSetColumn() {
-    return valueSetColumn;
-  }
-
-  public void setValueSetColumn(ColumnsConfig valueSetColumn) {
-    this.valueSetColumn = valueSetColumn;
-  }
-
-  public UsageConfig getProfileComponentItemsExport() {
-    return profileComponentItemsExport;
-  }
-
-  public void setProfileComponentItemsExport(UsageConfig profileComponentItemsExport) {
-    this.profileComponentItemsExport = profileComponentItemsExport;
-  }
-
-  public ColumnsConfig getProfileComponentColumn() {
-    return profileComponentColumn;
-  }
-
-  public void setProfileComponentColumn(ColumnsConfig profileComponentColumn) {
-    this.profileComponentColumn = profileComponentColumn;
-  }
-
-  public ValueSetMetadataConfig getValueSetsMetadata() {
-    return valueSetsMetadata;
-  }
-
-  public void setValueSetsMetadata(ValueSetMetadataConfig valueSetsMetadata) {
-    this.valueSetsMetadata = valueSetsMetadata;
-  }
-
-  public MetadataConfig getDatatypeMetadataConfig() {
-	return datatypeMetadataConfig;
-  }
-
-  public void setDatatypeMetadataConfig(MetadataConfig datatypeMetadataConfig) {
-	this.datatypeMetadataConfig = datatypeMetadataConfig;
-  }
-	
-  public MetadataConfig getSegmentMetadataConfig() {
-	return segmentMetadataConfig;
-  }
-	
-  public void setSegmentMetadataConfig(MetadataConfig segmentMetadataConfig) {
-	  this.segmentMetadataConfig = segmentMetadataConfig;
-  }
-
-  public MetadataConfig getMessageMetadataConfig() {
-	  return messageMetadataConfig;
-  }
-
-  public void setMessageMetadataConfig(MetadataConfig messageMetadataConfig) {
-	  this.messageMetadataConfig = messageMetadataConfig;
-  }
-
-  public MetadataConfig getCompositeProfileMetadataConfig() {
-	  return compositeProfileMetadataConfig;
-  }
-
-  public void setCompositeProfileMetadataConfig(MetadataConfig compositeProfileMetadataConfig) {
-	  this.compositeProfileMetadataConfig = compositeProfileMetadataConfig;
-  }
-
-  public static int getMaxCode() {
-	return MAX_CODE;
-  }
+	@Id
+	private String id;
+	boolean defaultType = false;
+	private String name;
+	private Long accountId;
+	private boolean unboundHL7 = false;
+	private boolean unboundCustom = false;
+	private boolean includeVaries = false;
+	private boolean includeMessageTable = true;
+	private boolean includeSegmentTable = true;
+	private boolean includeDatatypeTable = true;
+	private boolean includeValueSetsTable = true;
+	private boolean includeCompositeProfileTable = true;
+	private boolean includeProfileComponentTable = true;
+
+	private boolean includeProfileComponentConformanceStatements = true;
+	private boolean includeProfileComponentConditionalPredicates = true;
+	private boolean includeProfileComponentCoConstraints = true;
+	private boolean includeProfileComponentDynamicMapping = true;
+
+	private boolean greyOutOBX2FlavorColumn = false;
+
+	private CoConstraintExportMode coConstraintExportMode = CoConstraintExportMode.COMPACT;
+
+	private boolean includeDerived = false;
+
+	private UsageConfig segmentORGroupsMessageExport;
+	private UsageConfig segmentORGroupsCompositeProfileExport;
+	private UsageConfig segmentsExport;
+
+	private UsageConfig fieldsExport;
+
+	private UsageConfig profileComponentItemsExport;
+
+	private UsageConfig valueSetsExport;
+	private boolean includeComposition;
+	private CodeUsageConfig codesExport;
+	private boolean phinvadsUpdateEmailNotification;
+
+	private UsageConfig datatypesExport;
+	private UsageConfig componentExport;
+	private ColumnsConfig messageColumn;
+	private ColumnsConfig compositeProfileColumn;
+	private ColumnsConfig segmentColumn;
+	private ColumnsConfig profileComponentColumn;
+	private ColumnsConfig datatypeColumn;
+	private ColumnsConfig valueSetColumn;
+	private ValueSetMetadataConfig valueSetsMetadata;
+	private MetadataConfig datatypeMetadataConfig;
+	private MetadataConfig segmentMetadataConfig;
+	private MetadataConfig messageMetadataConfig;
+	private MetadataConfig compositeProfileMetadataConfig;
+	private final static int MAX_CODE = 500;
+	private int maxCodeNumber = MAX_CODE;
+
+	// DatatypeLibrary Config
+	private boolean datatypeLibraryIncludeSummary = true;
+	private boolean datatypeLibraryIncludeDerived = false;
+
+	public static ExportConfig getBasicExportConfig(boolean setAllTrue) {
+		ExportConfig defaultConfiguration = new ExportConfig();
+		defaultConfiguration.setCoConstraintExportMode(CoConstraintExportMode.COMPACT);
+		defaultConfiguration.setDefaultType(true);
+		defaultConfiguration.setAccountId(null);
+		defaultConfiguration.setIncludeMessageTable(true);
+		defaultConfiguration.setIncludeSegmentTable(true);
+		defaultConfiguration.setIncludeDatatypeTable(true);
+		defaultConfiguration.setIncludeValueSetsTable(true);
+		defaultConfiguration.setIncludeCompositeProfileTable(true);
+		defaultConfiguration.setIncludeProfileComponentTable(true);
+		// Default Usages
+		UsageConfig displayAll = new UsageConfig();
+		UsageConfig displaySelectives = new UsageConfig();
+		displaySelectives.setC(true);
+		displaySelectives.setX(setAllTrue);
+		displaySelectives.setO(setAllTrue);
+		displaySelectives.setR(true);
+		displaySelectives.setRe(true);
+		CodeUsageConfig codeUsageExport = new CodeUsageConfig();
+		codeUsageExport.setE(setAllTrue);
+		codeUsageExport.setP(true);
+		codeUsageExport.setR(true);
+
+		displayAll.setC(true);
+		displayAll.setRe(true);
+		displayAll.setX(true);
+		displayAll.setO(true);
+		displayAll.setR(true);
+
+		defaultConfiguration.setSegmentORGroupsMessageExport(displayAll);
+		defaultConfiguration.setSegmentORGroupsCompositeProfileExport(displayAll);
+
+		defaultConfiguration.setComponentExport(displayAll);
+
+		defaultConfiguration.setFieldsExport(displayAll);
+		defaultConfiguration.setProfileComponentItemsExport(displayAll);
+
+		defaultConfiguration.setCodesExport(codeUsageExport);
+		defaultConfiguration.setPhinvadsUpdateEmailNotification(false);
+		defaultConfiguration.setDatatypesExport(displaySelectives);
+		defaultConfiguration.setSegmentsExport(displaySelectives);
+
+		defaultConfiguration.setValueSetsExport(displaySelectives);
+
+		ValueSetMetadataConfig valueSetMetadataConfig = new ValueSetMetadataConfig(true, true, true, true, true);
+		defaultConfiguration.setValueSetsMetadata(valueSetMetadataConfig);
+
+		MetadataConfig metadataDefaultConfig = new MetadataConfig(false, false, false, false);
+		defaultConfiguration.setDatatypeMetadataConfig(metadataDefaultConfig);
+		defaultConfiguration.setSegmentMetadataConfig(metadataDefaultConfig);
+		defaultConfiguration.setMessageMetadataConfig(metadataDefaultConfig);
+		defaultConfiguration.setCompositeProfileMetadataConfig(metadataDefaultConfig);
+
+		// Default column
+		ArrayList<NameAndPositionAndPresence> messageColumnsDefaultList = new ArrayList<NameAndPositionAndPresence>();
+
+		messageColumnsDefaultList.add(new NameAndPositionAndPresence("Segment", 1, true, true));
+		messageColumnsDefaultList.add(new NameAndPositionAndPresence("Flavor", 2, true, true));
+		messageColumnsDefaultList.add(new NameAndPositionAndPresence("Element Name", 3, true, true));
+		messageColumnsDefaultList.add(new NameAndPositionAndPresence("Cardinality", 4, true, setAllTrue));
+		messageColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 5, true, setAllTrue));
+		messageColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 1, true, setAllTrue));
+
+		ArrayList<NameAndPositionAndPresence> segmentColumnsDefaultList = new ArrayList<NameAndPositionAndPresence>();
+		segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Name", 1, true, true));
+		segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Conformance Length", 2, setAllTrue, setAllTrue));
+		segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 3, true, setAllTrue));
+		segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, true, setAllTrue));
+		segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Cardinality", 5, true, setAllTrue));
+		segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 6, setAllTrue, setAllTrue));
+		segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 7, true, setAllTrue));
+		segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 8, true, setAllTrue));
+
+		ArrayList<NameAndPositionAndPresence> dataTypeColumnsDefaultList = new ArrayList<NameAndPositionAndPresence>();
+
+		dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Name", 1, true, true));
+		dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Conformance Length", 2, setAllTrue, setAllTrue));
+		dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 3, true, setAllTrue));
+		dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, true, setAllTrue));
+		dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 5, setAllTrue, setAllTrue));
+		dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 6, true, setAllTrue));
+		dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 7, true, setAllTrue));
+
+		defaultConfiguration.setDatatypeColumn(new ColumnsConfig(dataTypeColumnsDefaultList));
+		defaultConfiguration.setSegmentColumn(new ColumnsConfig(segmentColumnsDefaultList));
+		defaultConfiguration.setProfileComponentColumn(new ColumnsConfig(segmentColumnsDefaultList));
+		defaultConfiguration.setMessageColumn(new ColumnsConfig(messageColumnsDefaultList));
+		defaultConfiguration.setCompositeProfileColumn(new ColumnsConfig(messageColumnsDefaultList));
+
+		ArrayList<NameAndPositionAndPresence> valueSetsDefaultList = new ArrayList<NameAndPositionAndPresence>();
+
+		valueSetsDefaultList.add(new NameAndPositionAndPresence("Value", 1, true, true));
+		valueSetsDefaultList.add(new NameAndPositionAndPresence("Code System", 2, true, true));
+		valueSetsDefaultList.add(new NameAndPositionAndPresence("Usage", 3, setAllTrue, setAllTrue));
+		valueSetsDefaultList.add(new NameAndPositionAndPresence("Description", 4, true, true));
+		valueSetsDefaultList.add(new NameAndPositionAndPresence("Comment", 5, setAllTrue, setAllTrue));
+
+		defaultConfiguration.setValueSetColumn(new ColumnsConfig(valueSetsDefaultList));
+		defaultConfiguration.setMaxCodeNumber(MAX_CODE);
+		return defaultConfiguration;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public boolean isDefaultType() {
+		return defaultType;
+	}
+
+	public void setDefaultType(boolean defaultType) {
+		this.defaultType = defaultType;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Long getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
+	}
+
+	public boolean isUnboundHL7() {
+		return unboundHL7;
+	}
+
+	public void setUnboundHL7(boolean unboundHL7) {
+		this.unboundHL7 = unboundHL7;
+	}
+
+	public boolean isUnboundCustom() {
+		return unboundCustom;
+	}
+
+	public void setUnboundCustom(boolean unboundCustom) {
+		this.unboundCustom = unboundCustom;
+	}
+
+	public boolean isIncludeMessageTable() {
+		return includeMessageTable;
+	}
+
+	public void setIncludeMessageTable(boolean includeMessageTable) {
+		this.includeMessageTable = includeMessageTable;
+	}
+
+	public boolean isIncludeSegmentTable() {
+		return includeSegmentTable;
+	}
+
+	public void setIncludeSegmentTable(boolean includeSegmentTable) {
+		this.includeSegmentTable = includeSegmentTable;
+	}
+
+	public boolean isIncludeDatatypeTable() {
+		return includeDatatypeTable;
+	}
+
+	public void setIncludeDatatypeTable(boolean includeDatatypeTable) {
+		this.includeDatatypeTable = includeDatatypeTable;
+	}
+
+	public boolean isIncludeValueSetsTable() {
+		return includeValueSetsTable;
+	}
+
+	public void setIncludeValueSetsTable(boolean includeValueSetsTable) {
+		this.includeValueSetsTable = includeValueSetsTable;
+	}
+
+	public boolean isIncludeCompositeProfileTable() {
+		return includeCompositeProfileTable;
+	}
+
+	public void setIncludeCompositeProfileTable(boolean includeCompositeProfileTable) {
+		this.includeCompositeProfileTable = includeCompositeProfileTable;
+	}
+
+	public boolean isIncludeProfileComponentTable() {
+		return includeProfileComponentTable;
+	}
+
+	public void setIncludeProfileComponentTable(boolean includeProfileComponentTable) {
+		this.includeProfileComponentTable = includeProfileComponentTable;
+	}
+
+	public UsageConfig getSegmentORGroupsMessageExport() {
+		return segmentORGroupsMessageExport;
+	}
+
+	public void setSegmentORGroupsMessageExport(UsageConfig segmentORGroupsMessageExport) {
+		this.segmentORGroupsMessageExport = segmentORGroupsMessageExport;
+	}
+
+	public UsageConfig getSegmentORGroupsCompositeProfileExport() {
+		return segmentORGroupsCompositeProfileExport;
+	}
+
+	public void setSegmentORGroupsCompositeProfileExport(UsageConfig segmentORGroupsCompositeProfileExport) {
+		this.segmentORGroupsCompositeProfileExport = segmentORGroupsCompositeProfileExport;
+	}
+
+	public UsageConfig getSegmentsExport() {
+		return segmentsExport;
+	}
+
+	public void setSegmentsExport(UsageConfig segmentsExport) {
+		this.segmentsExport = segmentsExport;
+	}
+
+	public UsageConfig getFieldsExport() {
+		return fieldsExport;
+	}
+
+	public void setFieldsExport(UsageConfig fieldsExport) {
+		this.fieldsExport = fieldsExport;
+	}
+
+	public UsageConfig getValueSetsExport() {
+		return valueSetsExport;
+	}
+
+	public void setValueSetsExport(UsageConfig valueSetsExport) {
+		this.valueSetsExport = valueSetsExport;
+	}
+
+	public CodeUsageConfig getCodesExport() {
+		return codesExport;
+	}
+
+	public void setCodesExport(CodeUsageConfig codesExport) {
+		this.codesExport = codesExport;
+	}
+
+	public UsageConfig getDatatypesExport() {
+		return datatypesExport;
+	}
+
+	public void setDatatypesExport(UsageConfig datatypesExport) {
+		this.datatypesExport = datatypesExport;
+	}
+
+	public UsageConfig getComponentExport() {
+		return componentExport;
+	}
+
+	public void setComponentExport(UsageConfig componentExport) {
+		this.componentExport = componentExport;
+	}
+
+	public ColumnsConfig getMessageColumn() {
+		return messageColumn;
+	}
+
+	public void setMessageColumn(ColumnsConfig messageColumn) {
+		this.messageColumn = messageColumn;
+	}
+
+	public ColumnsConfig getCompositeProfileColumn() {
+		return compositeProfileColumn;
+	}
+
+	public void setCompositeProfileColumn(ColumnsConfig compositeProfileColumn) {
+		this.compositeProfileColumn = compositeProfileColumn;
+	}
+
+	public ColumnsConfig getSegmentColumn() {
+		return segmentColumn;
+	}
+
+	public void setSegmentColumn(ColumnsConfig segmentColumn) {
+		this.segmentColumn = segmentColumn;
+	}
+
+	public ColumnsConfig getDatatypeColumn() {
+		return datatypeColumn;
+	}
+
+	public void setDatatypeColumn(ColumnsConfig datatypeColumn) {
+		this.datatypeColumn = datatypeColumn;
+	}
+
+	public ColumnsConfig getValueSetColumn() {
+		return valueSetColumn;
+	}
+
+	public void setValueSetColumn(ColumnsConfig valueSetColumn) {
+		this.valueSetColumn = valueSetColumn;
+	}
+
+	public UsageConfig getProfileComponentItemsExport() {
+		return profileComponentItemsExport;
+	}
+
+	public void setProfileComponentItemsExport(UsageConfig profileComponentItemsExport) {
+		this.profileComponentItemsExport = profileComponentItemsExport;
+	}
+
+	public ColumnsConfig getProfileComponentColumn() {
+		return profileComponentColumn;
+	}
+
+	public void setProfileComponentColumn(ColumnsConfig profileComponentColumn) {
+		this.profileComponentColumn = profileComponentColumn;
+	}
+
+	public ValueSetMetadataConfig getValueSetsMetadata() {
+		return valueSetsMetadata;
+	}
+
+	public void setValueSetsMetadata(ValueSetMetadataConfig valueSetsMetadata) {
+		this.valueSetsMetadata = valueSetsMetadata;
+	}
+
+	public MetadataConfig getDatatypeMetadataConfig() {
+		return datatypeMetadataConfig;
+	}
+
+	public void setDatatypeMetadataConfig(MetadataConfig datatypeMetadataConfig) {
+		this.datatypeMetadataConfig = datatypeMetadataConfig;
+	}
+
+	public MetadataConfig getSegmentMetadataConfig() {
+		return segmentMetadataConfig;
+	}
+
+	public void setSegmentMetadataConfig(MetadataConfig segmentMetadataConfig) {
+		this.segmentMetadataConfig = segmentMetadataConfig;
+	}
+
+	public MetadataConfig getMessageMetadataConfig() {
+		return messageMetadataConfig;
+	}
+
+	public void setMessageMetadataConfig(MetadataConfig messageMetadataConfig) {
+		this.messageMetadataConfig = messageMetadataConfig;
+	}
+
+	public MetadataConfig getCompositeProfileMetadataConfig() {
+		return compositeProfileMetadataConfig;
+	}
+
+	public void setCompositeProfileMetadataConfig(MetadataConfig compositeProfileMetadataConfig) {
+		this.compositeProfileMetadataConfig = compositeProfileMetadataConfig;
+	}
+
+	public static int getMaxCode() {
+		return MAX_CODE;
+	}
 
 	public boolean isGreyOutOBX2FlavorColumn() {
 		return greyOutOBX2FlavorColumn;
 	}
-	
+
 	public void setGreyOutOBX2FlavorColumn(boolean greyOutOBX2FlavorColumn) {
 		this.greyOutOBX2FlavorColumn = greyOutOBX2FlavorColumn;
 	}
 
-/**
-   * @return the includeVaries
-   */
-  public boolean isIncludeVaries() {
-    return includeVaries;
-  }
+	/**
+	 * @return the includeVaries
+	 */
+	public boolean isIncludeVaries() {
+		return includeVaries;
+	}
 
-  /**
-   * @param includeVaries the includeVaries to set
-   */
-  public void setIncludeVaries(boolean includeVaries) {
-    this.includeVaries = includeVaries;
-  }
+	/**
+	 * @param includeVaries
+	 *            the includeVaries to set
+	 */
+	public void setIncludeVaries(boolean includeVaries) {
+		this.includeVaries = includeVaries;
+	}
 
-  public int getMaxCodeNumber() {
-    return maxCodeNumber;
-  }
+	public int getMaxCodeNumber() {
+		return maxCodeNumber;
+	}
 
-  public void setMaxCodeNumber(int maxCodeNumber) {
-    this.maxCodeNumber = maxCodeNumber;
-  }
+	public void setMaxCodeNumber(int maxCodeNumber) {
+		this.maxCodeNumber = maxCodeNumber;
+	}
 
-  public boolean isPhinvadsUpdateEmailNotification() {
-    return phinvadsUpdateEmailNotification;
-  }
+	public boolean isPhinvadsUpdateEmailNotification() {
+		return phinvadsUpdateEmailNotification;
+	}
 
-  public void setPhinvadsUpdateEmailNotification(boolean phinvadsUpdateEmailNotification) {
-    this.phinvadsUpdateEmailNotification = phinvadsUpdateEmailNotification;
-  }
+	public void setPhinvadsUpdateEmailNotification(boolean phinvadsUpdateEmailNotification) {
+		this.phinvadsUpdateEmailNotification = phinvadsUpdateEmailNotification;
+	}
 
-public boolean isIncludeDerived() {
-	return includeDerived;
-}
+	public boolean isIncludeDerived() {
+		return includeDerived;
+	}
 
-public void setIncludeDerived(boolean includeDerivedDatatypes) {
-	this.includeDerived = includeDerivedDatatypes;
-}
+	public void setIncludeDerived(boolean includeDerivedDatatypes) {
+		this.includeDerived = includeDerivedDatatypes;
+	}
 
-public boolean getIncludeComposition() {
-	return includeComposition;
-}
+	public boolean getIncludeComposition() {
+		return includeComposition;
+	}
 
-public void setIncludeComposition(boolean includeComposition) {
-	this.includeComposition = includeComposition;
-}
+	public void setIncludeComposition(boolean includeComposition) {
+		this.includeComposition = includeComposition;
+	}
 
-public CoConstraintExportMode getCoConstraintExportMode() {
-	return coConstraintExportMode;
-}
+	public CoConstraintExportMode getCoConstraintExportMode() {
+		return coConstraintExportMode;
+	}
 
-public void setCoConstraintExportMode(CoConstraintExportMode coConstraintExportMode) {
-	this.coConstraintExportMode = coConstraintExportMode;
-}
+	public void setCoConstraintExportMode(CoConstraintExportMode coConstraintExportMode) {
+		this.coConstraintExportMode = coConstraintExportMode;
+	}
 
-public boolean isDatatypeLibraryIncludeSummary() {
-	return datatypeLibraryIncludeSummary;
-}
+	public boolean isDatatypeLibraryIncludeSummary() {
+		return datatypeLibraryIncludeSummary;
+	}
 
-public void setDatatypeLibraryIncludeSummary(boolean datatypeLibraryIncludeSummary) {
-	this.datatypeLibraryIncludeSummary = datatypeLibraryIncludeSummary;
-}
+	public void setDatatypeLibraryIncludeSummary(boolean datatypeLibraryIncludeSummary) {
+		this.datatypeLibraryIncludeSummary = datatypeLibraryIncludeSummary;
+	}
 
-public boolean isDatatypeLibraryIncludeDerived() {
-	return datatypeLibraryIncludeDerived;
-}
+	public boolean isDatatypeLibraryIncludeDerived() {
+		return datatypeLibraryIncludeDerived;
+	}
 
-public void setDatatypeLibraryIncludeDerived(boolean datatypeLibraryIncludeDerived) {
-	this.datatypeLibraryIncludeDerived = datatypeLibraryIncludeDerived;
-}
+	public void setDatatypeLibraryIncludeDerived(boolean datatypeLibraryIncludeDerived) {
+		this.datatypeLibraryIncludeDerived = datatypeLibraryIncludeDerived;
+	}
+
+	public boolean isIncludeProfileComponentConformanceStatements() {
+		return includeProfileComponentConformanceStatements;
+	}
+
+	public boolean isIncludeProfileComponentConditionalPredicates() {
+		return includeProfileComponentConditionalPredicates;
+	}
+
+	public boolean isIncludeProfileComponentCoConstraints() {
+		return includeProfileComponentCoConstraints;
+	}
+
+	public boolean isIncludeProfileComponentDynamicMapping() {
+		return includeProfileComponentDynamicMapping;
+	}
+
+	public void setIncludeProfileComponentConformanceStatements(boolean includeProfileComponentConformanceStatements) {
+		this.includeProfileComponentConformanceStatements = includeProfileComponentConformanceStatements;
+	}
+
+	public void setIncludeProfileComponentConditionalPredicates(boolean includeProfileComponentConditionalPredicates) {
+		this.includeProfileComponentConditionalPredicates = includeProfileComponentConditionalPredicates;
+	}
+
+	public void setIncludeProfileComponentCoConstraints(boolean includeProfileComponentCoConstraints) {
+		this.includeProfileComponentCoConstraints = includeProfileComponentCoConstraints;
+	}
+
+	public void setIncludeProfileComponentDynamicMapping(boolean includeProfileComponentDynamicMapping) {
+		this.includeProfileComponentDynamicMapping = includeProfileComponentDynamicMapping;
+	}
 
 }

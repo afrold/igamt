@@ -371,6 +371,7 @@
                 </xsl:element>
             </xsl:element>
         </xsl:if>
+        <xsl:apply-templates select="./coconstraints"/>
 		<xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
             <xsl:element name="br"/>
 			<xsl:call-template name="definitionText">
@@ -380,6 +381,16 @@
 			</xsl:call-template>
 		</xsl:if>
         
+    </xsl:template>
+    
+    <xsl:template match="coconstraints">
+    	<xsl:element name="br"/>
+        <xsl:element name="span">
+   			<xsl:element name="b">
+            	<xsl:text>Co-Constraints</xsl:text>
+        	</xsl:element>
+        </xsl:element>
+        <xsl:copy-of select="table"/>
     </xsl:template>
 
 </xsl:stylesheet>
