@@ -33,6 +33,9 @@
                         <xsl:with-param name="headerLevel">
                             <xsl:text>h5</xsl:text>
                         </xsl:with-param>
+                        <xsl:with-param name="displayPeriod">
+	                    		<xsl:text>false</xsl:text>
+	                    </xsl:with-param>
                     </xsl:call-template>
                 </xsl:if>
             </xsl:for-each>
@@ -61,6 +64,9 @@
                     </xsl:with-param>
                     <xsl:with-param name="headerLevel">
                         <xsl:text>h5</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="displayPeriod">
+                    		<xsl:text>false</xsl:text>
                     </xsl:with-param>
                 </xsl:call-template>
             </xsl:if>

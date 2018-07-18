@@ -183,6 +183,9 @@
                     <xsl:with-param name="headerLevel">
                         <xsl:text>h4</xsl:text>
                     </xsl:with-param>
+                    <xsl:with-param name="displayPeriod">
+                    		<xsl:text>false</xsl:text>
+                    </xsl:with-param>
                 </xsl:call-template>
             </xsl:if>
             <xsl:if test="count(./Constraint[@Type='pre'])  &gt; 0">
@@ -199,6 +202,9 @@
                     </xsl:with-param>
                     <xsl:with-param name="headerLevel">
                         <xsl:text>h4</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="displayPeriod">
+                    		<xsl:text>false</xsl:text>
                     </xsl:with-param>
                 </xsl:call-template>
             </xsl:if>

@@ -7,6 +7,7 @@
         <xsl:param name="type"/>
         <xsl:param name="constraintMode"/>
         <xsl:param name="headerLevel"/>
+        <xsl:param name="displayPeriod" select="true"/>
         <xsl:element name="span">
             <xsl:element name="span">
                 <xsl:element name="b">
@@ -29,9 +30,7 @@
                                 <xsl:call-template name="ConstraintContent">
                                     <xsl:with-param name="mode" select="$constraintMode"/>
                                     <xsl:with-param name="type" select="$type"/>
-                                    <xsl:with-param name="displayPeriod">
-                                        <xsl:text>true</xsl:text>
-                                    </xsl:with-param>
+                                    <xsl:with-param name="displayPeriod" select="$displayPeriod"/>
                                 </xsl:call-template>
                             </xsl:for-each>
                         </xsl:element>
@@ -44,9 +43,7 @@
                                 <xsl:call-template name="ConstraintContent">
                                     <xsl:with-param name="mode" select="$constraintMode"/>
                                     <xsl:with-param name="type" select="$type"/>
-                                    <xsl:with-param name="displayPeriod">
-                                        <xsl:text>true</xsl:text>
-                                    </xsl:with-param>
+                                    <xsl:with-param name="displayPeriod" select="$displayPeriod"/>
                                 </xsl:call-template>
                             </xsl:for-each>
                         </xsl:element>

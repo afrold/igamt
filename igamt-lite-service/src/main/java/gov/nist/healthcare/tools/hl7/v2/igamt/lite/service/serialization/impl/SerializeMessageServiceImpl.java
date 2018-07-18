@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.MessageSerializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +21,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableMessage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.MessageSerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeMessageService;
@@ -117,7 +116,7 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
                 serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
                 if (serializationLayout.equals(SerializationLayout.PROFILE)) {
                     serializeSegment(segmentRefOrGroup, messageSegments.getPrefix() + ".",
-                        messageSegments, segmentUsageConfig, fieldsUsageConfig, exportConfig.isGreyOutOBX2FlavorColumn(), exportConfig.getCoConstraintExportMode());
+                        messageSegments, segmentOrGroupUsageConfig, segmentUsageConfig, fieldsUsageConfig, exportConfig.isGreyOutOBX2FlavorColumn(), exportConfig.getCoConstraintExportMode());
                 }
             }
             if (!messageSegments.getSerializableSectionList().isEmpty()) {
