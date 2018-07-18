@@ -131,19 +131,19 @@ public class SerializationServiceImpl implements SerializationService {
 
 	private List<SegmentLink> bindedSegments;
 
-	private List<DatatypeLink> bindedDatatypes;
+	private Set<DatatypeLink> bindedDatatypes;
 
 	private Set<String> bindedTables;
 
 	private List<CompositeProfile> compositeProfiles;
 
-	private List<TableLink> unbindedTables;
+	private Set<TableLink> unbindedTables;
 
 	private Messages igDocumentMessages;
 
 	static final Logger logger = LoggerFactory.getLogger(SerializationService.class);
 
-	private List<String> bindedDatatypesId;
+	private Set<String> bindedDatatypesId;
 
 	private boolean doFilterValueSets = true;
 
@@ -182,9 +182,9 @@ public class SerializationServiceImpl implements SerializationService {
 			HashMap<DatatypeLink, Datatype> datatypeLinkDatatypeMap = getDatatypeLinkDatatypeMap(
 					datatypeLibraryDocument.getDatatypeLibrary());
 			if (exportConfig.isDatatypeLibraryIncludeDerived()) {
-				this.bindedDatatypes = new ArrayList<>(datatypeLibraryDocument.getDatatypeLibrary().getChildren());
+				this.bindedDatatypes = new HashSet<>(datatypeLibraryDocument.getDatatypeLibrary().getChildren());
 			} else {
-				this.bindedDatatypes = new ArrayList<>();
+				this.bindedDatatypes = new HashSet<>();
 				for (DatatypeLink datatypeLink : datatypeLibraryDocument.getDatatypeLibrary().getChildren()) {
 					if (datatypeLinkDatatypeMap.containsKey(datatypeLink)) {
 						Datatype datatype = datatypeLinkDatatypeMap.get(datatypeLink);
@@ -286,8 +286,8 @@ public class SerializationServiceImpl implements SerializationService {
 		try {
 			this.exportConfig = exportConfig;
 			igDocumentMessages = igDocument.getProfile().getMessages();
-			this.bindedDatatypes = new ArrayList<>();
-			this.bindedDatatypesId = new ArrayList<>();
+			this.bindedDatatypes = new HashSet<>();
+			this.bindedDatatypesId = new HashSet<>();
 			if (igDocument.getProfile().getTableLibrary().getExportConfig() != null
 					&& igDocument.getProfile().getTableLibrary().getExportConfig().getInclude() != null) {
 				this.bindedTables = igDocument.getProfile().getTableLibrary().getExportConfig().getInclude();
@@ -296,7 +296,7 @@ public class SerializationServiceImpl implements SerializationService {
 				bindedTables = new HashSet<>();
 			}
 			this.bindedSegments = new ArrayList<>();
-			this.unbindedTables = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
+			this.unbindedTables = new HashSet<>(igDocument.getProfile().getTableLibrary().getTables());
 			this.compositeProfiles = new ArrayList<>();
 			if (igDocument.getProfile().getCompositeProfiles() != null
 					&& !igDocument.getProfile().getCompositeProfiles().getChildren().isEmpty()
@@ -583,30 +583,37 @@ public class SerializationServiceImpl implements SerializationService {
 		List<TableLink> tableLinkList = new ArrayList<>(tableLibrary.getChildren());
 		Collections.sort(tableLinkList);
 		CodeUsageConfig valueSetCodesUsageConfig = this.exportConfig.getCodesExport();
+		Set<String> serializedTables = new HashSet<>();
 		if (bindedTables != null && !bindedTables.isEmpty()) {
 			for (String tableId : bindedTables) {
-				TableLink tableLink = findTableLinkById(tableId, tableLinkList);
-				if (tableLink != null) {
-					SerializableTable serializableTable = serializeTableService.serializeTable(tableLink,
-							prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
-							tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig,
-							exportConfig.getValueSetsMetadata(), exportConfig.getMaxCodeNumber(),
-							tableLibrary.getCodePresence());
-					valueSetsSection.addSection(serializableTable);
+				if(!serializedTables.contains(tableId)) {
+					serializedTables.add(tableId);
+					TableLink tableLink = findTableLinkById(tableId, tableLinkList);
+					if (tableLink != null) {
+						SerializableTable serializableTable = serializeTableService.serializeTable(tableLink,
+								prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
+								tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig,
+								exportConfig.getValueSetsMetadata(), exportConfig.getMaxCodeNumber(),
+								tableLibrary.getCodePresence());
+						valueSetsSection.addSection(serializableTable);
+					}
 				}
 			}
 		}
 		if (doFilterValueSets && unbindedTables != null && !unbindedTables.isEmpty()
 				&& (exportConfig.isUnboundCustom() || exportConfig.isUnboundCustom())) {
 			for (TableLink tableLink : this.unbindedTables) {
-				Table table = tableService.findById(tableLink.getId());
-				if (table != null && ExportUtil.displayUnbindedTable(exportConfig, table)) {
-					SerializableTable serializableTable = serializeTableService.serializeTable(tableLink,
-							prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
-							tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig,
-							exportConfig.getValueSetsMetadata(), exportConfig.getMaxCodeNumber(),
-							tableLibrary.getCodePresence());
-					valueSetsSection.addSection(serializableTable);
+				if(!serializedTables.contains(tableLink.getId())) {
+					serializedTables.add(tableLink.getId());
+					Table table = tableService.findById(tableLink.getId());
+					if (table != null && ExportUtil.displayUnbindedTable(exportConfig, table)) {
+						SerializableTable serializableTable = serializeTableService.serializeTable(tableLink,
+								prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
+								tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig,
+								exportConfig.getValueSetsMetadata(), exportConfig.getMaxCodeNumber(),
+								tableLibrary.getCodePresence());
+						valueSetsSection.addSection(serializableTable);
+					}
 				}
 			}
 		}
@@ -756,62 +763,64 @@ public class SerializationServiceImpl implements SerializationService {
 	private void identifyBindedItemsFromSegmentOrGroup(SegmentRefOrGroup segmentRefOrGroup,
 			CompositeProfile compositeProfile) {
 		if (segmentRefOrGroup instanceof SegmentRef) {
-			if (ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(), exportConfig.getSegmentsExport())) {
+			if (ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(), exportConfig.getSegmentORGroupsMessageExport())) {
 				if (!this.bindedSegments.contains(((SegmentRef) segmentRefOrGroup).getRef())) {
 					this.bindedSegments.add(((SegmentRef) segmentRefOrGroup).getRef());
 				}
-			}
-			Segment segment = null;
-			if (compositeProfile != null) {
-				segment = compositeProfile.getSegmentsMap().get(((SegmentRef) segmentRefOrGroup).getRef().getId());
-			} else {
-				segment = segmentService.findById(((SegmentRef) segmentRefOrGroup).getRef().getId());
-			}
-			if (segment != null) {
-				Map<String, Usage> fieldLocationUsageMap = new HashMap<>();
-				for (Field field : segment.getFields()) {
-					fieldLocationUsageMap.put(String.valueOf(field.getPosition()), field.getUsage());
-					if (!bindedDatatypes.contains(field.getDatatype())
-							&& ExportUtil.diplayUsage(field.getUsage(), this.exportConfig.getDatatypesExport())) {
-						doBindDatatype(field.getDatatype(), null);
-					}
+
+				Segment segment = null;
+				if (compositeProfile != null) {
+					segment = compositeProfile.getSegmentsMap().get(((SegmentRef) segmentRefOrGroup).getRef().getId());
+				} else {
+					segment = segmentService.findById(((SegmentRef) segmentRefOrGroup).getRef().getId());
 				}
-				for (ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : segment.getValueSetBindings()) {
-					if (valueSetOrSingleCodeBinding instanceof ValueSetBinding) {
-						if (fieldLocationUsageMap.containsKey(valueSetOrSingleCodeBinding.getLocation())) {
-							if (ExportUtil.diplayUsage(
-									fieldLocationUsageMap.get(valueSetOrSingleCodeBinding.getLocation()),
-									this.exportConfig.getValueSetsExport())) {
-								doBindTable(valueSetOrSingleCodeBinding.getTableId());
+				if (segment != null) {
+					Map<String, Usage> fieldLocationUsageMap = new HashMap<>();
+					for (Field field : segment.getFields()) {
+						fieldLocationUsageMap.put(String.valueOf(field.getPosition()), field.getUsage());
+						if (!bindedDatatypes.contains(field.getDatatype())
+								&& ExportUtil.diplayUsage(field.getUsage(), this.exportConfig.getDatatypesExport())) {
+							doBindDatatype(field.getDatatype(), null);
+						}
+					}
+					for (ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : segment.getValueSetBindings()) {
+						if (valueSetOrSingleCodeBinding instanceof ValueSetBinding) {
+							if (fieldLocationUsageMap.containsKey(valueSetOrSingleCodeBinding.getLocation())) {
+								if (ExportUtil.diplayUsage(
+										fieldLocationUsageMap.get(valueSetOrSingleCodeBinding.getLocation()),
+										this.exportConfig.getValueSetsExport())) {
+									doBindTable(valueSetOrSingleCodeBinding.getTableId());
+								}
+							}
+
+							removeFromUnbindedTables(valueSetOrSingleCodeBinding.getTableId());
+						}
+					}
+					if (segment.getDynamicMappingDefinition() != null
+							&& segment.getDynamicMappingDefinition().getDynamicMappingItems() != null) {
+						for (DynamicMappingItem dynamicMappingItem : segment.getDynamicMappingDefinition()
+								.getDynamicMappingItems()) {
+							if (dynamicMappingItem.getDatatypeId() != null) {
+								this.doBindDatatype(dynamicMappingItem.getDatatypeId());
 							}
 						}
-
-						removeFromUnbindedTables(valueSetOrSingleCodeBinding.getTableId());
 					}
-				}
-				if (segment.getDynamicMappingDefinition() != null
-						&& segment.getDynamicMappingDefinition().getDynamicMappingItems() != null) {
-					for (DynamicMappingItem dynamicMappingItem : segment.getDynamicMappingDefinition()
-							.getDynamicMappingItems()) {
-						if (dynamicMappingItem.getDatatypeId() != null) {
-							this.doBindDatatype(dynamicMappingItem.getDatatypeId());
-						}
-					}
-				}
 
-				if (segment.getCoConstraintsTable() != null
-						&& segment.getCoConstraintsTable().getThenMapData() != null) {
-					for (String key : segment.getCoConstraintsTable().getThenMapData().keySet()) {
-						if (segment.getCoConstraintsTable().getThenMapData().get(key) != null) {
-							for (CoConstraintTHENColumnData coConstraintTHENColumnData : segment.getCoConstraintsTable()
-									.getThenMapData().get(key)) {
-								if (coConstraintTHENColumnData != null) {
-									if (coConstraintTHENColumnData.getDatatypeId() != null) {
-										doBindDatatype(coConstraintTHENColumnData.getDatatypeId());
-									} else if (coConstraintTHENColumnData.getValueSets() != null
-											&& !coConstraintTHENColumnData.getValueSets().isEmpty()) {
-										for (ValueSetData valueSetData : coConstraintTHENColumnData.getValueSets()) {
-											doBindTable(valueSetData.getTableId());
+					if (segment.getCoConstraintsTable() != null
+							&& segment.getCoConstraintsTable().getThenMapData() != null) {
+						for (String key : segment.getCoConstraintsTable().getThenMapData().keySet()) {
+							if (segment.getCoConstraintsTable().getThenMapData().get(key) != null) {
+								for (CoConstraintTHENColumnData coConstraintTHENColumnData : segment
+										.getCoConstraintsTable().getThenMapData().get(key)) {
+									if (coConstraintTHENColumnData != null) {
+										if (coConstraintTHENColumnData.getDatatypeId() != null) {
+											doBindDatatype(coConstraintTHENColumnData.getDatatypeId());
+										} else if (coConstraintTHENColumnData.getValueSets() != null
+												&& !coConstraintTHENColumnData.getValueSets().isEmpty()) {
+											for (ValueSetData valueSetData : coConstraintTHENColumnData
+													.getValueSets()) {
+												doBindTable(valueSetData.getTableId());
+											}
 										}
 									}
 								}

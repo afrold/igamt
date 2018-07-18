@@ -65,15 +65,15 @@ public abstract class SerializeMessageOrCompositeProfile {
 
     protected int segmentPosition = 1;
 
-    protected void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentUsageConfig, UsageConfig fieldsUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull,CoConstraintExportMode coConstraintExportMode)
+    protected void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentRefOrGroupUsageConfig, UsageConfig segmentUsageConfig, UsageConfig fieldsUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull,CoConstraintExportMode coConstraintExportMode)
         throws SegmentSerializationException {
-        serializeSegment(segmentRefOrGroup, prefix, segmentsSection, segmentUsageConfig, fieldsUsageConfig, duplicateOBXDataTypeWhenFlavorNull, null, coConstraintExportMode);
+        serializeSegment(segmentRefOrGroup, prefix, segmentsSection, segmentRefOrGroupUsageConfig, segmentUsageConfig, fieldsUsageConfig, duplicateOBXDataTypeWhenFlavorNull, null, coConstraintExportMode);
     }
 
-    protected void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentUsageConfig, UsageConfig fieldsUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull, Map<String,Segment> compositeProfileSegments, CoConstraintExportMode coConstraintExportMode)
+    protected void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentRefOrGroupUsageConfig, UsageConfig segmentUsageConfig, UsageConfig fieldsUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull, Map<String,Segment> compositeProfileSegments, CoConstraintExportMode coConstraintExportMode)
         throws SegmentSerializationException {
         this.compositeProfileSegments = compositeProfileSegments;
-        if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),segmentUsageConfig)) {
+        if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),segmentRefOrGroupUsageConfig)) {
             if (segmentRefOrGroup instanceof SegmentRef) {
                 SegmentLink segmentLink = ((SegmentRef) segmentRefOrGroup).getRef();
                 if (!messageSegmentsNameList.contains(segmentLink.getId())) {
@@ -91,7 +91,7 @@ public abstract class SerializeMessageOrCompositeProfile {
                 for (SegmentRefOrGroup groupSegmentRefOrGroup : ((Group) segmentRefOrGroup)
                     .getChildren()) {
                     serializeSegment(groupSegmentRefOrGroup, prefix, segmentsSection,
-                        segmentUsageConfig, fieldsUsageConfig, duplicateOBXDataTypeWhenFlavorNull, coConstraintExportMode);
+                        segmentRefOrGroupUsageConfig, segmentUsageConfig, fieldsUsageConfig, duplicateOBXDataTypeWhenFlavorNull, coConstraintExportMode);
                 }
             }
         }
