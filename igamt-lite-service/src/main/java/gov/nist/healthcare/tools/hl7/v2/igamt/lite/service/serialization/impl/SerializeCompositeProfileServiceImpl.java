@@ -126,7 +126,7 @@ public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrComp
                 serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
                 if (serializationLayout.equals(SerializationLayout.PROFILE)) {
                     serializeSegment(segmentRefOrGroup, compositeProfileSegments.getPrefix() + ".",
-                        compositeProfileSegments, segmentUsageConfig, fieldsUsageConfig,
+                        compositeProfileSegments, segmentOrGroupUsageConfig, segmentUsageConfig, fieldsUsageConfig,
                         exportConfig.isGreyOutOBX2FlavorColumn(),exportConfig.getCoConstraintExportMode());
                 }
             }
