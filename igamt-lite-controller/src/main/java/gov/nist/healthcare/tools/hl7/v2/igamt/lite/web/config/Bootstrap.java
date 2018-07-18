@@ -358,7 +358,7 @@ public class Bootstrap implements InitializingBean {
     // removeUnfoundBindingForSegments();
     // fixSegmentStatus();
 
-    // changeEmptyToNA();
+    changeEmptyToNA();
 
 //     removePreloadedIGs("CDC 2.5.1 Immunization Profile");
 //     removePreloadedIGs("ONC Immunization Profile");
@@ -674,21 +674,19 @@ public class Bootstrap implements InitializingBean {
     for (Datatype d : dts) {
       if (d.getComponents() != null) {
         for (Component c : d.getComponents()) {
-          if (c.getConfLength() != null && c.getConfLength().isEmpty()) {
+          if (c.getConfLength() == null || c.getConfLength().isEmpty()) {
             c.setConfLength(DataElement.LENGTH_NA);
           }
-          if (c.getMinLength() != null) {
-            if (c.getMinLength().isEmpty()) {
+          if (c.getMinLength() == null||c.getMinLength().isEmpty()) {
               c.setMinLength(DataElement.LENGTH_NA);
               c.setMaxLength(DataElement.LENGTH_NA);
-            }
+            
 
           }
-          if (c.getMaxLength() != null) {
-            if (c.getMaxLength().isEmpty()) {
+          if (c.getMaxLength()== null||c.getMaxLength().isEmpty()) {
               c.setMinLength(DataElement.LENGTH_NA);
               c.setMaxLength(DataElement.LENGTH_NA);
-            }
+            
 
           }
         }
@@ -702,21 +700,18 @@ public class Bootstrap implements InitializingBean {
     for (Segment s : segments) {
       if (s.getFields() != null) {
         for (Field f : s.getFields()) {
-          if (f.getConfLength() != null && f.getConfLength().isEmpty()) {
+          if (f.getConfLength() == null || f.getConfLength().isEmpty()) {
             f.setConfLength(DataElement.LENGTH_NA);
           }
-          if (f.getMinLength() != null) {
-            if (f.getMinLength().isEmpty()) {
+          if (f.getMinLength() == null ||f.getMinLength().isEmpty()) {
               f.setMinLength(DataElement.LENGTH_NA);
               f.setMaxLength(DataElement.LENGTH_NA);
-            }
 
           }
-          if (f.getMaxLength() != null) {
-            if (f.getMaxLength().isEmpty()) {
+          if (f.getMaxLength() == null||f.getMaxLength().isEmpty()) {
               f.setMinLength(DataElement.LENGTH_NA);
               f.setMaxLength(DataElement.LENGTH_NA);
-            }
+            
 
           }
         }
