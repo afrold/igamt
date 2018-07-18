@@ -1,6 +1,9 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:import href="/rendering/templates/profile/constraint.xsl"/>
     <xsl:include href="/rendering/templates/profile/definitionText.xsl"/>
+    <xsl:include href="/rendering/templates/profile/conformanceStatementHeader.xsl"/>
+    <xsl:include href="/rendering/templates/profile/predicateHeader.xsl"/>
+    <xsl:include href="/rendering/templates/profile/dynamicMapping.xsl"/>
 
     <xsl:template match="ProfileComponent" mode="toc">
         <xsl:element name="a">
@@ -307,7 +310,38 @@
                 </xsl:element>
             </xsl:element>
         </xsl:element>
-    	<xsl:if test="count(Constraints/Constraint[@Type='pre']) &gt; 0">
+        <xsl:apply-templates select="./DynamicMapping"/>
+        <xsl:if test="count(Constraints/Constraint[@Type='cs']) &gt; 0">
+            <xsl:element name="br"/>
+            <xsl:element name="span">
+                <xsl:element name="b">
+                    <xsl:text>Conformance Statements</xsl:text>
+                </xsl:element>
+            </xsl:element>
+            <xsl:element name="table">
+                <xsl:attribute name="class">
+                    <xsl:text>contentTable</xsl:text>
+                </xsl:attribute>
+                <xsl:call-template name="conformanceStatementHeader"/>
+                <xsl:element name="tbody">
+                    <xsl:for-each select="./Constraints/Constraint[@Type='cs']">
+                        <xsl:sort select="@Id" data-type="text" order="ascending" />
+                        <xsl:call-template name="ConstraintContent">
+                            <xsl:with-param name="mode">
+                                <xsl:text>standalone</xsl:text>
+                            </xsl:with-param>
+                            <xsl:with-param name="type">
+                                <xsl:text>cs</xsl:text>
+                            </xsl:with-param>
+                            <xsl:with-param name="displayPeriod">
+                                <xsl:text>false</xsl:text>
+                            </xsl:with-param>
+                        </xsl:call-template>
+                    </xsl:for-each>
+                </xsl:element>
+            </xsl:element>
+        </xsl:if>
+    		<xsl:if test="count(Constraints/Constraint[@Type='pre']) &gt; 0">
             <xsl:element name="br"/>
             <xsl:element name="span">
                 <xsl:element name="b">
@@ -337,6 +371,7 @@
                 </xsl:element>
             </xsl:element>
         </xsl:if>
+        <xsl:apply-templates select="./coconstraints"/>
 		<xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
             <xsl:element name="br"/>
 			<xsl:call-template name="definitionText">
@@ -346,6 +381,16 @@
 			</xsl:call-template>
 		</xsl:if>
         
+    </xsl:template>
+    
+    <xsl:template match="coconstraints">
+    	<xsl:element name="br"/>
+        <xsl:element name="span">
+   			<xsl:element name="b">
+            	<xsl:text>Co-Constraints</xsl:text>
+        	</xsl:element>
+        </xsl:element>
+        <xsl:copy-of select="table"/>
     </xsl:template>
 
 </xsl:stylesheet>

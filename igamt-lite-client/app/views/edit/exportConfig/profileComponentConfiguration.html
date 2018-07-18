@@ -14,7 +14,7 @@
 
     <div layout="row" layout-align="center start" style="width: 100%">
         <!-- Usages card -->
-        <div flex style="min-width:60%">
+        <div flex style="min-width:60%" layout="column" >
             <md-content>
                 <md-card>
                     <md-card-content>
@@ -51,6 +51,34 @@
                     </md-card-content>
                 </md-card>
             </md-content>
+            <md-content>
+                <md-card>
+                    <md-card-content>
+                        <div layout="column" style="width: 100%">
+                            <div class="config-checkbox">
+                                <md-checkbox class="md-primary"
+                                             ng-model="config.includeProfileComponentConformanceStatements"
+                                             ng-change="setChanged()"><label style="color: black">Include Conformance Statements</label></md-checkbox>
+                            </div>
+                            <div class="config-checkbox">
+                                <md-checkbox class="md-primary"
+                                             ng-model="config.includeProfileComponentConditionalPredicates"
+                                             ng-change="setChanged()"><label style="color: black">Include Conditional Predicates</label></md-checkbox>
+                            </div>
+                            <div class="config-checkbox">
+                                <md-checkbox class="md-primary"
+                                             ng-model="config.includeProfileComponentCoConstraints"
+                                             ng-change="setChanged()"><label style="color: black">Include Co-Constraints</label></md-checkbox>
+                            </div>
+                            <div class="config-checkbox">
+                                <md-checkbox class="md-primary"
+                                             ng-model="config.includeProfileComponentDynamicMapping"
+                                             ng-change="setChanged()"><label style="color: black">Include Dynamic Mapping</label></md-checkbox>
+                            </div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </md-content>
         </div>
         <!-- Columns card-->
         <div flex>
@@ -70,5 +98,6 @@
                 </md-card>
             </md-content>
         </div>
+        
     </div>
 </md-card-content>

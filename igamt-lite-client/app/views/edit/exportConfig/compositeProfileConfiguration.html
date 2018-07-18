@@ -101,12 +101,14 @@
                     </md-card-content>
                 </md-card>
                 <md-card>
-                	<div flex layout="row">
-			            <md-checkbox ng-model="config.includeComposition" ng-change="setChanged()"><label style="color: black">Include Composition</label></md-checkbox>
-			        </div>
-			        <div flex layout="row">
-			            <md-checkbox ng-model="config.includeDerived" ng-change="setChanged()"><label style="color: black">Include Generated Flavors</label></md-checkbox>
-			        </div>
+	                <md-card-content>
+	                		<div flex layout="row">
+				            <md-checkbox ng-model="config.includeComposition" ng-change="setChanged()"><label style="color: black">Include Composition</label></md-checkbox>
+				        </div>
+				        <div flex layout="row">
+				            <md-checkbox ng-model="config.includeDerived" ng-change="setChanged()"><label style="color: black">Include Generated Flavors</label></md-checkbox>
+				        </div>
+			        </md-card-content>
                 </md-card>
             </md-content>
         </div>
