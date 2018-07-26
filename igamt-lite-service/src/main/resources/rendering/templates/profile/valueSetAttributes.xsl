@@ -2,6 +2,9 @@
 
     <xsl:template name="valueSetAttributes">
          <xsl:if test="$valueSetMetadata.stability = 'true' or $valueSetMetadata.extensibility = 'true' or $valueSetMetadata.contentDefinition = 'true'">
+        		<xsl:if test="$documentTargetFormat='word'">
+				<xsl:element name="br"/>
+			</xsl:if>
         <xsl:element name="span">
         	<xsl:attribute name="class">
 	     		<xsl:text>contentHeader</xsl:text>

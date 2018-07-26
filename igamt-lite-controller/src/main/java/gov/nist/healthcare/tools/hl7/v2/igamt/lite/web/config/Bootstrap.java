@@ -358,7 +358,7 @@ public class Bootstrap implements InitializingBean {
     // removeUnfoundBindingForSegments();
     // fixSegmentStatus();
 
-  //  changeEmptyToNA();
+    // changeEmptyToNA();
 
 //     removePreloadedIGs("CDC 2.5.1 Immunization Profile");
 //     removePreloadedIGs("ONC Immunization Profile");
@@ -399,7 +399,7 @@ public class Bootstrap implements InitializingBean {
 //     removePreloadedIGs("ONC Immunization Profile");
 //     makePreloadedProfile("5b3103a984ae3d88f239fb8e");
     
-//    
+    
 //    removeWrongBindingData("5b21730984ae53d88a68bed2", new String[]{"57e43a2b84ae7eaed5fbdf83", "57e624d684aea6fcfcde915f"});
 //    removeWrongBindingData("5b352a9c84aeb042c3e441b9", new String[]{"57e43a2b84ae7eaed5fbdf83", "57e624d684aea6fcfcde915f"});
 //
