@@ -60,8 +60,11 @@ public class PathGroupServiceImpl implements PathGroupService {
           String[] elements = subPc.getPath().split("\\.", 2);
           String segName = elements[0];
           String segPath = coreMessage.getStructID();
-          List<SubProfileComponent> newSubPcs = addMultipleFromSegmentName(subPc,
-              coreMessage.getChildren(), segName, segPath, segmentsMap);
+          if(subPc.getSource().getSegmentId() !=null){
+        	 
+          }
+          List<SubProfileComponent> newSubPcs = addMultipleFromSegmentId(subPc,
+              coreMessage.getChildren(), segPath, segmentsMap,subPc.getSource().getSegmentId());
           toRemove.add(subPc);
           toAdd.addAll(newSubPcs);
         } else {
@@ -232,23 +235,25 @@ public class PathGroupServiceImpl implements PathGroupService {
 
 
 
-  private List<SubProfileComponent> addMultipleFromSegmentName(SubProfileComponent subPc,
-      List<SegmentRefOrGroup> children, String segLabel, String path,
-      Map<String, Segment> segmentsMap) {
+  private List<SubProfileComponent> addMultipleFromSegmentId(SubProfileComponent subPc,
+      List<SegmentRefOrGroup> children, String path,
+      Map<String, Segment> segmentsMap, String segId) {
+	  
     List<SubProfileComponent> result = new ArrayList<>();
     for (SegmentRefOrGroup child : children) {
       if (child instanceof Group) {
         Group grp = (Group) child;
         String p = path + "." + grp.getPosition();
         result
-            .addAll(addMultipleFromSegmentName(subPc, grp.getChildren(), segLabel, p, segmentsMap));
+            .addAll(addMultipleFromSegmentId(subPc, grp.getChildren(), p, segmentsMap,segId));
       } else if (child instanceof SegmentRef) {
         SegmentRef segRef = (SegmentRef) child;
         Segment seg = segmentsMap.get(segRef.getRef().getId());
-        if (subPc.getPath().startsWith(seg.getLabel()) && segLabel.equals(seg.getLabel())) {
+        
+        if (segRef.getRef().getId().equals(segId)) {
 
           List<ValueSetOrSingleCodeBinding> toRemove = new ArrayList<>();
-          if (subPc.getValueSetBindings() != null && subPc.getPath().startsWith(segLabel)) {
+          if (subPc.getValueSetBindings() != null ) {
             for (ValueSetOrSingleCodeBinding v : subPc.getValueSetBindings()) {
               for (ValueSetOrSingleCodeBinding vsb : seg.getValueSetBindings()) {
                 if (v.getLocation().equals(vsb.getLocation())) {
@@ -289,8 +294,7 @@ public class PathGroupServiceImpl implements PathGroupService {
               seg.getSingleElementValues().add(subPc.getSingleElementValues());
             }
           }
-          if (subPc.getAttributes().getPredicate() != null
-              && subPc.getPath().startsWith(segLabel)) {
+          if (subPc.getAttributes().getPredicate() != null) {
 
             Predicate pred = subPc.getAttributes().getPredicate();
             boolean predExist = false;
@@ -306,15 +310,14 @@ public class PathGroupServiceImpl implements PathGroupService {
                 predicate.setTrueUsage(pred.getTrueUsage());
               }
             }
-            if (!predExist && subPc.getPath().startsWith(segLabel)) {
+            if (!predExist) {
               System.out.println(subPc.getPath());
               System.out.println(seg.getName());
               seg.getPredicates().add(pred);
             }
 
           }
-          String p = path + "." + segRef.getPosition();
-          if (segRef.getRef().getLabel().equals(segLabel)) {
+            String p = path + "." + segRef.getPosition();
             SubProfileComponent sub = new SubProfileComponent();
             sub.setAttributes(subPc.getAttributes());
             List<Comment> comments = subPc.getComments();
@@ -322,13 +325,13 @@ public class PathGroupServiceImpl implements PathGroupService {
             sub.setName(subPc.getName());
             sub.setPosition(subPc.getPosition());
             sub.setType(subPc.getType());
-            sub.setPath(subPc.getPath().replace(segLabel, p));
+            sub.setPath(subPc.getPath().replace(seg.getLabel(), p));
             result.add(sub);
           }
         }
 
       }
-    }
+    
     return result;
   }
 
