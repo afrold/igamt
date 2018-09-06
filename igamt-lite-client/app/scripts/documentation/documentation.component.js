@@ -1,7 +1,7 @@
 /**
  * Created by haffo on 9/11/17.
  */
-angular.module('igl').controller('DocumentationController', function($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout,DocumentationService,userInfoService) {
+angular.module('igl').controller('DocumentationController', function($scope, $rootScope, Restangular, $filter, $http, $mdDialog, $timeout,DocumentationService,userInfoService) {
 
 
   $scope.editMode=false;
@@ -9,12 +9,6 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
   $scope.activeId=null;
   $rootScope.documentation=null;
 
-
-//	$scope.init=function(){
-//		console.log("lddsdsdsddssd");
-//		$scope.text="fwfwfw";
-//	$rootScope.documentations=[{title: "documentation One" , content:"blaadefefe"},{title: "documentation One" , content:"blaadefefe"},{title: "documentation One" , content:"blaadefefe"}];
-//	}
   $scope.init=function(){
 
     DocumentationService.findAll().then(function(result){
@@ -25,7 +19,9 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
       $rootScope.UserGuides=[];
       $rootScope.usersNotes=[];
       $rootScope.releaseNotes=[];
-      angular.forEach(result, function(documentation){
+      $rootScope.glossary=[];
+
+        angular.forEach(result, function(documentation){
         $rootScope.documentationsMap[documentation.id]=documentation;
         if(documentation.type==='decision'){
           $rootScope.decisions.push(documentation);
@@ -35,6 +31,8 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
           $rootScope.FAQs.push(documentation);
         }else if(documentation.type==='releaseNote'){
           $rootScope.releaseNotes.push(documentation);
+        }else if(documentation.type==='glossary'){
+          $rootScope.glossary.push(documentation);
         }
 
       });
@@ -58,14 +56,13 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 
 
   $scope.deleteDocumentation=function(documentation){
-
-
-
     DocumentationService.delete(documentation).then(function(){
-        $rootScope.documentation=null;
         for(i=0; i<$rootScope.documentations.length;i++){
-          if(documentation.id==$rootScope.documentations[i].id){
+
+          if(documentation.id == $rootScope.documentations[i].id){
             $rootScope.documentations.splice(i, 1);
+            $rootScope.documentation=null;
+
           }
         }
 
@@ -96,12 +93,10 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 
     var newId=new ObjectId().toString();
     $rootScope.documentationToAdd={
-
       id: newId,
       title:"New",
       type:type
-
-    }
+    };
 
     $scope.editMode=true;
     $scope.activeId=newId;
@@ -110,6 +105,7 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
       $rootScope.decisions.push($rootScope.documentationToAdd);
       $rootScope.documentations=$rootScope.decisions;
       $rootScope.documentationToAdd.title="New Decision";
+
     }else if(type==='userGuide'){
       $rootScope.UserGuides.push($rootScope.documentationToAdd);
       $rootScope.documentations=$rootScope.UserGuides;
@@ -120,6 +116,7 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
       $rootScope.FAQs.push($rootScope.documentationToAdd);
       $rootScope.documentations=$rootScope.FAQs;
       $rootScope.documentationToAdd.title="New FAQ";
+
     }else if (type=='UserNote'){
       $rootScope.usersNotes.push($rootScope.documentationToAdd);
       $rootScope.documentations=$rootScope.usersNotes;
@@ -131,6 +128,11 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
       $rootScope.documentations=$rootScope.releaseNotes;
       $rootScope.documentationToAdd.title="New Release Note";
     }
+    else if(type =='glossary'){
+      $rootScope.glossary.push($rootScope.documentationToAdd);
+      $rootScope.documentations=$rootScope.glossary;
+      $rootScope.documentationToAdd.title="New Term";
+    }
     //$rootScope.documentations.push($rootScope.documentationToAdd);
     $rootScope.documentationsMap[$rootScope.documentationToAdd.id]=$rootScope.documentationToAdd;
     //$scope.editDocumentation($rootScope.documentationToAdd);
@@ -139,7 +141,7 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
     //$rootScope.$emit("event:initEditArea");
 
 
-  }
+  };
   $scope.processEditDocumentation = function(documentation){
     if(documentation.type==='decision'){
       $rootScope.documentations=$rootScope.decisions;
@@ -151,6 +153,9 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
       $rootScope.documentations=$rootScope.usersNotes;
     }else if(documentation.type=='releaseNote'){
       $rootScope.documentations=$rootScope.releaseNotes;
+    }
+    else if(documentation.type=='glossary'){
+        $rootScope.documentations=$rootScope.glossary;
     }
     $scope.activeId=documentation.id;
     //$rootScope.$emit("event:initEditArea");
@@ -236,7 +241,8 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
         $rootScope.msg().show = true;
       }
     );
-  }
+  };
+
   $scope.resetDocumentation=function(d){
     console.log(d);
     console.log($rootScope.documentationsMap);
@@ -245,8 +251,6 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
       $scope.editForm.$setPristine();
       $scope.editForm.$dirty = false;
     }
-
-
   };
 
 
@@ -254,20 +258,19 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 
 
   $scope.confirmDeleteDocumentation = function(documentation) {
-    var modalInstance = $modal.open({
+    var modalInstance = $mdDialog.show({
       templateUrl: 'confirmDocumentationDeleteCtrl.html',
       controller: 'confirmDocumentationDeleteCtrl',
-      resolve: {
+      locals: {
         documentationToDelete: function() {
           return documentation;
         }
       }
     });
-    modalInstance.result.then(function(documentationtoDelete) {
-
-      $scope.deleteDocumentation(documentation);
+    modalInstance.then(function(res) {
+      if(res && res!=='cancel'){
+          $scope.deleteDocumentation(documentation);
+      }
     });
-
-
   }
 });

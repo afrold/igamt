@@ -114,7 +114,6 @@ body {
 
 				</ul>
 			</div>
-
 				<div accordion-group class="panel panel-default" is-open="isOpen4" ng-if="isAuthenticated()">
 				<accordion-heading style="color:black !important;">
 				<i class="pull-left fa" style="color: black;"
@@ -134,6 +133,25 @@ body {
 
 				</ul>
 			</div>
+				<div accordion-group class="panel panel-default" is-open="isOpen6">
+					<accordion-heading style="color:black !important;">
+						<i class="pull-left fa" style="color: black;"
+						   ng-class="{'fa-chevron-down': isOpen6, 'fa-chevron-right': !isOpen6}"></i> Glossary <i class="pull-right fa fa-info" aria-hidden="true" title="Glossary"></i></accordion-heading>
+
+					<div style="margin-bottom: 25px;">
+						<i ng-if="isAdmin()" class="fa fa-plus pull-right"
+						   aria-hidden="true" ng-click="addDocumentation('glossary')"
+						   style="margin-top: 5px; margin-right: 10px; cursor: pointer; font-size: 17px"></i>
+					</div>
+
+					<ul class="nav nav-pills nav-stacked"
+						style="margin-left: 5px !important;">
+						<li ng-repeat="documentation in glossary"
+							ng-click="editDocumentation(documentation)"
+							ng-class="{'current':activeId==documentation.id}"><a>{{documentation.title}}</a></li>
+
+					</ul>
+				</div>
 			</accordion>
 		</div>
 		<div class="col-md-8" ng-if="documentation"
@@ -190,7 +208,7 @@ body {
 							</button>
 							<button title="Save Changes" type="submit"
 								class="btn btn-raised btn-sm btn-success"
-								ng-disabled="editForm.$invalid || !editForm.$dirty||documentation.content==''"
+								ng-disabled="editForm.$invalid || !editForm.$dirty"
 								ng-click="saveDocumentation(documentation)">
 								<span><i class="fa fa-check fa-fw"></i> Save</span>
 							</button>
