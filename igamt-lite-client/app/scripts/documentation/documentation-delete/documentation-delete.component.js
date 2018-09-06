@@ -2,15 +2,15 @@
  * Created by haffo on 9/11/17.
  */
 
-angular.module('igl').controller('confirmDocumentationDeleteCtrl', function($scope, $rootScope, $http, $modalInstance, documentationToDelete,DocumentationService) {
+angular.module('igl').controller('confirmDocumentationDeleteCtrl', function($scope, $rootScope, $http, $mdDialog, documentationToDelete) {
 
   $scope.documentationtoDelete=documentationToDelete;
   $scope.ok = function() {
 
-    $modalInstance.close($scope.documentationtoDelete);
+    $mdDialog.hide($scope.documentationtoDelete);
 
   };
   $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
+    $mdDialog.hide('cancel');
   };
 });
