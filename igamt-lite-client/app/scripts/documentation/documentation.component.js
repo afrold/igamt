@@ -95,7 +95,8 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
     $rootScope.documentationToAdd={
       id: newId,
       title:"New",
-      type:type
+      type:type,
+        content:""
     };
 
     $scope.editMode=true;
@@ -268,7 +269,7 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
       }
     });
     modalInstance.then(function(res) {
-      if(res && res!=='cancel'){
+      if(res && res!== 'cancel'){
           $scope.deleteDocumentation(documentation);
       }
     });
