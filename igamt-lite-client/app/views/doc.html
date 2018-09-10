@@ -173,7 +173,7 @@ body {
 
 			</div>
 
-			<div ng-if="editMode||newOne" ng-controller="EditAreaCtrl"
+			<div ng-show="editMode||newOne" ng-controller="EditAreaCtrl"
 				ng-init="init">
 				<form name="editForm" id="editForm">
 					<div class="row" style="margin-left: 0px; margin-right: 10px">
@@ -184,14 +184,12 @@ body {
 
 						<md-input-container class=" md-block igamt-input-block" flex-gt-sm>
 							<input type="text" name="title" required id="title"
-								   class="form-control" ng-model="documentation.title"
-								   ng-change="setDirty()" />
+								   class="form-control" ng-model="documentation.title"/>
 						</md-input-container>
-
 
 							<label  class="input-left igamt-label">Content*</label>
 							<md-input-container class="md-block igamt-input-block" flex-gt-sm style="margin-top:20px" >
-                                                         <textarea froala="froalaEditorOptions" required
+                                                         <textarea froala="froalaEditorOptions"
 																  ng-model="documentation.content" id="content" name="content"
 																  ng-change="setDirty()"></textarea>
 							</md-input-container>
