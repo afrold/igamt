@@ -40,6 +40,8 @@ public class Documentation extends DataModel {
   protected String username;
 
   private Date updateDate;
+  
+  private int position;
 
 
   public String getUsername() {
@@ -136,5 +138,15 @@ public class Documentation extends DataModel {
   public void setOwner(Long owner) {
     this.owner = owner;
   }
+
+
+public int getPosition() {
+	return position;
+}
+
+
+public void setPosition(int position) {
+	this.position = position;
+}
 }
 

@@ -21,6 +21,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Documentation;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 
 
 /**
@@ -102,5 +103,16 @@ public class DocumentationRepositoryImp implements DocumentationOperations {
 
     return documentations;
   }
+  
+//  @Override
+//  public int order(String id, int position) {
+//    Query query = new Query();
+//    query.addCriteria(Criteria.where("id").is(id));
+//    query.fields().include("position");
+//    Update update = new Update();
+//    update.set("position", position);
+//    mongo.updateFirst(query, update, Documentation.class);
+//    return position;
+//  }
 
 }

@@ -22,20 +22,32 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
       $rootScope.glossary=[];
 
         angular.forEach(result, function(documentation){
+
         $rootScope.documentationsMap[documentation.id]=documentation;
+
         if(documentation.type==='decision'){
+
           $rootScope.decisions.push(documentation);
+
         }else if(documentation.type==='userGuide'){
+
           $rootScope.UserGuides.push(documentation);
+
         }else if(documentation.type==='FAQ'){
+
           $rootScope.FAQs.push(documentation);
+
         }else if(documentation.type==='releaseNote'){
+
           $rootScope.releaseNotes.push(documentation);
+
         }else if(documentation.type==='glossary'){
+
           $rootScope.glossary.push(documentation);
         }
 
       });
+
 
       if(userInfoService.isAuthenticated()){
 
@@ -45,14 +57,39 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
             $rootScope.documentationsMap[documentation.id]=documentation;
           });
         });
-
       }
-
-
+        $rootScope.decisions= _.sortBy($rootScope.decisions, 'position');
+        $rootScope.UserGuides=  _.sortBy($rootScope.UserGuides, 'position');
+        $rootScope.FAQs= _.sortBy($rootScope.FAQs, 'position');
+        $rootScope.releaseNotes= _.sortBy($rootScope.releaseNotes, 'position');
+        $rootScope.glossary= _.sortBy($rootScope.glossary, 'position');
+        $rootScope.usersNotes= _.sortBy($rootScope.usersNotes, 'position');
 
     });
 
   };
+
+    $scope.reorder = function (list, type) {
+        var positionList = [];
+        for (i = 0; i < list.length; i++) {
+            list[i].position = i + 1;
+            positionList.push({"id": list[i].id, "position": list[i].position});
+
+        }
+
+
+        DocumentationService.reorder(positionList).then(function (response) {
+            $rootScope.msg().text = "OrderChanged";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
+
+        }, function (error) {
+            $rootScope.msg().text = "OrderChangedFaild";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+
+        });
+    };
 
 
   $scope.deleteDocumentation=function(documentation){
@@ -93,10 +130,11 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 
     var newId=new ObjectId().toString();
     $rootScope.documentationToAdd={
-      id: newId,
-      title:"New",
-      type:type,
+        id: newId,
+        title:"New",
+        type:type,
         content:""
+
     };
 
     $scope.editMode=true;
@@ -137,7 +175,9 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
     //$rootScope.documentations.push($rootScope.documentationToAdd);
     $rootScope.documentationsMap[$rootScope.documentationToAdd.id]=$rootScope.documentationToAdd;
     //$scope.editDocumentation($rootScope.documentationToAdd);
-    $rootScope.documentation=angular.copy($rootScope.documentationToAdd);
+      $rootScope.documentationToAdd=$rootScope.documentations.length+1;
+
+      $rootScope.documentation=angular.copy($rootScope.documentationToAdd);
     $rootScope.currentData=$rootScope.documentation;
     //$rootScope.$emit("event:initEditArea");
 

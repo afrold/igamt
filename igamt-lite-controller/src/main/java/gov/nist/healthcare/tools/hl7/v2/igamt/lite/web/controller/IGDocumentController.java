@@ -1542,7 +1542,7 @@ public class IGDocumentController extends CommonController {
   }
 
   @RequestMapping(value = "/{id}/reorderMessages", method = RequestMethod.POST)
-  public Long reorderMessages(@PathVariable("id") String id, @RequestBody Set<MessageMap> messages)
+  public Long reorderMessages(@PathVariable("id") String id, @RequestBody Set<PositionMap> messages)
       throws IOException, IGDocumentNotFoundException, IGDocumentException, ProfileException {
 
     IGDocument d = igDocumentService.findOne(id);
@@ -1554,7 +1554,7 @@ public class IGDocumentController extends CommonController {
     Profile p = d.getProfile();
     Messages msgs = p.getMessages();
     for (Message m : msgs.getChildren()) {
-      for (MessageMap x : messages) {
+      for (PositionMap x : messages) {
         if (m.getId().equals(x.getId())) {
           m.setPosition(x.getPosition());
           messageService.save(m, date);
@@ -1576,10 +1576,10 @@ public class IGDocumentController extends CommonController {
   }
 
   @RequestMapping(value = "/reorderIgs", method = RequestMethod.POST)
-  public List<MessageMap> reorderIGS(@RequestBody List<MessageMap> igsMap)
+  public List<PositionMap> reorderIGS(@RequestBody List<PositionMap> igsMap)
       throws IOException, IGDocumentNotFoundException {
 
-    for (MessageMap ig : igsMap) {
+    for (PositionMap ig : igsMap) {
 
       IGDocument d = igDocumentService.findOne(ig.getId());
       if (d == null) {
