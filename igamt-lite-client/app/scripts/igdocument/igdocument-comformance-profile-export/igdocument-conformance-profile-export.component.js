@@ -14,13 +14,19 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
     $scope.user = {username: StorageService.getGvtUsername(), password: StorageService.getGvtPassword()};
     $scope.appInfo = $rootScope.appInfo;
     $scope.selected = false;
-    $scope.targetApps = $rootScope.appInfo.connectApps;
+    $scope.targetApps = _.sortBy($rootScope.appInfo.connectApps,'position');
+    $scope.app=  $scope.targetApps.length&&$scope.targetApps.length? $scope.targetApps[0]:null;
     $scope.targetDomains = null;
     $scope.error = null;
 
+    var url = $scope.targetApps !=null&&$scope.targetApps.length>0 ? $scope.targetApps[0].url: null;
+    var name = $scope.targetApps !=null&&$scope.targetApps.length>0 ? $scope.targetApps[0].url: null;
+
+
     $scope.target = {
-        url: null, domain: null
+        url: url, domain: null
     };
+
 
 
     $scope.newDomain = null;
@@ -35,7 +41,8 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
 
 
     $scope.selectTargetUrl = function () {
-        StorageService.set("EXT_TARGET_URL", $scope.target.url);
+        console.log($scope.app);
+        StorageService.set("EXT_TARGET_URL", $scope.app.url);
         $scope.loadingDomains = false;
         $scope.targetDomains = null;
         $scope.target.domain = null;
@@ -46,7 +53,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
     $scope.selectTargetDomain = function () {
         $scope.newDomain = null;
         if ($scope.target.domain != null) {
-            StorageService.set($scope.target.url + "/EXT_TARGET_DOMAIN", $scope.target.domain);
+            StorageService.set($scope.app.url + "/EXT_TARGET_DOMAIN", $scope.target.domain);
         }
     };
 
@@ -90,7 +97,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
     };
 
     $scope.login = function () {
-        GVTSvc.login($scope.user.username, $scope.user.password, $scope.target.url).then(function (auth) {
+        GVTSvc.login($scope.user.username, $scope.user.password, $scope.app.url).then(function (auth) {
             StorageService.setGvtUsername($scope.user.username);
             StorageService.setGvtPassword($scope.user.password);
             StorageService.setGVTBasicAuth(auth);
@@ -103,10 +110,10 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
     $scope.loadDomains = function () {
         $scope.targetDomains = [];
         $scope.target.domain = null;
-        if($scope.target.url != null) {
-            GVTSvc.getDomains($scope.target.url, StorageService.getGVTBasicAuth()).then(function (result) {
+        if($scope.app.url != null) {
+            GVTSvc.getDomains($scope.app.url, StorageService.getGVTBasicAuth()).then(function (result) {
                 $scope.targetDomains = result;
-                var savedTargetDomain = StorageService.get($scope.target.url + "/EXT_TARGET_DOMAIN");
+                var savedTargetDomain = StorageService.get($scope.app.url + "/EXT_TARGET_DOMAIN");
                 if (savedTargetDomain != null) {
                     for (var targetDomain in $scope.targetDomains) {
                         if (targetDomain.domain === savedTargetDomain) {
@@ -177,9 +184,9 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
         $scope.info.type = 'danger';
         $scope.info['details'] = null;
         var auth = StorageService.getGVTBasicAuth();
-        if ($scope.target.url != null && $scope.target.domain != null && auth != null) {
+        if ($scope.app.url != null && $scope.target.domain != null && auth != null) {
             $scope.loading = true;
-            GVTSvc.exportToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, auth, $scope.target.url, $scope.target.domain).then(function (map) {
+            GVTSvc.exportToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, auth, $scope.app.url, $scope.target.domain).then(function (map) {
                 $scope.loading = false;
                 var response = angular.fromJson(map.data);
                 if (response.success === false) {
@@ -194,7 +201,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
                     $scope.info.text = 'gvtRedirectInProgress';
                     $scope.info.show = true;
                     $scope.info.type = 'info';
-                    $scope.redirectUrl = $scope.target.url + $rootScope.appInfo.connectUploadTokenContext + "?x=" + encodeURIComponent(token) + "&y=" + encodeURIComponent(auth) + "&d=" + encodeURIComponent($scope.target.domain);
+                    $scope.redirectUrl = $scope.app.url + $rootScope.appInfo.connectUploadTokenContext + "?x=" + encodeURIComponent(token) + "&y=" + encodeURIComponent(auth) + "&d=" + encodeURIComponent($scope.target.domain);
                     $timeout(function () {
                         $scope.loading = false;
                         $window.open($scope.redirectUrl, "_target", "", false);
@@ -217,7 +224,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
         $scope.error = null;
         if ($scope.newDomain != null) {
             $scope.newDomain.key = $scope.newDomain.name.replace(/\s+/g, '-').toLowerCase();
-            GVTSvc.createDomain(StorageService.getGVTBasicAuth(), $scope.target.url, $scope.newDomain.key, $scope.newDomain.name, $scope.newDomain.homeTitle).then(function (domain) {
+            GVTSvc.createDomain(StorageService.getGVTBasicAuth(), $scope.app.url, $scope.newDomain.key, $scope.newDomain.name, $scope.newDomain.homeTitle).then(function (domain) {
                 $scope.loading = false;
                 $scope.target.domain = $scope.newDomain.key;
                 $scope.exportToGVT();
@@ -225,7 +232,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
                 $scope.loading = false;
                 $scope.error = error.text;
             });
-        } else if ($scope.target.url != null && $scope.target.domain != null) {
+        } else if ($scope.app.url != null && $scope.target.domain != null) {
             $scope.exportToGVT();
         }
     };
@@ -236,12 +243,12 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
         if (savedTargetUrl && savedTargetUrl != null) {
             for (var targetApp in $scope.targetApps) {
                 if (targetApp.url === savedTargetUrl) {
-                    $scope.target.url = targetApp.url;
+                    $scope.app.url = targetApp.url;
                     break;
                 }
             }
         } else if ($scope.targetApps.length == 1) {
-            $scope.target.url = $scope.targetApps[0].url;
+            $scope.app.url = $scope.targetApps[0].url;
         }
         $scope.selectTargetUrl();
     }

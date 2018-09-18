@@ -4,8 +4,17 @@ public class ConnectApp {
 
   String url;
   String name;
+  int position;
 
-  public String getUrl() {
+  public int getPosition() {
+	return position;
+}
+
+public void setPosition(int position) {
+	this.position = position;
+}
+
+public String getUrl() {
     return url;
   }
 
@@ -21,9 +30,10 @@ public class ConnectApp {
     this.name = name;
   }
 
-  public ConnectApp(String name, String url) {
+  public ConnectApp(String name, String url, int i) {
     this.name = name;
     this.url = url;
+    this.position=i;
   }
 
   public ConnectApp() {
