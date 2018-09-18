@@ -35,12 +35,12 @@ public class DocumentationServiceImpl implements DocumentationService {
   Logger log = LoggerFactory.getLogger(DocumentationServiceImpl.class);
 
   @Autowired
-  private DocumentationRepository decisionRepository;
+  private DocumentationRepository documentationRepository;
 
   @Override
   public List<Documentation> findAll() {
     // TODO Auto-generated method stub
-    return decisionRepository.findAll();
+    return documentationRepository.findAll();
 
   }
 
@@ -54,21 +54,21 @@ public class DocumentationServiceImpl implements DocumentationService {
   @Override
   public Documentation findById(String id) {
     // TODO Auto-generated method stub
-    return decisionRepository.findOne(id);
+    return documentationRepository.findOne(id);
   }
 
   @Override
   public Documentation save(Documentation d) {
     // TODO Auto-generated method stub
 
-    return decisionRepository.save(d);
+    return documentationRepository.save(d);
   }
 
   @Override
   public void delete(Documentation d) {
     // TODO Auto-generated method stub
 
-    decisionRepository.delete(d);
+    documentationRepository.delete(d);
   }
 
   /*
@@ -94,7 +94,7 @@ public class DocumentationServiceImpl implements DocumentationService {
   @Override
   public Date updateDate(String id, Date date) {
     // TODO Auto-generated method stub
-    return decisionRepository.updateDate(id, date);
+    return documentationRepository.updateDate(id, date);
   }
 
   /*
@@ -107,8 +107,9 @@ public class DocumentationServiceImpl implements DocumentationService {
   @Override
   public List<Documentation> findByOwner(Long accontId) {
     // TODO Auto-generated method stub
-    return decisionRepository.findByOwner(accontId);
+    return documentationRepository.findByOwner(accontId);
   }
+
 
 
 

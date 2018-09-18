@@ -47,6 +47,18 @@ angular.module('igl').factory('DocumentationService',
 				
 			},
 
+        reorder:function(orderList){
+            var delay = $q.defer();
+            $http.post('api/documentations/reorder',orderList).then(function(response) {
+                var result = response.data;
+                delay.resolve(result);
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+
+        },
+
             findUserNotes:function(){
                 var delay = $q.defer();
                 //datatype.accountId = userInfoService.getAccountID();

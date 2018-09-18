@@ -63,8 +63,7 @@ public class ConnectController extends CommonController {
       @RequestBody HashMap<String, String> params,
       HttpServletRequest request, HttpServletResponse response) throws GVTExportException {
     try {
-      log.info(
-          "Creating domain with name " +  params.get("name") + ", key=" + params.get("key") + ",url="+ url);
+      log.info("Creating domain with name " +  params.get("name") + ", key=" + params.get("key") + ",url="+ url);
       return  connectService.createDomain(authorization,url,params.get("key"), params.get("name"),params.get("homeTitle"));
     } catch (Exception e) {
       throw new GVTExportException(e);

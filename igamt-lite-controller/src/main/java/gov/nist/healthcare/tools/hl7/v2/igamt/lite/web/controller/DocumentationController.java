@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,8 +30,10 @@ import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Documentation;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DocumentationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
 
 /**
@@ -102,8 +105,22 @@ public class DocumentationController {
       throws DatatypeSaveException, ForbiddenOperationException {
     documentationService.delete(documentation);
     return new ResponseMessage(ResponseMessage.Type.success, "documentation Delete Success", null);
+ }
+  
 
+  @RequestMapping(value = "/reorder", method = RequestMethod.POST)
+  public List<PositionMap> reorder(@RequestBody List<PositionMap> posMap) {
 
+    for (PositionMap i : posMap) {
+    Documentation d = documentationService.findById(i.getId());
+    
+    if(d !=null){
+    	d.setPosition(i.getPosition());
+    documentationService.save(d);
+      
+    }
+    }
+    return posMap;
 
   }
 

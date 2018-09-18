@@ -12,10 +12,7 @@ body {
 	}
 </script>
 <div class="container" ng-init="init()">
-
-
-	<br /> <br />
-
+	<br/> <br/>
 	<div class="row">
 		<div class="col-md-3">
 			<accordion>
@@ -37,11 +34,16 @@ body {
 				</div>
 
 				<ul class="nav nav-pills nav-stacked"
-					style="margin-left: 5px !important;">
+					style="margin-left: 5px !important;" dnd-list="UserGuides">
 
-					<li ng-repeat="documentation in UserGuides"
+					<li ng-repeat="documentation in UserGuides" dnd-draggable="documentation"  dnd-moved="UserGuides.splice($index, 1);reorder(UserGuides,'userGuide')"
+						dnd-effect-allowed="move"
 						ng-click="editDocumentation(documentation)"
-						ng-class="{'current':activeId==documentation.id}"><a>{{documentation.title}}</a></li>
+						ng-class="{'current':activeId==documentation.id}"><a><span class="glyphicon glyphicon-move cursorMove"></span>{{documentation.title}} </a></li>
+
+					<li class="dndPlaceholder">
+						<strong> Drop Here </strong>
+					</li>
 
 				</ul>
 			</div>
@@ -61,12 +63,15 @@ body {
 						   style="margin-top: 5px; margin-right: 10px; cursor: pointer; font-size: 17px"></i>
 					</div>
 
-					<ul class="nav nav-pills nav-stacked"
-						style="margin-left: 5px !important;">
+					<ul class="nav nav-pills nav-stacked" dnd-list="FAQs" style="margin-left: 5px !important;">
 
-						<li ng-repeat="documentation in FAQs"
+						<li ng-repeat="documentation in FAQs" dnd-draggable="documentation"  dnd-moved="FAQs.splice($index, 1); reorder(FAQs,'FAQ')" dnd-effect-allowed="move"
 							ng-click="editDocumentation(documentation)"
-							ng-class="{'current':activeId==documentation.id}"><a>{{documentation.title}}</a></li>
+							ng-class="{'current':activeId==documentation.id}"><a><span class="glyphicon glyphicon-move cursorMove"></span>{{documentation.title}} </a></li>
+
+						<li class="dndPlaceholder">
+							<strong> Drop Here </strong>
+						</li>
 
 					</ul>
 				</div>
@@ -84,12 +89,16 @@ body {
 				</div>
 
 				<ul class="nav nav-pills nav-stacked"
-					style="margin-left: 5px !important;">
+					style="margin-left: 5px !important;" dnd-list="decisions">
 
-					<li ng-repeat="documentation in decisions"
+					<li ng-repeat="documentation in decisions" dnd-draggable="documentation"  dnd-moved="decisions.splice($index, 1); reorder(decisions,'decision')" dnd-effect-allowed="move"
 						ng-click="editDocumentation(documentation)"
-						ng-class="{'current':activeId==documentation.id}"><a>{{documentation.title}}</a></li>
+						ng-class="{'current':activeId==documentation.id}"><a><span class="glyphicon glyphicon-move cursorMove"></span>{{documentation.title}} </a>
+					</li>
 
+					<li class="dndPlaceholder">
+						<strong> Drop Here </strong>
+					</li>
 				</ul>
 			</div>
 
@@ -106,11 +115,15 @@ body {
 				</div>
 
 				<ul class="nav nav-pills nav-stacked"
-					style="margin-left: 5px !important;">
+					style="margin-left: 5px !important;" dnd-list="releaseNotes">
 
-					<li ng-repeat="documentation in releaseNotes"
+					<li ng-repeat="documentation in releaseNotes"  dnd-draggable="documentation"  dnd-moved="releaseNotes.splice($index, 1);reorder(releaseNotes,'releaseNote')" dnd-effect-allowed="move"
 						ng-click="editDocumentation(documentation)"
-						ng-class="{'current':activeId==documentation.id}"><a>{{documentation.title}}</a></li>
+						ng-class="{'current':activeId==documentation.id}"><a><span class="glyphicon glyphicon-move cursorMove"></span>{{documentation.title}} </a></li>
+
+					<li class="dndPlaceholder">
+						<strong> Drop Here </strong>
+					</li>
 
 				</ul>
 			</div>
@@ -119,17 +132,23 @@ body {
 				<i class="pull-left fa" style="color: black;"
 					ng-class="{'fa-chevron-down': isOpen4, 'fa-chevron-right': !isOpen4}"></i>My Notes <i class="pull-right fa fa-info" aria-hidden="true" title="Your general notes. This is visible only to you"></i></accordion-heading>
 
-							<div style="margin-bottom: 25px;">
+					<div style="margin-bottom: 25px;">
 					<i ng-if="isAdmin()" class="fa fa-plus pull-right"
 						aria-hidden="true" ng-click="addDocumentation('UserNote')"
 						style="margin-top: 5px; margin-right: 10px; cursor: pointer; font-size: 17px"></i>
 				</div>
 
-				<ul class="nav nav-pills nav-stacked"
+				<ul class="nav nav-pills nav-stacked" dnd-list="usersNotes"
 					style="margin-left: 5px !important;">
-					<li ng-repeat="documentation in usersNotes"
+					<li ng-repeat="documentation in usersNotes" dnd-draggable="documentation"  dnd-moved="usersNotes.splice($index, 1);reorder(usersNotes,'UserNote')" dnd-effect-allowed="move"
 						ng-click="editDocumentation(documentation)"
-						ng-class="{'current':activeId==documentation.id}"><a>{{documentation.title}}</a></li>
+						ng-class="{'current':activeId==documentation.id}">
+						<a><span class="glyphicon glyphicon-move cursorMove"></span>{{documentation.title}} </a>
+					</li>
+
+					<li class="dndPlaceholder">
+						<strong> Drop Here </strong>
+					</li>
 
 				</ul>
 			</div>
@@ -144,12 +163,11 @@ body {
 						   style="margin-top: 5px; margin-right: 10px; cursor: pointer; font-size: 17px"></i>
 					</div>
 
-					<ul class="nav nav-pills nav-stacked"
-						style="margin-left: 5px !important;">
-						<li ng-repeat="documentation in glossary"
-							ng-click="editDocumentation(documentation)"
-							ng-class="{'current':activeId==documentation.id}"><a>{{documentation.title}}</a></li>
-
+					<ul class="nav nav-pills nav-stacked" dnd-list="glossary" style="margin-left: 5px !important;">
+						<li ng-repeat="documentation in glossary" dnd-draggable="documentation"  dnd-moved="glossary.splice($index, 1);reorder(glossary,'glossary')" dnd-effect-allowed="move" ng-click="editDocumentation(documentation)" ng-class="{'current':activeId==documentation.id}"><a><span class="glyphicon glyphicon-move cursorMove"></span>{{documentation.title}} </a></li>
+						<li class="dndPlaceholder">
+							<strong> Drop Here </strong>
+						</li>
 					</ul>
 				</div>
 			</accordion>
@@ -157,7 +175,7 @@ body {
 		<div class="col-md-8" ng-if="documentation"
 			style="border-left: 1px solid #eeeeee; min-height: 80px;">
 			<div class="" style="margin-bottom: 20px">
-				<span class="header4">{{documentation.title}}</span> <span
+				<span class="header4">{{documentation.title}} </span> <span
 					class="pull-right"> <i class="fa fa-pencil"
 					aria-hidden="true" ng-click="edit()" ng-if="!editMode&&isAdmin()" style="font-size:23px;"></i> <i
 					ng-if="isAdmin()" class="fa fa-trash-o" style="color:red;font-size:23px;"

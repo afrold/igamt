@@ -16,7 +16,6 @@
         <md-tab  ng-repeat="tt in igDocumentTypes" md-on-select="selectIGDocumentType(tt.type);make_active($index)" md-active="tabs[$index].active" ng-if="tt.type!=='all'||isAdmin()">
             <md-tab-label>
                 <i class="fa fa-file-text-o fa-fw"></i> {{::tt.name}}
-
             </md-tab-label>
             <md-tab-body>
                 <div class="container"  style="margin-top: 20px;margin-buttom: 20px" layout="row">
@@ -119,8 +118,6 @@
 
                                                 <md-list-item class="dndPlaceholder"
                                                               style="min-height: 60px; width: 100%;background-color: #0b3e6f ;color:white">
-
-
                                                     <strong> Drop Here </strong>
                                                     <!--</td>-->
                                                     <!--</tr>-->
