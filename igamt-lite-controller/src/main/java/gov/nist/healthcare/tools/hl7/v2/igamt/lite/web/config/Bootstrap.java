@@ -413,7 +413,7 @@ public class Bootstrap implements InitializingBean {
 		// fixIgDocumentType(); 
 		
 		//09/17/18
-		fixLengthAndConfLength();
+		//fixLengthAndConfLength();
 
 	}
 

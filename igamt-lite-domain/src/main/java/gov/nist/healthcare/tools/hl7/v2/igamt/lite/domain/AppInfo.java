@@ -88,9 +88,9 @@ public class AppInfo implements Serializable {
 
     String[] apps = this.connectAppsString.split(";");
     if (apps != null && apps.length > 0) {
-      for (String appStr : apps) {
-        String[] prop = appStr.split(Pattern.quote("|"));
-        this.connectApps.add(new ConnectApp(prop[0], prop[1]));
+      for (int i=0; i<apps.length; i++) {
+        String[] prop = apps[i].split(Pattern.quote("|"));
+        this.connectApps.add(new ConnectApp(prop[0], prop[1], i+1));
       }
     }
 
