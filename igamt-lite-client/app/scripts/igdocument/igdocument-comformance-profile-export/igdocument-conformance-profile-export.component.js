@@ -20,7 +20,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
     $scope.error = null;
 
     var url = $scope.targetApps !=null&&$scope.targetApps.length>0 ? $scope.targetApps[0].url: null;
-    var name = $scope.targetApps !=null&&$scope.targetApps.length>0 ? $scope.targetApps[0].url: null;
+    var name = $scope.targetApps !=null&&$scope.targetApps.length>0 ? $scope.targetApps[0].name: null;
 
 
     $scope.target = {

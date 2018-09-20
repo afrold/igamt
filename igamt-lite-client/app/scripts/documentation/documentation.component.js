@@ -175,7 +175,7 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
     //$rootScope.documentations.push($rootScope.documentationToAdd);
     $rootScope.documentationsMap[$rootScope.documentationToAdd.id]=$rootScope.documentationToAdd;
     //$scope.editDocumentation($rootScope.documentationToAdd);
-      $rootScope.documentationToAdd=$rootScope.documentations.length+1;
+      $rootScope.documentationToAdd.position=$rootScope.documentations.length+1;
 
       $rootScope.documentation=angular.copy($rootScope.documentationToAdd);
     $rootScope.currentData=$rootScope.documentation;

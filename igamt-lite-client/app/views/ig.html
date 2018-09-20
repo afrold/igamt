@@ -1159,32 +1159,32 @@
                         ng-show="toGVT && (exportStep === 'LOGIN_STEP' || exportStep === 'ERROR_STEP' || exportStep === 'DOMAIN_STEP')"
                         class="btn btn-raised btn-primary btn-sm"
                         ng-disabled="xmlFormat==='' || xmlFormat===null || !selected"
-                        ng-click="goBack()"><span><i
-                        class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
+                        ng-click="goBack()"><span>
+                    <i class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
 
                 <md-button ng-show="!toGVT || toGVT === false" class="btn btn-raised btn-primary btn-sm"
                            ng-disabled="xmlFormat==='' || xmlFormat===null || !selected"
-                           ng-click="exportAsZIPforSelectedCompositeProfiles()"><span><i
-                        class="fa fa-download fa-fw"></i>Export as Zip</span></md-button>
+                           ng-click="exportAsZIPforSelectedCompositeProfiles()"><span>
+                    <i class="fa fa-download fa-fw"></i>Export as Zip</span></md-button>
 
                 <md-button ng-show="toGVT && (exportStep === 'LOGIN_STEP')"
                            class="btn btn-raised btn-primary btn-sm"
                            ng-disabled="xmlFormat==='' || xmlFormat===null || !selected || target.url === null || gvtLoginForm.gvtPassword.$invalid || gvtLoginForm.gvtUsername.$invalid"
-                           ng-click="goNext()"><span><i
-                        class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
+                           ng-click="goNext()"><span>
+                    <i class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
 
                 <md-button ng-show="toGVT && (exportStep === 'MESSAGE_STEP')"
                            class="btn btn-raised btn-primary btn-sm"
                            ng-disabled="xmlFormat==='' || xmlFormat===null || !selected"
-                           ng-click="goNext()"><span><i
-                        class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
+                           ng-click="goNext()"><span>
+                    <i class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
 
 
                 <md-button ng-show="toGVT && exportStep === 'DOMAIN_STEP'" class="btn btn-raised btn-success btn-sm"
                            ng-show="xmlFormat=== 'Validation'"
                            ng-disabled="xmlFormat==='' || xmlFormat===null || !selected || target.url === null  || ((newDomain == null || newDomain.homeTitle == null || newDomain.homeTitle == '' || newDomain.name == null  || newDomain.name == '') && target.domain == null)"
-                           ng-click="exportAsZIPToGVT()"><span><i
-                        class="fa fa-paper-plane fa-fw"></i>SUBMIT</span></md-button>
+                           ng-click="exportAsZIPToGVT()">
+                    <span><i class="fa fa-paper-plane fa-fw"></i>SUBMIT</span></md-button>
 
                 </md-dialog-actions>
             </div>
