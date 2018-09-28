@@ -661,16 +661,19 @@ public class IGDocumentController extends CommonController {
           for (String key : att.getOldCoConstraintsTable().getThenMapData().keySet()) {
             List<CoConstraintTHENColumnData> dataList =
                 att.getOldCoConstraintsTable().getThenMapData().get(key);
-
-            for (CoConstraintTHENColumnData data : dataList) {
-              if (data.getValueSets() != null) {
-                for (ValueSetData vsd : data.getValueSets()) {
-                  if (vsd.getTableId() != null && tableIdChangeMap.containsKey(vsd.getTableId())) {
-                    vsd.setTableId(tableIdChangeMap.get(vsd.getTableId()));
+            if(dataList != null){
+              for (CoConstraintTHENColumnData data : dataList) {
+                if (data.getValueSets() != null) {
+                  for (ValueSetData vsd : data.getValueSets()) {
+                    if (vsd.getTableId() != null && tableIdChangeMap.containsKey(vsd.getTableId())) {
+                      vsd.setTableId(tableIdChangeMap.get(vsd.getTableId()));
+                    }
                   }
                 }
-              }
+              }   
             }
+
+           
           }
         }
       }
