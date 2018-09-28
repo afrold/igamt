@@ -414,10 +414,49 @@ public class Bootstrap implements InitializingBean {
 		
 		//09/17/18
 		//fixLengthAndConfLength();
+	  
+	  
+	  //09/28/18
+	  removeWrongBindingDataBySegmentName("PID", 5);
+	  removeWrongBindingDataBySegmentName("NK1", 2);
 
 	}
 
-	private void removeWrongBindingData(String igId, String[] valueSetIds) {
+	/**
+   * @param igId
+   * @param i
+   */
+  private void removeWrongBindingDataBySegmentName(String sementName, int location) {
+    List<Segment> segments = this.segmentService.findAll();
+    
+    for(Segment s:segments){
+      if(s.getName().equals(sementName)){
+        List<ValueSetOrSingleCodeBinding> bindings = s.getValueSetBindings();
+        if(bindings != null){
+          Set<ValueSetOrSingleCodeBinding> toBeDeletedBindings = new HashSet<ValueSetOrSingleCodeBinding>();
+          
+          for(ValueSetOrSingleCodeBinding b:bindings){
+            if(b instanceof ValueSetBinding){
+              ValueSetBinding vsb = (ValueSetBinding)b;
+              if(vsb.getLocation().equals(location + "")) toBeDeletedBindings.add(vsb);
+            }
+          }
+          
+          if(toBeDeletedBindings.size() > 0){
+            for (ValueSetOrSingleCodeBinding binding : toBeDeletedBindings) {
+              s.getValueSetBindings().remove(binding);
+            }
+            this.segmentService.save(s);
+            System.out.println("[[INFO]" + sementName + "'s location " + location + " binding is removed!");
+          }
+        }
+        
+      }
+    }
+    
+  }
+
+  private void removeWrongBindingData(String igId, String[] valueSetIds) {
 
 		IGDocument igDoc = this.iGDocumentService.findOne(igId);
 
