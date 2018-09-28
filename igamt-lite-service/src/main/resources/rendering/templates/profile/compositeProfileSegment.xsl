@@ -22,7 +22,13 @@
 			</xsl:if>
 
 			<xsl:choose>
-				<xsl:when test="@Ref!=']'">
+				<xsl:when test="@Ref!=']'"><xsl:apply-imports/><xsl:if test="$columnDisplay.compositeProfile.usage = 'true'">
+						<xsl:element name="td">
+							<xsl:if test="(normalize-space(@Usage)!='')">
+								<xsl:value-of select="@Usage" />
+							</xsl:if>
+						</xsl:element>
+					</xsl:if>
 					<xsl:if test="$columnDisplay.compositeProfile.cardinality = 'true'">
 						<xsl:element name="td">
 							<xsl:choose>
@@ -37,20 +43,15 @@
 		                	</xsl:choose>
 						</xsl:element>
 					</xsl:if>
-					<xsl:if test="$columnDisplay.compositeProfile.usage = 'true'">
-						<xsl:element name="td">
-							<xsl:if test="(normalize-space(@Usage)!='')">
-								<xsl:value-of select="@Usage" />
-							</xsl:if>
-						</xsl:element>
-					</xsl:if>
+					
 				</xsl:when>
 				<xsl:otherwise>
 					<!-- Do not display cardinality and usage for the end of a segment -->
-					<xsl:if test="$columnDisplay.compositeProfile.cardinality = 'true'">
+					
+					<xsl:if test="$columnDisplay.compositeProfile.usage = 'true'">
 						<xsl:element name="td"><xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute></xsl:element>
 					</xsl:if>
-					<xsl:if test="$columnDisplay.compositeProfile.usage = 'true'">
+					<xsl:if test="$columnDisplay.compositeProfile.cardinality = 'true'">
 						<xsl:element name="td"><xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute></xsl:element>
 					</xsl:if>
 				</xsl:otherwise>

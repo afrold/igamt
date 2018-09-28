@@ -129,7 +129,7 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
   $scope.processAddDocumentation= function(type){
 
     var newId=new ObjectId().toString();
-    $rootScope.documentationToAdd={
+    $rootScope.documentationToAdd = {
         id: newId,
         title:"New",
         type:type,
@@ -194,21 +194,17 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
       $rootScope.documentations=$rootScope.usersNotes;
     }else if(documentation.type=='releaseNote'){
       $rootScope.documentations=$rootScope.releaseNotes;
-    }
-    else if(documentation.type=='glossary'){
-        $rootScope.documentations=$rootScope.glossary;
+    }else if(documentation.type=='glossary'){
+      $rootScope.documentations=$rootScope.glossary;
     }
     $scope.activeId=documentation.id;
     //$rootScope.$emit("event:initEditArea");
     console.log(documentation);
     $rootScope.documentation=angular.copy(documentation);
     $rootScope.currentData=$rootScope.documentation;
-
     $scope.editMode=false;
     $rootScope.newOne=false;
-
-
-  }
+  };
 
 
 

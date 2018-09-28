@@ -94,16 +94,17 @@
                             <xsl:text>Element name</xsl:text>
                         </xsl:element>
                     </xsl:if>
-                    <xsl:if test="$columnDisplay.message.cardinality = 'true'">
-                        <xsl:element name="th">
-                            <xsl:text>Cardinality</xsl:text>
-                        </xsl:element>
-                    </xsl:if>
                     <xsl:if test="$columnDisplay.message.usage = 'true'">
                         <xsl:element name="th">
                             <xsl:text>Usage</xsl:text>
                         </xsl:element>
                     </xsl:if>
+                    <xsl:if test="$columnDisplay.message.cardinality = 'true'">
+                        <xsl:element name="th">
+                            <xsl:text>Cardinality</xsl:text>
+                        </xsl:element>
+                    </xsl:if>
+                    
                 </xsl:element>
             </xsl:element>
             <xsl:element name="tbody">

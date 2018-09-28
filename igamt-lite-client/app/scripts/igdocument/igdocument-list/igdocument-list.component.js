@@ -166,7 +166,6 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 
     $rootScope.isEditing = false;
     $scope.selectIgTab(0);
-    console.log("clos")
     // $scope.make_active(0);
     $rootScope.initMaps();
     StorageService.setIgDocument(null);
