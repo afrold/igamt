@@ -1917,6 +1917,12 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 
       }
       var dt = angular.copy(datatypesMap[datatype.components[i].datatype.id]);
+      if(!dt) {
+          console.log("NOT FOUND!!!");
+          console.log(datatypesMap);
+          console.log($rootScope.compositeProfile.datatypesMap);
+          console.log(datatype.components[i].datatype);
+      }
       buildCpDatatype(datatype.components[i].path, datatype.components[i].segmentPath, datatype.components[i].segment, "component", fieldDatatype, dt, datatypesMap);
       datatype.components[i].datatype = dt;
     }
@@ -2074,7 +2080,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 
     buildCompositeProfile(null, $rootScope.compositeProfile.children, $rootScope.compositeProfile.segmentsMap, $rootScope.compositeProfile.datatypesMap);
     console.log("$rootScope.compositeProfile");
-    console.log($rootScope.compositeProfile);
+
     console.log($rootScope.messages.children);
     console.log($rootScope.profileComponents);
       $scope.clearCpScope();
