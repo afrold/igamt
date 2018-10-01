@@ -1714,6 +1714,7 @@ angular
           $rootScope.compositeProfileStructure = cm;
           $scope.Activate(cm.id);
           CompositeProfileService.build(cm).then(function(compositeProfile) {
+            console.log("LOAD CP-WOO");
             console.log(compositeProfile);
             $rootScope.compositeProfile = compositeProfile;
             $scope.$emit('event:openCP', cm);

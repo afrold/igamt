@@ -30,6 +30,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStruct
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
@@ -38,6 +39,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.comparator.ApplyInfoComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.CompositeProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileService;
@@ -102,8 +104,21 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
     List<ProfileComponent> pcs = new ArrayList<>();
     ApplyInfoComparator Comp = new ApplyInfoComparator();
     Collections.sort(compositeProfileStructure.getProfileComponentsInfo(), Comp);
+    
     for (ApplyInfo pc : compositeProfileStructure.getProfileComponentsInfo()) {
-      pcs.add(profileComponentService.findById(pc.getId()));
+      ProfileComponent pco = profileComponentService.findById(pc.getId());
+      for(SubProfileComponent spc : pco.getChildren()){
+        if(spc.getAttributes().getDatatype() != null) {
+          Datatype dt = this.datatypeService.findById(spc.getAttributes().getDatatype().getId());
+          if(dt != null)  {
+            datatypesMap.put(dt.getId(), dt);
+            
+            addChildDt(datatypesMap, dt);
+            
+          }
+        }
+      }
+      pcs.add(pco);
     }
 
     List<PathGroup> pathGroups = pathGroupService.buildPathGroups(coreMessage, pcs, segmentsMap);
@@ -134,11 +149,26 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
     compositeProfile.setDefPostText(compositeProfileStructure.getDefPostText());
     compositeProfile.setCoreProfileId(compositeProfileStructure.getCoreProfileId());
     compositeProfile.setProfileComponents(compositeProfileStructure.getProfileComponentsInfo());
-    compositeProfile.setDateUpdated(compositeProfileStructure.getDateUpdated());
+    compositeProfile.setDateUpdated(compositeProfileStructure.getDateUpdated()); 
     return compositeProfile;
   }
 
 
+
+  /**
+   * @param datatypesMap
+   * @param dt
+   */
+  private void addChildDt(Map<String, Datatype> datatypesMap, Datatype dt) {
+    for(Component c: dt.getComponents()){
+      if(c.getDatatype() != null){
+        Datatype childDt = this.datatypeService.findById(c.getDatatype().getId());
+        if(childDt != null) datatypesMap.put(childDt.getId(), childDt);
+        if(childDt.getComponents() != null && childDt.getComponents().size() > 0) addChildDt(datatypesMap, childDt);
+      }
+    }
+    
+  }
 
   private void browse(String ext, DataModel dataModel, List<PathGroup> pathGroups) {
     for (PathGroup pathGroup : pathGroups) {
