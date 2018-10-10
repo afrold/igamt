@@ -417,8 +417,8 @@ public class Bootstrap implements InitializingBean {
 	  
 	  
 	  //09/28/18
-	  removeWrongBindingDataBySegmentName("PID", 5);
-	  removeWrongBindingDataBySegmentName("NK1", 2);
+//	  removeWrongBindingDataBySegmentName("PID", 5);
+//	  removeWrongBindingDataBySegmentName("NK1", 2);
 
 	}
 
