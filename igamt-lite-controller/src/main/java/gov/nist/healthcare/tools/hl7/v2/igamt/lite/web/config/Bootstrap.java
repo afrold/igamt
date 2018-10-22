@@ -45,6 +45,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ColumnsConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
@@ -77,6 +78,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Notifications;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
@@ -410,53 +412,129 @@ public class Bootstrap implements InitializingBean {
 		// removeWrongBindingData("5b352a9c84aeb042c3e441b9", new
 		// String[]{"57e43a2b84ae7eaed5fbdf83", "57e624d684aea6fcfcde915f"});
 		//
-		// fixIgDocumentType(); 
-		
-		//09/17/18
-		//fixLengthAndConfLength();
-	  
-	  
-	  //09/28/18
-	  removeWrongBindingDataBySegmentName("PID", 5);
-	  removeWrongBindingDataBySegmentName("NK1", 2);
+		// fixIgDocumentType();
+
+		// 09/17/18
+		// fixLengthAndConfLength();
+
+		// 09/28/18
+		removeWrongBindingDataBySegmentName("PID", 5);
+		removeWrongBindingDataBySegmentName("NK1", 2);
+
+		// 10/22/18
+		fixAccountIds();
+	}
+
+	/**
+	 * Add missing accountIds 
+	 */
+	private void fixAccountIds() {
+		List<IGDocument> docs = iGDocumentService.findAll();
+		for (IGDocument igDoc : docs) {
+			for (SegmentLink sl : igDoc.getProfile().getSegmentLibrary().getChildren()) {
+				Segment s = this.segmentService.findById(sl.getId());
+				if (s != null && s.getScope().equals(SCOPE.USER)) {
+					s.setAccountId(igDoc.getAccountId());
+					this.segmentService.save(s);
+				}
+			}
+			for (DatatypeLink dl : igDoc.getProfile().getDatatypeLibrary().getChildren()) {
+				Datatype d = this.datatypeService.findById(dl.getId());
+				if (d != null && d.getScope().equals(SCOPE.USER)) {
+					d.setAccountId(igDoc.getAccountId());
+					this.datatypeService.save(d);
+				}
+			}
+
+			if (igDoc.getProfile().getTableLibrary() != null
+					&& igDoc.getProfile().getTableLibrary().getChildren() != null) {
+
+				for (TableLink dl : igDoc.getProfile().getTableLibrary().getChildren()) {
+					Table d = this.tableService.findById(dl.getId());
+					
+					if (d != null && d.getScope().equals(SCOPE.USER)) {
+						d.setAccountId(igDoc.getAccountId());
+						this.tableService.save(d);
+					}
+				}
+
+			}
+
+			if (igDoc.getProfile().getMessages() != null && igDoc.getProfile().getMessages().getChildren() != null) {
+
+				for (Message dl : igDoc.getProfile().getMessages().getChildren()) {
+					Message d = this.messageService.findById(dl.getId());
+					if(d != null){
+					d.setAccountId(igDoc.getAccountId());
+					this.messageService.save(d);
+					}
+				}
+			}
+
+			if (igDoc.getProfile().getProfileComponentLibrary() != null
+					&& igDoc.getProfile().getProfileComponentLibrary().getChildren() != null) {
+				for (ProfileComponentLink dl : igDoc.getProfile().getProfileComponentLibrary().getChildren()) {
+					ProfileComponent d = this.profileComponentService.findById(dl.getId());
+					if(d != null){
+					d.setAccountId(igDoc.getAccountId());
+					this.profileComponentService.save(d);
+					}
+				}
+			}
+			
+			if (igDoc.getProfile().getCompositeProfiles() != null
+					&& igDoc.getProfile().getCompositeProfiles().getChildren() != null) {
+				for (CompositeProfileStructure dl : igDoc.getProfile().getCompositeProfiles().getChildren()) {
+					
+					CompositeProfileStructure d = this.compositeProfileStructureService.findById(dl.getId());
+					if(d != null){
+					d.setAccountId(igDoc.getAccountId());
+					this.compositeProfileStructureService.save(d);
+					}
+				}
+			}
+			
+
+		}
 
 	}
 
 	/**
-   * @param igId
-   * @param i
-   */
-  private void removeWrongBindingDataBySegmentName(String sementName, int location) {
-    List<Segment> segments = this.segmentService.findAll();
-    
-    for(Segment s:segments){
-      if(s.getName().equals(sementName)){
-        List<ValueSetOrSingleCodeBinding> bindings = s.getValueSetBindings();
-        if(bindings != null){
-          Set<ValueSetOrSingleCodeBinding> toBeDeletedBindings = new HashSet<ValueSetOrSingleCodeBinding>();
-          
-          for(ValueSetOrSingleCodeBinding b:bindings){
-            if(b instanceof ValueSetBinding){
-              ValueSetBinding vsb = (ValueSetBinding)b;
-              if(vsb.getLocation().equals(location + "")) toBeDeletedBindings.add(vsb);
-            }
-          }
-          
-          if(toBeDeletedBindings.size() > 0){
-            for (ValueSetOrSingleCodeBinding binding : toBeDeletedBindings) {
-              s.getValueSetBindings().remove(binding);
-            }
-            this.segmentService.save(s);
-            System.out.println("[[INFO]" + sementName + "'s location " + location + " binding is removed!");
-          }
-        }
-        
-      }
-    }
-    
-  }
+	 * @param igId
+	 * @param i
+	 */
+	private void removeWrongBindingDataBySegmentName(String sementName, int location) {
+		List<Segment> segments = this.segmentService.findAll();
 
-  private void removeWrongBindingData(String igId, String[] valueSetIds) {
+		for (Segment s : segments) {
+			if (s.getName().equals(sementName)) {
+				List<ValueSetOrSingleCodeBinding> bindings = s.getValueSetBindings();
+				if (bindings != null) {
+					Set<ValueSetOrSingleCodeBinding> toBeDeletedBindings = new HashSet<ValueSetOrSingleCodeBinding>();
+
+					for (ValueSetOrSingleCodeBinding b : bindings) {
+						if (b instanceof ValueSetBinding) {
+							ValueSetBinding vsb = (ValueSetBinding) b;
+							if (vsb.getLocation().equals(location + ""))
+								toBeDeletedBindings.add(vsb);
+						}
+					}
+
+					if (toBeDeletedBindings.size() > 0) {
+						for (ValueSetOrSingleCodeBinding binding : toBeDeletedBindings) {
+							s.getValueSetBindings().remove(binding);
+						}
+						this.segmentService.save(s);
+						System.out.println("[[INFO]" + sementName + "'s location " + location + " binding is removed!");
+					}
+				}
+
+			}
+		}
+
+	}
+
+	private void removeWrongBindingData(String igId, String[] valueSetIds) {
 
 		IGDocument igDoc = this.iGDocumentService.findOne(igId);
 
@@ -512,7 +590,7 @@ public class Bootstrap implements InitializingBean {
 		}
 		return null;
 	}
-	
+
 	private Field findFieldByPositon(List<Field> fields, int position) {
 		for (Field field : fields) {
 			if (field.getPosition() == position) {
@@ -533,10 +611,10 @@ public class Bootstrap implements InitializingBean {
 		versions.add("2.8.2");
 
 		for (int i = 1; i < versions.size(); i++) {
-			String version = versions.get(i); 
-			
-			// datatypes 
-			List<Datatype> datatypes = datatypeService.findByScopeAndVersion( SCOPE.HL7STANDARD.toString(), version);
+			String version = versions.get(i);
+
+			// datatypes
+			List<Datatype> datatypes = datatypeService.findByScopeAndVersion(SCOPE.HL7STANDARD.toString(), version);
 			for (Datatype datatype : datatypes) {
 				Datatype prevVersionDatatype = datatypeService.findByNameAndVesionAndScope(datatype.getName(),
 						versions.get(i - 1), SCOPE.HL7STANDARD.toString());
@@ -548,31 +626,35 @@ public class Bootstrap implements InitializingBean {
 									component.getPosition());
 							if (prevComponent != null) {
 								if (component.getConfLength() != null
-										&& DataElement.LENGTH_NA.equals(component.getConfLength()) && prevComponent.getConfLength() != null
-												&& !prevComponent.getConfLength().equals(DataElement.LENGTH_NA)) {
- 										component.setConfLength(prevComponent.getConfLength());
- 										changed = true;
- 								}
+										&& DataElement.LENGTH_NA.equals(component.getConfLength())
+										&& prevComponent.getConfLength() != null
+										&& !prevComponent.getConfLength().equals(DataElement.LENGTH_NA)) {
+									component.setConfLength(prevComponent.getConfLength());
+									changed = true;
+								}
 								if ((component.getMinLength() != null
-										&& DataElement.LENGTH_NA.equals(component.getMinLength()) && prevComponent.getMinLength() != null
-												&& !prevComponent.getMinLength().equals(DataElement.LENGTH_NA)) || (component.getMaxLength() != null
-														&& DataElement.LENGTH_NA.equals(component.getMaxLength()) && prevComponent.getMaxLength() != null
-														&& !prevComponent.getMaxLength().equals(DataElement.LENGTH_NA))) {
- 										component.setMinLength(prevComponent.getMinLength());
- 										component.setMaxLength(prevComponent.getMaxLength());
- 										changed = true;
- 								}
+										&& DataElement.LENGTH_NA.equals(component.getMinLength())
+										&& prevComponent.getMinLength() != null
+										&& !prevComponent.getMinLength().equals(DataElement.LENGTH_NA))
+										|| (component.getMaxLength() != null
+												&& DataElement.LENGTH_NA.equals(component.getMaxLength())
+												&& prevComponent.getMaxLength() != null
+												&& !prevComponent.getMaxLength().equals(DataElement.LENGTH_NA))) {
+									component.setMinLength(prevComponent.getMinLength());
+									component.setMaxLength(prevComponent.getMaxLength());
+									changed = true;
+								}
 							}
 						}
-						if(changed){
+						if (changed) {
 							datatypeService.save(datatype);
 						}
 					}
 				}
-			} 
-			
-			//segments 
-			List<Segment> segments = segmentService.findByScopeAndVersion( SCOPE.HL7STANDARD.toString(), version);
+			}
+
+			// segments
+			List<Segment> segments = segmentService.findByScopeAndVersion(SCOPE.HL7STANDARD.toString(), version);
 			for (Segment segment : segments) {
 				Segment prevVersionSegment = segmentService.findByNameAndVersionAndScope(segment.getName(),
 						versions.get(i - 1), SCOPE.HL7STANDARD.toString());
@@ -580,27 +662,28 @@ public class Bootstrap implements InitializingBean {
 					if (segment.getFields() != null && !segment.getFields().isEmpty()) {
 						boolean changed = false;
 						for (Field field : segment.getFields()) {
-							Field prevField = findFieldByPositon(segment.getFields(),
-									field.getPosition());
+							Field prevField = findFieldByPositon(segment.getFields(), field.getPosition());
 							if (prevField != null) {
-								if (field.getConfLength() != null
-										&& DataElement.LENGTH_NA.equals(field.getConfLength()) && prevField.getConfLength() != null
-												&& !field.getConfLength().equals(DataElement.LENGTH_NA)) {
+								if (field.getConfLength() != null && DataElement.LENGTH_NA.equals(field.getConfLength())
+										&& prevField.getConfLength() != null
+										&& !field.getConfLength().equals(DataElement.LENGTH_NA)) {
 									field.setConfLength(prevField.getConfLength());
- 									changed = true;
- 								}
-								if ((field.getMinLength() != null
-										&& DataElement.LENGTH_NA.equals(field.getMinLength()) && prevField.getMinLength() != null
-												&& !prevField.getMinLength().equals(DataElement.LENGTH_NA)) || (field.getMaxLength() != null
-														&& DataElement.LENGTH_NA.equals(field.getMaxLength()) && prevField.getMaxLength() != null
-														&& !prevField.getMaxLength().equals(DataElement.LENGTH_NA))) {
+									changed = true;
+								}
+								if ((field.getMinLength() != null && DataElement.LENGTH_NA.equals(field.getMinLength())
+										&& prevField.getMinLength() != null
+										&& !prevField.getMinLength().equals(DataElement.LENGTH_NA))
+										|| (field.getMaxLength() != null
+												&& DataElement.LENGTH_NA.equals(field.getMaxLength())
+												&& prevField.getMaxLength() != null
+												&& !prevField.getMaxLength().equals(DataElement.LENGTH_NA))) {
 									field.setMinLength(prevField.getMinLength());
 									field.setMaxLength(prevField.getMaxLength());
- 									changed = true;
- 								}
+									changed = true;
+								}
 							}
 						}
-						if(changed){
+						if (changed) {
 							segmentService.save(segment);
 						}
 					}
