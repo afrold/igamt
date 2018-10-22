@@ -514,7 +514,7 @@
                                                                                     <md-input-container flex="100"
                                                                                                         class="normal">
                                                                                         <input ng-model="c.label" no-dirty-check
-                                                                                               ng-disabled="isNonEditableValueSet(table)"
+                                                                                               ng-disabled="isNonEditableValueSet(table)" ng-change="setDirty()"
                                                                                                type="text"/>
                                                                                     </md-input-container>
                                                                                 </div>
@@ -528,7 +528,7 @@
                                                                                                 style="margin-top: 20px;"
                                                                                                 ng-disabled="isNonEditableValueSet(table)"
                                                                                                 no-dirty-check
-                                                                                                ng-model="c.codeSystem">
+                                                                                                ng-model="c.codeSystem" ng-change="setDirty()">
                                                                                             <md-option
                                                                                                     ng-repeat="cs in table.codeSystems" ng-value="cs">
                                                                                                 {{cs}}
@@ -547,7 +547,7 @@
                                                                                                 placeholder="Select CodeUsage"
                                                                                                 style="margin-top: 20px;" no-dirty-check
                                                                                                 ng-disabled="isNonEditableValueSet(table)"
-                                                                                                ng-model="c.codeUsage">
+                                                                                                ng-model="c.codeUsage" ng-change="setDirty()">
                                                                                             <md-option
                                                                                                     ng-repeat="codeUsage in config.codeUsages track by $index"
                                                                                                     ng-value="codeUsage">
@@ -561,7 +561,7 @@
                                                                                 <div layout="row">
                                                                                     <md-input-container flex="100"
                                                                                                         class="normal">
-                                                                                    <textarea ng-model="c.comments"
+                                                                                    <textarea ng-model="c.comments" ng-change="setDirty()"
                                                                                               style="margin-top: 5px;"
                                                                                               md-select-on-focus></textarea>
                                                                                     </md-input-container>
