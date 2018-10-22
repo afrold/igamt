@@ -362,6 +362,7 @@ public class IGDocumentController extends CommonController {
       if (account == null)
         throw new UserAccountNotFoundException();
       IGDocument igDocument = this.findIGDocument(id);
+      Long accountId = account.getId();
 
       for (Message m : igDocument.getProfile().getMessages().getChildren()) {
         String oldMsgId = m.getId();
@@ -407,6 +408,7 @@ public class IGDocumentController extends CommonController {
           pc.setId(null);
           profileComponentService.save(pc);
           pcL.setId(pc.getId());
+          pc.setAccountId(accountId);
           clonedProfileComponentLibrary.addProfileComponent(pcL);
           if (oldPCId != null) {
             profileComponentIdChangeMap.put(oldPCId, pc.getId());
@@ -423,6 +425,7 @@ public class IGDocumentController extends CommonController {
           String pcId = info.getId();
           info.setId(profileComponentIdChangeMap.get(pcId));
         }
+        cp.setAccountId(accountId);
         compositeProfileStructureService.save(cp);
         compositeProfileIdChangeMap.put(oldCpId, cp.getId());
       }
@@ -439,6 +442,7 @@ public class IGDocumentController extends CommonController {
       }
       profileComponentService.saveAll(profilecomponents);
       for (Message m : igDocument.getProfile().getMessages().getChildren()) {
+    	m.setAccountId(accountId);
         List<String> newIds = new ArrayList<>();
         if (m.getCompositeProfileStructureList() != null) {
           for (String cpId : m.getCompositeProfileStructureList()) {
@@ -463,6 +467,7 @@ public class IGDocumentController extends CommonController {
             d.setId(null);
             d.setLibId(new HashSet<String>());
             d.setStatus(STATUS.UNPUBLISHED);
+            d.setAccountId(accountId);
           }
 
           d.getLibIds().add(clonedDatatypeLibrary.getId());
@@ -488,6 +493,7 @@ public class IGDocumentController extends CommonController {
             s.setId(null);
             s.setLibId(new HashSet<String>());
             s.setStatus(STATUS.UNPUBLISHED);
+            s.setAccountId(accountId);
           }
           s.getLibIds().add(clonedSegmentLibrary.getId());
           segmentService.save(s);
@@ -513,6 +519,7 @@ public class IGDocumentController extends CommonController {
             t.setId(null);
             t.setLibIds(new HashSet<String>());
             t.setStatus(STATUS.UNPUBLISHED);
+            t.setAccountId(accountId);
 
             tableService.save(t);
           }
@@ -546,7 +553,7 @@ public class IGDocumentController extends CommonController {
       igDocument.setId(null);
       igDocument.getShareParticipantIds().clear();
       igDocument.setScope(IGDocumentScope.USER);
-      igDocument.setAccountId(account.getId());
+      igDocument.setAccountId(accountId);
       igDocument.setCreatedFrom(sourceId);
       igDocument.getMetaData().setTitle(igDocument.getMetaData().getTitle() + "- Copy");
       return igDocumentService.save(igDocument);
