@@ -432,52 +432,61 @@ public class Bootstrap implements InitializingBean {
 		List<IGDocument> docs = iGDocumentService.findAll();
 		for (IGDocument igDoc : docs) {
 			for (SegmentLink sl : igDoc.getProfile().getSegmentLibrary().getChildren()) {
+				if(sl.getId()!=null){
 				Segment s = this.segmentService.findById(sl.getId());
 				if (s != null && s.getScope().equals(SCOPE.USER)) {
 					s.setAccountId(igDoc.getAccountId());
 					this.segmentService.save(s);
 				}
+				}
 			}
 			for (DatatypeLink dl : igDoc.getProfile().getDatatypeLibrary().getChildren()) {
+				if(dl.getId()!=null){
 				Datatype d = this.datatypeService.findById(dl.getId());
 				if (d != null && d.getScope().equals(SCOPE.USER)) {
 					d.setAccountId(igDoc.getAccountId());
 					this.datatypeService.save(d);
 				}
+				}
 			}
 
 			if (igDoc.getProfile().getTableLibrary() != null
 					&& igDoc.getProfile().getTableLibrary().getChildren() != null) {
-
+				
 				for (TableLink dl : igDoc.getProfile().getTableLibrary().getChildren()) {
+					if(dl.getId()!=null){
 					Table d = this.tableService.findById(dl.getId());
-					
 					if (d != null && d.getScope().equals(SCOPE.USER)) {
 						d.setAccountId(igDoc.getAccountId());
 						this.tableService.save(d);
 					}
 				}
+					}
 
 			}
 
 			if (igDoc.getProfile().getMessages() != null && igDoc.getProfile().getMessages().getChildren() != null) {
-
+				
 				for (Message dl : igDoc.getProfile().getMessages().getChildren()) {
+					if(dl.getId()!=null){
 					Message d = this.messageService.findById(dl.getId());
 					if(d != null){
 					d.setAccountId(igDoc.getAccountId());
 					this.messageService.save(d);
 					}
 				}
+					}
 			}
 
 			if (igDoc.getProfile().getProfileComponentLibrary() != null
 					&& igDoc.getProfile().getProfileComponentLibrary().getChildren() != null) {
 				for (ProfileComponentLink dl : igDoc.getProfile().getProfileComponentLibrary().getChildren()) {
+					if(dl.getId()!=null){
 					ProfileComponent d = this.profileComponentService.findById(dl.getId());
 					if(d != null){
 					d.setAccountId(igDoc.getAccountId());
 					this.profileComponentService.save(d);
+					}
 					}
 				}
 			}
@@ -485,13 +494,15 @@ public class Bootstrap implements InitializingBean {
 			if (igDoc.getProfile().getCompositeProfiles() != null
 					&& igDoc.getProfile().getCompositeProfiles().getChildren() != null) {
 				for (CompositeProfileStructure dl : igDoc.getProfile().getCompositeProfiles().getChildren()) {
-					
+					if(dl.getId()!=null){
+
 					CompositeProfileStructure d = this.compositeProfileStructureService.findById(dl.getId());
 					if(d != null){
 					d.setAccountId(igDoc.getAccountId());
 					this.compositeProfileStructureService.save(d);
 					}
 				}
+					}
 			}
 			
 
