@@ -109,7 +109,10 @@ public class SerializableDatatype extends SerializableSection {
                 }
                 if (datatype.getComponents() != null) {
                     for (int i = 0; i < datatype.getComponents().size(); i++) {
+                    	
                         Component component = datatype.getComponents().get(i);
+                        
+                        if(this.componentDatatypeMap.containsKey(component)){
                         try {
                             Element componentElement = new Element("Component");
                             componentElement
@@ -197,6 +200,7 @@ public class SerializableDatatype extends SerializableSection {
                             datatypeElement.appendChild(componentElement);
                         } catch (Exception e){
                             throw new DatatypeComponentSerializationException(e,i);
+                        }
                         }
                     }
                     if (datatype.getComponents().size() == 0) {

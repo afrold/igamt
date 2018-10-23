@@ -145,8 +145,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
                 }
                 if (hasComponentsToBeExported(datatype, datatypeUsageConfig)) {
                     for (Component component : datatype.getComponents()) {
+             
                         try {
                             if (ExportUtil.diplayUsage(component.getUsage(), datatypeUsageConfig)) {
+                            	
                                 if (component.getDatatype() != null && !component.getDatatype().getId().isEmpty()) {
                                     Datatype componentDatatype =
                                         datatypeService.findById(component.getDatatype().getId());
