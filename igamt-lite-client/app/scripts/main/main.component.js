@@ -1147,6 +1147,10 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
           $rootScope.parentsMap[element.id] = parent;
           $rootScope.processElement($rootScope.datatypesMap[element.datatype.id], element);
         } else if (element.type === "component") {
+            console.log("---");
+          console.log(element.name);
+          console.log(element.position);
+          console.log(parent);
           $rootScope.parentsMap[element.id] = parent;
           $rootScope.processElement($rootScope.datatypesMap[element.datatype.id], element);
         } else if (element.type === "datatype") {

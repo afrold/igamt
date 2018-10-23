@@ -422,7 +422,7 @@ public class Bootstrap implements InitializingBean {
 		removeWrongBindingDataBySegmentName("NK1", 2);
 
 		// 10/22/18
-		fixAccountIds();
+//		fixAccountIds();
 	}
 
 	/**

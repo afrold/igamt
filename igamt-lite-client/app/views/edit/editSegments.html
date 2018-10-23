@@ -965,7 +965,7 @@
                     </span>
 
                     <div ng-if="editableDT===node.id" style="text-align:left">
-                        <md-select placeholder="Select Data type"class="inside-table" ng-model="node.datatype" ng-change="backDT();setDirty()"  ng-controller="FormRowCtrl" ng-init="init(node)">
+                        <md-select placeholder="Select Data type"class="inside-table" ng-model="node.datatype" ng-change="processElement(datatypesMap[node.datatype.id]);backDT();setDirty()"  ng-controller="FormRowCtrl" ng-init="init(node)">
                             <md-option  ng-repeat="dt in results track by $index" ng-value="dt">
                                 <display-label of="datatypesMap[dt.id]" desc="false"></display-label>
                             </md-option>
