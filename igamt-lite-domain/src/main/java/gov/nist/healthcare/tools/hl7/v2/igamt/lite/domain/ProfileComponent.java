@@ -30,7 +30,8 @@ public class ProfileComponent
   private List<SubProfileComponent> children = new ArrayList<SubProfileComponent>();
   private String type;
   private SCOPE scope;
-  protected String authorNotes = "";
+  protected String authorNotes = ""; 
+  protected Long accountId;
 
 
   /**
@@ -185,13 +186,25 @@ public class ProfileComponent
   public void setScope(SCOPE scope) {
     this.scope = scope;
   }
+  
+  
+  
 
-  @Override
+  public Long getAccountId() {
+	return accountId;
+}
+
+public void setAccountId(Long accountId) {
+	this.accountId = accountId;
+}
+
+@Override
   public ProfileComponent clone() {
     ProfileComponent clonedPc = new ProfileComponent();
     clonedPc.setName(this.name);
     clonedPc.setChildren(this.children);
     clonedPc.setId(this.getId());
+    clonedPc.setAccountId(this.getAccountId());
     return clonedPc;
   }
 }

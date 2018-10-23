@@ -41,7 +41,9 @@ public class CompositeProfileStructure {
   private List<ApplyInfo> profileComponentsInfo;
   private String type;
   private SCOPE scope;
-  protected String authorNotes = "";
+  protected String authorNotes = ""; 
+  
+  private Long accountId;
 
 
   /**
@@ -155,8 +157,19 @@ public class CompositeProfileStructure {
   public void setType(String type) {
     this.type = type;
   }
+  
+  
+  
 
-  public List<String> getProfileComponentIds() {
+  public Long getAccountId() {
+	return accountId;
+}
+
+public void setAccountId(Long accountId) {
+	this.accountId = accountId;
+}
+
+public List<String> getProfileComponentIds() {
     List<String> result = new ArrayList<String>();
     for (ApplyInfo appInfo : this.profileComponentsInfo) {
       result.add(appInfo.getId());
