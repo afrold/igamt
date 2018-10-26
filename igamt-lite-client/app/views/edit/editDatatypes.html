@@ -1009,7 +1009,7 @@
 
 
                         <md-select placeholder="Select Data type" ng-model="node.datatype" class="inside-table"
-                                   ng-change="backDT();setDirty()">
+                                   ng-change="processElement(datatypesMap[node.datatype.id]);backDT();setDirty()">
                             <md-option ng-repeat="dt in results" ng-value="dt">
                                 <display-label of="datatypesMap[dt.id]" desc="false"></display-label>
                             </md-option>

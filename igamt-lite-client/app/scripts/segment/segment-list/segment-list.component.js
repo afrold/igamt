@@ -654,16 +654,15 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         field:  field
       }
     });
-    modalInstance.then(function(field) {
-      if(field !=='cancel'){
+      modalInstance.then(function(field) {
           $scope.setDirty();
+          $rootScope.processElement(field);
+          $rootScope.recordChanged();
+          $scope.editableDT = '';
           if ($scope.segmentsParams) {
               $scope.segmentsParams.refresh();
           }
-      }
-      $scope.editableDT = '';
-
-    });
+      });
 
   };
 
@@ -1570,7 +1569,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
           return valueSetAllowedDT === currentDT.name;
         })) return true;
 
-          if(!node.fieldDT && !node.componentDT && $rootScope.config.valueSetAllowedFields){
+          if($rootScope.segment && !node.fieldDT && !node.componentDT && $rootScope.config.valueSetAllowedFields){
               if(_.find($rootScope.config.valueSetAllowedFields, function(valueSetAllowedField){
                       return valueSetAllowedField.segmentName === $rootScope.segment.name && valueSetAllowedField.location === node.position;})) return true;
 
