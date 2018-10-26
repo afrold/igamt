@@ -7,7 +7,7 @@ angular.module('igl').controller(
   function($scope, $rootScope, $mdDialog, $http, hl7Versions, ProfileAccessSvc, MessageEventsSvc, SegmentService, DatatypeService, TableService, TableLibrarySvc, SegmentLibrarySvc, DatatypeLibrarySvc, IgDocumentService, $timeout, ngTreetableParams, userInfoService, hl7Version, MessagesSvc) {
 
     $scope.hl7Versions = hl7Versions;
-    $scope.hl7Version = hl7Version;
+    $scope.hl7Version = "";
     $scope.messageEventsParams=null;
     $scope.usedSegsLink = [];
     $scope.usedDtLink = [];
