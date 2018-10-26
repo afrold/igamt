@@ -424,6 +424,7 @@ angular.module('igl')
       });
       modalInstance.then(function(field) {
         $scope.setDirty();
+        $rootScope.processElement($rootScope.datatypesMap[field.datatype.id]);
         $rootScope.recordChanged();
         $scope.editableDT = '';
         if ($scope.datatypesParams) {

@@ -1418,6 +1418,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
   };
 
   $scope.selectSegment = function (segment) {
+    $rootScope.processElement(segment);
     var startTime = new Date();
     $rootScope.Activate(segment.id);
     if (segment && segment !== null) {
@@ -1566,8 +1567,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 
 
   $scope.selectDatatype = function (datatype) {
-
-
+      $rootScope.processElement(datatype);
       $scope.clearDatatypeScope();
 
       for (var prop in $rootScope) {
