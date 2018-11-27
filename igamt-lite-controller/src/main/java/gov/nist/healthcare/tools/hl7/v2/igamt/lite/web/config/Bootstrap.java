@@ -96,6 +96,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBindingStrength;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetMetadataConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.VariesMapItem;
@@ -423,9 +424,53 @@ public class Bootstrap implements InitializingBean {
 
 		// 10/22/18
 //		fixAccountIds();
+		
+		//11/26/18
+		fixOBX2ValuesetMissing();
 	}
 
 	/**
+   * 
+   */
+  private void fixOBX2ValuesetMissing() {
+    List<Segment> segments = this.segmentService.findAll();
+
+    for (Segment s : segments) {
+        if (s.getName().equals("OBX")) {
+          boolean isMissing = this.checkOBX2Binding(s);
+          if(isMissing){
+            Table t0125 = this.tableService.findByScopeAndVersionAndBindingIdentifier(SCOPE.HL7STANDARD, s.getHl7Version(),"0125");
+            if(t0125 != null){
+              ValueSetBinding vsb = new ValueSetBinding();
+              vsb.setLocation("2");
+              vsb.setTableId(t0125.getId());
+              vsb.setBindingStrength(ValueSetBindingStrength.R);
+              s.addValueSetBinding(vsb);    
+              this.segmentService.save(s);
+            }
+         
+          }
+        }
+    }
+  }
+
+  /**
+   * @param s
+   * @return
+   */
+  private boolean checkOBX2Binding(Segment s) {
+    for(ValueSetOrSingleCodeBinding binding : s.getValueSetBindings()){
+      if(binding instanceof ValueSetBinding){
+        ValueSetBinding vsb = (ValueSetBinding)binding;
+        if(vsb.getLocation().equals("2")){
+          if(this.tableService.findById(vsb.getTableId()) != null) return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
 	 * Add missing accountIds 
 	 */
 	private void fixAccountIds() {
