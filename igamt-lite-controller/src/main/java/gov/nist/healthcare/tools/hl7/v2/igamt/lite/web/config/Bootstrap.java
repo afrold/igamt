@@ -425,14 +425,14 @@ public class Bootstrap implements InitializingBean {
 		// 10/22/18
 //		fixAccountIds();
 		
-		//11/26/18
-		fixOBX2ValuesetMissing();
+		//11/27/18
+		fixOBX2ValuesetMissingAndDuplicated();
 	}
 
 	/**
    * 
    */
-  private void fixOBX2ValuesetMissing() {
+  private void fixOBX2ValuesetMissingAndDuplicated() {
     List<Segment> segments = this.segmentService.findAll();
 
     for (Segment s : segments) {
@@ -448,7 +448,23 @@ public class Bootstrap implements InitializingBean {
               s.addValueSetBinding(vsb);    
               this.segmentService.save(s);
             }
-         
+          }
+          int count = 0;
+          Set<ValueSetOrSingleCodeBinding> toBeDeletedBindings = new HashSet<ValueSetOrSingleCodeBinding>();
+          for(ValueSetOrSingleCodeBinding binding : s.getValueSetBindings()){
+            if(binding instanceof ValueSetBinding){
+              ValueSetBinding vsb = (ValueSetBinding)binding;
+              if(vsb.getLocation().equals("2")){
+                count = count + 1;
+                if(count > 1) toBeDeletedBindings.add(vsb);
+              }
+            }
+          }
+          if(count > 1){
+            for(ValueSetOrSingleCodeBinding d : toBeDeletedBindings){
+              s.getValueSetBindings().remove(d);
+            }
+            this.segmentService.save(s);            
           }
         }
     }
@@ -463,11 +479,11 @@ public class Bootstrap implements InitializingBean {
       if(binding instanceof ValueSetBinding){
         ValueSetBinding vsb = (ValueSetBinding)binding;
         if(vsb.getLocation().equals("2")){
-          if(this.tableService.findById(vsb.getTableId()) != null) return true;
+          if(this.tableService.findById(vsb.getTableId()) != null) return false;
         }
       }
     }
-    return false;
+    return true;
   }
 
   /**
