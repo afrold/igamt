@@ -27,7 +27,7 @@ public class ThreadForPHINVADSValueSetDigger extends Thread {
     public void run() {
         super.run();
         timer = new Timer();
-        long period = 24 * 60 * 60 * 1000;
+        long period = 24 * 60 * 60 * 1000 * 3;
         timer.schedule(task, getNextRunTime(), period);
         while (!finishing()) {
             try {
