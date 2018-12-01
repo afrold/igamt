@@ -57,28 +57,6 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
   public static void main(String[] args) throws IOException {
     TimerTaskForPHINVADSValueSetDigger tool = new TimerTaskForPHINVADSValueSetDigger();
     tool.run();
-
-//     MongoOperations mongoOps =
-//     new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "igamt"));
-//     String tableId = "57ee310484ae2aadc10efcca";
-//     List<IGDocument> igDocs = mongoOps
-//     .find(Query.query(Criteria.where("scope").is(Constant.SCOPE.USER)), IGDocument.class);
-//     for (IGDocument ig : igDocs) {
-//     if (ig.getProfile().getTableLibrary().findOneTableById(tableId) != null) {
-//     Notification item = new Notification();
-//     item.setByWhom("CDC");
-//     item.setChangedDate(new Date());
-//     item.setTargetType(TargetType.Valueset);
-//     item.setTargetId(tableId);
-//    
-//     Notifications notifications = new Notifications();
-//     notifications.setIgDocumentId(ig.getId());
-//     notifications.addItem(item);
-//     mongoOps.save(notifications);
-//    
-//     notificationEmail(notifications.getId());
-//     }
-//     }
   }
 
   public TimerTaskForPHINVADSValueSetDigger() {
@@ -140,8 +118,7 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
     ValueSetVersion vsv = null;
     if (valueSets != null && valueSets.size() > 0) {
       vs = valueSets.get(0);
-      vsv = this.getService().getValueSetVersionsByValueSetOid(vs.getOid()).getValueSetVersions()
-          .get(0);
+      vsv = this.getService().getValueSetVersionsByValueSetOid(vs.getOid()).getValueSetVersions().get(0);
       log.info("Successfully got the metadata from PHINVADS web service for " + oid);
       log.info(oid + " last updated date is " + vs.getStatusDate().toString());
       log.info(oid + " the Version number is " + vsv.getVersionNumber());
@@ -154,9 +131,7 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
     log.info("Get metadata from DB for " + oid);
 
     Table table = null;
-    table = mongoOps.findOne(
-        Query.query(Criteria.where("oid").is(oid).and("scope").is(Constant.SCOPE.PHINVADS)),
-        Table.class);
+    table = mongoOps.findOne(Query.query(Criteria.where("oid").is(oid).and("scope").is(Constant.SCOPE.PHINVADS)),Table.class);
 
     if (table != null) {
       log.info("Successfully got the metadata from DBe for " + oid);
@@ -172,26 +147,30 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
     // 3. compare metadata
     boolean needUpdate = false;
     if (vs != null && vsv != null) {
-      if (table != null) {
-        if (table.getDate().toString().equals(vs.getStatusDate().toString())
-            && table.getVersion().equals(vsv.getVersionNumber() + "")) {
-          if (table.getCodes().size() == 0 && table.getNumberOfCodes() == 0) {
-            vscByVSVid =
-                this.getService().getValueSetConceptsByValueSetVersionId(vsv.getId(), 1, 100000);
-            valueSetConcepts = vscByVSVid.getValueSetConcepts();
-            if (valueSetConcepts.size() != 0) {
-              needUpdate = true;
-              log.info(oid + " Table has no change! however local PHINVADS codes may be missing");
-            }
-          }
-        } else {
-          needUpdate = true;
-          log.info(oid + " Table has a change! because different version number and date.");
-        }
-      } else {
-        needUpdate = true;
-        log.info(oid + " table is new one.");
-      }
+      needUpdate = true;
+      log.info(oid + " VALUESET will be updated! ALL PHINVADS VALUESET will be fully updated every 3 days!");
+      
+      
+//      if (table != null) {
+//        if (table.getDate().toString().equals(vs.getStatusDate().toString())
+//            && table.getVersion().equals(vsv.getVersionNumber() + "")) {
+//          if (table.getCodes().size() == 0 && table.getNumberOfCodes() == 0) {
+//            vscByVSVid =
+//                this.getService().getValueSetConceptsByValueSetVersionId(vsv.getId(), 1, 100000);
+//            valueSetConcepts = vscByVSVid.getValueSetConcepts();
+//            if (valueSetConcepts.size() != 0) {
+//              needUpdate = true;
+//              log.info(oid + " Table has no change! however local PHINVADS codes may be missing");
+//            }
+//          }
+//        } else {
+//          needUpdate = true;
+//          log.info(oid + " Table has a change! because different version number and date.");
+//        }
+//      } else {
+//        needUpdate = true;
+//        log.info(oid + " table is new one.");
+//      }
     } else {
       needUpdate = false;
       log.info(oid + " Table has no change! because PHINVADS does not have it.");
@@ -199,17 +178,11 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
 
     // 4. if updated, get full codes from PHINVADs web service
     if (needUpdate) {
-      if (vscByVSVid == null)
-        vscByVSVid =
-            this.getService().getValueSetConceptsByValueSetVersionId(vsv.getId(), 1, 100000);
-      if (valueSetConcepts == null)
-        valueSetConcepts = vscByVSVid.getValueSetConcepts();
-      if (table == null)
-        table = new Table();
-      List<ValueSetVersion> vsvByVSOid =
-          this.getService().getValueSetVersionsByValueSetOid(vs.getOid()).getValueSetVersions();
+      if (vscByVSVid == null) vscByVSVid = this.getService().getValueSetConceptsByValueSetVersionId(vsv.getId(), 1, 100000);
+      if (valueSetConcepts == null) valueSetConcepts = vscByVSVid.getValueSetConcepts();
+      if (table == null)  table = new Table();
+      List<ValueSetVersion> vsvByVSOid = this.getService().getValueSetVersionsByValueSetOid(vs.getOid()).getValueSetVersions();
       table.setBindingIdentifier(vs.getCode());
-      // table.setDescription(vs.getDefinitionText());
       if(vs.getDefinitionText() != null) table.setDefPreText(vs.getDefinitionText().replaceAll("\u0019s", " "));
       table.setName(vs.getName());
       table.setOid(vs.getOid());
@@ -245,8 +218,7 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
           csSearchCritDto.setTable396Search(false);
           csSearchCritDto.setSearchType(1);
           csSearchCritDto.setSearchText(pcode.getCodeSystemOid());
-          CodeSystem cs =
-              this.getService().findCodeSystems(csSearchCritDto, 1, 5).getCodeSystems().get(0);
+          CodeSystem cs = this.getService().findCodeSystems(csSearchCritDto, 1, 5).getCodeSystems().get(0);
           code.setCodeSystem(cs.getHl70396Identifier());
           code.setCodeSystemVersion(cs.getVersion());
           code.setComments(pcode.getDefinitionText());
@@ -276,7 +248,8 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
               notifications.addItem(item);
             }
             mongoOps.save(notifications);
-            notificationEmail(notifications.getId());
+//            notificationEmail(notifications.getId());
+            //INFO :: Off Email Sending, because all PHINVADS will be updated every 3 days.
           }
         }
       } catch (Exception e) {
