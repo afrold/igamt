@@ -93,6 +93,7 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
       this.tableSaveOrUpdate(vs.getOid());
     }
     log.info("PHINVADSValueSetDigger ended at " + new Date());
+    this.notificationEmailToAdmin(count);
   }
 
   public Table tableSaveOrUpdate(String oid) {
@@ -311,6 +312,31 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
         conn.disconnect();
       }
     }
+  }
+  
+  private void notificationEmailToAdmin(int count) {
+      String endpoint = System.getProperty("IGAMT_URL");
+      if (endpoint != null) {
+        endpoint = endpoint + "/api/notifications/" + count + "/notifyPHINUpdateEmail";
+        URL url;
+        try {
+          url = new URL(endpoint);
+          HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+          conn.setRequestMethod("GET");
+          conn.setRequestProperty("Accept", "application/json");
+          if (conn.getResponseCode() != 200) {
+            throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+          }
+          conn.disconnect();
+        } catch (MalformedURLException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        
+      }
   }
 
   public VocabService getService() {
