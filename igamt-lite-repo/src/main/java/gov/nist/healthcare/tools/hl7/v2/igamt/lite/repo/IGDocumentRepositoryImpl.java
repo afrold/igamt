@@ -174,8 +174,9 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations {
     List<IGDocument> igdocuments = mongo.find(query, IGDocument.class);
     List<IGDocument> igdocumentsShareWithParticipantsId = new ArrayList<IGDocument>();
     for (IGDocument doc : igdocuments) {
+     if(doc.getShareParticipantIds() != null && !doc.getShareParticipantIds().isEmpty()){
       for (ShareParticipantPermission participant : doc.getShareParticipantIds()) {
-        if (participant.getAccountId() == participantId) {
+        if (participant.getAccountId().equals(participantId)) {
           if (!participant.isPendingApproval()) {
             igdocumentsShareWithParticipantsId.add(doc);
           } else {
@@ -185,6 +186,7 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations {
             igdocumentsShareWithParticipantsId.add(tempDoc);
           }
         }
+      }
       }
     }
     return igdocumentsShareWithParticipantsId;
