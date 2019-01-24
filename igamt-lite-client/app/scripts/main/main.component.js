@@ -27,9 +27,13 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
   }
   $rootScope.getElementUrl=function (element) {
-    var base=$location.absUrl().substring(0,$location.absUrl().length - ($location.url().length+1));
-    return base+SearchService.getExportUrl(element,'html');
+    if(element != null && !element) {
+        var base = $location.absUrl().substring(0, $location.absUrl().length - ($location.url().length + 1));
+        return base + SearchService.getExportUrl(element, 'html');
+    }
+    return null;
   };
+
   $rootScope.getPhinvadsURL=function(table){
     return $rootScope.appInfo.properties["PHINVADS"]+table.oid;
   };
@@ -4212,7 +4216,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
       var validForm=$rootScope.isValidData($rootScope.currentData);
 
       console.log(validForm);
-
       $rootScope.modalInstance = $mdDialog.show({
           templateUrl: 'ConfirmLeaveDlg.html',
           controller: 'ConfirmLeaveDlgCtrl',

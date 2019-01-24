@@ -11,11 +11,22 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +34,16 @@ import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.DynTable0396Exception;
 
 /**
  * @author gcr1
@@ -35,233 +52,328 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 @Service
 public class TableServiceImpl implements TableService {
 
-  Logger log = LoggerFactory.getLogger(TableServiceImpl.class);
+	Logger log = LoggerFactory.getLogger(TableServiceImpl.class);
+	private static final int TOTAL_CELL = 5;
+	private static final String CODE_SYSTEM = "HL70130";
+	private static final String CODE_SYSTEM_VERSION = "1.0";
 
-  @Autowired
-  private TableRepository tableRepository;
+	@Autowired
+	private TableRepository tableRepository;
 
-  @Override
-  public List<Table> findAll() {
-    return tableRepository.findAll();
-  }
+	@Override
+	public List<Table> findAll() {
+		return tableRepository.findAll();
+	}
 
-  @Override
-  public Table findById(String id) {
-    if (id != null) {
-      log.info("TableServiceImpl.findById=" + id);
-      return tableRepository.findOne(id);
-    }
-    return null;
-  }
+	@Override
+	public Table findById(String id) {
+		if (id != null) {
+			log.info("TableServiceImpl.findById=" + id);
+			return tableRepository.findOne(id);
+		}
+		return null;
+	}
 
-  @Override
-  public Table findOneShortById(String id) {
-    if (id != null) {
-      log.info("TableServiceImpl.findOneShortById=" + id);
-      return tableRepository.findOneShortById(id);
-    }
-    return null;
-  }
+	@Override
+	public Table findOneShortById(String id) {
+		if (id != null) {
+			log.info("TableServiceImpl.findOneShortById=" + id);
+			return tableRepository.findOneShortById(id);
+		}
+		return null;
+	}
 
-  @Override
-  public List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
-    List<Table> tables = tableRepository.findByScopesAndVersion(scopes, hl7Version);
-    log.info("TableServiceImpl.findByScopeAndVersion=" + tables.size());
-    return tables;
-  }
+	@Override
+	public List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
+		List<Table> tables = tableRepository.findByScopesAndVersion(scopes, hl7Version);
+		log.info("TableServiceImpl.findByScopeAndVersion=" + tables.size());
+		return tables;
+	}
 
-  @Override
-  public Table findByScopeAndVersionAndBindingIdentifier(SCOPE scope, String hl7Version,
-      String bindingIdentifier) {
-    List<SCOPE> scopes = new ArrayList<SCOPE>();
-    scopes.add(scope);
+	@Override
+	public Table findByScopeAndVersionAndBindingIdentifier(SCOPE scope, String hl7Version, String bindingIdentifier) {
+		List<SCOPE> scopes = new ArrayList<SCOPE>();
+		scopes.add(scope);
 
-    List<Table> tables = this.findByScopesAndVersion(scopes, hl7Version);
+		List<Table> tables = this.findByScopesAndVersion(scopes, hl7Version);
 
-    for (Table t : tables) {
-      if (t.getBindingIdentifier().equals(bindingIdentifier))
-        return t;
-    }
-    return null;
-  }
+		for (Table t : tables) {
+			if (t.getBindingIdentifier().equals(bindingIdentifier))
+				return t;
+		}
+		return null;
+	}
 
-  @Override
-  public List<Table> findShared(Long accountId) {
-    // TODO Auto-generated method stub
-    List<Table> tables = tableRepository.findShared(accountId);
-    List<Table> sharedWithAccount = new ArrayList<Table>();
-    for (Table t : tables) {
-      for (ShareParticipantPermission p : t.getShareParticipantIds()) {
-        if (p.getAccountId() == accountId && !p.isPendingApproval()) {
-          sharedWithAccount.add(t);
-        }
-      }
-    }
-    return sharedWithAccount;
-  }
+	@Override
+	public List<Table> findShared(Long accountId) {
+		// TODO Auto-generated method stub
+		List<Table> tables = tableRepository.findShared(accountId);
+		List<Table> sharedWithAccount = new ArrayList<Table>();
+		for (Table t : tables) {
+			for (ShareParticipantPermission p : t.getShareParticipantIds()) {
+				if (p.getAccountId() == accountId && !p.isPendingApproval()) {
+					sharedWithAccount.add(t);
+				}
+			}
+		}
+		return sharedWithAccount;
+	}
 
-  @Override
-  public List<Table> findPendingShared(Long accountId) {
-    // TODO Auto-generated method stub
-    List<Table> tables = tableRepository.findShared(accountId);
-    List<Table> sharedWithAccount = new ArrayList<Table>();
-    for (Table t : tables) {
-      for (ShareParticipantPermission p : t.getShareParticipantIds()) {
-        if (p.getAccountId() == accountId && p.isPendingApproval()) {
-          sharedWithAccount.add(t);
-        }
-      }
-    }
-    return sharedWithAccount;
-  }
+	@Override
+	public List<Table> findPendingShared(Long accountId) {
+		// TODO Auto-generated method stub
+		List<Table> tables = tableRepository.findShared(accountId);
+		List<Table> sharedWithAccount = new ArrayList<Table>();
+		for (Table t : tables) {
+			for (ShareParticipantPermission p : t.getShareParticipantIds()) {
+				if (p.getAccountId() == accountId && p.isPendingApproval()) {
+					sharedWithAccount.add(t);
+				}
+			}
+		}
+		return sharedWithAccount;
+	}
 
-  @Override
-  public Table save(Table table) {
-    log.info("TableServiceImpl.save=" + table.getBindingIdentifier());
-    return tableRepository.save(table);
-  }
+	@Override
+	public Table save(Table table) {
+		log.info("TableServiceImpl.save=" + table.getBindingIdentifier());
+		return tableRepository.save(table);
+	}
 
-  @Override
-  public void delete(Table table) {
-    log.info("TableServiceImpl.delete=" + table.getBindingIdentifier());
-    tableRepository.delete(table);
-  }
+	@Override
+	public void delete(Table table) {
+		log.info("TableServiceImpl.delete=" + table.getBindingIdentifier());
+		tableRepository.delete(table);
+	}
 
-  @Override
-  public void delete(String id) {
-    log.info("TableServiceImpl.delete=" + id);
-    tableRepository.delete(id);
-  }
+	@Override
+	public void delete(String id) {
+		log.info("TableServiceImpl.delete=" + id);
+		tableRepository.delete(id);
+	}
 
-  @Override
-  public void save(List<Table> tables) {
-    // TODO Auto-generated method stub
-    tableRepository.save(tables);
-  }
+	@Override
+	public void save(List<Table> tables) {
+		// TODO Auto-generated method stub
+		tableRepository.save(tables);
+	}
 
-  @Override
-  public List<Table> findAllByIds(Set<String> ids) {
-    // TODO Auto-generated method stub
-    return tableRepository.findAllByIds(ids);
-  }
+	@Override
+	public List<Table> findAllByIds(Set<String> ids) {
+		// TODO Auto-generated method stub
+		return tableRepository.findAllByIds(ids);
+	}
 
-  @Override
-  public List<Table> findShortAllByIds(Set<String> ids) {
-    // TODO Auto-generated method stub
-    return tableRepository.findShortAllByIds(ids);
-  }
+	@Override
+	public List<Table> findShortAllByIds(Set<String> ids) {
+		// TODO Auto-generated method stub
+		return tableRepository.findShortAllByIds(ids);
+	}
 
-  @Override
-  public Table save(Table table, Date date) {
-    log.info("TableServiceImpl.save=" + table.getBindingIdentifier());
-    table.setDateUpdated(date);
-    return tableRepository.save(table);
-  }
+	@Override
+	public Table save(Table table, Date date) {
+		log.info("TableServiceImpl.save=" + table.getBindingIdentifier());
+		table.setDateUpdated(date);
+		return tableRepository.save(table);
+	}
 
-  @Override
-  public Date updateDate(String id, Date date) {
-    return tableRepository.updateDate(id, date);
-  }
+	@Override
+	public Date updateDate(String id, Date date) {
+		return tableRepository.updateDate(id, date);
+	}
 
-  @Override
-  public void updateStatus(String id, STATUS status) {
-    tableRepository.updateStatus(id, status);
-  }
+	@Override
+	public void updateStatus(String id, STATUS status) {
+		tableRepository.updateStatus(id, status);
+	}
 
-  @Override
-  public void delete(List<Table> tables) {
-    tableRepository.delete(tables);
-  }
+	@Override
+	public void delete(List<Table> tables) {
+		tableRepository.delete(tables);
+	}
 
-  @Override
-  public List<Table> findByScope(String scope) {
-    return tableRepository.findByScope(scope);
-  }
+	@Override
+	public List<Table> findByScope(String scope) {
+		return tableRepository.findByScope(scope);
+	}
 
-  @Override
-  public List<Table> findByBindingIdentifierAndScope(String bindingIdentifier, String scope) {
-    return tableRepository.findByBindingIdentifierAndScope(bindingIdentifier, scope);
-  }
+	@Override
+	public List<Table> findByBindingIdentifierAndScope(String bindingIdentifier, String scope) {
+		return tableRepository.findByBindingIdentifierAndScope(bindingIdentifier, scope);
+	}
 
-  @Override
-  public Table findOneByScopeAndBindingIdentifier(String scope, String bindingIdentifier) {
-    return tableRepository.findOneByScopeAndBindingIdentifier(scope, bindingIdentifier);
-  }
+	@Override
+	public Table findOneByScopeAndBindingIdentifier(String scope, String bindingIdentifier) {
+		return tableRepository.findOneByScopeAndBindingIdentifier(scope, bindingIdentifier);
+	}
 
-  @Override
-  public List<Table> findByScopeAndVersion(String scope, String hl7Version) {
-    return tableRepository.findByScopeAndVersion(scope, hl7Version);
-  }
+	@Override
+	public List<Table> findByScopeAndVersion(String scope, String hl7Version) {
+		return tableRepository.findByScopeAndVersion(scope, hl7Version);
+	}
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService#updateDescription(java.lang.
-   * String, java.lang.String)
-   */
-  @Override
-  public void updateDescription(String id, String description) {
-    // TODO Auto-generated method stub
-    tableRepository.updateDescription(id, description);
-  }
-  
-  @Override
-  public void updateAllDescription(String id, String description, String defPreText, String defPostText){
-    // TODO Auto-generated method stub
-    tableRepository.updateAllDescription(id, description, defPreText, defPostText);
-  }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService#
+	 * updateDescription(java.lang. String, java.lang.String)
+	 */
+	@Override
+	public void updateDescription(String id, String description) {
+		// TODO Auto-generated method stub
+		tableRepository.updateDescription(id, description);
+	}
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService#updateCodeSystem(java.lang.
-   * String, java.util.Set)
-   */
-  @Override
-  public void updateCodeSystem(String id, Set<String> codesSystemtoAdd) {
-    // TODO Auto-generated method stub
-    tableRepository.updateCodeSystem(id, codesSystemtoAdd);
-  }
+	@Override
+	public void updateAllDescription(String id, String description, String defPreText, String defPostText) {
+		// TODO Auto-generated method stub
+		tableRepository.updateAllDescription(id, description, defPreText, defPostText);
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService#
+	 * updateCodeSystem(java.lang. String, java.util.Set)
+	 */
+	@Override
+	public void updateCodeSystem(String id, Set<String> codesSystemtoAdd) {
+		// TODO Auto-generated method stub
+		tableRepository.updateCodeSystem(id, codesSystemtoAdd);
+	}
 
-  @Override
-  public void updateAttributes(String id, String attributeName, Object value) {
-    // TODO Auto-generated method stub
-    tableRepository.updateAttributes(id, attributeName, value);
-  }
+	@Override
+	public void updateAttributes(String id, String attributeName, Object value) {
+		// TODO Auto-generated method stub
+		tableRepository.updateAttributes(id, attributeName, value);
+	}
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService#findShortByScope(java.lang.
-   * String)
-   */
-  @Override
-  public List<Table> findShortByScope(String scope) {
-    // TODO Auto-generated method stub
-    return tableRepository.findShortByScope(scope);
-  }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService#
+	 * findShortByScope(java.lang. String)
+	 */
+	@Override
+	public List<Table> findShortByScope(String scope) {
+		// TODO Auto-generated method stub
+		return tableRepository.findShortByScope(scope);
+	}
 
-  @Override
-  public Table findShortById(String id) {
-    // TODO Auto-generated method stub
-    return tableRepository.findShortById(id);
-  }
+	@Override
+	public Table findShortById(String id) {
+		// TODO Auto-generated method stub
+		return tableRepository.findShortById(id);
+	}
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService#
-   * findByScopeAndVersionAndBindingIdentifier(java.lang.String, java.lang.String, java.lang.String)
-   */
-  @Override
-  public List<Table> findByScopeAndVersionAndBindingIdentifier(String scope, String version,
-      String bindingIdentifier) {
-    // TODO Auto-generated method stub
-    return tableRepository.findByScopeAndVersionAndBindingIdentifier(scope, version,
-        bindingIdentifier);
-  }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService#
+	 * findByScopeAndVersionAndBindingIdentifier(java.lang.String,
+	 * java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<Table> findByScopeAndVersionAndBindingIdentifier(String scope, String version,
+			String bindingIdentifier) {
+		// TODO Auto-generated method stub
+		return tableRepository.findByScopeAndVersionAndBindingIdentifier(scope, version, bindingIdentifier);
+	}
+
+	@Override
+	public Table findDynamicTable0396() {
+		// TODO Auto-generated method stub
+		return tableRepository.findDynamicTable0396();
+ 	}
+	
+	
+
+	/**
+	 * Update a code values with values from a row in the excel file
+	 * 
+	 * @param code
+	 * @param row
+	 * @return
+	 */
+	private Code updateCode(Code code, Row row) {
+		Cell cell = row.getCell(0);
+		String value = cell.getStringCellValue();
+		code.setValue(value);
+
+		cell = row.getCell(1);
+		value = cell.getStringCellValue();
+		code.setLabel(value);
+
+		cell = row.getCell(2);
+		value = cell.getStringCellValue();
+		code.setComments(value);
+
+		code.setCodeUsage("P");
+
+		code.setCodeSystem(CODE_SYSTEM);
+		code.setCodeSystemVersion(CODE_SYSTEM_VERSION);
+		code.setType(Constant.CODE);
+
+		return code;
+	}
+
+	public Table updateTable(InputStream io, Table table) throws DynTable0396Exception {
+		Workbook workbook = null;
+		try {
+			if (io == null)
+				throw new DynTable0396Exception("Document is empty");
+
+			if (table == null)
+				throw new DynTable0396Exception("Table is empty");
+
+			log.info("Updating Dynamic Table");
+			HashMap<String, Code> codeMap = new HashMap<String, Code>();
+			if (table.getCodes() != null) {
+				table.getCodes().forEach(code -> {
+					codeMap.put(code.getValue(), code);
+				});
+			}
+			workbook = WorkbookFactory.create(io);
+			int numberOfSheets = workbook.getNumberOfSheets();
+			if (numberOfSheets == 0)
+				throw new DynTable0396Exception("Document is empty");
+			Sheet codeSheet = workbook.getSheetAt(0); // code sheet
+			codeSheet.removeRow(codeSheet.getRow(0)); // skip first row
+			codeSheet.forEach(row -> {
+				Cell c = row.getCell(0);
+				String value = c.getStringCellValue();
+				Code code = null;
+				if (!codeMap.containsKey(value)) {
+					code = updateCode(new Code(), row);
+					table.addCode(code);
+				} else {
+					code = codeMap.get(value);
+					code = updateCode(code, row);
+				}
+			});
+			if(table.getVersion() == null){
+				table.setVersion("1");
+			}else {
+				// Version should be retrieve from file 
+				table.setVersion(Integer.parseInt(table.getVersion()) + 1+"");
+			}
+			
+			
+			return save(table);
+		} catch (EncryptedDocumentException e) {
+			throw new DynTable0396Exception("Document is encrypted and cannot be read");
+		} catch (InvalidFormatException e) {
+			throw new DynTable0396Exception("Invalid format document");
+		} catch (IOException e) {
+			throw new DynTable0396Exception("Cannot read the document");
+		} finally {
+			if (workbook != null)
+				try {
+					workbook.close();
+				} catch (IOException e) {
+				}
+		}
+
+	}
+
 }
