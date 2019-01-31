@@ -2078,7 +2078,6 @@ public class IGDocumentController extends CommonController {
     @RequestMapping(value = "/{libId}/addPhinvads", method = RequestMethod.POST, produces = "application/json")
     public Set<Table> addPhinvads(@PathVariable("libId") String libId, @RequestBody PhinvadsAddingWrapper wrapper)
 	    throws CloneNotSupportedException {
-
 	TableLibrary tableLibrary = tableLibraryService.findById(libId);
 	Set<Table> ret = new HashSet<>();
 
