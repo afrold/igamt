@@ -16,7 +16,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,18 +31,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.DynTable0396Exception;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.TableUpdateStreamException;
 
 /**
  * @author gcr1
@@ -54,7 +50,7 @@ public class TableServiceImpl implements TableService {
 
 	Logger log = LoggerFactory.getLogger(TableServiceImpl.class);
 	private static final int TOTAL_CELL = 5;
-	private static final String CODE_SYSTEM = "HL70130";
+	private static final String CODE_SYSTEM = "HL70396";
 	private static final String CODE_SYSTEM_VERSION = "1.0";
 
 	@Autowired
@@ -284,9 +280,7 @@ public class TableServiceImpl implements TableService {
 	public Table findDynamicTable0396() {
 		// TODO Auto-generated method stub
 		return tableRepository.findDynamicTable0396();
- 	}
-	
-	
+	}
 
 	/**
 	 * Update a code values with values from a row in the excel file
@@ -297,34 +291,42 @@ public class TableServiceImpl implements TableService {
 	 */
 	private Code updateCode(Code code, Row row) {
 		Cell cell = row.getCell(0);
-		String value = cell.getStringCellValue();
-		code.setValue(value);
+		String value = null;
+		if (cell != null) {
+			value = cell.getStringCellValue();
+			code.setValue(value);
+		}
 
 		cell = row.getCell(1);
-		value = cell.getStringCellValue();
-		code.setLabel(value);
+		if (cell != null) {
+			value = cell.getStringCellValue();
+			code.setLabel(value);
+		}
 
 		cell = row.getCell(2);
-		value = cell.getStringCellValue();
-		code.setComments(value);
+		if (cell != null) {
+			value = cell.getStringCellValue();
+			code.setComments(value);
+		}
 
 		code.setCodeUsage("P");
 
 		code.setCodeSystem(CODE_SYSTEM);
 		code.setCodeSystemVersion(CODE_SYSTEM_VERSION);
 		code.setType(Constant.CODE);
-
+		code.setDateUpdated(new Date());
 		return code;
 	}
 
-	public Table updateTable(InputStream io, Table table) throws DynTable0396Exception {
+	@Override
+	public Table updateTable(Table table, InputStream io) throws TableUpdateStreamException {
 		Workbook workbook = null;
 		try {
 			if (io == null)
-				throw new DynTable0396Exception("Document is empty");
+				throw new TableUpdateStreamException("Document is empty");
 
 			if (table == null)
-				throw new DynTable0396Exception("Table is empty");
+				throw new TableUpdateStreamException("Table is empty");
 
 			log.info("Updating Dynamic Table");
 			HashMap<String, Code> codeMap = new HashMap<String, Code>();
@@ -336,36 +338,45 @@ public class TableServiceImpl implements TableService {
 			workbook = WorkbookFactory.create(io);
 			int numberOfSheets = workbook.getNumberOfSheets();
 			if (numberOfSheets == 0)
-				throw new DynTable0396Exception("Document is empty");
+				throw new TableUpdateStreamException("Document is empty");
 			Sheet codeSheet = workbook.getSheetAt(0); // code sheet
 			codeSheet.removeRow(codeSheet.getRow(0)); // skip first row
 			codeSheet.forEach(row -> {
 				Cell c = row.getCell(0);
 				String value = c.getStringCellValue();
 				Code code = null;
+				Cell status = row.getCell(4);
+
 				if (!codeMap.containsKey(value)) {
-					code = updateCode(new Code(), row);
-					table.addCode(code);
+					if (status == null || !isObsolete(status.getStringCellValue())) {
+						code = updateCode(new Code(), row);
+						codeMap.put(code.getValue(), code);
+						table.addCode(code);
+					}
 				} else {
-					code = codeMap.get(value);
-					code = updateCode(code, row);
+					if (status == null || !isObsolete(status.getStringCellValue())) {
+						code = codeMap.get(value);
+						code = updateCode(code, row);
+					} else {
+						table.getCodes().remove(code);
+					}
 				}
 			});
-			if(table.getVersion() == null){
+			table.setDateUpdated(new Date());
+			if (table.getVersion() == null) {
 				table.setVersion("1");
-			}else {
-				// Version should be retrieve from file 
-				table.setVersion(Integer.parseInt(table.getVersion()) + 1+"");
+			} else {
+				// Version should be retrieve from file
+				table.setVersion(Integer.parseInt(table.getVersion()) + 1 + "");
 			}
-			
-			
+
 			return save(table);
 		} catch (EncryptedDocumentException e) {
-			throw new DynTable0396Exception("Document is encrypted and cannot be read");
+			throw new TableUpdateStreamException("Document is encrypted and cannot be read");
 		} catch (InvalidFormatException e) {
-			throw new DynTable0396Exception("Invalid format document");
+			throw new TableUpdateStreamException("Invalid format document");
 		} catch (IOException e) {
-			throw new DynTable0396Exception("Cannot read the document");
+			throw new TableUpdateStreamException("Cannot read the document");
 		} finally {
 			if (workbook != null)
 				try {
@@ -374,6 +385,10 @@ public class TableServiceImpl implements TableService {
 				}
 		}
 
+	}
+
+	private boolean isObsolete(String status) {
+		return status != null && status.equalsIgnoreCase("obsolete");
 	}
 
 }

@@ -18,7 +18,7 @@ import java.util.Set;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.DynTable0396Exception;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.TableUpdateStreamException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 
 public interface TableService {
@@ -83,6 +83,6 @@ public interface TableService {
   List<Table> findByScopeAndVersionAndBindingIdentifier(String scope, String version,
       String bindingIdentifier);
   
-  Table updateTable(Table table,InputStream io) throws DynTable0396Exception;
+  Table updateTable(Table table,InputStream io) throws TableUpdateStreamException;
 
 }

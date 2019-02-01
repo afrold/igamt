@@ -1,34 +1,38 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.util.Arrays;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.web.client.RequestCallback;
-import org.springframework.web.client.ResponseExtractor;
+import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.web.client.RestTemplate;
 
 public class DynamicTable0396Util {
 
-    private static final String TABLE_0396_URL = "https://www.hl7.org/documentcenter/public/wg/vocab/Tbl0396.xls";
+    public static final String TABLE_0396_URL = "https://www.hl7.org/documentcenter/public/wg/vocab/Tbl0396.xls";
 
     static final Logger logger = LoggerFactory.getLogger(DynamicTable0396Util.class);
 
-    public static InputStream downloadExcelFile() {
+    public static InputStream downloadExcelFile() throws IOException {
 	logger.info("Fetching Table 0396 from " + TABLE_0396_URL);
+	File outputFile = File.createTempFile("Dynamic-Table-0396", ".xsl");
+	FileOutputStream stream = new FileOutputStream(outputFile);
 	RestTemplate restTemplate = new RestTemplate();
-	// download csv file
-	RequestCallback requestCallback = request -> request.getHeaders()
-		.setAccept(Arrays.asList(MediaType.APPLICATION_OCTET_STREAM, MediaType.ALL));
-	// Streams the response instead of loading it all in memory
-	ResponseExtractor<InputStream> responseExtractor = response -> {
-	    return response.getBody();
-	};
-	return restTemplate.execute(URI.create(TABLE_0396_URL), HttpMethod.GET, requestCallback, responseExtractor);
+
+	restTemplate.execute(TABLE_0396_URL, HttpMethod.GET, (ClientHttpRequest requestCallback) -> {
+	}, responseExtractor -> {
+	    IOUtils.copy(responseExtractor.getBody(), stream);
+	    return null;
+	});
+
+	InputStream targetStream = new FileInputStream(outputFile);
+	return targetStream;
     }
 
 }

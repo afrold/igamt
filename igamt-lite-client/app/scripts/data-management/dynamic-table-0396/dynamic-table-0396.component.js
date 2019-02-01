@@ -13,6 +13,24 @@ angular.module('igl')
             $scope.loading = false;
             $scope.error = null;
 
+            $rootScope.isNonEditableValueSet=function(table){
+                if(table) return $scope.viewSettings.tableReadonly||table.status == 'PUBLISHED';
+                else return true;
+            };
+            $rootScope.definitionDisabled=function(table){
+                return $rootScope.isNonEditableValueSet(table)|| table.extensibility=='Not Defined';
+            };
+
+
+            $scope.getAttributeSelectLabel=function(label){
+                if(label=='Undefined'){
+                    return "Not Defined";
+                }else{
+                    return label;
+                }
+            };
+
+
             $scope.fetchUpdates = function() {
                  var modalInstance = $mdDialog.show({
                     templateUrl: 'ConfirmFetchDynamicTable0396UpdatesCtrl.html',
@@ -30,7 +48,7 @@ angular.module('igl')
                 DynamicTable0396Service.get().then(function(result){
                     $scope.loading = false;
                     var res = angular.fromJson(result);
-                    $scope.updateTable(res.data);
+                    $scope.table = res.data;
                 }, function(error){
                     $scope.loading = false;
                     $scope.error = error.data;

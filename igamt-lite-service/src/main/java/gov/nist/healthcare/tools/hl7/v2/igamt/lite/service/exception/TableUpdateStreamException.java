@@ -14,11 +14,11 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception;
  * @author haffo
  *
  */
-public class DynTable0396Exception extends Exception {
+public class TableUpdateStreamException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
-    public DynTable0396Exception(String message) {
+    public TableUpdateStreamException(String message) {
 	super(message);
     }
 

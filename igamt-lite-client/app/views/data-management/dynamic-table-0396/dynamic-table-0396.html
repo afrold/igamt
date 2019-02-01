@@ -239,14 +239,6 @@
                                                                     Definition</label>
                                                                 <span class="inputLabel">{{getAttributeSelectLabel(table.contentDefinition)}}</span>
                                                             </div>
-                                                            <label class="input-left igamt-label valueset-ext-label">Source
-                                                                Code Systems</label>
-                                                            <md-chips
-                                                                    ng-model="table.codeSystems"
-                                                                    readonly="true"
-                                                                    md-removable="false"
-                                                                    placeholder="Add Code">
-                                                            </md-chips>
                                                         </div>
                                                     </div>
 
@@ -363,7 +355,8 @@
                                                                     </th>
                                                                     <th class="col-md-2">CodeSystem</th>
                                                                     <th class="col-md-1">Usage</th>
-                                                                    <th class="col-md-3">Comments</th>
+                                                                    <th class="col-md-1">Date Updated</th>
+                                                                    <th class="col-md-2">Comments</th>
                                                                 </tr>
 
                                                                 </thead>
@@ -389,7 +382,12 @@
                                                                         <span>{{::c.codeUsage}}</span>
 
                                                                     </td>
-                                                                    <td class="col-md-3">
+                                                                    <td class="col-md-1">
+
+                                                                        <span>{{::c.dateUpdated | date :  "MM/dd/yyyy hh:mm:ss"}}</span>
+
+                                                                    </td>
+                                                                    <td class="col-md-2">
 
                                                                         <span>{{::c.comments}}</span>
 
@@ -455,12 +453,14 @@
 
             <md-dialog-actions layout="row">
 
-                <md-button class="btn btn-raised btn-success btn-sm" ng-click="confirm()"><span><i
-                        class="fa fa-check fa-fw">&nbsp; </i>OK</span>
-                </md-button>
+
 
                 <md-button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i
                         class="fa fa-trash-o fa-fw">&nbsp; </i>Cancel</span>
+                </md-button>
+
+                <md-button class="btn btn-raised btn-warning btn-sm" ng-click="confirm()"><span><i
+                        class="fa fa-check fa-fw">&nbsp; </i>OK</span>
                 </md-button>
 
                 <div ng-show="loading" style="text-align:center">
@@ -473,3 +473,5 @@
         </form>
     </md-dialog>
 </script>
+
+</div>

@@ -137,7 +137,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.DynTable0396Exception;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.TableUpdateStreamException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DataCorrectionSectionPosition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
@@ -433,7 +433,7 @@ public class Bootstrap implements InitializingBean {
 	createDynTable0396();
     }
 
-    private void createDynTable0396() {
+    private void createDynTable0396() throws IOException {
 	try {
 	    Table table = tableService.findDynamicTable0396();
 	    if (table == null) {
@@ -447,21 +447,23 @@ public class Bootstrap implements InitializingBean {
 		    table.setName(t.getName());
 		    table.setOid(t.getOid());
 		    table.setVersion(null);
-		    table.setContentDefinition(ContentDefinition.Extensional);
-		    table.setExtensibility(Extensibility.Closed);
+		    table.setExtensibility(Extensibility.Open);
 		    table.setId(null);
 		    table.setLibIds(new HashSet<String>());
-		    table.setScope(SCOPE.DYN_HL7STANDARD);
-		    table.setStability(Stability.Static);
-		    table.setStatus(STATUS.UNPUBLISHED);
+		    table.setScope(SCOPE.HL7STANDARD);
+		    table.setStability(Stability.Dynamic);
+		    table.setStatus(STATUS.PUBLISHED);
 		    table.setType(Constant.TABLE);
 		    table.setComment(t.getComment());
-		    table.setDate(t.getDate());
+		    table.setCodeSystems(new HashSet<>(Arrays.asList(new String[] { "HL70396" })));
+		    table.setHl7Version("Dyn");
+		    table.setContentDefinition(ContentDefinition.Intensional);
+		    table.setReferenceUrl(DynamicTable0396Util.TABLE_0396_URL);
 		}
 		InputStream io = DynamicTable0396Util.downloadExcelFile();
 		table = tableService.updateTable(table, io);
 	    }
-	} catch (DynTable0396Exception e) {
+	} catch (TableUpdateStreamException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}

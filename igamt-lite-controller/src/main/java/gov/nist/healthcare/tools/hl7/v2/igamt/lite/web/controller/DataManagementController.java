@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import javax.inject.Inject;
@@ -27,7 +28,7 @@ import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.DynTable0396Exception;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.TableUpdateStreamException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.DynamicTable0396Util;
 
 /**
@@ -39,18 +40,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.DynamicTable0396Util
 public class DataManagementController {
 
     static final Logger logger = LoggerFactory.getLogger(DataManagementController.class);
-    public final String DEFAULT_PAGE_SIZE = "0";
-    private static final String TABLE_0396_URL = "https://www.hl7.org/documentcenter/public/wg/vocab/Tbl0396.xls";
 
     @Autowired
     private TableService tableService;
 
-    // private List<String> skippedValidationEmails = new ArrayList<String>();
-
     public DataManagementController() {
-	// skippedValidationEmails = new ArrayList<String>();
-	// skippedValidationEmails.add("haffo@nist.gov");
-	// skippedValidationEmails.add("rsnelick@nist.gov");
     }
 
     @Inject
@@ -68,9 +62,15 @@ public class DataManagementController {
 
     @PreAuthorize("hasRole('admin')")
     @RequestMapping(value = "/dynamic-table-0396/fetch-updates", method = RequestMethod.POST)
-    public Table fetchUdpates() throws DynTable0396Exception {
-	InputStream io = DynamicTable0396Util.downloadExcelFile();
-	return tableService.updateDynTable0396(io);
+    public Table fetchUdpates() throws TableUpdateStreamException {
+	try {
+	    InputStream io = DynamicTable0396Util.downloadExcelFile();
+	    Table t = getDynamicTable0396();
+	    return tableService.updateTable(t, io);
+	} catch (IOException e) {
+	    throw new TableUpdateStreamException(e.getMessage());
+	}
+
     }
 
 }
