@@ -603,6 +603,15 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
           $scope.loadDatatypes().then(function () {
             $scope.loadVersionAndUseInfo().then(function () {
               $scope.loadTables().then(function () {
+               $scope.collectMessages();
+
+
+                try {
+                  if ($scope.messagesParams)
+                    $scope.messagesParams.refresh();
+                } catch (e) {
+
+                }
                 $scope.loadIgDocumentMetaData();
 
                 // Find share participants
@@ -1084,7 +1093,6 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
     }).then(function () {
 
     });
-
   };
 
   $scope.processSelectCompositeProfilesForExport = function (igdocument, toGVT) {

@@ -51,7 +51,15 @@ angular.module('igl').controller('ConformanceProfilesSectionCtrl', function ($sc
 
     $scope.toggle=function(ack,message){
 
-        $rootScope.section.config.ackBinding[message.id] = ack.id;
+        if($rootScope.section.config.ackBinding[message.id]&&$rootScope.section.config.ackBinding[message.id] == ack.id){
+
+            $rootScope.section.config.ackBinding[message.id] = null;
+
+        }else{
+
+            $rootScope.section.config.ackBinding[message.id] = ack.id;
+
+        }
 
     };
 
