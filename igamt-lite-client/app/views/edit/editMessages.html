@@ -94,7 +94,7 @@
                                             <label class="input-left igamt-label">Message Event</label>
 
                                             <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                                <input  type="text"  name="messageType" ng-change="setDirty()" ng-model="message.event"  required>
+                                                <input  type="text"  name="messageType" ng-change="setDirty()" ng-model="message.event"  disabled required>
                                                 <div ng-messages="editForm.event.$error">
                                                     <div ng-message="required">Message Event is required.</div>
                                                 </div>
@@ -103,7 +103,7 @@
                                             <label class="input-left igamt-label">Message Structure ID</label>
 
                                             <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                                <input  type="text"  name="structID" ng-change="setDirty()" ng-model="message.structID"  required>
+                                                <input  type="text"  name="structID" ng-change="setDirty()" ng-model="message.structID"  disabled required>
                                                 <div ng-messages="editForm.structID.$error">
                                                     <div ng-message="required">Message Event is required.</div>
                                                 </div>

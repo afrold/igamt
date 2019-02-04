@@ -42,9 +42,11 @@ angular.module('igl').controller('ConformanceProfilesSectionCtrl', function ($sc
         $rootScope.section['sectionTitle'] = $rootScope.igdocument.profile.messages['sectionTitle'];
         $rootScope.section['sectionContents'] = $rootScope.igdocument.profile.messages['sectionContents'];
         $rootScope.section['sectionDescription'] = $rootScope.igdocument.profile.messages['sectionDescription'];
-        $scope.initSection();
-        $scope.editForm.$setPristine();
-        $scope.editForm.$dirty = false;
+        if ($scope.editForm) {
+            $scope.editForm.$dirty = false;
+
+            $scope.editForm.$setPristine();
+        }
         $rootScope.clearChanges();
     };
 
@@ -60,6 +62,7 @@ angular.module('igl').controller('ConformanceProfilesSectionCtrl', function ($sc
             $rootScope.section.config.ackBinding[message.id] = ack.id;
 
         }
+        $rootScope.recordChanged();
 
     };
 
