@@ -1331,6 +1331,27 @@ public class IGDocumentController extends CommonController {
 	return d.getDateUpdated().getTime();
     }
 
+    @RequestMapping(value = "/{id}/profile/messages/section", method = RequestMethod.POST)
+    public Long saveConformanceProfileSection(@PathVariable("id") String id, @RequestBody MessagesSection wrapper,
+	    HttpServletRequest request, HttpServletResponse response)
+	    throws IOException, IGDocumentNotFoundException, IGDocumentException {
+	IGDocument d = igDocumentService.findOne(id);
+	if (d == null) {
+	    throw new IGDocumentNotFoundException(id);
+	}
+	
+	d.getProfile().getMessages().setSectionDescription(wrapper.getSectionContents());
+	d.getProfile().getMessages().setConfig(wrapper.getConfig());
+	d.getProfile().setDateUpdated(DateUtils.getCurrentDate());
+	igDocumentService.save(d);
+	return d.getDateUpdated().getTime();
+    }
+    
+    
+    
+    
+    
+    
     @RequestMapping(value = "/{id}/section/save", method = RequestMethod.POST)
     public Long saveSection(@PathVariable("id") String id, @RequestBody Section section, HttpServletRequest request,
 	    HttpServletResponse response) throws IOException, IGDocumentNotFoundException, IGDocumentException {
