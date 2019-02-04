@@ -26,6 +26,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exceptio
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 
 public interface IGDocumentExportService {
 

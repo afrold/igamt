@@ -1004,11 +1004,22 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     Messages messages = new Messages();
     for (Message m : original.getMessages().getChildren()) {
       if (Arrays.asList(ids).contains(m.getId())) {
-        if (m.getMessageID() == null)
-          m.setMessageID(UUID.randomUUID().toString());
+        if (m.getMessageID() == null) m.setMessageID(UUID.randomUUID().toString());
         messages.addMessage(m);
         for (SegmentRefOrGroup seog : m.getChildren()) {
           this.visit(seog, segmentsMap, datatypesMap, tablesMap);
+        }
+        
+        if(original.getMessages() != null && original.getMessages().getConfig() != null && original.getMessages().getConfig().getAckBinding() != null){
+          String ackMessageId = original.getMessages().getConfig().getAckBinding().get(m.getId());
+          if(ackMessageId != null) {
+            Message ackM = this.messageService.findById(ackMessageId);
+            ackM.setMessageID("ACK_" + m.getMessageID());
+            messages.addMessage(ackM);
+            for (SegmentRefOrGroup seog : ackM.getChildren()) {
+              this.visit(seog, segmentsMap, datatypesMap, tablesMap);
+            }
+          }
         }
       }
     }
