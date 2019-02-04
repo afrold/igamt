@@ -4,9 +4,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 
 @Document(collection = "table-library")
 public class TableLibrary extends Library implements java.io.Serializable, Cloneable {
@@ -154,6 +157,23 @@ public class TableLibrary extends Library implements java.io.Serializable, Clone
     if (tab != null)
       children.add(new TableLink(tab.getId(), tab.getBindingIdentifier()));
   }
+  
+  public Stream<TableLink> findByBindingIdentifier(String bindingIdentifier) {
+	  return children.stream().filter(e -> {
+		  return bindingIdentifier.equals(e.getBindingIdentifier());
+	  });
+  }
+  
+  public boolean contains(String tableId) {
+	  return children.stream().anyMatch(e -> {
+		  return tableId.equals(e.getId());
+	  });
+  }
+  
+  
+  
+
+  
 
   public TableLink save(TableLink tl) {
     if (tl != null)

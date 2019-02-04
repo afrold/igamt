@@ -1,0 +1,47 @@
+<style id="antiClickjack">body{display:none !important;}</style>
+<script type="text/javascript">
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
+</script>
+<div class="container" ng-controller="DataManagementCtrl" ng-init="initDataManagement()">
+
+    <div style="margin-top: 20px;margin-bottom: 20px" layout="row">
+        <md-toolbar  flex="100" class="ig-menu-bar">
+            <div class="md-toolbar-tools">
+                <h2 flex md-truncate>Data Management</h2>
+            </div>
+        </md-toolbar>
+    </div>
+
+
+    <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">
+        <md-tab>
+            <md-tab-label>
+                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>Dynamic Table 0396
+            </md-tab-label>
+            <md-tab-body>
+                <div style="margin-top: 20px" ng-cloak class="metadata-scroll"
+                     layout="column">
+                    <div ng-include="'views/data-management/dynamic-table-0396/dynamic-table-0396.html'"></div>
+                </div>
+            </md-tab-body>
+        </md-tab>
+    </md-tabs>
+
+
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+
+
+        </div>
+    </div>
+
+
+</div>

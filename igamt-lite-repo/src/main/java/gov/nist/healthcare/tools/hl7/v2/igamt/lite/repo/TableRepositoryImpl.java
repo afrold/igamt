@@ -306,4 +306,17 @@ public class TableRepositoryImpl implements TableOperations {
     return mongo.find(qry, Table.class);
   }
 
+  
+  @Override
+  public Table findDynamicTable0396() {
+    Criteria where = Criteria.where("bindingIdentifier").is("0396").andOperator(
+        Criteria.where("scope").is(SCOPE.HL7STANDARD.toString()),
+                Criteria.where("hl7Version").is("Dyn"));
+    Query qry = Query.query(where);
+    Table table = mongo.findOne(qry, Table.class);
+    return table;
+  }
+
+  
+  
 }

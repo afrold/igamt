@@ -57,6 +57,8 @@
                 <ul class="dropdown-menu">
                     <li ng-class="isActive('/useraccount')"><a class="point" href="#/useraccount"><i
                             class="fa fa-user"></i>&nbsp;My Profile</a></li>
+                    <li ng-show="isAdmin()" ng-class="isActive('/data-management')"><a class="point" href="#/data-management"><i
+                            class="fa fa-cog"></i>&nbsp;Data Management</a></li>
                     <li class="">
                         <a class="point" ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp;<span class="msg">Logout</span></a>
                     </li>

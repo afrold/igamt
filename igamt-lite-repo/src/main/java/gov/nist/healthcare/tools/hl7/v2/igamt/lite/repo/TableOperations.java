@@ -66,6 +66,10 @@ public interface TableOperations {
       String bindingIdentifier);
 
 
-  public Table findShortById(String id);
+  public Table findShortById(String id); 
+  
+  public Table findDynamicTable0396(); 
+
+  
 
 }
