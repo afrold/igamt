@@ -386,8 +386,8 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		if (t == null)
 			return;
 		TableLibrary vsdTarget = pTarget.getTableLibrary();
-		if (t.getScope().equals(SCOPE.HL7STANDARD) && t.getBindingIdentifier().equals("0396")
-				&& !t.getHl7Version().equals("Dyn")) {
+		if (t.getScope().equals(SCOPE.HL7STANDARD) && "0396".equals(t.getBindingIdentifier())
+				&& !"Dyn".equals(t.getHl7Version())) {
 			Table dyn0396 = tableRepository.findDynamicTable0396();
 			if (dyn0396 != null) {
 				if (!vsdTarget.contains(dyn0396.getId())) {
@@ -395,10 +395,8 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 				}
 				vsb.setTableId(dyn0396.getId());
 			}
-		} else {
-			if (!vsdTarget.contains(t.getId())) {
-				vsdTarget.addTable(t);
-			}
+		} else if (!vsdTarget.contains(t.getId())) {
+			vsdTarget.addTable(t);
 		}
 	}
 

@@ -457,7 +457,7 @@ public class Bootstrap implements InitializingBean {
 		    table.setComment(t.getComment());
 		    table.setCodeSystems(new HashSet<>(Arrays.asList(new String[] { "HL70396" })));
 		    table.setHl7Version("Dyn");
-		    table.setContentDefinition(ContentDefinition.Intensional);
+		    table.setContentDefinition(ContentDefinition.Extensional);
 		    table.setReferenceUrl(DynamicTable0396Util.TABLE_0396_URL);
 		}
 		InputStream io = DynamicTable0396Util.downloadExcelFile();

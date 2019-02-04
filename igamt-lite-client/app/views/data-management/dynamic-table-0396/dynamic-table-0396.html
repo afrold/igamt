@@ -81,6 +81,19 @@
                                         {{table.sourceType}}
                                     </div>
 
+
+                                    <label class="input-left igamt-label">Version</label>
+
+                                    <div>
+                                        {{table.version}}
+                                    </div>
+
+                                    <label class="input-left igamt-label">Date Updated</label>
+
+                                    <div>
+                                        {{table.dateUpdated | date :  "MM/dd/yyyy hh:mm:ss"}}
+                                    </div>
+
                                     <label class="input-left igamt-label">Internal IGAMT URL </label>
 
                                     <a href="{{getElementUrl(table)}}"
@@ -99,6 +112,7 @@
                                             <div froala-view="table.authorNotes"></div>
                                         </div>
                                     <!--</div>-->
+
 
                                 </md-content>
                             </div>
@@ -355,7 +369,7 @@
                                                                     </th>
                                                                     <th class="col-md-2">CodeSystem</th>
                                                                     <th class="col-md-1">Usage</th>
-                                                                    <th class="col-md-1">Date Updated</th>
+                                                                    <th class="col-md-1">Igamt Date Updated</th>
                                                                     <th class="col-md-2">Comments</th>
                                                                 </tr>
 
