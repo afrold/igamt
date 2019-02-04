@@ -1537,12 +1537,23 @@ angular
           if ($rootScope.section.sectionContents === null) {
             $rootScope.section.sectionContents = "";
           }
-          if(param.toLowerCase() !== 'value sets') {
-            $scope.$emit('event:openSection', $rootScope.section);
-          }else{
-            $scope.$emit('event:openValueSetRoot', $rootScope.section);
+          if(param.toLowerCase() == 'value sets') {
+              $scope.$emit('event:openValueSetRoot', $rootScope.section);
+          }else if(param.toLowerCase() == 'conformance profiles'){
+              $scope.$emit('event:openConformanceProfileRoot', $rootScope.section);
+          }
+
+          else{
+              $scope.$emit('event:openSection', $rootScope.section);
+
+
           }
         };
+
+
+
+
+
 
         $scope.editRoutSection = function(param) {
           if ($rootScope.hasChanges()) {

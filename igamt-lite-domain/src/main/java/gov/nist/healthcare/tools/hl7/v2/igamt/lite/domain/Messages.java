@@ -16,6 +16,9 @@ public class Messages extends TextbasedSectionModel implements java.io.Serializa
   private static final long serialVersionUID = 1L;
 
   private String id;
+  
+  
+  private MessageConfiguration config = new MessageConfiguration();
 
   /**
 	 * 
@@ -114,4 +117,13 @@ public class Messages extends TextbasedSectionModel implements java.io.Serializa
       elt.setPosition(sortedList.indexOf(elt));
     }
   }
+
+public MessageConfiguration getConfig() {
+	return config;
+}
+
+public void setConfig(MessageConfiguration config) {
+	this.config = config;
+}
+
 }

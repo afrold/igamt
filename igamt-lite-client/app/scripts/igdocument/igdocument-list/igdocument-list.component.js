@@ -241,6 +241,10 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
       $scope.selectValueSetRoot(section); // Should we open in a dialog ??
     });
 
+      $scope.$on('event:openConformanceProfileRoot', function (event, section, referencer) {
+          $scope.selectConformanceProfileRoot(section); // Should we open in a dialog ??
+      });
+
     $scope.$on('event:openDocumentMetadata', function (event, metaData) {
       $scope.selectDocumentMetaData(metaData); // Should we open in a dialog ??
     });
@@ -563,7 +567,6 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
   $scope.openIGDocument = function (igdocument) {
       $rootScope.validationResult=null;
       $scope.notifications = [];
-
       // Find Notifications for this IGDocument
       if (igdocument != null) {
           $http.get('api/notifications/igdocument/' + igdocument.id).then(
@@ -572,9 +575,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
               },
               function (error) {}
           );
-
-
-      // Set rootscope accountId for sharing
+          // Set rootscope accountId for sharing
       $rootScope.accountId = igdocument.accountId;
       $timeout(function () {
         $scope.selectIgTab(1);
@@ -602,7 +603,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
           $scope.loadDatatypes().then(function () {
             $scope.loadVersionAndUseInfo().then(function () {
               $scope.loadTables().then(function () {
-                $scope.collectMessages();
+               $scope.collectMessages();
 
 
                 try {
@@ -1092,7 +1093,6 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
     }).then(function () {
 
     });
-
   };
 
   $scope.processSelectCompositeProfilesForExport = function (igdocument, toGVT) {
@@ -2277,6 +2277,40 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
         }
       }, 100);
   };
+
+    $scope.selectConformanceProfileRoot = function (section) {
+        if (section.sectionContents === null || section.sectionContents === undefined) {
+            section.sectionContents = "";
+            console.log(section);
+        }
+        $rootScope.subview = "editConformanceProfileRoot.html";
+        $scope.loadingSelection = true;
+        blockUI.start();
+
+        $timeout(
+            function () {
+                try {
+                    $rootScope.section = angular.copy(section);
+                    $rootScope.currentData = $rootScope.section;
+                    $rootScope.originalSection = section;
+                    $scope.loadingSelection = false;
+                    $rootScope.$emit("event:initEditArea");
+                    $rootScope.$emit("event:initTableLibrarySection");
+                    blockUI.stop();
+                } catch (e) {
+                    $scope.loadingSelection = false;
+                    $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
+                    $rootScope.msg().type = "danger";
+                    $rootScope.msg().show = true;
+                    blockUI.stop();
+                }
+            }, 100);
+    };
+
+
+
+
+
 
   $scope.getFullName = function () {
     if (userInfoService.isAuthenticated() === true) {

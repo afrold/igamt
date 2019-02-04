@@ -8,6 +8,9 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
     $scope.exportStep = 'MESSAGE_STEP';
     $scope.xmlFormat = 'Validation';
     $scope.selectedMessagesIDs = [];
+    $scope.selectedMessagesMap=[];
+
+
     $scope.loading = false;
     $scope.info = {text: undefined, show: false, type: null, details: null};
     $scope.redirectUrl = null;
@@ -64,6 +67,9 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
             if (message.selected) $scope.selected = true;
         }
     };
+
+
+
 
     $scope.selectionAll = function (bool) {
         for (var i in $scope.igdocumentToSelect.profile.messages.children) {
