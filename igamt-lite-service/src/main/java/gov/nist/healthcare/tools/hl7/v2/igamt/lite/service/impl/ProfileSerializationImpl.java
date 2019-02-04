@@ -1010,8 +1010,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
           this.visit(seog, segmentsMap, datatypesMap, tablesMap);
         }
         
-        if(pairedACKMap != null){
-          String ackMessageId = pairedACKMap.get(m.getId());
+        if(original.getMessages() != null && original.getMessages().getConfig() != null && original.getMessages().getConfig().getAckBinding() != null){
+          String ackMessageId = original.getMessages().getConfig().getAckBinding().get(m.getId());
           if(ackMessageId != null) {
             Message ackM = this.messageService.findById(ackMessageId);
             ackM.setMessageID("ACK_" + m.getMessageID());
