@@ -94,7 +94,7 @@
                                             <label class="input-left igamt-label">Message Event</label>
 
                                             <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                                <input  type="text"  name="messageType" ng-change="setDirty()" ng-model="message.event"  disabled required>
+                                                <input  type="text"  name="messageType" ng-change="setDirty()" ng-model="message.event"  ng-disabled="message.messageType !== 'ACK'">
                                                 <div ng-messages="editForm.event.$error">
                                                     <div ng-message="required">Message Event is required.</div>
                                                 </div>
@@ -140,8 +140,7 @@
                                                 <input type="text" disabled
                                                        name="hl7Section"
                                                        id="hl7Section"
-                                                       ng-model="message.hl7Section"
-                                                >
+                                                       ng-model="message.hl7Section">
                                             </md-input-container>
 
                                         </md-content>

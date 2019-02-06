@@ -2,14 +2,13 @@
  * Created by haffo on 9/11/17.
  */
 
-angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc, GVTSvc, $modal, $timeout, $window, $mdDialog, toGVT, StorageService) {
+angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc, GVTSvc, $modal, $timeout, $window, $mdDialog, toGVT, dynamicMessages,StorageService) {
     $scope.igdocumentToSelect = igdocumentToSelect;
     $scope.toGVT = toGVT;
     $scope.exportStep = 'MESSAGE_STEP';
     $scope.xmlFormat = 'Validation';
-    $scope.selectedMessagesIDs = [];
-    $scope.selectedMessagesMap=[];
-
+    $scope.selectedMessages = [];
+    $scope.dynamicMessages=dynamicMessages;
 
     $scope.loading = false;
     $scope.info = {text: undefined, show: false, type: null, details: null};
@@ -29,14 +28,17 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
         url: url, domain: null
     };
 
+    $scope.selectMessage=function (message) {
 
+
+    };
 
     $scope.newDomain = null;
 
 
     // init selection to false
-    for (var i in $scope.igdocumentToSelect.profile.messages.children) {
-        var message = $scope.igdocumentToSelect.profile.messages.children[i];
+    for (var i in $scope.dynamicMessages) {
+        var message = $scope.dynamicMessages[i];
         $scope.selected = false;
         message.selected = false;
     }
@@ -52,6 +54,9 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
         $scope.error = null;
     };
 
+
+
+
     $scope.selectTargetDomain = function () {
         $scope.newDomain = null;
         if ($scope.target.domain != null) {
@@ -62,8 +67,8 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
 
     $scope.trackSelections = function () {
         $scope.selected = false;
-        for (var i in $scope.igdocumentToSelect.profile.messages.children) {
-            var message = $scope.igdocumentToSelect.profile.messages.children[i];
+        for (var i in $scope.dynamicMessages) {
+            var message = $scope.dynamicMessages[i];
             if (message.selected) $scope.selected = true;
         }
     };
@@ -72,19 +77,19 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
 
 
     $scope.selectionAll = function (bool) {
-        for (var i in $scope.igdocumentToSelect.profile.messages.children) {
-            var message = $scope.igdocumentToSelect.profile.messages.children[i];
+        for (var i in $scope.dynamicMessages) {
+            var message = $scope.dynamicMessages[i];
             message.selected = bool;
         }
         $scope.selected = bool;
     };
 
     $scope.generatedSelectedMessagesIDs = function () {
-        $scope.selectedMessagesIDs = [];
-        for (var i in $scope.igdocumentToSelect.profile.messages.children) {
-            var message = $scope.igdocumentToSelect.profile.messages.children[i];
+        $scope.selectedMessages = [];
+        for (var i in $scope.dynamicMessages) {
+            var message = $scope.dynamicMessages[i];
             if (message.selected) {
-                $scope.selectedMessagesIDs.push(message.id);
+                $scope.selectedMessages.push(message);
             }
         }
     };
@@ -165,7 +170,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
     $scope.exportAsZIPforSelectedMessages = function () {
         $scope.loading = true;
         $scope.generatedSelectedMessagesIDs();
-        ExportSvc.exportAsXMLByMessageIds($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, $scope.xmlFormat);
+        ExportSvc.exportAsXMLByMessageIds($scope.igdocumentToSelect.id, $scope.selectedMessages, $scope.xmlFormat);
         $scope.loading = false;
     };
 
@@ -191,7 +196,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
         var auth = StorageService.getGVTBasicAuth();
         if ($scope.app.url != null && $scope.target.domain != null && auth != null) {
             $scope.loading = true;
-            GVTSvc.exportToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, auth, $scope.app.url, $scope.target.domain).then(function (map) {
+            GVTSvc.exportToGVT($scope.igdocumentToSelect.id, $scope.selectedMessages, auth, $scope.app.url, $scope.target.domain).then(function (map) {
                 $scope.loading = false;
                 var response = angular.fromJson(map.data);
                 if (response.success === false) {
