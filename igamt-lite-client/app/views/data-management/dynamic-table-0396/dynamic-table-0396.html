@@ -1,0 +1,491 @@
+<style id="antiClickjack">body{display:none !important;}</style>
+<script type="text/javascript">
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
+</script>
+<div class="container" ng-controller="DynamicTable0396Management" ng-init="initDynamicTable0396()">
+    <div class="row" ng-show="table != null">
+        <div class="col-md-12">
+            <div class="pull-right">
+                <md-button title="Fetch Updates" type="button" class="btn btn-raised btn-sm btn-warning"
+                           ng-click="fetchUpdates()">
+                    <span><i class="fa fa-check fa-fw"></i> Fetch Updates</span>
+                </md-button>
+            </div>
+        </div>
+        <div class="col-md-12">
+             <div ng-show="loading" style="text-align:center">
+                <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
+             </div>
+         </div>
+        <div class="col-md-12">
+            <div class="">
+
+                <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">
+                    <md-tab>
+                        <md-tab-label>
+                            <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>MetaData
+                        </md-tab-label>
+                        <md-tab-body>
+                            <div style="margin-top: 20px" ng-cloak class="md-inline-form metadata-scroll"
+                                 layout="column">
+                                <md-content layout-padding>
+                                    <label class="input-left igamt-label">Binding Identifier*</label>
+
+                                    <md-input-container class="md-block igamt-input-block" flex-gt-sm>
+                                        <input disabled="true" type="text"
+                                               ng-model="table.bindingIdentifier"
+                                               required ng-change="setDirty()">
+                                        <div ng-messages="editForm.tableIdentifier.$error">
+                                            <div ng-message="required">Binding Identifier is required.</div>
+                                        </div>
+                                    </md-input-container>
+
+                                    <label class="input-left igamt-label">Name*</label>
+                                    <md-input-container class="md-block igamt-input-block" flex-gt-sm>
+                                        <input type="text" ng-disabled="isNonEditableValueSet(table)"
+                                               name="name" ng-model="table.name" required
+                                               ng-change="setDirty()">
+                                        <div ng-messages="editForm.name.$error">
+                                            <div ng-message="required">Name is required.</div>
+                                        </div>
+                                    </md-input-container>
+
+                                    <label class="input-left igamt-label">OID</label>
+
+                                    <md-input-container class="md-block igamt-input-block" flex-gt-sm>
+                                        <input type="text" name="oid" ng-disabled="isNonEditableValueSet(table)"
+                                               ng-model="table.oid" ng-change="setDirty()">
+                                        <div ng-messages="editForm.oid.$error">
+                                            <div ng-message="required">OID is required.</div>
+                                        </div>
+                                    </md-input-container>
+
+                                    <label class="input-left igamt-label"
+                                           ng-show="table.hl7Section != null && table.hl7Section != '' && table.hl7Section != undefined">HL7
+                                        Section</label>
+
+                                    <md-input-container class="md-block igamt-input-block" flex-gt-sm
+                                                        ng-show="table.hl7Section != null && table.hl7Section != '' && table.hl7Section != undefined">
+                                        <input type="text" disabled
+                                               name="hl7Section"
+                                               id="hl7Section"
+                                               ng-model="table.hl7Section"/>
+                                    </md-input-container>
+                                    <label class="input-left igamt-label"> Type </label>
+                                    <div>
+                                        {{table.sourceType}}
+                                    </div>
+
+
+                                    <label class="input-left igamt-label">Version</label>
+
+                                    <div>
+                                        {{table.version}}
+                                    </div>
+
+                                    <label class="input-left igamt-label">Date Updated</label>
+
+                                    <div>
+                                        {{table.dateUpdated | date :  "MM/dd/yyyy hh:mm:ss"}}
+                                    </div>
+
+                                    <label class="input-left igamt-label">Internal IGAMT URL </label>
+
+                                    <a href="{{getElementUrl(table)}}"
+                                       target="_blank">{{getElementUrl(table)}}</a>
+                                    <br/>
+
+                                    <label class="input-left igamt-label"
+                                           ng-show="!isNonEditableValueSet(table)">Author Notes</label>
+
+                                    <!--<div ng-if="!isNonEditableValueSet(table)">-->
+                                                <!--<textarea froala="froalaEditorOptions" ng-model="table.authorNotes"-->
+                                                          <!--name="text" id="authorNotes"></textarea>-->
+                                    <!--</div>-->
+                                    <!--<div ng-if="isNonEditableValueSet(table)">-->
+                                        <div class="fr-view">
+                                            <div froala-view="table.authorNotes"></div>
+                                        </div>
+                                    <!--</div>-->
+
+
+                                </md-content>
+                            </div>
+                        </md-tab-body>
+                    </md-tab>
+                    <md-tab>
+                        <md-tab-label>
+                            <i class="fa fa-table fa-fw" aria-hidden="true"></i>Definition
+                        </md-tab-label>
+                        <md-tab-body>
+                            <div class="el-def igl-def-table-container">
+
+                                <md-tabs md-dynamic-height md-border-bottom md-selected="defTabStatus.active">
+                                    <md-tab>
+                                        <md-tab-label>
+                                            Pre-Text
+                                        </md-tab-label>
+                                        <md-tab-body>
+                                            <div class="panel-primary">
+                                                <div class="panel-body">
+                                                    <!--<div ng-if="!isNonEditableValueSet(table)">-->
+                                                                <!--<textarea froala="froalaEditorOptions"-->
+                                                                          <!--ng-model="table.defPreText" name="text"-->
+                                                                          <!--id="defPreText"-->
+                                                                          <!--ng-change="setDirty()"></textarea>-->
+                                                    <!--</div>-->
+                                                    <!--<div ng-if="isNonEditableValueSet(table)">-->
+                                                        <div class="fr-view">
+                                                            <div froala-view="table.defPreText"></div>
+                                                        </div>
+                                                    <!--</div>-->
+                                                </div>
+                                            </div>
+
+                                        </md-tab-body>
+                                    </md-tab>
+                                    <md-tab>
+                                        <md-tab-label>
+                                            Structure
+                                        </md-tab-label>
+                                        <md-tab-body>
+
+                                            <div class="panel-primary">
+                                                <div style="padding: 5px;">
+
+                                                    <!--<div ng-if="!isNonEditableValueSet(table)">-->
+                                                        <!--<md-toolbar class="value-set-toolBar"> Attributes-->
+                                                        <!--</md-toolbar>-->
+                                                        <!--<div class="md-panelContent">-->
+                                                            <!--<div class="inside-metadata divide"-->
+                                                                 <!--layout-gt-sm="row">-->
+
+                                                                <!--<label class="input-left igamt-label valueset-ext-label">Extensibility</label>-->
+
+                                                                <!--<md-input-container-->
+                                                                        <!--class="md-block igamt-input-block igamt-vs-meta-input"-->
+                                                                        <!--flex-gt-sm>-->
+                                                                    <!--<md-select-->
+                                                                            <!--ng-disabled="isNonEditableValueSet(table)"-->
+                                                                            <!--ng-model="table.extensibility">-->
+                                                                        <!--<md-option-->
+                                                                                <!--ng-repeat="extensibility in config.tableExtensibilities track by $index"-->
+                                                                                <!--ng-value="extensibility">-->
+                                                                            <!--{{getAttributeSelectLabel(extensibility)}}-->
+                                                                        <!--</md-option>-->
+                                                                    <!--</md-select>-->
+                                                                <!--</md-input-container>-->
+                                                                <!--<label class="input-left igamt-label valueset-ext-label">Stability</label>-->
+
+                                                                <!--<md-input-container-->
+                                                                        <!--class="md-block igamt-input-block igamt-vs-meta-input"-->
+                                                                        <!--flex-gt-sm>-->
+                                                                    <!--<md-select-->
+                                                                            <!--ng-disabled="isNonEditableValueSet(table)"-->
+                                                                            <!--ng-model="table.stability">-->
+                                                                        <!--<md-option-->
+                                                                                <!--ng-repeat="stability in config.tableStabilities track by $index"-->
+                                                                                <!--ng-value="stability">-->
+                                                                            <!--{{getAttributeSelectLabel(stability)}}-->
+                                                                        <!--</md-option>-->
+                                                                    <!--</md-select>-->
+                                                                <!--</md-input-container>-->
+                                                                <!--<label class="input-left igamt-label valueset-ext-label">Content-->
+                                                                    <!--Definition</label>-->
+
+                                                                <!--<md-input-container-->
+                                                                        <!--class="md-block igamt-input-block igamt-vs-meta-input"-->
+                                                                        <!--flex-gt-sm>-->
+                                                                    <!--<md-select-->
+                                                                            <!--ng-disabled="isNonEditableValueSet(table)"-->
+                                                                            <!--ng-model="table.contentDefinition">-->
+                                                                        <!--<md-option-->
+                                                                                <!--ng-repeat="contentDefinition in config.tableContentDefinitions track by $index"-->
+                                                                                <!--ng-value="contentDefinition">-->
+                                                                            <!--{{getAttributeSelectLabel(contentDefinition)}}-->
+                                                                        <!--</md-option>-->
+                                                                    <!--</md-select>-->
+                                                                <!--</md-input-container>-->
+                                                            <!--</div>-->
+
+                                                            <!--<label class="input-left igamt-label valueset-ext-label">Source-->
+                                                                <!--Code Systems</label>-->
+
+                                                            <!--<md-chips-->
+                                                                    <!--ng-if="table.sourceType==='EXTERNAL'"-->
+                                                                    <!--ng-model="table.codeSystems"-->
+                                                                    <!--readonly="true"-->
+                                                                    <!--md-removable="false"-->
+
+                                                                    <!--placeholder="Add Code">-->
+                                                            <!--</md-chips>-->
+
+                                                            <!--<md-chips-->
+                                                                    <!--ng-if="table.sourceType!=='EXTERNAL'"-->
+                                                                    <!--ng-model="table.codeSystems"-->
+                                                                    <!--readonly="false"-->
+                                                                    <!--md-removable="true"-->
+                                                                    <!--md-on-remove="removeCodeSystem($chip)"-->
+                                                                    <!--placeholder="Type and hit <Enter>"-->
+                                                                    <!--delete-button-label="Remove code system"-->
+                                                                    <!--delete-hint="Press Delete to remove code system"-->
+                                                                    <!--secondary-placeholder="Type and hit <Enter>">-->
+                                                            <!--</md-chips>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+                                                    <!--<div ng-if="isNonEditableValueSet(table)">-->
+                                                        <md-toolbar class="value-set-toolBar">Value Set
+                                                            Definition Attribute
+                                                        </md-toolbar>
+                                                        <div class="md-panelContent">
+                                                            <div class="inside-metadata divide"
+                                                                 layout-gt-sm="row">
+                                                                <label class="input-left igamt-label valueset-ext-label">Extensibility</label>
+                                                                <span class="inputLabel">{{getAttributeSelectLabel(table.extensibility)}} </span>
+                                                                <label class="input-left igamt-label valueset-ext-label">Stability</label>
+                                                                <span class="inputLabel">{{getAttributeSelectLabel(table.stability)}}</span>
+                                                                <label class="input-left igamt-label valueset-ext-label">Content
+                                                                    Definition</label>
+                                                                <span class="inputLabel">{{getAttributeSelectLabel(table.contentDefinition)}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <br/>
+                                                    <md-toolbar class="value-set-toolBar">Content</md-toolbar>
+                                                    <div class="codes-container md-panelContent">
+                                                        <label class="input-left igamt-label">Reference URL</label>
+
+                                                        <md-input-container class="md-block igamt-input-block"
+                                                                            flex-gt-sm>
+                                                            <input type="url" name="url"
+                                                                   disabled="true"
+                                                                   ng-model="table.referenceUrl">
+                                                        </md-input-container>
+                                                        <label class="input-left igamt-label"
+                                                               ng-if="table.contentDefinition=='Intensional'">Definition
+                                                            Text </label>
+
+                                                        <md-input-container class="md-block igamt-input-block"
+                                                                            flex-gt-sm
+                                                                            ng-if="table.contentDefinition=='Intensional'">
+                                                                    <textarea id="infoForExternal" type="text"
+                                                                              name="infoForExternal"
+                                                                               disabled="true"
+                                                                              ng-model="table.infoForExternal"></textarea>
+                                                        </md-input-container>
+                                                    </div>
+
+                                                    <div class="codes-container md-panelContent">
+                                                        <div class="row container">
+                                                                <span class="pull-left" ng-if="table.codes.length>0">
+                                                                    <span>Codes Per Page : </span>
+                                                                    <md-input-container class="normal">
+                                                                        <label/>
+                                                                        <input type="number" ng-model="itemsByPage"
+                                                                               no-dirty-check/>
+                                                                    </md-input-container>
+                                                                </span>
+                                                         </div>
+                                                        <div ng-if="table.codes.length>0">
+                                                            <md-toolbar class="filter-toolBar" style="height: 32px !important;min-height: 30px !important;">
+                                                                <div class="md-toolbar-tools" style="height: 32px !important;min-height: 30px !important;">
+                                                                    <label>Filter</label>
+                                                                    <span flex></span>
+                                                                    <md-button title="clear filter"  class="md-icon-button" ng-click="searchObject={}">
+                                                                        <md-tooltip>Clear Filter</md-tooltip>
+
+                                                                        <i class="material-icons">clear</i>
+                                                                    </md-button>
+                                                                </div>
+
+
+                                                            </md-toolbar>
+
+                                                            <div layout="column" class="filter-panel-body">
+                                                                <div layout="row">
+
+                                                                    <div flex="25">
+
+                                                                        <md-input-container class="normal">
+                                                                            <label></label>
+                                                                            <input no-dirty-check type="search" placeholder="By Value"
+                                                                                   ng-model="searchObject.value">
+                                                                        </md-input-container>
+                                                                    </div>
+                                                                    <div flex="25">
+
+                                                                        <md-input-container class="normal">
+                                                                            <label></label>
+                                                                            <input class="normal-input" no-dirty-check type="search" placeholder="By Description" no-dirty-check
+                                                                                   ng-model="searchObject.label">
+                                                                        </md-input-container>
+                                                                    </div>
+                                                                    <div flex="25">
+
+
+                                                                        <md-input-container class="normal">
+                                                                            <label></label>
+                                                                            <input no-dirty-check placeholder="By Code System" type="search"
+                                                                                   ng-model="searchObject.codeSystem">
+                                                                        </md-input-container>
+                                                                    </div>
+
+                                                                    <div flex="25" style="margin-top: 6px;">
+                                                                        <md-input-container class="normal">
+                                                                            <label></label>
+                                                                            <md-select placeholder="By Usage"
+                                                                                       ng-model="searchObject.codeUsage" no-dirty-check>
+                                                                                <md-option
+                                                                                        ng-repeat="codeUsage in config.codeUsages track by $index"
+                                                                                        ng-value="codeUsage">
+                                                                                    {{::codeUsage}}
+                                                                                </md-option>
+                                                                            </md-select>
+                                                                        </md-input-container>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <table
+                                                                   st-safe-src="table.codes"
+                                                                   st-table="displayCollection"
+                                                                   class="table table-striped table-condensed table-bordered fixed-header">
+                                                                <thead class="fixed-header">
+                                                                <tr class="tbl-header fixed-header" >
+
+                                                                    <th st-sort="value"
+                                                                        ng-class="{'col-md-3': true}">
+                                                                        Value
+                                                                    </th>
+                                                                    <th st-sort="label" class="col-md-3">
+                                                                        Description
+                                                                    </th>
+                                                                    <th class="col-md-2">CodeSystem</th>
+                                                                    <th class="col-md-1">Usage</th>
+                                                                    <th class="col-md-1">Igamt Date Updated</th>
+                                                                    <th class="col-md-2">Comments</th>
+                                                                </tr>
+
+                                                                </thead>
+                                                                <tbody class="fixed-header">
+
+
+                                                                <tr ng-repeat="c in displayCollection |filter:searchObject track by $index"
+                                                                    >
+
+                                                                    <td class="col-md-3">
+
+                                                                        <span>{{::c.value}}</span>
+                                                                    </td>
+                                                                    <td class="col-md-3">
+
+                                                                        <span>{{::c.label}}</span>
+                                                                    </td>
+                                                                    <td class="col-md-2">
+                                                                        <span>{{::c.codeSystem}}</span>
+                                                                    </td>
+                                                                    <td class="col-md-1">
+
+                                                                        <span>{{::c.codeUsage}}</span>
+
+                                                                    </td>
+                                                                    <td class="col-md-1">
+
+                                                                        <span>{{::c.dateUpdated | date :  "MM/dd/yyyy hh:mm:ss"}}</span>
+
+                                                                    </td>
+                                                                    <td class="col-md-2">
+
+                                                                        <span>{{::c.comments}}</span>
+
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                        </md-tab-body>
+                                    </md-tab>
+                                    <md-tab>
+                                        <md-tab-label>Post-Text</md-tab-label>
+                                        <md-tab-body>
+                                            <div class="panel-primary">
+                                                <div class="panel-body">
+                                                    <!--<div ng-if="!viewSettings.tableReadonly && table.status==='UNPUBLISHED'">-->
+                                                                <!--<textarea froala="froalaEditorOptions"-->
+                                                                          <!--ng-model="table.defPostText" name="text"-->
+                                                                          <!--id="defPostText"-->
+                                                                          <!--ng-change="setDirty()"></textarea>-->
+                                                    <!--</div>-->
+                                                    <!--<div ng-if="viewSettings.tableReadonly || (table.scope === 'DYN_HL7STANDARD' || table.status==='PUBLISHED')">-->
+                                                        <div class="fr-view">
+                                                            <div froala-view="table.defPostText"></div>
+                                                        </div>
+                                                    <!--</div>-->
+                                                </div>
+                                            </div>
+                                        </md-tab-body>
+                                    </md-tab>
+                                </md-tabs>
+
+
+
+            </div>
+                        </md-tab-body>
+                    </md-tab>
+                </md-tabs>
+            </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="ConfirmFetchDynamicTable0396UpdatesCtrl.html">
+    <md-dialog aria-label="Fetch Updates">
+        <form ng-cloak role="form">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Fetch Table 0396 Updates</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    Are you sure you want to fetch the table 0396 updates ?
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+
+
+
+                <md-button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i
+                        class="fa fa-trash-o fa-fw">&nbsp; </i>Cancel</span>
+                </md-button>
+
+                <md-button class="btn btn-raised btn-warning btn-sm" ng-click="confirm()"><span><i
+                        class="fa fa-check fa-fw">&nbsp; </i>OK</span>
+                </md-button>
+
+                <div ng-show="loading" style="text-align:center">
+                    <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
+                </div>
+
+            </md-dialog-actions>
+
+
+        </form>
+    </md-dialog>
+</script>
+
+</div>

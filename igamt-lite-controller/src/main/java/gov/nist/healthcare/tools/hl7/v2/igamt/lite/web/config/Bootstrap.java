@@ -13,6 +13,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -136,9 +137,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.TableUpdateStreamException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DataCorrectionSectionPosition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.DynamicTable0396Util;
 
 @Service
 public class Bootstrap implements InitializingBean {
@@ -426,6 +429,44 @@ public class Bootstrap implements InitializingBean {
 
 	// 11/27/18
 	// fixOBX2ValuesetMissingAndDuplicated();
+
+	createDynTable0396();
+    }
+
+    private void createDynTable0396() throws IOException {
+	try {
+	    Table table = tableService.findDynamicTable0396();
+	    if (table == null) {
+		// copy from table 0396 in version 2.8.2
+		Table t = tableService.findByScopeAndVersionAndBindingIdentifier(SCOPE.HL7STANDARD, "2.8.2", "0396");
+		if (t != null) {
+		    table = new Table();
+		    table.setBindingIdentifier(t.getBindingIdentifier());
+		    table.setDescription(t.getDefPostText());
+		    table.setDefPreText(t.getDefPreText());
+		    table.setName(t.getName());
+		    table.setOid(t.getOid());
+		    table.setVersion(null);
+		    table.setExtensibility(Extensibility.Open);
+		    table.setId(null);
+		    table.setLibIds(new HashSet<String>());
+		    table.setScope(SCOPE.HL7STANDARD);
+		    table.setStability(Stability.Dynamic);
+		    table.setStatus(STATUS.PUBLISHED);
+		    table.setType(Constant.TABLE);
+		    table.setComment(t.getComment());
+		    table.setCodeSystems(new HashSet<>(Arrays.asList(new String[] { "HL70396" })));
+		    table.setHl7Version("Dyn");
+		    table.setContentDefinition(ContentDefinition.Extensional);
+		    table.setReferenceUrl(DynamicTable0396Util.TABLE_0396_URL);
+		}
+		InputStream io = DynamicTable0396Util.downloadExcelFile();
+		table = tableService.updateTable(table, io);
+	    }
+	} catch (TableUpdateStreamException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
     }
 
     /**

@@ -11,12 +11,14 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.TableUpdateStreamException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 
 public interface TableService {
@@ -76,9 +78,11 @@ public interface TableService {
 
   Table findShortById(String id);
 
+  Table findDynamicTable0396();
 
   List<Table> findByScopeAndVersionAndBindingIdentifier(String scope, String version,
       String bindingIdentifier);
-
+  
+  Table updateTable(Table table,InputStream io) throws TableUpdateStreamException;
 
 }

@@ -1698,12 +1698,7 @@ public class IGDocumentController extends CommonController {
 	for (ValueSetOrSingleCodeBinding c : segment.getValueSetBindings()) {
 	    if (c instanceof ValueSetBinding) {
 		if (c.getTableId() != null && !tablesMap.containsKey(c.getTableId())) {
-		    Table t = tableService.findOneShortById(c.getTableId());
-		    if (t != null) {
-			ret.addTable(t);
-			tablesMap.put(t.getId(), true);
-		    }
-
+		    processTable(c, ret, tablesMap);
 		}
 	    }
 	}
@@ -1719,6 +1714,31 @@ public class IGDocumentController extends CommonController {
 
     }
 
+    private void processTable(ValueSetOrSingleCodeBinding vsb, MessageAddReturn ret,
+	    HashMap<String, Boolean> tablesMap) {
+	if (vsb != null && vsb.getId() != null) {
+	    Table t = tableService.findOneShortById(vsb.getTableId());
+	    if (t == null)
+		return;
+
+	    if (t.getScope().equals(SCOPE.HL7STANDARD) && t.getBindingIdentifier().equals("0396")
+		    && !t.getHl7Version().equals("Dyn")) {
+		Table dyn0396 = tableService.findDynamicTable0396();
+		if (dyn0396 != null) {
+		    if (!tablesMap.containsKey(dyn0396.getId())) {
+			ret.addTable(dyn0396);
+			tablesMap.put(dyn0396.getId(), true);
+		    }
+		    vsb.setTableId(dyn0396.getId());
+		}
+	    } else if (!tablesMap.containsKey(t.getId())) {
+		ret.addTable(t);
+		tablesMap.put(t.getId(), true);
+	    }
+	}
+
+    }
+
     private void processDatatype(Datatype d, MessageAddReturn ret, HashMap<String, Boolean> datatypesMap,
 	    HashMap<String, Boolean> tablesMap) {
 	ret.addDatatype(d);
@@ -1726,11 +1746,7 @@ public class IGDocumentController extends CommonController {
 	for (ValueSetOrSingleCodeBinding c : d.getValueSetBindings()) {
 	    if (c instanceof ValueSetBinding) {
 		if (c.getTableId() != null && !tablesMap.containsKey(c.getTableId())) {
-		    Table t = tableService.findOneShortById(c.getTableId());
-		    if (t != null) {
-			ret.addTable(t);
-			tablesMap.put(t.getId(), true);
-		    }
+		    processTable(c, ret, tablesMap);
 		}
 	    }
 	}

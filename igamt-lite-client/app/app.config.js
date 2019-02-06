@@ -121,6 +121,9 @@ angular.module('igl').config(function ($routeProvider, RestangularProvider, $mdA
     .when('/registrationSubmitted', {
       templateUrl: 'views/account/registrationSubmitted.html'
     })
+      .when('/data-management', {
+          templateUrl: 'views/data-management/data-management.html'
+      })
     .otherwise({
       redirectTo: '/'
     });
