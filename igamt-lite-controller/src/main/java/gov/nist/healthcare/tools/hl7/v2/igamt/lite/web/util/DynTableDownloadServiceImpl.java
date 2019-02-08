@@ -29,7 +29,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class DynTableDownloadServiceImpl implements DynTableDownloadService {
 
-    public static final String TABLE_0396_URL = "https://www.hl7.org/documentcenter/public/wg/vocab/Tbl0396.xls";
+    public static final String TABLE_0396_URL = "http://www.hl7.org/documentcenter/public/wg/vocab/Tbl0396.xls";
 
     static final Logger logger = LoggerFactory.getLogger(DynTableDownloadServiceImpl.class);
 
