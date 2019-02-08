@@ -141,6 +141,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.TableUpdate
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DataCorrectionSectionPosition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.DynTableDownloadService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.DynTableDownloadServiceImpl;
 
 @Service
@@ -163,6 +164,11 @@ public class Bootstrap implements InitializingBean {
 
     @Autowired
     UserService userService;
+    
+
+    @Autowired
+    DynTableDownloadService dynTableDownloadService;
+    
 
     @Autowired
     AccountRepository accountRepository;
@@ -460,12 +466,15 @@ public class Bootstrap implements InitializingBean {
 		    table.setContentDefinition(ContentDefinition.Extensional);
 		    table.setReferenceUrl(DynTableDownloadServiceImpl.TABLE_0396_URL);
 		}
-		InputStream io = DynTableDownloadServiceImpl.downloadExcelFile();
+		InputStream io = dynTableDownloadService.downloadExcelFile();
 		table = tableService.updateTable(table, io);
 	    }
 	} catch (TableUpdateStreamException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
 	}
     }
 
