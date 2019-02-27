@@ -60,9 +60,6 @@ public class PathGroupServiceImpl implements PathGroupService {
           String[] elements = subPc.getPath().split("\\.", 2);
           String segName = elements[0];
           String segPath = coreMessage.getStructID();
-          if(subPc.getSource().getSegmentId() !=null){
-        	 
-          }
           List<SubProfileComponent> newSubPcs = addMultipleFromSegmentId(subPc,
               coreMessage.getChildren(), segPath, segmentsMap,subPc.getSource().getSegmentId());
           toRemove.add(subPc);
@@ -249,6 +246,10 @@ public class PathGroupServiceImpl implements PathGroupService {
       } else if (child instanceof SegmentRef) {
         SegmentRef segRef = (SegmentRef) child;
         Segment seg = segmentsMap.get(segRef.getRef().getId());
+        String name=seg.getName();
+        if(name.equals("PID")){
+        	System.out.println("PID");
+        }
         
         if (segRef.getRef().getId().equals(segId)) {
 

@@ -112,7 +112,6 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
           Datatype dt = this.datatypeService.findById(spc.getAttributes().getDatatype().getId());
           if(dt != null)  {
             datatypesMap.put(dt.getId(), dt);
-            
             addChildDt(datatypesMap, dt);
             
           }

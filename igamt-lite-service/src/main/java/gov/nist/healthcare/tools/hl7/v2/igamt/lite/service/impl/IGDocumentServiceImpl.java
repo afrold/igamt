@@ -31,14 +31,41 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.MongoException;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentLibraryRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileStructureService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentClone;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 
 @Service
@@ -48,7 +75,41 @@ public class IGDocumentServiceImpl implements IGDocumentService {
 
   @Autowired
   private IGDocumentRepository documentRepository;
+  
+  @Autowired
+  private MessageService messageService;
+  
+  @Autowired
+  private ProfileComponentLibraryService profileComponentLibraryService;
+  
+  @Autowired
+  private ProfileComponentService profileComponentService;
+  @Autowired
+  private ProfileComponentLibraryRepository profileComponentLibraryRepository;
+  @Autowired
+  private CompositeProfileStructureService compositeProfileStructureService;
+  @Autowired
+  private DatatypeLibraryService datatypeLibraryService;
 
+  @Autowired
+  private SegmentLibraryService segmentLibraryService;
+
+  @Autowired
+  private TableLibraryService tableLibraryService;
+
+  @Autowired
+  private DatatypeService datatypeService;
+
+  @Autowired
+  private SegmentService segmentService;
+
+  @Autowired
+  private TableService tableService;
+  
+  
+  
+  
+  
   @Override
   public IGDocument save(IGDocument ig) throws IGDocumentException {
     try {
@@ -247,6 +308,88 @@ public class IGDocumentServiceImpl implements IGDocumentService {
     // TODO Auto-generated method stub
     return documentRepository.findByAccountIdAndScope(accountId, scope);
   }
+
+@Override
+public void makePreloaded(String id) {
+	// TODO Auto-generated method stub
+	IGDocument ig =documentRepository.findOne(id);	
+	if(ig !=null){
+	ig.setScope(IGDocumentScope.PRELOADED);
+	Profile p= ig.getProfile();
+	
+	for(Message child:p.getMessages().getChildren()){
+		if(child.getScope().equals(SCOPE.USER)){
+			child.setScope(SCOPE.PRELOADED);
+			child.setStatus(STATUS.PUBLISHED);
+			messageService.save(child);	
+		}
+	}
+	
+	for (CompositeProfileStructure child : p.getCompositeProfiles().getChildren()){
+		if(child.getScope().equals(SCOPE.USER)){
+			child.setScope(SCOPE.PRELOADED);
+			child.setStatus(STATUS.PUBLISHED);
+			compositeProfileStructureService.save(child);
+		}
+	}
+	ProfileComponentLibrary lib=profileComponentLibraryService.findProfileComponentLibById(p.getProfileComponentLibrary().getId());
+	for(ProfileComponentLink l:lib.getChildren()){
+		ProfileComponent child =	profileComponentService.findById(l.getId());
+
+		if(child != null && child.getScope().equals(SCOPE.USER)){
+			child.setScope(SCOPE.PRELOADED);
+			child.setStatus(STATUS.PUBLISHED);
+			profileComponentService.save(child);	
+		}
+	
+		
+	}
+
+	SegmentLibrary seglib= segmentLibraryService.findById(p.getSegmentLibrary().getId());
+	for(SegmentLink l:seglib.getChildren()){
+		
+		Segment child =	segmentService.findById(l.getId());
+		if(child != null && child.getScope().equals(SCOPE.USER)){
+
+		child.setScope(SCOPE.PRELOADED);
+		child.setStatus(STATUS.PUBLISHED);
+		segmentService.save(child);
+		}
+		
+	}
+	
+	DatatypeLibrary dtLib= datatypeLibraryService.findById(p.getDatatypeLibrary().getId());
+	for(DatatypeLink l:dtLib.getChildren()){
+		
+		Datatype child =datatypeService.findById(l.getId());
+		if(child != null && child.getScope().equals(SCOPE.USER)){
+
+		child.setScope(SCOPE.PRELOADED);
+		child.setStatus(STATUS.PUBLISHED);
+		datatypeService.save(child);
+		}
+		
+	}
+	
+	TableLibrary tblLib= tableLibraryService.findById(p.getTableLibrary().getId());
+	for(TableLink l:tblLib.getChildren()){
+		
+		Table child =tableService.findById(l.getId());
+		if(child != null && child.getScope().equals(SCOPE.USER)){
+		child.setScope(SCOPE.PRELOADED);
+		child.setStatus(STATUS.PUBLISHED);
+		tableService.save(child);
+		}
+	}
+	
+	 try {
+		save(ig, DateUtils.getCurrentDate());
+	} catch (IGDocumentException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}	
+	}
+}
 
 
 }

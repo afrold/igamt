@@ -436,7 +436,8 @@ public class Bootstrap implements InitializingBean {
 	// 11/27/18
 	// fixOBX2ValuesetMissingAndDuplicated();
 
-	createDynTable0396();
+//	createDynTable0396();
+    	iGDocumentService.makePreloaded("57a9f1c384ae90ce1244d327");
     }
 
     private void createDynTable0396() throws IOException {
@@ -477,6 +478,7 @@ public class Bootstrap implements InitializingBean {
 		e.printStackTrace();
 	}
     }
+    
 
     /**
     * 
@@ -592,22 +594,21 @@ public class Bootstrap implements InitializingBean {
 			d.setAccountId(igDoc.getAccountId());
 			this.profileComponentService.save(d);
 		    }
-		}
+		  }
 	    }
 
 	    if (igDoc.getProfile().getCompositeProfiles() != null
 		    && igDoc.getProfile().getCompositeProfiles().getChildren() != null) {
 		for (CompositeProfileStructure dl : igDoc.getProfile().getCompositeProfiles().getChildren()) {
-
 		    CompositeProfileStructure d = this.compositeProfileStructureService.findById(dl.getId());
 		    if (d != null) {
 			d.setAccountId(igDoc.getAccountId());
 			this.compositeProfileStructureService.save(d);
 		    }
-		}
+		  }
 	    }
 
-	}
+	  }
 
     }
 
@@ -811,18 +812,10 @@ public class Bootstrap implements InitializingBean {
     private void makePreloadedProfile(String id) throws IGDocumentException {
 	IGDocument igDocument = this.iGDocumentService.findOne(id);
 	igDocument.setAccountId(null);
-
-	Date date = new Date();
 	igDocument.setDateUpdated(new Date());
 	igDocument.setScope(IGDocumentScope.PRELOADED);
-	igDocument.setComment("Created " + date.toString());
-
 	DocumentMetaData metaData = new DocumentMetaData();
-	metaData.setSubTitle("Imported from XML files");
-	metaData.setTitle("CDC 2.5.1 Immunization Profile Z22");
-	metaData.setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
 	igDocument.setMetaData(metaData);
-
 	this.iGDocumentService.save(igDocument);
     }
 
