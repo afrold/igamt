@@ -95,6 +95,24 @@ public class NotificationController extends CommonController {
     }
     return false;
   }
+  
+  @RequestMapping(value = "/{count}/notifyPHINUpdateEmail", method = RequestMethod.GET, produces = "application/json")
+  public @ResponseBody boolean notifyPHINUpdateEmail(@PathVariable("count") String count) throws Exception { 
+    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+    msg.setSubject("NIST PHINVADS Update Notice");
+    msg.setTo(ADMIN_EMAIL);
+    msg.setCc("jungyub.woo@nist.gov"); //TOBEDeleted
+    msg.setText(
+        "Dear Manager,"
+            + " \n\n" + "Last night " + count + " PHINVADs valuesets were fully updated!");
+    try {
+      this.mailSender.send(msg);
+    } catch (MailException ex) {
+      log.error(ex.getMessage(), ex);
+    }
+    
+    return false;
+  }
 
   private void sendNotificationPhinvadsUpdateEmail(IGDocument doc, Notifications notis) {
     String notificationitemString = "";
