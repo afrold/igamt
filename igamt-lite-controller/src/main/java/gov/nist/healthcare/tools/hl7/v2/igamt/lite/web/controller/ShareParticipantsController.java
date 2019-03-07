@@ -152,7 +152,7 @@ public class ShareParticipantsController {
 
     try {
       for (ShareParticipantPermission p : d.getShareParticipantIds()) {
-        if (p.getAccountId() == account.getId()) {
+        if (p.getAccountId().equals(account.getId())) {
           p.setPendingApproval(false);
           igDocumentService.save(d);
           // Find author

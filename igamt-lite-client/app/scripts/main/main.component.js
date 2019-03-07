@@ -411,11 +411,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             locals: {
                 user: { username: $scope.username, password: $scope.password }
             }
-
         });
     };
-
-
   };
 
   $rootScope.started = false;
@@ -788,7 +785,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
   };
 
   $rootScope.recordChanged = function() {
-    console.log("========");
     $rootScope.igChanged = true;
 
   };
@@ -1380,8 +1376,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
 
   $rootScope.processMessageTree = function(element, parent) {
-
-
     try {
       if (element != undefined && element != null) {
         if (element.type === "message") {
@@ -1389,14 +1383,13 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
           var m = {};
           m.children = [];
           $rootScope.messageTree = m;
-
           angular.forEach(element.children, function(segmentRefOrGroup) {
             $rootScope.processMessageTree(segmentRefOrGroup, m);
           });
 
         } else if (element.type === "group" && element.children) {
           var g = {};
-          g.path = element.position + "[1]";
+            g.path = element.position + "[1]";
           g.locationPath = element.name.substr(element.name.lastIndexOf('.') + 1) + '[1]';
           g.obj = element;
           g.children = [];
@@ -1438,7 +1431,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             s.children = [];
             parent = s;
           }
-
           angular.forEach(element.fields, function(field) {
             $rootScope.processMessageTree(field, parent);
           });
@@ -1543,7 +1535,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             d.children = [];
             parent = d;
           }
-          angular.forEach(element.components, function(component) {
+            angular.forEach(element.components, function(component) {
             $rootScope.processMessageTree(component, parent);
           });
         }

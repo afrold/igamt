@@ -8,6 +8,7 @@ import java.util.Set;
 import org.springframework.data.annotation.Id;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 
 public class ProfileComponent
     implements java.io.Serializable, Cloneable, Comparable<ProfileComponent> {
@@ -30,6 +31,7 @@ public class ProfileComponent
   private List<SubProfileComponent> children = new ArrayList<SubProfileComponent>();
   private String type;
   private SCOPE scope;
+  private STATUS status;
   protected String authorNotes = ""; 
   protected Long accountId;
 
@@ -207,5 +209,13 @@ public void setAccountId(Long accountId) {
     clonedPc.setAccountId(this.getAccountId());
     return clonedPc;
   }
+
+public STATUS getStatus() {
+	return status;
+}
+
+public void setStatus(STATUS status) {
+	this.status = status;
+}
 }
 

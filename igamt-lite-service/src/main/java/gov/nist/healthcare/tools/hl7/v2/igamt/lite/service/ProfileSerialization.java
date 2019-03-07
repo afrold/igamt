@@ -14,6 +14,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
@@ -21,6 +22,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ConstraintSerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.ProfileSerializationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.exception.TableSerializationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.MessageExportInfo;
 import nu.xom.Document;
 
 public interface ProfileSerialization {
@@ -28,16 +30,16 @@ public interface ProfileSerialization {
 
 	Profile deserializeXMLToProfile(Document docProfile, Document docValueSet, Document docConstraints);
 
-	InputStream serializeProfileToZip(Profile profile, String[] ids, DocumentMetaData metadata) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException;
+	InputStream serializeProfileToZip(Profile profile, List<MessageExportInfo> exportInfo, DocumentMetaData metadata) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException;
 
-	InputStream serializeProfileDisplayToZip(Profile profile, String[] ids, DocumentMetaData metadata) throws IOException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException;
+	InputStream serializeProfileDisplayToZip(Profile profile, List<MessageExportInfo> exportInfo, DocumentMetaData metadata) throws IOException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException;
 
-	InputStream serializeProfileGazelleToZip(Profile profile, String[] ids, DocumentMetaData metadata) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException;
+	InputStream serializeProfileGazelleToZip(Profile profile, List<MessageExportInfo> exportInfo, DocumentMetaData metadata) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException;
 	
-	InputStream serializeCompositeProfileToZip(IGDocument doc, String[] ids) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException;
+	InputStream serializeCompositeProfileToZip(IGDocument doc, String[] exportInfo) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException;
 	
-	InputStream serializeCompositeProfileGazelleToZip(IGDocument doc, String[] ids) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException;
+	InputStream serializeCompositeProfileGazelleToZip(IGDocument doc, String[] exportInfo) throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException;
    
-	InputStream serializeCompositeProfileDisplayToZip(IGDocument doc, String[] ids) throws IOException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException;
+	InputStream serializeCompositeProfileDisplayToZip(IGDocument doc, String[] exportInfo) throws IOException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException;
 	
 }

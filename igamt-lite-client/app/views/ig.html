@@ -614,7 +614,7 @@
                                             </tr>
                                             </thead>
                                             <tbody style="display:block; overflow-y: scroll;max-height: 400px;">
-                                            <tr ng-repeat="message in igdocumentToSelect.profile.messages.children track by message.id"
+                                            <tr ng-repeat="message in dynamicMessages track by $index"
                                                 layout="row" layout-align="start start">
                                                 <td flex="10">
                                                     <md-checkbox type="checkbox" ng-model="message.selected"
@@ -624,6 +624,8 @@
                                                 <td flex="20">{{message.identifier}}</td>
                                                 <td flex="30">{{message.name}}</td>
                                                 <td flex="40">{{message.description}}</td>
+
+
                                             </tr>
                                             </tbody>
                                         </table>

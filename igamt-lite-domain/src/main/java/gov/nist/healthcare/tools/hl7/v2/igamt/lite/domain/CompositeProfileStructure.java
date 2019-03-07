@@ -20,6 +20,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 
 @Document(collection = "compositeProfileStructure")
 public class CompositeProfileStructure {
@@ -41,6 +42,8 @@ public class CompositeProfileStructure {
   private List<ApplyInfo> profileComponentsInfo;
   private String type;
   private SCOPE scope;
+  private STATUS status;
+
   protected String authorNotes = ""; 
   
   private Long accountId;
@@ -184,6 +187,14 @@ public List<String> getProfileComponentIds() {
   public void setScope(SCOPE scope) {
     this.scope = scope;
   }
+
+public STATUS getStatus() {
+	return status;
+}
+
+public void setStatus(STATUS status) {
+	this.status = status;
+}
 
 
 

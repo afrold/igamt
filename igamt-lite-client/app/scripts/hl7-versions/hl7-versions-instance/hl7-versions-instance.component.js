@@ -211,6 +211,10 @@ angular.module('igl').controller(
           angular.forEach(result.msgsToadd, function (msg) {
 
               $rootScope.igdocument.profile.messages.children.push(msg);
+              if($rootScope.section&& $rootScope.type=='messages'){
+                  console.log($rootScope.section);
+                  $rootScope.section.children.push(msg);
+              }
               $rootScope.messagesMap[msg.id]=msg;
           });
 

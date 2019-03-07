@@ -133,6 +133,8 @@ public interface IGDocumentService {
   IGDocument save(IGDocument ig, Date date) throws IGDocumentException;
 
   public int updatePosition(String id, int position);
-
-  // TODO NEED TO REVIEW
+  
+  public void makePreloaded(String id);
+  
+ 
 }

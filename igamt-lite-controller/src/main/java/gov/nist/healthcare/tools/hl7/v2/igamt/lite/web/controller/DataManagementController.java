@@ -29,7 +29,7 @@ import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.TableUpdateStreamException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.DynamicTable0396Util;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.DynTableDownloadService;
 
 /**
  * @author Harold Affo
@@ -43,6 +43,9 @@ public class DataManagementController {
 
     @Autowired
     private TableService tableService;
+
+    @Autowired
+    private DynTableDownloadService dynTableDownloadService;
 
     public DataManagementController() {
     }
@@ -64,10 +67,12 @@ public class DataManagementController {
     @RequestMapping(value = "/dynamic-table-0396/fetch-updates", method = RequestMethod.POST)
     public Table fetchUdpates() throws TableUpdateStreamException {
 	try {
-	    InputStream io = DynamicTable0396Util.downloadExcelFile();
+	    InputStream io = dynTableDownloadService.downloadExcelFile();
 	    Table t = getDynamicTable0396();
 	    return tableService.updateTable(t, io);
 	} catch (IOException e) {
+	    throw new TableUpdateStreamException(e.getMessage());
+	} catch (Exception e) {
 	    throw new TableUpdateStreamException(e.getMessage());
 	}
 

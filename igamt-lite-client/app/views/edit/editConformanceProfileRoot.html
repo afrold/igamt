@@ -1,0 +1,102 @@
+<script type="text/ng-template" id="editConformanceProfileRoot.html">
+
+    <div ng-controller="ConformanceProfilesSectionCtrl" ng-cloak>
+
+
+
+        <div class="container">
+            <div class="page-header">
+                <span class="header4">Section: {{section.sectionTitle}} </span>
+                <span class="pull-right">
+
+         <md-button title="Save Changes" type="submit" class="btn btn-raised btn-sm btn-success"
+                    ng-disabled="editForm.$invalid || !editForm.$dirty"
+                    ng-click="save()"
+                    ng-hide="viewSettings.tableReadonly">
+             <span><i class="fa fa-check fa-fw"></i> Save</span>
+         </md-button>
+        <md-button title="Cancel Changes" type="button" class="btn btn-raised btn-sm btn-warning"
+                   ng-hide="viewSettings.tableReadonly"
+                   ng-disabled="!editForm.$dirty"
+                   ng-click="resetSection()">
+                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
+        </md-button>
+                </span>
+            </div>
+            <!--<div class="static_info">-->
+                <!--<i class="fa fa-calendar" aria-hidden="true"></i>-->
+                <!--Updated	{{section.dateUpdated | date:dateFormat}}-->
+            <!--</div>-->
+        </div>
+
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab>
+                <md-tab-label>
+                    <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>Definition
+                </md-tab-label>
+                <md-tab-body>
+                    <md-content layout-padding>
+                        <label class="input-left igamt-label">Content</label>
+                        <md-input-container class="md-block igamt-input-block" flex-gt-sm style="margin-top:20px">
+                            <div ng-if="!viewSettings.tableReadonly">
+                            <textarea froala="froalaEditorOptions" ng-model="section.sectionDescription"
+                                      id="content"
+                                      name="content"
+                                      ng-change="setDirty()"></textarea>
+                            </div>
+                            <div ng-if="viewSettings.tableReadonly">
+                                <div class="fr-view">
+                                    <div froala-view="section.sectionDescription"></div>
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+
+            <md-tab>
+                <md-tab-label>
+                    <i class="fa fa-cog fa-fw" aria-hidden="true"></i>Configuration
+                </md-tab-label>
+                <md-tab-body>
+
+                    <table class="table table-bordered table-fix-header">
+                        <thead>
+
+                        <th>
+                            Acknowledgment
+                        </th>
+
+                        <th>
+                            Messages
+                        </th>
+
+                        </thead>
+
+                        <tbody>
+                        <tr ng-repeat="ack in section.children" ng-if="isAck(ack) && isVaries(ack)">
+                            <td>
+                                {{ack.name}}-{{ack.identifier}}-{{ack.description}}</td>
+                            <td>
+                                <table>
+                                    <tr ng-repeat="message in section.children | orderBy: 'position'" ng-if="!isAck(message)">
+
+                                        <td>
+                                            <md-checkbox ng-click="toggle(ack,message)" ng-checked="section.config.ackBinding[message.id] !=null && section.config.ackBinding[message.id]==ack.id"></md-checkbox>
+
+                                            {{message.name}}-{{message.identifier}}-{{message.description}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </div>
+</script>

@@ -184,7 +184,24 @@ angular.module('igl').factory('IgDocumentService', function($rootScope, ViewSett
             });
             return delay.promise;
 
+        },
+
+        saveConformanceProfileSection:function(id,textContent, config){
+            var delay = $q.defer();
+             var wrapper={
+                 sectionContents : textContent,
+                 config: config
+             };
+            $http.post('api/igdocuments/'+id+'/profile/messages/section',wrapper).then(function(response) {
+                var resu = response.data;
+                delay.resolve(resu);
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+
         }
+
     };
     return IgDocumentService;
 });

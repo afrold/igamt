@@ -158,6 +158,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.MessageExportInfo;
 
 @Service
 public class IGDocumentExportImpl implements IGDocumentExportService {
@@ -190,7 +191,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
   static String inlineConstraints = "false";
 
   @Override
-  public InputStream exportAsValidationForSelectedMessages(IGDocument d, String[] mids)
+  public InputStream exportAsValidationForSelectedMessages(IGDocument d, List<MessageExportInfo> mids)
       throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException, ConstraintSerializationException {
     if (d != null) {
       return profileSerializationService.serializeProfileToZip(d.getProfile(), mids,
@@ -201,7 +202,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
   }
 
   @Override
-  public InputStream exportAsGazelleForSelectedMessages(IGDocument d, String[] mids)
+  public InputStream exportAsGazelleForSelectedMessages(IGDocument d, List<MessageExportInfo> mids)
       throws IOException, CloneNotSupportedException, ProfileSerializationException, TableSerializationException {
     if (d != null) {
       return profileSerializationService.serializeProfileGazelleToZip(d.getProfile(), mids,
@@ -212,7 +213,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
   }
 
   @Override
-  public InputStream exportAsDisplayForSelectedMessage(IGDocument d, String[] mids)
+  public InputStream exportAsDisplayForSelectedMessage(IGDocument d, List<MessageExportInfo> mids)
       throws IOException, CloneNotSupportedException, TableSerializationException, ProfileSerializationException {
     if (d != null) {
       return profileSerializationService.serializeProfileDisplayToZip(d.getProfile(), mids,

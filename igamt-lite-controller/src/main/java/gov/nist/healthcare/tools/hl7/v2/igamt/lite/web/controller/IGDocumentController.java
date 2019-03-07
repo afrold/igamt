@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -29,6 +30,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -36,6 +38,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
@@ -133,6 +138,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAll
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.EventWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.IntegrationIGDocumentRequestWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.MessageExportInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.ScopesAndVersionWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.ConnectService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.TimerTaskForPHINVADSValueSetDigger;
@@ -1029,13 +1035,22 @@ public class IGDocumentController extends CommonController {
 	FileCopyUtils.copy(content, response.getOutputStream());
     }
 
-    @RequestMapping(value = "/{id}/export/Validation/{mIds}", method = RequestMethod.POST, produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-    public void exportValidationXMLByMessages(@PathVariable("id") String id, @PathVariable("mIds") String[] messageIds,
-	    HttpServletRequest request, HttpServletResponse response)
+    @RequestMapping(value = "/{id}/export/Validation", method = RequestMethod.POST,
+    		produces = "application/zip",consumes = "application/x-www-form-urlencoded; charset=UTF-8")
+    public void exportValidationXMLByMessages(@PathVariable("id") String id,
+	    HttpServletRequest request, HttpServletResponse response,FormData form)
+    
 	    throws IOException, IGDocumentNotFoundException, CloneNotSupportedException, ProfileSerializationException,
 	    TableSerializationException, ConstraintSerializationException {
-	IGDocument d = findIGDocument(id);
-	InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d, messageIds);
+    	IGDocument d = findIGDocument(id);
+
+
+    	ObjectMapper mapper = new ObjectMapper();
+    	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    	List<MessageExportInfo> messageExportInfo = mapper.readValue(form.getJson(), mapper.getTypeFactory().constructCollectionType(List.class,MessageExportInfo.class));
+
+	InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d, messageExportInfo);
 	response.setContentType("application/zip");
 	response.setHeader("Content-disposition", "attachment;filename=" + updateFileName(d.getMetaData().getTitle())
 		+ "-" + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
@@ -1055,24 +1070,31 @@ public class IGDocumentController extends CommonController {
 	FileCopyUtils.copy(content, response.getOutputStream());
     }
 
-    @RequestMapping(value = "/{id}/export/Display/{mIds}", method = RequestMethod.POST, produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-    public void exportDisplayXMLByMessages(@PathVariable("id") String id, @PathVariable("mIds") String[] messageIds,
-	    HttpServletRequest request, HttpServletResponse response) throws IOException, IGDocumentNotFoundException,
+    @RequestMapping(value = "/{id}/export/Display", method = RequestMethod.POST, produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
+    public void exportDisplayXMLByMessages(@PathVariable("id") String id,
+    	    HttpServletRequest request, HttpServletResponse response,FormData form) throws IOException, IGDocumentNotFoundException,
 	    CloneNotSupportedException, TableSerializationException, ProfileSerializationException {
 	IGDocument d = findIGDocument(id);
-	InputStream content = igDocumentExport.exportAsDisplayForSelectedMessage(d, messageIds);
+   	ObjectMapper mapper = new ObjectMapper();
+	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+	List<MessageExportInfo> messageExportInfo = mapper.readValue(form.getJson(), mapper.getTypeFactory().constructCollectionType(List.class,MessageExportInfo.class));
+	InputStream content = igDocumentExport.exportAsDisplayForSelectedMessage(d, messageExportInfo);
 	response.setContentType("application/zip");
 	response.setHeader("Content-disposition", "attachment;filename=" + updateFileName(d.getMetaData().getTitle())
 		+ "-" + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
 	FileCopyUtils.copy(content, response.getOutputStream());
     }
-
-    @RequestMapping(value = "/{id}/export/Gazelle/{mIds}", method = RequestMethod.POST, produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-    public void exportGazelleXMLByMessages(@PathVariable("id") String id, @PathVariable("mIds") String[] messageIds,
-	    HttpServletRequest request, HttpServletResponse response) throws IOException, IGDocumentNotFoundException,
+//
+    @RequestMapping(value = "/{id}/export/Gazelle", method = RequestMethod.POST, produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
+    public void exportGazelleXMLByMessages(@PathVariable("id") String id,
+    	    HttpServletRequest request, HttpServletResponse response,FormData form) throws IOException, IGDocumentNotFoundException,
 	    CloneNotSupportedException, ProfileSerializationException, TableSerializationException {
 	IGDocument d = findIGDocument(id);
-	InputStream content = igDocumentExport.exportAsGazelleForSelectedMessages(d, messageIds);
+  	ObjectMapper mapper = new ObjectMapper();
+	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	List<MessageExportInfo> messageExportInfo = mapper.readValue(form.getJson(), mapper.getTypeFactory().constructCollectionType(List.class,MessageExportInfo.class));
+	InputStream content = igDocumentExport.exportAsDisplayForSelectedMessage(d, messageExportInfo);
 	response.setContentType("application/zip");
 	response.setHeader("Content-disposition", "attachment;filename=" + updateFileName(d.getMetaData().getTitle())
 		+ "-" + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
@@ -1331,6 +1353,25 @@ public class IGDocumentController extends CommonController {
 	return d.getDateUpdated().getTime();
     }
 
+    @RequestMapping(value = "/{id}/profile/messages/section", method = RequestMethod.POST)
+    public Long saveConformanceProfileSection(@PathVariable("id") String id, @RequestBody MessagesSection wrapper,
+	    HttpServletRequest request, HttpServletResponse response)
+	    throws IOException, IGDocumentNotFoundException, IGDocumentException {
+	IGDocument d = igDocumentService.findOne(id);
+	if (d == null) {
+	    throw new IGDocumentNotFoundException(id);
+	}
+	
+	d.getProfile().getMessages().setSectionDescription(wrapper.getSectionContents());
+	d.getProfile().getMessages().setConfig(wrapper.getConfig());
+	d.getProfile().setDateUpdated(DateUtils.getCurrentDate());
+	igDocumentService.save(d);
+	return d.getDateUpdated().getTime();
+    }
+    
+    
+    
+    
     @RequestMapping(value = "/{id}/section/save", method = RequestMethod.POST)
     public Long saveSection(@PathVariable("id") String id, @RequestBody Section section, HttpServletRequest request,
 	    HttpServletResponse response) throws IOException, IGDocumentNotFoundException, IGDocumentException {
@@ -1491,9 +1532,9 @@ public class IGDocumentController extends CommonController {
 	for (Message m : msgs.getChildren()) {
 	    for (PositionMap x : messages) {
 		if (m.getId().equals(x.getId())) {
-		    m.setPosition(x.getPosition());
-		    messageService.save(m, date);
-		}
+		      m.setPosition(x.getPosition());
+		      messageService.save(m, date);
+		   }
 	    }
 	}
 	List<Message> sortedList = new ArrayList<Message>();
@@ -1549,9 +1590,11 @@ public class IGDocumentController extends CommonController {
 			nands.getScope(), nands.getHl7Version());
 		Message m1 = null;
 		m1 = newMessage.clone();
+		if(m1.getMessageType()!=null && m1.getMessageType().toLowerCase().equals("ack")){
+			m1.setEvent("Varies");
+		}
 		m1.setId(null);
 		processMessage(d, m1, ret);
-
 		m1.setScope(Constant.SCOPE.USER);
 		String name = m1.getMessageType() + "^" + nands.getName() + "^" + m1.getStructID();
 		log.debug("Message.name=" + name);
@@ -2054,15 +2097,15 @@ public class IGDocumentController extends CommonController {
     }
 
     @RequestMapping(value = "/{id}/connect/messages", method = RequestMethod.POST, produces = "application/json")
-    public Map<String, Object> exportToGVT(@PathVariable("id") String id, @RequestBody Set<String> messageIds,
+    public Map<String, Object> exportToGVT(@PathVariable("id") String id, @RequestBody List<MessageExportInfo> messageExportInfo,
 	    @RequestHeader("target-auth") String authorization, @RequestHeader("target-url") String url,
 	    @RequestHeader("target-domain") String domain, HttpServletRequest request, HttpServletResponse response)
 	    throws GVTExportException {
 	try {
-	    log.info("Exporting messages to GVT from IG Document with id=" + id + ", messages=" + messageIds);
+	    log.info("Exporting messages to GVT from IG Document with id=" + id + ", messages=" + messageExportInfo);
 	    IGDocument d = findIGDocument(id);
 	    InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d,
-		    messageIds.toArray(new String[messageIds.size()]));
+	    		messageExportInfo);
 
 	    ResponseEntity<?> rsp = gvtService.send(content, authorization, url, domain);
 	    Map<String, Object> res = (Map<String, Object>) rsp.getBody();
@@ -2094,7 +2137,6 @@ public class IGDocumentController extends CommonController {
     @RequestMapping(value = "/{libId}/addPhinvads", method = RequestMethod.POST, produces = "application/json")
     public Set<Table> addPhinvads(@PathVariable("libId") String libId, @RequestBody PhinvadsAddingWrapper wrapper)
 	    throws CloneNotSupportedException {
-
 	TableLibrary tableLibrary = tableLibraryService.findById(libId);
 	Set<Table> ret = new HashSet<>();
 

@@ -73,7 +73,7 @@ angular.module('igl').controller(
             hl7Version: function() {
               console.log("$rootScope.clickSource=" + $rootScope.clickSource);
               if ($rootScope.clickSource === "ctx") {
-                return $rootScope.igdocument.profile.metaData.hl7Version;
+                return null;
               } else {
                 return null;
               }
